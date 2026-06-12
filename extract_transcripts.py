@@ -19,7 +19,7 @@ OUT_ROOT = "transcripts"
 # `tv`/`tv_embedded` return downloadable captions without a PO token. Keeping the
 # request volume low (few clients, long gaps) is what keeps the cloud IP from being
 # flagged; the node JS runtime solves YouTube's bot-detection JS challenge.
-CLIENTS = ["tv", "tv_embedded"]
+CLIENTS = ["tv", "tv_embedded", "mweb", "web_safari"]
 NODE = "/opt/node22/bin/node"
 YDL_BASE = {
     "quiet": True, "skip_download": True, "no_warnings": True,
