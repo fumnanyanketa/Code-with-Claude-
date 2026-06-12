@@ -1,0 +1,4 @@
+extract.log
+*.bak
+__pycache__/
+_subtest/

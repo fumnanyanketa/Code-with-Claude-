@@ -1,0 +1,192 @@
+Title: Agent Battle: Mine the most diamonds in 45 minutes
+Video: https://www.youtube.com/watch?v=dxqX_6ciVQA
+Caption: auto (en) via ios
+================================================================================
+
+[00:00:20] What's going on everyone?
+[00:00:23] Let's get settled in. Uh, this is going
+[00:00:25] to be an agent battle and we're going to
+[00:00:28] be tight on time. So, we're gonna get
+[00:00:30] right to it. My name is Ben. I'm
+[00:00:32] accompanied here by Jeff. We're on the
+[00:00:34] applied AI team here at Anthropic, which
+[00:00:37] means we help folks like yourselves
+[00:00:38] squeeze the most juice out of the cloud
+[00:00:40] ecosystem. Uh, and today we're going to
+[00:00:42] be mining for diamonds in Minecraft. So,
+[00:00:46] you might have played Minecraft. Uh, I
+[00:00:48] did in the 2000s, 2010s, but in the
+[00:00:51] 2020s, we have agents play Minecraft for
+[00:00:54] us. And that's what we're going to be
+[00:00:55] doing today. So, what are we actually
+[00:00:56] going to accomplish here today? There's
+[00:00:58] really three things. Number one, we're
+[00:01:00] going to learn how to build and deploy a
+[00:01:03] managed agent. This is something that we
+[00:01:05] released a few weeks ago. Uh it's hosted
+[00:01:08] on our infrastructure and we've set up a
+[00:01:11] lot of the configuration for you, but
+[00:01:13] your job is going to be to get the agent
+[00:01:15] into peak diamond mining condition.
+[00:01:17] Number two is we're going to understand
+[00:01:19] the impact of an agent configuration.
+[00:01:21] That's the system prompt, the model
+[00:01:23] string, the skills and MCPs that you're
+[00:01:26] plugging into your agent to get it to
+[00:01:27] elicit the behavior that you're actually
+[00:01:29] looking for. And then number three, you
+[00:01:31] heard Will talk about this in the last
+[00:01:33] workshop session if you were here. We're
+[00:01:35] going to learn how to hill climb on
+[00:01:36] evals. This is how we improve all of our
+[00:01:39] agents internally. If you've deployed
+[00:01:40] one into prod, you understand the
+[00:01:42] process of measuring its impact,
+[00:01:44] understanding its behavior, and then
+[00:01:46] making changes to iteratively improve.
+[00:01:50] And this is an agent battle, but there
+[00:01:52] are some rules to the battle. Uh, number
+[00:01:54] one is we're going to have a timer for
+[00:01:56] about 35 minutes in which you're going
+[00:01:58] to be able to build and experiment with
+[00:02:00] your agents. Uh, you can only submit uh
+[00:02:03] well, we're only going to accept one run
+[00:02:05] per person. So, you can submit as many
+[00:02:07] as you'd like, but we're only taking
+[00:02:09] your top run. Each run is five minutes
+[00:02:11] of the agent mining for diamonds. You
+[00:02:14] can kill the run at any point with just
+[00:02:16] like a quick control C in the terminal.
+[00:02:19] Um, we have an eval set that it takes
+[00:02:22] approximately one minute if you just
+[00:02:24] want to quickly iterate on the agents
+[00:02:26] and whoever has the most diamonds at the
+[00:02:28] end of 35 minutes wins. We're going to
+[00:02:30] have a leaderboard up here going to show
+[00:02:32] you where you're at. There's also going
+[00:02:34] to be a chat where your agents can talk
+[00:02:36] to one another. Uh, and if anyone is in
+[00:02:38] a tie at the end of the workshop, uh,
+[00:02:41] we're going to be settling that tie
+[00:02:43] based on token efficiency. So, this is
+[00:02:45] not just mine the most diamonds. it is
+[00:02:47] get the best diamonds to tokens ratio.
+[00:02:50] And that means you're going to have to
+[00:02:51] really hone your system prompt rather
+[00:02:53] than just throwing in the heaviest
+[00:02:55] weight model you can. Now, I'm going to
+[00:02:56] hand it over to Jeff to talk through the
+[00:02:58] logistics of how the harness actually
+[00:03:00] works and what you guys are going to be
+[00:03:01] doing during the workshop.
+[00:03:07] >> Hello. Uh, okay. So, the harness, uh,
+[00:03:10] we're actually shipping quite a bit for
+[00:03:11] you to get started. Um, what you're
+[00:03:13] going to primarily be thinking about is
+[00:03:15] how can I optimize my experience in
+[00:03:18] trying to mine as many diamonds as
+[00:03:20] possible. We're giving you a couple
+[00:03:21] different tools to accomplish this. The
+[00:03:23] main structure is that you're going to
+[00:03:25] be running through a Minecraft clone
+[00:03:28] that connects to a Mind Flare bot. If
+[00:03:30] you're not familiar with Mind Flare, uh,
+[00:03:32] you're not going to be relying on
+[00:03:33] visuals. There's a series of MCP tools
+[00:03:35] that are shipped directly with that,
+[00:03:37] such as Mind Block, jump, go near
+[00:03:39] things, something along those lines.
+[00:03:41] don't have to think too much about this.
+[00:03:43] The main levers that you're going to be
+[00:03:44] focused on uh are about I think it's on
+[00:03:48] the next slide, but uh basically along
+[00:03:50] the lines of how do I optimize this run?
+[00:03:53] Um everyone's going to start from the
+[00:03:55] same seed. So there's no real
+[00:03:57] optimization that needs to happen there.
+[00:03:59] And every time you reset, you'll have
+[00:04:01] the same start kit, the same seed to go
+[00:04:02] with that. Um okay, so the the agent
+[00:04:05] that you'll be operating out of, so
+[00:04:07] there's a my agent.py that's included in
+[00:04:09] the repo. Uh so if you go to slas aent
+[00:04:12] battle you'll have access to the repo
+[00:04:14] and that's where you'll be running this.
+[00:04:15] Uh my Asian.pay is where everything
+[00:04:17] should really be taking place. You can
+[00:04:19] adjust the model, you can adjust the
+[00:04:21] system prompt which is currently empty
+[00:04:23] and then you have the opportunity to use
+[00:04:26] a skill that's shipped directly from
+[00:04:27] andropic or you can replace with your
+[00:04:29] own skill. Uh and then we also are
+[00:04:31] including an MCP server if you wish to
+[00:04:33] adjust these things. So these are the
+[00:04:35] things that or parameters that you have
+[00:04:36] available to adjust. Uh so try things
+[00:04:39] out. Run evals. Um we'll also be
+[00:04:41] circulating around the room as well. So
+[00:04:43] if you run into anything or want to uh
+[00:04:45] discuss then feel free to do so. Um
+[00:04:49] okay, yeah, this has largely already
+[00:04:50] been covered. So I want to make sure
+[00:04:52] that we have as much time as possible to
+[00:04:53] get started. Um so we can actually move
+[00:04:56] over to uh starting the countdown.
+[00:05:01] Looks like several people have already
+[00:05:02] joined. I'm going to reset the time now
+[00:05:05] and you may begin. So, uh, these will
+[00:05:09] all go away. Let me Okay, great. So,
+[00:05:11] it's completely refreshed. Uh, and the
+[00:05:14] time has begun now. So, feel free to get
+[00:05:16] started. And if you have questions,
+[00:05:19] we'll be around.
+[00:05:25] It looks like we already have a run with
+[00:05:28] 10.
+[00:05:30] We have several other participants who
+[00:05:31] are getting started. Um just to give
+[00:05:34] slightly more context. So within the
+[00:05:36] repo there's a uh cloud code skill that
+[00:05:40] you can use to help with setup. Um if
+[00:05:43] that is uh if anyone's having an issue
+[00:05:45] then that should hopefully help with the
+[00:05:46] process.
+[00:05:55] A couple people announced that they were
+[00:05:56] having issues with Cloudflare. I think
+[00:05:58] it may be due to the fact that there's
+[00:06:00] so many people trying to connect via the
+[00:06:03] uh the conference Wi-Fi. Um it's a bit
+[00:06:06] small, but I did put a command up here
+[00:06:08] that found that it worked for at least
+[00:06:10] one person. Um so feel free to give that
+[00:06:13] a try if you're running into any issues.
+[00:06:20] About five minutes remaining. We have a
+[00:06:22] three-way tie.
+[00:06:24] And for some reason, the first person is
+[00:06:26] showing as zero tokens, which is highly
+[00:06:28] suspicious.
+[00:06:30] So, we may have a two-way tie.
+[00:06:33] Unless
+[00:06:35] you can exh
+[00:06:44] seems like 19 might be the upper echelon
+[00:06:47] of what's possible,
+[00:06:49] at least so far. Have time for about one
+[00:06:52] more run.
+[00:07:03] We actually have somebody who's broken
+[00:07:05] 19 with only one minute 20 seconds to
+[00:07:08] go. Wow.
+[00:07:12] You have to reveal your technique.
+[00:07:15] 20 seconds.
+[00:07:26] 10 9 8 7 6 5 4 3 2 one. Time's up. Um so
+[00:07:38] thank you everybody for participating.
+[00:07:40] Uh looks like we have a clear winner now
+[00:07:42] and would love for everybody who was
+[00:07:45] able to mine 19 diamonds uh to come find
+[00:07:48] Ben and I. Uh because our second place
+[00:07:52] has zero tokens, we don't know who
+[00:07:55] actually won second and third place yet.
+[00:07:57] So uh we'll invite everybody who is uh
+[00:08:01] one through five to come up. We don't
+[00:08:05] know what they'll win yet.
+[00:08:14] You guys can smile in front of your
+[00:08:22] >> Nice job everybody.

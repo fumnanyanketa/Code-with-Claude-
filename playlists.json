@@ -1,0 +1,170 @@
+{
+  "day2": {
+    "title": "Code with Claude 2026 | London 2026 Day 2",
+    "playlist_id": "PLmWCw1CzcFinm44PAkEoR2glf-iNPhulP",
+    "videos": [
+      {
+        "id": "19HDQ9HppOA",
+        "title": "Ship your first Managed Agent"
+      },
+      {
+        "id": "mWvtOHlZM-I",
+        "title": "Tool, skill, or subagent? Decomposing an agent that outgrew its prompt"
+      },
+      {
+        "id": "dxqX_6ciVQA",
+        "title": "Agent Battle: Mine the most diamonds in 45 minutes"
+      },
+      {
+        "id": "v9FTCvkV_a0",
+        "title": "Evals for taste: Hill-climbing a slide-generation agent"
+      },
+      {
+        "id": "geUv4CjPpxI",
+        "title": "Agents that remember"
+      },
+      {
+        "id": "IlqJqcl8ONE",
+        "title": "How we Claude Code"
+      },
+      {
+        "id": "qOjleN2-50c",
+        "title": "Making agentic workflows trustworthy and verifiable with a custom DSL"
+      },
+      {
+        "id": "tUoO4ucrNc0",
+        "title": "Fighting financial crime with Claude Cowork"
+      },
+      {
+        "id": "T8N0MED3IJo",
+        "title": "Where code meets court: AI at the legal-technical frontier"
+      },
+      {
+        "id": "M5uwBawBDpw",
+        "title": "How AirOps chases friction to build AI products with Claude"
+      },
+      {
+        "id": "A3rmSUp6Dxg",
+        "title": "How Metaview built self-improving prompts for application review"
+      },
+      {
+        "id": "uGroRwlC9y4",
+        "title": "Teaching agents to learn from your team"
+      },
+      {
+        "id": "K4-flzsPraE",
+        "title": "Building the best agentic analytics harness: Powered by Claude, built with Claude Code"
+      },
+      {
+        "id": "iLtmWCjuGIQ",
+        "title": null
+      },
+      {
+        "id": "RQcrm2CK-iQ",
+        "title": null
+      }
+    ]
+  },
+  "p2": {
+    "title": "Code with Claude 2026 | London 2026",
+    "playlist_id": "PLmWCw1CzcFilPJdvw6scjHjbBripZWFps",
+    "videos": [
+      {
+        "id": "6amLO7I9xdg",
+        "title": "Code with Claude London 2026: Opening Keynote"
+      },
+      {
+        "id": "tuY2ChJIx48",
+        "title": "Beyond the basics with Claude Code"
+      },
+      {
+        "id": "IA5LWIGqnyM",
+        "title": "Running an AI-native engineering org"
+      },
+      {
+        "id": "QIriO1-vHYw",
+        "title": "Getting more out of the Claude Platform"
+      },
+      {
+        "id": "G2B0YWuJUgI",
+        "title": "The prompting playbook"
+      },
+      {
+        "id": "DNRddIEoH3c",
+        "title": "The capability curve"
+      },
+      {
+        "id": "Uvl-tRga98g",
+        "title": "Designing with Claude: From prompt to production"
+      },
+      {
+        "id": "l8fxVYIP4HQ",
+        "title": "Building with Claude on Google Cloud"
+      },
+      {
+        "id": "EOg4gY0Yln0",
+        "title": "Building signals that trade themselves"
+      },
+      {
+        "id": "P0uMXS6emHA",
+        "title": "Picking the right model"
+      },
+      {
+        "id": "IGo225tfF2I",
+        "title": "Memory and dreaming for self learning agents"
+      },
+      {
+        "id": "nho1YAEPuwA",
+        "title": "What legal agents inherit from coding agents: Lessons from Legora"
+      },
+      {
+        "id": "zenIB7XLZxQ",
+        "title": "How to get to production faster with Claude Managed Agents"
+      },
+      {
+        "id": "jWWsLe4Gh5Y",
+        "title": "Build a production-ready agent with Claude Managed Agents"
+      },
+      {
+        "id": "T7KqH7kYnE4",
+        "title": "The thinking lever"
+      },
+      {
+        "id": "mhW-XXnDFSU",
+        "title": "How Lovable vibecodes production software at scale"
+      },
+      {
+        "id": "XFaeIbL-lvE",
+        "title": "Building AI-native at enterprise scale: monday.com, Doctolib, and Delivery Hero"
+      },
+      {
+        "id": "VueeyKcquoA",
+        "title": "From one person to 80: Scaling a hypergrowth engineering org with Claude Code"
+      },
+      {
+        "id": "eSP7PLTXNy8",
+        "title": "Build a proactive agent workflow with Claude Code"
+      },
+      {
+        "id": "TQd_YQvydVg",
+        "title": "Build AI agents using Claude in Microsoft Foundry"
+      },
+      {
+        "id": "zFslvuvYifQ",
+        "title": "Coding is no longer the constraint: Scaling devex to teams and agents at Spotify"
+      },
+      {
+        "id": "5YHIrTYxM3w",
+        "title": "AI with Claude on AWS: From code to orchestration"
+      },
+      {
+        "id": "wI0ptqCSL0I",
+        "title": "Stop babysitting your agents"
+      },
+      {
+        "id": "sRvUXLquiRg",
+        "title": "What's new in Claude Code"
+      }
+    ]
+  }
+}

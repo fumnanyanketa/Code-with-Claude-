@@ -1,0 +1,815 @@
+Title: How AirOps chases friction to build AI products with Claude
+Video: https://www.youtube.com/watch?v=M5uwBawBDpw
+Caption: auto (en) via tv
+================================================================================
+
+[00:00:02] [music]
+[00:00:13] [music]
+[00:00:16] >> Hey, how's it going everyone? Um I'm
+[00:00:18] Dylan. I work on the product team at
+[00:00:21] AirOps. And yeah, excited to walk you
+[00:00:24] through uh how you know, tell us how
+[00:00:27] AirOps chases friction
+[00:00:28] um with building AI products with
+[00:00:30] Claude. And I guess the main really big
+[00:00:33] takeaway I want you guys to come away
+[00:00:34] with is building agents um and just
+[00:00:38] making agents accessible is honestly
+[00:00:40] really hard problem. Um I guess like
+[00:00:42] with developers it's a bit easier.
+[00:00:44] People are used to
+[00:00:45] um kind of all these different concepts,
+[00:00:47] but when you try to make these
+[00:00:49] accessible to, you know, personas like
+[00:00:51] marketers, there are a lot of friction
+[00:00:53] points. And going to talk through some
+[00:00:54] of the friction points that we um have
+[00:00:56] seen and battled with.
+[00:01:00] So, just to start off, quick intro of
+[00:01:02] who we are at AirOps. Um we are a growth
+[00:01:04] marketing um platform for AI search. And
+[00:01:08] AI search for you guys is kind of like
+[00:01:10] SEO but for engines like ChatGPT,
+[00:01:13] Gemini, Claude. You know, buyers are
+[00:01:15] asking on Claude different, you know,
+[00:01:17] questions of, "Hey, I want to buy like
+[00:01:19] these pair of sunglasses. You know, how
+[00:01:21] do you know and how are you making sure
+[00:01:22] that you are showing up for these
+[00:01:24] searches?" So, we help brands see how
+[00:01:27] they're appearing in search, um identify
+[00:01:29] gaps, take action on those gaps, whether
+[00:01:32] that be, you know, creating content,
+[00:01:34] refreshing content, um and then being
+[00:01:36] able to measure the impact of whether or
+[00:01:37] not, you know, the actions that they're
+[00:01:38] taking actually worked.
+[00:01:42] And so, quick agenda, um I'm just going
+[00:01:44] to walk through real quickly how we got
+[00:01:45] here, kind of our approach um for
+[00:01:49] agents, um a quick just run through of
+[00:01:52] what we just launched last week with
+[00:01:53] AirOps Next, um and then two friction
+[00:01:55] points that we really focus and dial in
+[00:01:57] on for our launch
+[00:01:59] um when it comes to making and giving
+[00:02:01] people the power of Claude
+[00:02:03] and making that super accessible.
+[00:02:05] And then closing with a couple of other
+[00:02:06] friction points that we're really
+[00:02:08] looking at for our next
+[00:02:10] you know come next act.
+[00:02:14] So how we got here?
+[00:02:16] AirOps used to be or still is but we
+[00:02:18] were mainly focused on
+[00:02:20] orchestrating content through a
+[00:02:22] traditional workflow builder so
+[00:02:24] node-based style kind of like an N A N A
+[00:02:26] N
+[00:02:26] where you can drag and drop these
+[00:02:27] different nodes, you can
+[00:02:29] orchestrate different variables and how
+[00:02:31] things flow through this you know
+[00:02:33] elaborate workflow. And with a workflow
+[00:02:36] builder style and especially with our
+[00:02:38] core customer and audience being
+[00:02:40] marketers,
+[00:02:42] you would hit this complexity ceiling
+[00:02:43] where you're trying to teach a content
+[00:02:44] marketer what liquid text is, what JSON
+[00:02:46] is and all these you know different
+[00:02:48] concepts
+[00:02:49] and they also had this short shelf life
+[00:02:51] which
+[00:02:52] as new models came out, you know, Claude
+[00:02:54] would release
+[00:02:55] you know, Opus 46, 47, you know, it
+[00:02:59] keeps on going. You would have to update
+[00:03:01] these different steps. It changes the
+[00:03:03] way that you're building this workflow
+[00:03:05] so customers are constantly having to go
+[00:03:07] and update this workflow they just spent
+[00:03:09] so much time in building
+[00:03:10] and also just if they update a step in
+[00:03:13] like step one, they don't realize that
+[00:03:14] variables and outputs are referenced in
+[00:03:16] step 20 so there's there's a bunch of
+[00:03:18] the complexity and this it was really
+[00:03:19] brutal.
+[00:03:21] And scaling enterprise use cases
+[00:03:22] obviously then required someone
+[00:03:24] technical to help really guide through
+[00:03:25] this workflow creating process. So our
+[00:03:28] goal was to really lower this barrier to
+[00:03:30] entry for
+[00:03:32] content marketers to build and ship you
+[00:03:34] know, their ideas and the way they want
+[00:03:35] to create content. And also while still
+[00:03:39] maintaining
+[00:03:40] that quality bar which
+[00:03:42] is a very big focus for them because of
+[00:03:45] course brands don't want to just be
+[00:03:46] pumping you know, AI slop out and having
+[00:03:48] governance around keeping those
+[00:03:50] enterprise standards.
+[00:03:53] So this is a quick just preview of Well,
+[00:03:54] not preview, but a look at what our
+[00:03:56] workflow studio looked like. This use
+[00:03:58] case was actually to create a content
+[00:04:00] brief with internal links. So, as you
+[00:04:03] can see, it's it gets kind of gnarly in
+[00:04:05] there.
+[00:04:06] Um just for something that this seemed
+[00:04:07] pretty simple. Uh it just goes to show
+[00:04:09] like how
+[00:04:11] much thought goes into a lot of these
+[00:04:13] workflows and the way that they want to
+[00:04:14] create and, you know, orchestrate
+[00:04:16] content. So, how do How can we take
+[00:04:17] this,
+[00:04:18] you know, kind of structure and create
+[00:04:20] an agent experience while still
+[00:04:21] harnessing, you know, the way that we
+[00:04:23] use cloud code and these other uh agent
+[00:04:25] tools.
+[00:04:28] So, I think the first really breaking
+[00:04:30] point when we decided to invest uh
+[00:04:32] heavier into agents was really with the
+[00:04:34] lost the with the release of Opus 4.5. I
+[00:04:37] think that's when a lot of people
+[00:04:39] started to see um
+[00:04:40] really how smart the models were in tool
+[00:04:42] calling, being able to follow
+[00:04:44] instructions,
+[00:04:45] um
+[00:04:47] to uh in all in a way that, you know,
+[00:04:49] they weren't breaking, you know, the
+[00:04:50] standards that they were setting for it.
+[00:04:52] And for us, we at the same time we're
+[00:04:54] trying to make building easier. And one
+[00:04:56] of the ways that we do that, and I'll
+[00:04:57] I'll dive more into it a bit later, is
+[00:04:59] through kind of this document-based
+[00:05:01] style builder. And the first thing that
+[00:05:04] we tried doing was actually taking this
+[00:05:05] kind of like Google Doc in a way and
+[00:05:07] with an LLM compiling a workflow in the
+[00:05:09] background, which was, you know, an
+[00:05:11] interesting idea. It was like a bit
+[00:05:12] brittle, like there's a lot of, you
+[00:05:13] know, error points that can happen
+[00:05:14] there, trying to turn like this
+[00:05:16] non-deterministic um you know, kind of
+[00:05:18] instructions and making this actual
+[00:05:20] workflow.
+[00:05:21] Uh then what after that was then, you
+[00:05:23] know, using a traditional agent
+[00:05:25] orchestration framework um
+[00:05:27] where you're, you know, kind of defining
+[00:05:28] these nodes, you're letting an LLM
+[00:05:30] decide different um
+[00:05:32] decision points. And we got to a point
+[00:05:35] where we were getting pretty good
+[00:05:36] outputs, but with those traditional
+[00:05:38] frameworks, they honestly are like
+[00:05:40] pretty brittle. If I ever want to change
+[00:05:42] the way I want to orchestrate different
+[00:05:43] sub-agents, um Um, basically have to
+[00:05:45] make code changes, right? Like I
+[00:05:47] actually have to go and change the way
+[00:05:49] I'm routing these different nodes and
+[00:05:51] steps together.
+[00:05:52] And that's when we really decided to,
+[00:05:56] you know, invest heavier into the Cloud
+[00:05:58] Agent SDK where
+[00:05:59] it's honestly pretty pretty awesome that
+[00:06:01] you can kind of orchestrate agents just
+[00:06:03] through markdown files and provide
+[00:06:04] skills um, in different contexts really
+[00:06:07] just by manipulating this environment
+[00:06:09] and harness rather than actually like,
+[00:06:11] you know, doing that programmatically
+[00:06:12] programmatically through
+[00:06:14] um,
+[00:06:15] you know,
+[00:06:16] a traditional agent framework. So,
+[00:06:17] that's what kind of led to our launch
+[00:06:19] which we just had last week with AirOps
+[00:06:21] next. And briefly just to run through
+[00:06:24] exactly what did what did we exactly
+[00:06:26] launch? Um, the first one was Quill
+[00:06:29] which was kind of our our branding of
+[00:06:30] our agent captain for content marketers.
+[00:06:33] Um, Quill had access to all the data
+[00:06:35] that we provide to teams, um, whether
+[00:06:37] that be AI search data, the brand
+[00:06:39] context and brand kit which houses like
+[00:06:42] literally everything about a brand. So,
+[00:06:43] you know,
+[00:06:44] you know, Quill is following the
+[00:06:46] instructions of how content should be
+[00:06:47] created.
+[00:06:49] And um, just making it easier throughout
+[00:06:51] the UI to get people from insights they
+[00:06:53] see in the dashboards to actual actions.
+[00:06:56] Um, being able to take the findings and
+[00:06:58] gaps and get to that in the very next
+[00:06:59] step.
+[00:07:01] The next one is playbooks. So, playbooks
+[00:07:04] is basically our new building
+[00:07:05] experience. Um,
+[00:07:07] and for all you like developers out
+[00:07:09] there it's
+[00:07:10] pretty much like a skill. That's very
+[00:07:11] much like what we grounded in is like
+[00:07:13] how can we
+[00:07:14] make skills accessible and marketers are
+[00:07:16] all like used to the kind of document
+[00:07:17] based style. Um, but we just allowed for
+[00:07:20] like collaboration on these playbooks
+[00:07:22] slash skills and also uh, governance and
+[00:07:24] versioning. So, you know, you'll have
+[00:07:25] people with, you know, 10 different
+[00:07:26] versions of this playbook of uh, how do
+[00:07:28] I want to create this this piece of
+[00:07:30] content?
+[00:07:32] And just real quick just results that
+[00:07:33] we've seen from customers. Um, we did,
+[00:07:36] you know, case study with Parallel. We
+[00:07:37] helped them produce and create content
+[00:07:40] and they saw a 130% increase in citation
+[00:07:42] rate, uh, 42% increase in share of
+[00:07:45] voice, and they were able to go live in
+[00:07:48] 1 week, which for us is a huge
+[00:07:50] accomplishment just because
+[00:07:51] traditionally, especially because we
+[00:07:53] work with these enterprise customers,
+[00:07:56] it usually takes around a month, at
+[00:07:57] least with like the workflow builder of
+[00:07:59] constant feedback going back and forth,
+[00:08:01] like "Hey, this is, you know, not really
+[00:08:03] how I want to be speaking in my in my
+[00:08:05] blog.
+[00:08:06] Um
+[00:08:07] you know, citations that are like kind
+[00:08:09] of being hallucinated or aren't right.
+[00:08:10] They're not These are other citations
+[00:08:12] that I want to use for this piece of
+[00:08:13] content." So,
+[00:08:14] it was really incredible to be able to
+[00:08:15] get to um that acceptance criteria in
+[00:08:18] such a short amount of time.
+[00:08:20] And other just like quick customer
+[00:08:22] quotes, too. Um
+[00:08:24] incredible to see how Agents has moved
+[00:08:27] what really like LLMs can do and how
+[00:08:29] marketers are viewing using, you know,
+[00:08:32] these more objective workflows. Um you
+[00:08:34] know, Animal saying it felt more like a
+[00:08:36] mid-level strategist for their team. And
+[00:08:39] um at Rock Content, being able to focus
+[00:08:41] on off-boarding a lot of the tedious
+[00:08:43] tasks and really focusing on like where
+[00:08:45] does my expertise come in and being able
+[00:08:47] to add that value to the agent while
+[00:08:50] it's creating that content and um
+[00:08:52] feeding that unique context.
+[00:08:55] So, we were able to really accomplish
+[00:08:57] this by focusing on two main friction
+[00:09:00] points. So,
+[00:09:02] when building and trying to bring
+[00:09:04] high-quality Agents to these more, you
+[00:09:06] know, highly professional and enterprise
+[00:09:09] use cases, um we really had to focus on
+[00:09:12] how do we fit into the actual workflow
+[00:09:14] of these content marketers? And, you
+[00:09:17] know, how do we make sure that we ensure
+[00:09:19] uh quality outputs through the way that
+[00:09:21] we're building our harness and
+[00:09:22] orchestrating our harness?
+[00:09:26] So, the first one um friction point I
+[00:09:28] want to talk through is uh I I have it
+[00:09:30] saying like endless use cases forces
+[00:09:32] intentionality. And I think a lot of us
+[00:09:35] have
+[00:09:36] probably been there, too, when we first
+[00:09:37] started using cloud code or using an
+[00:09:39] agent and we're like, this thing is like
+[00:09:40] really powerful. Like I can do a ton of
+[00:09:43] different things. You're like, it's
+[00:09:45] really easy to start sprawling into this
+[00:09:46] spiral of
+[00:09:48] um
+[00:09:49] yeah, just like there's so many
+[00:09:50] different use cases and I think and not
+[00:09:52] only on like the product engineering
+[00:09:53] side, but also for customers,
+[00:09:55] how do we be very intentional about
+[00:09:57] what's the actual like problem that
+[00:09:58] we're trying to solve here and how do we
+[00:10:00] really force it and understand like what
+[00:10:02] is
+[00:10:03] you know, this workflow that we're
+[00:10:04] trying to solve for people. So
+[00:10:06] um kind of like in my head now I have
+[00:10:07] this like like mini like Steve Ballmer
+[00:10:10] head just going like marketers,
+[00:10:11] marketers, marketers, you know, just
+[00:10:13] like really
+[00:10:14] trying to focus on who is like my
+[00:10:15] customer in this use case so that I want
+[00:10:17] to tackle.
+[00:10:19] Um and just a quick glimpse into what
+[00:10:23] does like this workflow look like for a
+[00:10:24] content marketer. This is one example
+[00:10:26] use case for content creation where
+[00:10:28] they'll discover
+[00:10:30] um what do they want to create on,
+[00:10:32] they'll research of the specific topic
+[00:10:34] that they want to make sure that they're
+[00:10:36] ranking in AI search or traditional
+[00:10:37] search for, they'll draft a brief, draft
+[00:10:39] the article, and then add any sort of
+[00:10:41] like internal linking and best practices
+[00:10:43] when it comes to SEO and AEO. And
+[00:10:46] throughout this whole process, there are
+[00:10:48] different human review points. Um
+[00:10:51] human review comes up a ton in human
+[00:10:53] loop comes up a ton in content
+[00:10:54] marketing, uh especially just with
+[00:10:57] when you're being cognizant about the
+[00:11:00] content that you're pushing out. You
+[00:11:01] really want to make sure that it is
+[00:11:03] adhering to the way that your brand
+[00:11:05] talks to the information that you're
+[00:11:07] serving out in the internet um and just
+[00:11:09] giving you the best shot of also being
+[00:11:11] surfaced um within
+[00:11:13] kind of like generative AI search.
+[00:11:15] So, that whole process kind of led us to
+[00:11:19] focus on two parts when it comes to the
+[00:11:21] most I got these are kind of like the
+[00:11:23] two most important parts we saw with the
+[00:11:24] content marketing flow.
+[00:11:26] One is having a document based kind of
+[00:11:29] like IDE, which again it like our
+[00:11:31] playbook view.
+[00:11:33] We wanted uh you know, marketers are
+[00:11:34] super familiar with documents. They are
+[00:11:37] used to Google Docs. Um they've probably
+[00:11:39] been working with Docs for for years and
+[00:11:40] ages, even before like technology like
+[00:11:42] you have this piece of paper that you're
+[00:11:44] kind of defining how you want to do
+[00:11:45] something. So, making that familiar
+[00:11:46] versus, you know, this node-based
+[00:11:48] workflow builder. Um transparency was
+[00:11:51] also really important. One thing that
+[00:11:54] users actually really liked about the
+[00:11:55] workflow builder was that they could
+[00:11:57] actually see what tools were being used
+[00:11:59] at each step. So, how do you still have
+[00:12:02] a document but at the same time
+[00:12:04] when I read through, I can understand
+[00:12:05] like this this is the exact tool that
+[00:12:07] I'm using at this instant. Um this is
+[00:12:09] the type of context I'm feeding at this
+[00:12:11] point. Um I'm just being transparent
+[00:12:13] around that. And that kind of goes hand
+[00:12:14] in hand with control as well. How can I
+[00:12:18] make sure that I'm still in control of
+[00:12:21] this, you know, set of instructions or
+[00:12:23] uh workflow that I'm building?
+[00:12:25] Um especially now that it is really like
+[00:12:27] not as like deterministic because it is
+[00:12:29] like a document. So, um those are three
+[00:12:31] areas that we that we focused on.
+[00:12:33] And then, again, on enforcing human
+[00:12:35] review. How can we bring governance,
+[00:12:38] configurability, accountability into an
+[00:12:40] agentic workflow, which I think is
+[00:12:42] pretty unique for us, and I don't think
+[00:12:44] um a lot of
+[00:12:46] brands like kind of like tackle like
+[00:12:48] that problem. I think a lot of it is
+[00:12:49] like with agents, also with coding is
+[00:12:51] kind of let it go. It will it will
+[00:12:53] finish what's done with, and human
+[00:12:54] review in that instance with coding is
+[00:12:55] usually like with PR reviews after it's
+[00:12:57] literally finished the whole job. It's
+[00:12:59] rarely ever like while it's going
+[00:13:00] through the actual, you know, coding
+[00:13:02] process, it'll
+[00:13:04] you know, kind of like ask for feedback
+[00:13:05] of taste in in different areas. So, um
+[00:13:08] that was like another area that we that
+[00:13:09] we really focused on.
+[00:13:11] And with that, I actually want to jump
+[00:13:13] into a quick uh just like demo of what
+[00:13:16] this looks like within
+[00:13:18] um within AirOps.
+[00:13:20] So,
+[00:13:22] yeah, the first thing I want to cover is
+[00:13:24] our playbook. And again, it's kind of
+[00:13:27] like this skill, this natural language
+[00:13:29] builder where I can go in and either
+[00:13:32] like type in like with a slash command
+[00:13:34] and you know, define different inputs,
+[00:13:36] different outputs, and also all these
+[00:13:38] different tools that, you know, content
+[00:13:40] marketers can use and that they're super
+[00:13:41] used to using. And with it when it comes
+[00:13:43] to tools as well, you can add any MCP.
+[00:13:47] So, there's other outside connectors
+[00:13:48] that you usually use, you can use those
+[00:13:50] and access them.
+[00:13:52] Um we also have the ability to schedule
+[00:13:53] different triggers. So, this gives this
+[00:13:56] kind of like always-on skill or playbook
+[00:13:58] or agent that, you know, can do the
+[00:14:00] certain action at either a scheduled
+[00:14:03] cadence, based off webhooks. Um we also
+[00:14:06] have monitor which we've um kind of like
+[00:14:08] partnered with like uh parallel when it
+[00:14:10] comes to just being able to put a query
+[00:14:12] in I like saying, you know, watch the
+[00:14:14] internet in a way. So, when certain
+[00:14:16] things happen,
+[00:14:17] um
+[00:14:18] it would trigger off this playbook to
+[00:14:19] then run. And then the last one is uh AO
+[00:14:21] insights. So, whenever a metric drops,
+[00:14:24] let's say like my
+[00:14:26] citation rate dropped in the last um
+[00:14:29] like last week, that it would trigger
+[00:14:30] off one of these playbooks. It can go
+[00:14:32] and like do this research and come back
+[00:14:33] to me of, "Hey, like this is the reason
+[00:14:35] why um this happened."
+[00:14:38] And as I jump through into this kind of
+[00:14:42] process of, you know, someone basically
+[00:14:44] create this SOP of how they want to
+[00:14:45] create this blog,
+[00:14:47] uh if I come to the
+[00:14:50] outline section,
+[00:14:52] we enforce human review by adding the
+[00:14:55] ability to assign different users at the
+[00:14:57] end of each section.
+[00:14:58] So,
+[00:15:00] as it as, you know,
+[00:15:01] the agent goes through this whole
+[00:15:02] playbook, it'll come to this section
+[00:15:04] step and decide to I think we have a
+[00:15:07] tool in the background that will then
+[00:15:08] like fire off. And basically, since I'm
+[00:15:11] assigned, I'm the only person that can
+[00:15:13] actually unblock this agent. Other
+[00:15:15] people can still leave like comments on
+[00:15:17] the outputs and artifacts and different
+[00:15:19] feedback, but I'm kind of like this
+[00:15:21] gatekeeper now that um
+[00:15:23] has to review this piece of content and
+[00:15:25] we're trying to we do that to ensure
+[00:15:26] like that governance.
+[00:15:28] And what that actually looks like and
+[00:15:30] how that surface to users, one way is
+[00:15:32] through our inbox. So, we have an we
+[00:15:35] have an inbox within AirOps where every
+[00:15:37] single time human review happens or
+[00:15:39] different opportunities are surfaced,
+[00:15:41] users can actually come in here and see
+[00:15:42] those directly. So, I can, you know,
+[00:15:45] click on one of these um items, it will
+[00:15:48] open up our
+[00:15:50] basically like agent runs on the right
+[00:15:51] side is basically this agent like
+[00:15:52] running through its whole process. I can
+[00:15:54] kind of see its thought traces. On the
+[00:15:56] left side, all the different, you know,
+[00:15:57] outputs and artifacts that are, you
+[00:15:59] know, one defined by me through that
+[00:16:01] playbook. And I can then either, you
+[00:16:04] know, edit this existing document, leave
+[00:16:06] certain comments, and then, you know,
+[00:16:09] kind of kick it off and approve it.
+[00:16:12] The other way that we also surface this
+[00:16:14] governance and human review is through
+[00:16:16] our grid.
+[00:16:18] So, our grid is our way of orchestrating
+[00:16:21] content or orchestrating
+[00:16:23] basically content at scale. So, in this
+[00:16:26] specific example, I'm just kind of
+[00:16:27] showing um like the way that you can
+[00:16:29] actually collaborate with these. So,
+[00:16:30] Augustine is also in this document with
+[00:16:32] me. Um I'm able to edit it, also leave
+[00:16:34] human review. If I close this out, I can
+[00:16:36] see within the grid all these different
+[00:16:39] um
+[00:16:40] you know, kind of outputs that are that
+[00:16:41] are running. We're basically kind of
+[00:16:44] like running uh skills at scale where
+[00:16:46] each one of these rows is a specific job
+[00:16:49] that I want to accomplish and I'm
+[00:16:50] running that playbook. Um and I can also
+[00:16:52] then see like human review at scale and
+[00:16:54] click in these different uh cells to
+[00:16:57] um then leave like my feedback and
+[00:16:59] ensure that, you know,
+[00:17:00] all this content's talking in my right
+[00:17:02] tone of tone of voice.
+[00:17:05] Uh
+[00:17:06] awesome. The second friction point I
+[00:17:09] want to talk about was
+[00:17:11] with agents, um the biggest worry is
+[00:17:15] around consistency, especially when
+[00:17:17] you're coming from this workflow base.
+[00:17:18] So, how you know, how did we tackle
+[00:17:22] going about producing quality outputs?
+[00:17:25] Um how do we, you know, make sure that
+[00:17:26] customers are also seeing that and and,
+[00:17:29] you know, being aligned to that as well.
+[00:17:32] One of um the ways that we visualize
+[00:17:35] this is actually like this this graphic
+[00:17:36] here was um
+[00:17:38] created in in use and reference by our
+[00:17:40] VP of sales, which is like funny enough
+[00:17:42] is actually like one of the best
+[00:17:43] explanations I feel like I've seen seen
+[00:17:45] of harness engineering. Um you know, on
+[00:17:47] the product side we we tried a couple of
+[00:17:48] times, but it's just funny like from,
+[00:17:50] you know, the go-to-market side it was
+[00:17:51] the best way that we've been able to
+[00:17:53] explain this where um you kind of have
+[00:17:54] this car where you then have an engine,
+[00:17:56] the model obviously being, you know,
+[00:17:58] Claude, Opus, or Sonnet, whatever engine
+[00:18:00] that you want to pick for that. And
+[00:18:02] everything else that goes around that,
+[00:18:04] everything else that you build on top of
+[00:18:05] it is super important in terms of
+[00:18:07] creating a super great agent. So, the
+[00:18:10] two that I want to focus on and the one
+[00:18:12] that we focused on the most was around
+[00:18:14] tools and the way that we were
+[00:18:16] orchestrating context.
+[00:18:19] And, you know, the Claude agent SDK and
+[00:18:22] also Claude managed agents API have been
+[00:18:26] super helpful in terms of being able to
+[00:18:28] iterate on this quickly. Um
+[00:18:31] and just making sure that we're like
+[00:18:33] kind of like programmatically setting
+[00:18:34] these different um sub-agents. And yeah,
+[00:18:37] they they've been like super
+[00:18:39] instrumental in terms of us getting to a
+[00:18:41] quality uh output.
+[00:18:44] So, the first one I want to cover is
+[00:18:46] around tools and
+[00:18:48] basically the background on tools are
+[00:18:52] you could give an agent a bunch of
+[00:18:54] primitive tools. So, in this specific
+[00:18:56] example, what we were always trying to
+[00:18:57] accomplish with Claude and our agent was
+[00:19:00] helping um Claude understand what is
+[00:19:03] wrong with a page on my website.
+[00:19:05] We have different tools like access to
+[00:19:08] uh you know, traffic data, citation
+[00:19:11] data,
+[00:19:12] um scrapers so I can find like similar
+[00:19:14] competitor pages and we started off like
+[00:19:17] honestly with a skill of a here's like
+[00:19:18] here's the way of dissecting whether or
+[00:19:19] not a page is losing, what's wrong with
+[00:19:22] a specific page, are like the schemas
+[00:19:24] off, how's it compared to competitor
+[00:19:26] pages and
+[00:19:28] they'll kind of go on like these like
+[00:19:29] safari trips and it's honestly like a
+[00:19:30] bit like token inefficient. So, one
+[00:19:32] thing that we want to focus on is how
+[00:19:33] can we create specialized tools of
+[00:19:36] jobs that Claude does that we know are
+[00:19:39] is going to do like over and over again
+[00:19:41] and how can we just make that a bit more
+[00:19:42] deterministic where you know, Claude can
+[00:19:44] then put a URL and immediately spit out
+[00:19:47] everything about that page as well as
+[00:19:49] different structured, you know, content
+[00:19:51] gaps
+[00:19:53] versus like other similar pages in that
+[00:19:55] in that space as well as what should be
+[00:19:57] my target keywords and my target prompts
+[00:19:59] for it.
+[00:20:01] The second tool that we made in just
+[00:20:03] like a workflow that we saw that was
+[00:20:04] super common with content marketers was
+[00:20:06] our page versus tool which was
+[00:20:08] essentially being able to benchmark my
+[00:20:10] page against, you know, top ranking
+[00:20:12] pages in that space
+[00:20:14] and finding what exactly is behind those
+[00:20:17] pages and how can I, you know,
+[00:20:20] how can I close those gaps? So, this is
+[00:20:22] just like a really simple way of
+[00:20:24] getting context efficiently. It's kind
+[00:20:27] of like a code mode in a way. I don't
+[00:20:28] know that's been, you know, something
+[00:20:29] that's been popular nowadays is being
+[00:20:31] able to be more programmatic in terms of
+[00:20:33] how we're fetching context versus kind
+[00:20:35] of like looping through these different,
+[00:20:37] you know, tool calls. It's like can I
+[00:20:38] actually just like produce code that
+[00:20:39] will fetch exactly what I need
+[00:20:42] in, you know, one loop.
+[00:20:45] The second one is through sub agents.
+[00:20:47] Sub agents have definitely been
+[00:20:49] instrumental and crucial in terms of
+[00:20:51] getting to that quality of output. Um in
+[00:20:55] general, like what we tell users to with
+[00:20:57] playbooks and honestly when you're first
+[00:20:59] creating your agent harness is that you
+[00:21:00] actually just start off with, you know,
+[00:21:02] Claude itself and just have it go
+[00:21:04] through its own tool calls and really
+[00:21:06] not trying to make it too complex in all
+[00:21:08] the context you're trying to, you know,
+[00:21:10] give to it. So, that's that's where we
+[00:21:11] start off with and we were reaching a
+[00:21:14] couple of
+[00:21:16] um
+[00:21:17] kind of like air spots when it came to
+[00:21:18] the quality of the outputs we're
+[00:21:19] getting. So,
+[00:21:22] what we did was decide to add on like
+[00:21:24] over time certain sub-agents. The first
+[00:21:25] one was a compliance check. So, being
+[00:21:28] able to just make sure that we're not
+[00:21:30] like kind of polluting that main context
+[00:21:32] window just because context are honestly
+[00:21:34] is like still a huge problem and will
+[00:21:36] probably continue to be a problem when
+[00:21:37] it comes to like what are, you know, the
+[00:21:39] tokens and text that you're attending
+[00:21:40] to.
+[00:21:41] Um so, being able to spin off the
+[00:21:42] sub-agent that will go through and have
+[00:21:44] everything that needs to know about my
+[00:21:45] brand and whether or not the content
+[00:21:48] that I just produced is following those
+[00:21:49] rules. It'll, you know, come back with a
+[00:21:51] score whether or not it adhered to them,
+[00:21:53] what were the things wrong with it, and
+[00:21:54] then the agent can then take that
+[00:21:55] feedback and then kind of make edits.
+[00:21:58] The second one we did was around
+[00:22:00] writing.
+[00:22:01] Um we first again like tried just using
+[00:22:03] like the regular Claude, you know,
+[00:22:05] harness to actually write the content,
+[00:22:08] but we found that it was better to spin
+[00:22:10] off a sub-agent with its own very
+[00:22:12] focused context window to focus solely
+[00:22:14] on just writing that piece of content.
+[00:22:16] Um so, it's not distracted by any of the
+[00:22:17] research that was created um or any of
+[00:22:20] maybe like old compliance checks um and
+[00:22:22] just being able to like very focused in
+[00:22:23] on that one job.
+[00:22:26] The next one is um a brand kit
+[00:22:28] sub-agent. So, again like brand kit for
+[00:22:30] us is basically just like kind of a
+[00:22:31] knowledge base or context layer of
+[00:22:33] everything you need to know about a
+[00:22:34] brand. And this is something that we
+[00:22:36] kick off actually at the beginning of
+[00:22:38] all of our runs where we have a um brand
+[00:22:41] kit sub-agent that will go and fetch all
+[00:22:44] of the relevant context it needs and
+[00:22:45] then stores it as like an internal
+[00:22:47] artifact. So, then throughout the whole
+[00:22:48] process
+[00:22:50] um our main agent loop can then
+[00:22:51] reference those artifacts versus having
+[00:22:53] to like use tools in our MCP to refetch
+[00:22:55] like that context cuz then what happens
+[00:22:57] is
+[00:22:58] um in different sub-agents you might
+[00:23:00] actually have different brand context
+[00:23:02] that was fetched over time. So, just
+[00:23:03] being able to fetch that up front, store
+[00:23:05] as an artifact, and then just redirect
+[00:23:07] the agent to always be referencing
+[00:23:09] um that same artifact.
+[00:23:12] And then finally, um just still being
+[00:23:14] able to add custom ones. This is more
+[00:23:16] more for us like internal
+[00:23:18] um tool where like some of our like
+[00:23:20] solutions architect who work for our
+[00:23:21] customers can spin off different
+[00:23:23] sub-agents when when needed. Um and just
+[00:23:26] really helps with
+[00:23:27] >> [snorts]
+[00:23:27] >> just maintaining that context. I think
+[00:23:28] that's
+[00:23:29] definitely been the biggest learning is
+[00:23:31] although like context windows do
+[00:23:32] continue to grow, um you know, you have
+[00:23:34] like a million context window with um
+[00:23:36] with Opus 4.7, but just still being
+[00:23:39] really cognizant that just because it
+[00:23:41] is, you know, larger doesn't mean that
+[00:23:43] you should be like using the whole
+[00:23:44] thing. You should still be very
+[00:23:45] efficient of what sorts of contexts are,
+[00:23:47] you know, you're letting the model
+[00:23:48] attend to.
+[00:23:52] Yeah, and in terms of results, what we
+[00:23:54] saw was actually a 8% decrease in like
+[00:23:58] fewer tokens consumptions around at
+[00:23:59] least that specific tool. So, instead of
+[00:24:02] again like that tool spinning off
+[00:24:03] different primitives and going over and
+[00:24:05] over again, you actually just have this
+[00:24:06] one tool call that fetches a page um and
+[00:24:09] then all the results from it.
+[00:24:11] The second one from that also like those
+[00:24:13] specialized tools was also speed. Um
+[00:24:15] beforehand, while it was making like
+[00:24:17] those 20 different tool calls to fetch
+[00:24:18] all the context it needs, you just have
+[00:24:20] this one entry point that spits out
+[00:24:21] everything that you need. Um and then
+[00:24:23] when it comes to the quality side, we
+[00:24:25] had 10 enterprise customers while we
+[00:24:27] were do running this beta actually start
+[00:24:29] publishing uh publishing content in
+[00:24:31] under 2 weeks. So, they're able to
+[00:24:33] self-serve and also, you know, get to a
+[00:24:36] quality of output through these agents,
+[00:24:38] which was something that used to be kind
+[00:24:40] of like a whole handing experience. Um
+[00:24:42] it was also had like a really high um
+[00:24:44] kind of like ceiling.
+[00:24:48] So, yeah, um when it comes to like
+[00:24:51] building these agents and with Claude
+[00:24:54] being able to execute and making it
+[00:24:56] easier to execute on things. Um, it's
+[00:24:58] really easy to think that there are no
+[00:25:00] more problems to solve, but really every
+[00:25:02] single time a problem is solved, just
+[00:25:04] that friction point always keeps moving.
+[00:25:05] So, those are kind of the two that we um
+[00:25:09] were really chasing after and we really
+[00:25:10] want to tackle. And there's a ton more
+[00:25:13] that we also want to continue chasing,
+[00:25:14] but I think just overall it's a great
+[00:25:17] thing to just continue to chase friction
+[00:25:18] because that really is how you create
+[00:25:21] production, you know, agents and make
+[00:25:23] those more accessible to users outside
+[00:25:25] of, you know, more technical spaces. So,
+[00:25:27] just to quickly close out, um the next
+[00:25:30] two kind of friction points that we're
+[00:25:31] looking to battle and excited to show
+[00:25:33] more learnings on are around really
+[00:25:35] self-improvement and feedback loops,
+[00:25:36] which there were awesome talks yesterday
+[00:25:38] around dreaming sequences and, you know,
+[00:25:41] how I I think the most interesting one
+[00:25:42] is actually how do you structure
+[00:25:44] summaries of different traces? Um, what
+[00:25:47] what's the best way of collecting the
+[00:25:49] most relevant memories and also like
+[00:25:50] forgetting is actually a feature, like
+[00:25:53] being able to forget certain types of
+[00:25:54] memories.
+[00:25:56] And the last one is benchmarking content
+[00:25:58] creation agents. Um, I think something
+[00:26:00] really interesting about our space is
+[00:26:01] that it isn't uh law, it isn't coding,
+[00:26:04] it's not something that is really easy
+[00:26:06] to say whether or not it's, you know,
+[00:26:08] something's correct. There is a lot of
+[00:26:09] taste that goes into a piece of content
+[00:26:11] that you create and there's a lot of
+[00:26:13] opinions of how I want certain contexts
+[00:26:15] to be formatted and created. So, what
+[00:26:17] are like the best ways that we are
+[00:26:18] creating benchmarks so that every single
+[00:26:20] time we do change our harness, we add a
+[00:26:22] sub-agent or we decide to add a skill to
+[00:26:24] our harness, how do we know that it's
+[00:26:25] actually improving outputs and not just,
+[00:26:28] you know, kind of vibes that that we're
+[00:26:29] going after.
+[00:26:31] Um,
+[00:26:32] but yeah, I'm around all day, would love
+[00:26:33] to, you know, chat with you guys and
+[00:26:34] hear about what you guys are building,
+[00:26:35] but yeah, I hope this was was helpful.
+[00:26:37] Thank you.
+[00:26:40] >> [applause]
+[00:26:41] [music]

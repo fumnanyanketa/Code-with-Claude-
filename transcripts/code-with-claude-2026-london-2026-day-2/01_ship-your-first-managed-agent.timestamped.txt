@@ -1,0 +1,1112 @@
+Title: Ship your first Managed Agent
+Video: https://www.youtube.com/watch?v=19HDQ9HppOA
+Caption: auto (en) via web_safari
+================================================================================
+
+[00:00:15] [music]
+[00:00:19] >> All right. Hello everyone. It's great to
+[00:00:21] see you all here today for our session
+[00:00:23] on shipping your first manage agent.
+[00:00:25] Let's go ahead and get started. My name
+[00:00:27] is Isabella He. I'm a member of
+[00:00:29] technical staff at Anthropic on the
+[00:00:31] Applied AI team.
+[00:00:32] The Applied AI team at Anthropic sits at
+[00:00:34] the intersection of products, research,
+[00:00:36] and our customers, which means that I
+[00:00:38] get to contribute internally to products
+[00:00:39] at Anthropic like Claude code and our
+[00:00:41] Claude harnesses, as well as work
+[00:00:43] externally with our customers that are
+[00:00:45] building on top of Claude and on top of
+[00:00:47] our harnesses.
+[00:00:48] So, my goal today is to get you all
+[00:00:50] hands-on with actually building on top
+[00:00:52] of manage agents, understanding how the
+[00:00:54] harness works under the hood, and
+[00:00:56] getting you ready to actually ship your
+[00:00:57] first incident response management.
+[00:01:00] So, the quick overview of today's
+[00:01:01] agenda. We're going to cover first a
+[00:01:03] quick refresher of Claude manage agents.
+[00:01:06] I want to talk you through a little bit
+[00:01:07] about how this harness works under the
+[00:01:08] hood and what makes it so special. Our
+[00:01:11] team put a lot of thought into the
+[00:01:12] architectural design of Claude manage
+[00:01:14] agents to make sure that it runs ready
+[00:01:16] and reliably for production-ready
+[00:01:18] agents. So, I want to talk you through a
+[00:01:19] little bit of how that works so that
+[00:01:21] then when we transition to the second
+[00:01:23] portion here, which is the hands-on
+[00:01:25] workshop, you'll actually understand
+[00:01:27] what each of the primitives you're
+[00:01:28] building actually mean for your agents
+[00:01:30] under the hood.
+[00:01:32] So, for the majority of today's session,
+[00:01:33] I want you all to actually have your
+[00:01:35] laptops open, building alongside me,
+[00:01:37] actually working inside of a repository,
+[00:01:39] and getting you ready to actually spin
+[00:01:41] up a working incident response agent.
+[00:01:44] Lastly, we'll talk a little bit about
+[00:01:45] beyond the basics. Today's session is
+[00:01:47] the first session of a couple of other
+[00:01:49] ones that will build on top of this on
+[00:01:50] Claude manage agents.
+[00:01:52] Specifically, right after this one, I
+[00:01:53] think there's another session on
+[00:01:54] dreaming, which is one of my favorite
+[00:01:56] new features with Claude manage agents
+[00:01:58] for self-improving agents and memory
+[00:02:00] built into the harness. So, encourage
+[00:02:02] everyone to dive in a little bit deeper
+[00:02:04] into what else is in the box after we
+[00:02:06] set you all up for success today with a
+[00:02:08] quick introduction.
+[00:02:10] So, let's first touch a little bit about
+[00:02:11] how we got here with Claude manage
+[00:02:13] agents.
+[00:02:14] When we first released the very first
+[00:02:16] Claude back in 2023, we released a
+[00:02:19] messages API alongside access to Claude.
+[00:02:22] This provided raw model access to all
+[00:02:24] Claude models. This became the very
+[00:02:27] first way that people could
+[00:02:28] programmatically build on top of Claude
+[00:02:30] and essentially gave a way for people to
+[00:02:32] access tokens in and tokens out via our
+[00:02:35] Claude models.
+[00:02:36] This also meant that for everyone
+[00:02:38] building on top of Claude models, they
+[00:02:40] had to implement all the various
+[00:02:41] primitives themselves. Things like
+[00:02:43] context management, the actual agent
+[00:02:45] loop, compaction, etc. All the
+[00:02:47] primitives that come alongside making
+[00:02:49] the agent work.
+[00:02:50] When models were less intelligent back
+[00:02:52] in the early days of let's say 2023,
+[00:02:55] some of these primitives were much
+[00:02:56] simpler because agents could simply do
+[00:02:57] less. But, as we evolved into now with
+[00:03:00] higher model intelligence and as agents
+[00:03:02] are able to take on more complex tasks
+[00:03:04] and actually take actions within
+[00:03:06] environments and come to actually do
+[00:03:08] entire tasks for humans,
+[00:03:10] the primitives that come alongside
+[00:03:12] context management and managing an
+[00:03:14] agent's ability to execute API calls and
+[00:03:16] tool calls becomes much more complex.
+[00:03:19] So, that's when we moved to the agent
+[00:03:20] SDK, which became a harness that allows
+[00:03:23] you to programmatically call Claude
+[00:03:25] code, one of our agents at Anthropic.
+[00:03:28] So, Claude code is something that an
+[00:03:30] agent has access to a computer and takes
+[00:03:32] actions within file system. So, the
+[00:03:34] agent SDK became a way for you to make
+[00:03:36] Claude much more powerful by leveraging
+[00:03:38] the power of Claude code within a
+[00:03:40] harness.
+[00:03:41] The main thing here though is that with
+[00:03:43] the agent SDK,
+[00:03:45] developers still had to manage hosting
+[00:03:46] and scaling on their own and making sure
+[00:03:49] that the agent SDK would be safe to run
+[00:03:50] within their containers.
+[00:03:53] That's only then evolved into Claude
+[00:03:54] managed agents, which is the first
+[00:03:57] harness to be able to handle scaling and
+[00:03:59] production ready components for you by
+[00:04:01] Anthropic,
+[00:04:02] providing things like a purpose-built
+[00:04:04] harness, sandboxing, observability, tool
+[00:04:06] runtime, all within a managed
+[00:04:08] infrastructure system. This means that
+[00:04:10] developers can focus on task and agent
+[00:04:12] configuration, custom tool logic, the
+[00:04:15] things that actually matter for bringing
+[00:04:17] domain expertise and customizability to
+[00:04:19] your agents, where you're handing off
+[00:04:21] the rest of all the primitives and core
+[00:04:24] compute and primitives of essentially
+[00:04:26] managing the basics of agent running to
+[00:04:28] Anthropic.
+[00:04:30] So, that brings me to managed agents as
+[00:04:33] the fastest way to build production
+[00:04:35] ready agents on Claude.
+[00:04:36] We've seen people build 10 to 15 times
+[00:04:38] faster to production with Claude managed
+[00:04:40] agents by leveraging our purpose-built
+[00:04:43] harness.
+[00:04:44] Part of the reason why we built Claude
+[00:04:45] managed agents is because is because
+[00:04:47] harnesses should evolve alongside your
+[00:04:49] agents.
+[00:04:50] For example, back when we were building
+[00:04:52] ourselves on top of models like Sonnet
+[00:04:54] 4.5, we noticed that Sonnet 4.5 emitted
+[00:04:57] a particular behavior called context
+[00:04:59] anxiety. This meant that with Sonnet
+[00:05:01] 4.5, Claude started wrapping up tasks
+[00:05:03] early even when it still had room to
+[00:05:05] spare in its context window.
+[00:05:07] To manage that in our harness, we then
+[00:05:09] added some mitigations to combat against
+[00:05:12] this early stopping behavior.
+[00:05:14] But, when Opus 4.5 then came out, we
+[00:05:16] actually saw this behavior go away,
+[00:05:18] making all that work we had done inside
+[00:05:20] of the harness essentially obsolete
+[00:05:21] because Claude had evolved beyond that
+[00:05:23] behavior that we had built into the
+[00:05:25] harness to manage.
+[00:05:26] So, the takeaway there is that it's a
+[00:05:28] lot of work to maintain harnesses and
+[00:05:30] make sure that they actually evolve
+[00:05:31] alongside your agents, which is why with
+[00:05:33] Claude managed agents, we want to make
+[00:05:35] it really easy for Claude and Anthropic
+[00:05:37] to handle all the complexities that come
+[00:05:39] with compaction, caching, things like
+[00:05:41] context anxiety, all these various
+[00:05:44] primitives that come with actually
+[00:05:45] making agent production ready and
+[00:05:46] getting the most out of Claude. So
+[00:05:48] again, you can focus on the tasks,
+[00:05:50] tools, and things that actually matter
+[00:05:51] for building agents on Claude.
+[00:05:55] So three primary resources go into
+[00:05:57] building on Claude managed agents.
+[00:06:00] First is the agent's endpoint, which is
+[00:06:02] the persona and capabilities. This is
+[00:06:04] the core system prompt that powers your
+[00:06:06] agent. Essentially here, you're defining
+[00:06:08] the model, the MCP servers, the skills,
+[00:06:11] the various components that your agent
+[00:06:12] can actually leverage when it's able to
+[00:06:14] run in that agent loop.
+[00:06:16] The next is the environments.
+[00:06:18] You can think of this as the hands of
+[00:06:20] the agent, where the previous one is the
+[00:06:22] brain of the agent where the agent is
+[00:06:23] thinking through what to execute, and
+[00:06:25] then it's using an environment to
+[00:06:27] actually have a space and a container to
+[00:06:29] actually take action on your behalf.
+[00:06:32] Sessions are next the way to tie
+[00:06:34] together agents and environments.
+[00:06:36] A single session has a spun up on an
+[00:06:39] agent instance within an environment. So
+[00:06:41] you can connect the two together and
+[00:06:43] actually stream events back to your user
+[00:06:45] and start to take action on behalf of
+[00:06:47] your humans as part of a Claude powered
+[00:06:49] agent.
+[00:06:51] A key thing here, as I alluded to
+[00:06:53] briefly before, Claude managed agent has
+[00:06:56] the agent loop run server side.
+[00:06:58] This means that a lot of the
+[00:06:59] complexities that come with managing
+[00:07:01] hosting and scaling are abstracted away.
+[00:07:03] And when you close your laptop or you
+[00:07:05] hit hard refresh on your agent that
+[00:07:07] you're building on Claude managed
+[00:07:08] agents, everything is maintained and you
+[00:07:10] don't have to worry about durability,
+[00:07:12] reliability, all these various aspects
+[00:07:14] that usually come to bite you when
+[00:07:16] you're trying to turn your agent from a
+[00:07:17] prototype into production.
+[00:07:22] And lastly here, before we dive into the
+[00:07:24] hands-on portion, is I want to talk you
+[00:07:26] through a key design decision that went
+[00:07:28] into Claude managed agents.
+[00:07:32] Previously, with a lot of agent
+[00:07:33] harnesses, we saw the agent loop coupled
+[00:07:35] tightly with tool execution.
+[00:07:38] This design pattern made sense and still
+[00:07:39] makes sense for some agents because you
+[00:07:41] want to give the agent powerful
+[00:07:43] abilities to actually take action within
+[00:07:45] the environment. For instance, with
+[00:07:46] Cloud Code, we want the agent to be able
+[00:07:48] to access various files on your
+[00:07:50] computer, take action within a file
+[00:07:51] system, and therefore it makes sense for
+[00:07:53] the agent to have access to all those
+[00:07:55] tools spun up on every container.
+[00:07:58] But, we also realized there are some
+[00:07:59] constraints for this, especially with
+[00:08:01] some agents where you essentially want
+[00:08:03] to be able to decouple the hands from
+[00:08:06] the brains of the agents.
+[00:08:08] For instance,
+[00:08:09] credentials and uh
+[00:08:11] credentials and security became a huge
+[00:08:13] concern.
+[00:08:14] With the ability to have the agent
+[00:08:16] access your file system, you can
+[00:08:18] actually add very distinct sandboxing by
+[00:08:20] decoupling these two components, where
+[00:08:22] the agent is no longer able to access
+[00:08:24] the actual credentials without
+[00:08:25] encryption by decoupling the hands from
+[00:08:27] the sandbox of the agent.
+[00:08:30] The other aspect here is actually you
+[00:08:32] can see huge benefits by doing these
+[00:08:34] decoupling on things like time to first
+[00:08:36] token and latency.
+[00:08:38] Previously, with the agent loop into
+[00:08:40] execution in the same box, you had to
+[00:08:42] spin up containers for every single
+[00:08:43] session that you're spinning up in the
+[00:08:44] agent, which contributed to additional
+[00:08:47] latency from a time to first time to
+[00:08:48] first token perspective.
+[00:08:50] But, with this now decoupled, our teams
+[00:08:52] actually saw reductions in time to first
+[00:08:53] token along the lines of over 90%
+[00:08:57] reduction in TTFT for our P95 metrics on
+[00:09:01] latency.
+[00:09:02] So, here you can start to see the power
+[00:09:03] of this design decision coming through
+[00:09:05] from the perspective of safety,
+[00:09:07] reliability, latency, and everything
+[00:09:10] else that you care about when it comes
+[00:09:11] to building production-ready agents.
+[00:09:15] All right, so now it's time for the
+[00:09:17] exciting part of today's session, which
+[00:09:19] is where I want you all to open up your
+[00:09:20] laptops and go to this URL here to
+[00:09:23] actually clone a repository, and let's
+[00:09:26] start to actually feel the magic of
+[00:09:27] everything that I just talked through.
+[00:09:29] So, I'm going to give everyone a second
+[00:09:31] to just go over to that URL there
+[00:09:33] and just spin up the repository that we
+[00:09:35] have ready for you.
+[00:09:37] All right, so here are some additional
+[00:09:39] commands that I want you all to run to
+[00:09:40] make sure this is all set up on your
+[00:09:42] computers.
+[00:09:43] So, the first step many of you might
+[00:09:44] have done already, but just take that
+[00:09:46] repository, hit the URL, get clone it,
+[00:09:50] and then I want you to CD into the
+[00:09:52] specific repository for the session,
+[00:09:54] which is ship your first manage agent.
+[00:09:56] And then, if you're on Mac, you'll see
+[00:09:57] those two commands on the side, the
+[00:09:59] Python and the source. Um, there's a
+[00:10:01] command there for Windows as well.
+[00:10:03] And you'll just do the rest there where
+[00:10:04] you want to install the requirements,
+[00:10:06] copy over the environment key into your
+[00:10:08] .env file. Um, here you'll put in the
+[00:10:10] Anthropic API key that hopefully all of
+[00:10:12] you also received from the QR code for
+[00:10:14] free credits earlier. And lastly, we'll
+[00:10:16] just run the app.
+[00:10:17] All right, let's go ahead and dive in,
+[00:10:19] but as I mentioned before, let me just
+[00:10:21] show everyone where these instructions
+[00:10:23] are. If you go into the repository in
+[00:10:25] the link and then go to ship your first
+[00:10:27] manage agents, you scroll down on the
+[00:10:28] read me, you'll see all the setup
+[00:10:30] instructions here. So, feel free to do
+[00:10:32] this, um, as we go along or even in your
+[00:10:34] own time later today and continue
+[00:10:36] playing around with it, but as I
+[00:10:37] mentioned before, everything will be
+[00:10:39] also shown on the screen to follow along
+[00:10:41] with. So, do not worry if you did not
+[00:10:42] have time to fully get it set up on your
+[00:10:44] laptop.
+[00:10:46] Without further ado, let's go ahead and
+[00:10:47] dive in. So, once you run streamlit run
+[00:10:50] app.py, you should be able to see a URL
+[00:10:53] that looks like this and a page that
+[00:10:54] looks like this.
+[00:10:56] What we're doing here is we're going to
+[00:10:58] be simulating an agent, um, interaction
+[00:11:00] here where we have an incident that's
+[00:11:02] going to come up. A lot of you who might
+[00:11:04] be software engineers in the room will
+[00:11:06] be intimately familiar with the pain
+[00:11:08] that comes alongside incident response.
+[00:11:10] If you are software engineer, you might
+[00:11:12] be woken up at, let's say, 3:00 a.m. in
+[00:11:14] the morning, 2:00 a.m. in the morning
+[00:11:15] when you're out around on on vacation as
+[00:11:17] you're on call, and this is usually a
+[00:11:19] very painful portion of a software
+[00:11:21] engineer's life, uh, because when you're
+[00:11:23] on call, it means that if a server goes
+[00:11:24] down or a service goes down, you have to
+[00:11:26] be immediately the one there to respond
+[00:11:28] and tackle the incident. Usually for a
+[00:11:30] human, this means diving into metrics
+[00:11:32] and logs and deployments. You can
+[00:11:35] actually investigate what's going on.
+[00:11:37] And so, what we're going to do is we're
+[00:11:39] going to now have an agent run on Claude
+[00:11:41] manage agents to do all this for us. So,
+[00:11:43] that when we get woken up by 3:00 a.m.,
+[00:11:46] we can hand it off to an agent, or maybe
+[00:11:47] we don't even get woken up at all if
+[00:11:48] Claude is able to do everything for us.
+[00:11:51] Okay. So, let's now go ahead and dive
+[00:11:53] into the code here.
+[00:11:55] What we're going to open up here is we
+[00:11:57] have the agent.py file on the left and
+[00:12:00] the agent complete on the right. If you
+[00:12:02] want to challenge yourself, you can of
+[00:12:03] course try to implement everything
+[00:12:05] yourself here or with Claude. Um but,
+[00:12:07] what we're going to do just for
+[00:12:07] simplicity's sake is just copy over
+[00:12:09] various elements from the completed file
+[00:12:11] onto the incomplete file one by one. So,
+[00:12:14] you can see how these primitives compose
+[00:12:15] our agent one piece at a time.
+[00:12:18] So, let's go ahead and start off with
+[00:12:20] this very first part, which is the
+[00:12:21] agent.
+[00:12:23] We mentioned before that the agent is
+[00:12:24] the one that defines the persona and the
+[00:12:26] capabilities of the agent here. So,
+[00:12:28] that's model, the system prompts, and
+[00:12:30] the tools in our case for our agent
+[00:12:33] here.
+[00:12:34] So, let me go ahead and copy over what
+[00:12:37] we see there on the screen. And you can
+[00:12:39] see here that we're defining the SRE
+[00:12:41] agent. We're going to use Claude Opus
+[00:12:44] 4.7 here. And I've preconfigured a
+[00:12:47] system prompt and tools for the agent.
+[00:12:50] We can actually take a quick look into
+[00:12:51] what that system prompt and tool looks
+[00:12:53] like here.
+[00:12:54] For the system prompt, you can see that
+[00:12:55] it's actually extremely simple for the
+[00:12:57] agent that we're defining today. You can
+[00:12:59] of course add more complexity and
+[00:13:00] constraints here, but we actually see a
+[00:13:02] very simple prompt working for our agent
+[00:13:04] that we're building today. We're just
+[00:13:06] telling it that it's an SRE agent. It's
+[00:13:08] responsible for coming in and debugging
+[00:13:09] incidents, and it has access to various
+[00:13:12] tools like metrics, recent deployments,
+[00:13:14] get diff. These are tools that you would
+[00:13:16] want as a developer if you're actually
+[00:13:18] managing an incident response as well,
+[00:13:20] like the ability to actually fetch logs
+[00:13:22] so you can see exactly what's going
+[00:13:23] wrong.
+[00:13:24] So, we're going to give those same tools
+[00:13:25] and the same instructions over to our
+[00:13:27] agent.
+[00:13:29] So now that we've configured this on the
+[00:13:30] screen and feel free for those of you
+[00:13:32] who are able to spin it up on your own
+[00:13:33] laptops to just follow along with
+[00:13:35] exactly what I'm doing, which is copying
+[00:13:37] over this portion from the right onto
+[00:13:39] the left here.
+[00:13:42] And then when we flip back over to the
+[00:13:43] screen, what we'll see is this wasn't
+[00:13:45] there until I just added that there, but
+[00:13:47] we can now actually have a unique
+[00:13:49] identifier attached to the agent that
+[00:13:51] we're building.
+[00:13:54] Okay, so that's step one. Now let's go
+[00:13:56] ahead and move on to step two,
+[00:13:59] which is the environment where the agent
+[00:14:01] is going to actually do work in.
+[00:14:04] All of you here were very lucky for
+[00:14:05] those of you who were able to come
+[00:14:06] yesterday as well to code with Cloud
+[00:14:08] London. We actually just released
+[00:14:10] yesterday the ability to bring your own
+[00:14:12] containers and your own compute to Cloud
+[00:14:13] Managed Agents, which means that you can
+[00:14:15] actually execute the agent for the tools
+[00:14:17] and the actual ability for the agent's
+[00:14:19] actions to work within your own
+[00:14:20] infrastructure and not just Entropic's
+[00:14:22] managed infrastructure. So that's an
+[00:14:24] exciting update that just came to Code
+[00:14:26] with Cloud London. Um before today's
+[00:14:28] purposes, you can actually see if we
+[00:14:29] copy over this environment configuration
+[00:14:32] here.
+[00:14:33] We're defining our SRE agent to work
+[00:14:35] within the Entropic cloud and here we're
+[00:14:38] just giving it unrestricted access from
+[00:14:40] a networking perspective.
+[00:14:41] We've made Cloud Managed Agents very
+[00:14:43] composable and very customizable. So
+[00:14:46] this networking list here is actually an
+[00:14:48] allowed list. If you want your agent to
+[00:14:50] only be able to access specific sites
+[00:14:52] and URLs, you can restrict this down as
+[00:14:54] much as you would like.
+[00:14:55] We also released um Cloud MCP tunnels,
+[00:14:59] which actually also gives you the
+[00:15:00] ability to run MCP servers within a
+[00:15:02] private environment instead of on the
+[00:15:04] public network as well. So again, just
+[00:15:06] offering various components to help you
+[00:15:08] make sure that your agents are as
+[00:15:10] production ready and as secure as
+[00:15:11] possible.
+[00:15:13] So now that we've defined this
+[00:15:14] environment here, let's flip back over
+[00:15:16] and we just saw that environment piece
+[00:15:18] come into our agent as well. So here we
+[00:15:21] have unique identifier for an agent and
+[00:15:22] an environment.
+[00:15:24] And that will next help us as we go
+[00:15:26] along with setting up the rest of our
+[00:15:28] agents as we start to get into session
+[00:15:29] definitions here.
+[00:15:33] The next thing that we have to do is
+[00:15:34] actually give our agent the ability to
+[00:15:37] look at logs.
+[00:15:39] With Cloud Code, that is one of the
+[00:15:41] first times where we realized the power
+[00:15:42] of giving the agent access to files and
+[00:15:44] a file system. Here with Cloud Managed
+[00:15:47] Agents, we're leveraging essentially the
+[00:15:48] files API by uploading the metrics and
+[00:15:50] logs to the agent. So the agent can
+[00:15:52] start to run code and process through
+[00:15:53] those files.
+[00:15:55] So here we've attached the log here as a
+[00:15:58] file for our agent. So we just also saw
+[00:16:00] that populate and come through. Again
+[00:16:02] here, the key takeaway is as much data
+[00:16:05] as you're able to give the agent um as
+[00:16:07] possible is what makes it so powerful.
+[00:16:09] Context engineering is a huge portion
+[00:16:11] that comes to actually making an agent
+[00:16:13] powerful. And this is where we see the
+[00:16:14] developers spending the majority of
+[00:16:16] their time working on top of primitives
+[00:16:18] like Cloud Managed Agents is managing
+[00:16:20] context and managing what types of files
+[00:16:22] are uploaded, how the agent processes
+[00:16:24] those files. These are components that
+[00:16:26] you compose yourself and are very
+[00:16:27] customizable on top of Cloud Managed
+[00:16:29] Agents to make it work as far and as
+[00:16:31] wide as you want it to.
+[00:16:33] Okay. So now let's go ahead and start to
+[00:16:35] define the session that we have here.
+[00:16:38] The session is going to oops, the
+[00:16:40] session is going to bind the agent and
+[00:16:42] the environment and also mount the log
+[00:16:45] here. So you can see we're passing in
+[00:16:46] the agent ID, the environment ID, and
+[00:16:49] the resources that we're giving to the
+[00:16:51] agent.
+[00:16:52] And this is going to give it the ability
+[00:16:54] to start to actually act and interact
+[00:16:56] with me as a user.
+[00:16:59] Let's go ahead and just complete the
+[00:17:01] rest of this here so that we can
+[00:17:02] actually start to run our agent.
+[00:17:05] What we want to do is now also give the
+[00:17:07] ability for the agent to come in and
+[00:17:09] stream responses to me as we go along.
+[00:17:15] There we go.
+[00:17:19] Okay, and the key portion here is that
+[00:17:22] when our Cloud Managed Agents runs
+[00:17:24] within a single session, instead of
+[00:17:25] responding in tokens in and tokens out,
+[00:17:27] it actually works in units of events.
+[00:17:30] Events here are things like user
+[00:17:31] messages or agent tool calls, agent
+[00:17:33] responses, so that every event can be
+[00:17:35] logged from an observability
+[00:17:37] perspective, as well as streamed back to
+[00:17:38] the user for the user to see the agent
+[00:17:40] responding as it calls tools and as it
+[00:17:42] starts to populate responses. This is
+[00:17:44] crucial for both a user experience
+[00:17:46] perspective, so user starts to see
+[00:17:48] things as they come through and not just
+[00:17:50] when Claude finishes an entire task, and
+[00:17:52] also from an observability perspective,
+[00:17:55] and Claude Managed Agents actually has a
+[00:17:56] very neat console built in for looking
+[00:17:59] at everything the agent is doing, and a
+[00:18:00] lot of observability features built into
+[00:18:02] Claude Managed Agents.
+[00:18:05] Okay, the last step here of just being
+[00:18:07] able to put our agent together, you can
+[00:18:09] start to see that our agent is actually
+[00:18:11] starting to come together. We can start
+[00:18:13] to create sessions and we can start to
+[00:18:15] do things. Um, what we're actually going
+[00:18:17] to see here though is that if I send
+[00:18:19] something like hi to the agent, it can
+[00:18:21] respond, um, but it doesn't actually
+[00:18:23] have the ability to be able to call the
+[00:18:24] various tools that we want it to yet,
+[00:18:26] because we haven't connected that
+[00:18:28] locally to what we want the agent to do
+[00:18:30] when it calls tools like get metrics.
+[00:18:33] So, the agent is ready. The agent is
+[00:18:34] actually defined on the server side
+[00:18:35] already. The missing piece here is just
+[00:18:38] to finally give it our local tools
+[00:18:40] so the agent can start to take action
+[00:18:42] here on my computer or my
+[00:18:43] infrastructure.
+[00:18:47] Okay, so now that we have that copied
+[00:18:49] over, the agent is going to be able to
+[00:18:50] start to call get metrics, get recent
+[00:18:53] deploys, get diffs, so it can truly
+[00:18:55] start to take action in terms of helping
+[00:18:57] us debug this incident.
+[00:19:00] The last thing I'm going to do here is
+[00:19:01] also just to make sure I give my agent
+[00:19:03] the ability to delete sessions.
+[00:19:08] So, that's when I come in, I can start
+[00:19:10] to hit this delete button and delete
+[00:19:12] sessions as I compose my agent. And this
+[00:19:15] is also crucial from a security
+[00:19:17] perspective. If you want to make sure
+[00:19:19] that, you know, nothing is being
+[00:19:21] retained for sessions that you don't
+[00:19:23] want on the cloud or on your
+[00:19:24] infrastructure, you can actually just
+[00:19:26] come in and proactively manage how
+[00:19:28] sessions are deleted. And once they're
+[00:19:30] deleted, they will be also removed from
+[00:19:31] every single log aspect here, so that
+[00:19:34] you can truly make sure that whatever
+[00:19:36] data you want managed is managed
+[00:19:37] actively and proactively via Cloud
+[00:19:40] Manager agents.
+[00:19:42] Okay.
+[00:19:43] So, with that all set up, let's go ahead
+[00:19:45] and give our agent a test run here.
+[00:19:49] I'm going to click the new session here,
+[00:19:51] and I'm going to just go ahead and ask
+[00:19:53] the agent to debug my incident for me.
+[00:20:03] You can see here that because we gave
+[00:20:05] the agent access to tools like
+[00:20:07] sandboxing and bash, and get recent
+[00:20:10] deploys,
+[00:20:11] the agent is starting to really take
+[00:20:13] powerful actions on my behalf here. It's
+[00:20:15] come in, it's run the sandbox command.
+[00:20:17] We can open this up and see what this
+[00:20:19] looks like.
+[00:20:20] Um we can see that it's actually coming
+[00:20:21] in and looking at what the logs were
+[00:20:23] added to.
+[00:20:25] It's then come in and called this tool
+[00:20:27] called get recent deploys,
+[00:20:29] which is coming in and returning results
+[00:20:31] like what the recent deployments look
+[00:20:32] like, the metrics. We can see this from
+[00:20:35] a user perspective if you click on the
+[00:20:37] tabs here, but this is essentially the
+[00:20:39] data that's actually being passed into
+[00:20:41] the agent via these local tools that we
+[00:20:43] define.
+[00:20:46] And again, we can start to see the magic
+[00:20:47] of that streaming that we implemented
+[00:20:49] come through as well, because we saw
+[00:20:51] these tools come in as they were being
+[00:20:53] called from the agent. We saw the user
+[00:20:55] prompt come in as soon as I prompted it
+[00:20:57] to the agent, and the agent is actually
+[00:20:59] streaming responses to me as it comes
+[00:21:01] through with more token response and
+[00:21:03] outputs, as well as as it calls more
+[00:21:05] tool as it goes along as well.
+[00:21:11] Okay, so what we're going to start to
+[00:21:12] see is the agent being able to help us
+[00:21:14] actually debug what's going on here,
+[00:21:16] which we can see here that the incident
+[00:21:17] is that there's something going wrong
+[00:21:19] with our P99 latency that seems to be 10
+[00:21:22] times above the baseline.
+[00:21:24] The agent is coming in and debugging
+[00:21:25] everything for us. Looks like it's
+[00:21:27] taking another second there.
+[00:21:29] So some of the major design decisions
+[00:21:31] that come in here when you're designing
+[00:21:32] a real site reliability site incident
+[00:21:35] response agent for your systems is to
+[00:21:38] think deeply about the various
+[00:21:39] components that go in and the various
+[00:21:41] MCP servers and skills that you want to
+[00:21:43] give your agent. Here we've defined, of
+[00:21:45] course, a very, very simple agent, but
+[00:21:47] for lots of the SRE agents that we
+[00:21:49] build, we actually also think about
+[00:21:50] things like how can we give the agent a
+[00:21:52] skill to actually execute and run
+[00:21:54] runbooks.
+[00:21:55] Runbooks are things where as teams debug
+[00:21:58] incidents, they note down and document
+[00:22:00] how they debug that incident so that
+[00:22:01] they can do it again for a future
+[00:22:03] session or future incident. You want to
+[00:22:05] give the agent the same access to the
+[00:22:07] materials that you would have as a human
+[00:22:09] developer. So something like a runbook
+[00:22:11] skill where the agent is actually able
+[00:22:12] to look at example runbooks or fetch
+[00:22:15] other postmortems from other incident
+[00:22:17] responses. That is something that is
+[00:22:19] very powerful for the agent to be able
+[00:22:21] to understand how to work within your
+[00:22:23] systems and debug incidents
+[00:22:25] successfully.
+[00:22:29] Okay, let's go ahead and take a look at
+[00:22:31] the agent here.
+[00:22:34] Let's see.
+[00:22:38] I'm going to go ahead and just start a
+[00:22:39] new session here to make sure everything
+[00:22:41] is working well.
+[00:22:44] All right, let's say debug
+[00:22:46] my incident for me.
+[00:22:49] Okay, hopefully this one works.
+[00:22:51] Is anyone able to get it working on
+[00:22:52] their laptops better than I have on the
+[00:22:54] screen? Okay, we got some success in the
+[00:22:55] room, so hopefully this will work as it
+[00:22:57] goes along.
+[00:23:08] >> Okay, looks like we are streaming. We're
+[00:23:09] getting everything in.
+[00:23:12] Let the agent go.
+[00:23:14] Okay, agent is checking logs, debugging
+[00:23:16] everything.
+[00:23:19] So, if we just also look through some of
+[00:23:20] the data here as the agent is working,
+[00:23:23] the data that's actually being passed in
+[00:23:25] for our agent here is all local just for
+[00:23:28] our sake of our purposes for our demo
+[00:23:29] now workshop that we're running today.
+[00:23:31] But, with the ability for you to run
+[00:23:33] your agents within a container and
+[00:23:35] infrastructure, you can start to see how
+[00:23:37] things like your get metrics tool that
+[00:23:38] are currently pulling from JSON can be
+[00:23:40] easily moved to something like DataDog
+[00:23:42] or other production systems for your
+[00:23:44] infrastructure from that perspective.
+[00:23:46] So, everything that you see here that is
+[00:23:48] currently local can be something that's
+[00:23:49] easily movable into infrastructure as
+[00:23:51] well via Cloud Manager agents.
+[00:24:04] Okay. Let's all cross our fingers and
+[00:24:06] see if this one works.
+[00:24:17] Oh, there we go. Success.
+[00:24:19] Okay, so the agent has come in. You can
+[00:24:21] see here that if we scroll through all
+[00:24:23] the tool calls, everything is persisted
+[00:24:25] in the cloud from a logs perspective.
+[00:24:27] All of this will also be logged in the
+[00:24:28] observability console.
+[00:24:30] And then the agent has come back to us
+[00:24:32] with the incident response here. It says
+[00:24:34] that this seems to be caused by a
+[00:24:36] database pool exhaustion. Seems like a
+[00:24:39] commit that someone added here from
+[00:24:41] Alice to refactor the order summary
+[00:24:44] builder introduced a query that then
+[00:24:47] caused the pool resources to be
+[00:24:49] exhausted. So, it's looking at and
+[00:24:50] giving us the exact everything that went
+[00:24:52] wrong from all the metrics they were
+[00:24:54] able to call. It ruled out various other
+[00:24:56] causes, and then it's also giving us
+[00:24:58] recommended actions to take.
+[00:25:00] Another key component here in a lot of
+[00:25:01] other incident response management
+[00:25:03] agents that we built is actually giving
+[00:25:05] the agent to actually go ahead and fix
+[00:25:07] everything that it's been able to find.
+[00:25:10] By giving the agent then access to
+[00:25:11] something like Cloud Code for instance,
+[00:25:13] you can actually imagine this agent can
+[00:25:14] then go into your code base, suggest
+[00:25:16] fixes, put up a PR, and essentially do
+[00:25:19] everything that it needs to do to help
+[00:25:21] you go from initial incident all the way
+[00:25:23] to fixing the root cause. So again here
+[00:25:26] for demo purposes, we're stopping at
+[00:25:27] just the agent giving us the recommended
+[00:25:29] actions, but I want you all to imagine
+[00:25:31] the possibilities of where this can go
+[00:25:33] if we give our agent more tools, more
+[00:25:35] ability to take actions, access to your
+[00:25:37] code base, ability to put up PRs,
+[00:25:39] ability to fix incidents, so that you as
+[00:25:42] a human developer can just become the
+[00:25:43] oversight and watch over the agents as
+[00:25:46] they take action, and you no longer have
+[00:25:47] to go through and do manual steps like
+[00:25:50] actually following the agent's
+[00:25:51] instructions here to fix the root cause
+[00:25:53] of the incident.
+[00:25:55] So another key component of what we've
+[00:25:57] built here on Cloud Manage Agents is
+[00:25:59] session persistence. So when I come in
+[00:26:02] and hit hard refresh on the screen,
+[00:26:04] we're seeing that the agent is listing
+[00:26:05] the sessions and everything is retained
+[00:26:08] from all the sessions that we just ran.
+[00:26:11] We also have the previous sessions that
+[00:26:12] we ran all retained in the cloud. Looks
+[00:26:14] like this one actually came back to us
+[00:26:15] as well.
+[00:26:17] Um and the previous sessions where we
+[00:26:18] just said hi, everything is retained in
+[00:26:20] the cloud, and we didn't have to deal
+[00:26:21] with things like database and deployment
+[00:26:23] of our agent and moving it from our
+[00:26:25] laptops to production. Everything is
+[00:26:27] already maintained server side.
+[00:26:30] We can also see the ability to delete
+[00:26:31] sessions come in. So I've run that
+[00:26:33] delete, and now we have that um running
+[00:26:36] the session here. Now we have that
+[00:26:38] removed from our list here.
+[00:26:41] Another thing that I want you to take a
+[00:26:42] note of, which we'll talk through a
+[00:26:43] little bit in just a second, is the
+[00:26:45] states of the session. Here we can see
+[00:26:47] that the sessions are now idle. Just now
+[00:26:49] as they they running, they were in a
+[00:26:50] running state.
+[00:26:52] We have the sessions managed by state
+[00:26:54] here as part of that same durability and
+[00:26:56] maintenance and reliability of the
+[00:26:58] session. So, when I come in and ask the
+[00:27:00] agent something else like, "Who are
+[00:27:02] you?" I was able to easily resume the
+[00:27:05] session and execute as it goes along
+[00:27:07] within that same session window. So,
+[00:27:09] state management here is really
+[00:27:10] important to how manage agents works
+[00:27:12] under the hood.
+[00:27:15] All right.
+[00:27:18] So, now as if we just take a quick step
+[00:27:20] back and look through everything we were
+[00:27:22] able to accomplish. We started with an
+[00:27:24] empty agent here just built on a couple
+[00:27:26] of primitives on Cloud Managed Agents.
+[00:27:28] We then went and defined the agent
+[00:27:30] definition, the persona, the
+[00:27:31] capabilities. We gave the agent an
+[00:27:33] environment. We gave the agent data and
+[00:27:36] context to operate over.
+[00:27:38] We then gave the agent sessions
+[00:27:40] combining the agent definitions to an
+[00:27:42] environment so the agent can think
+[00:27:44] through which tools to call from an
+[00:27:46] agent loop perspective. And then it can
+[00:27:48] actually call those tools and take
+[00:27:49] action on our behalf.
+[00:27:51] We then came in and streamed the
+[00:27:52] responses to the user into our logs,
+[00:27:54] implemented some local tools as well as
+[00:27:56] the ability to delete sessions. And
+[00:27:58] within this Streamlit app here, we saw
+[00:28:01] how that actually affected from a front
+[00:28:02] end perspective how our agent was
+[00:28:04] actually able to be presented to our
+[00:28:05] users by adding all of these primitives
+[00:28:07] together.
+[00:28:10] So, now let's go ahead and move back
+[00:28:12] over to the slides to do a quick recap
+[00:28:14] and talk through some of the lessons of
+[00:28:15] what we learned about how Cloud Managed
+[00:28:17] Agents works under the hood. But
+[00:28:19] hopefully for all of you who were able
+[00:28:20] to actually build on your laptops, you
+[00:28:22] all were able to just build a site
+[00:28:24] reliability agent. So, congrats to you
+[00:28:25] all.
+[00:28:27] But let's go ahead and dive in a little
+[00:28:29] bit here into understanding what
+[00:28:30] actually happened when we put all those
+[00:28:32] pieces together.
+[00:28:34] The first thing we saw is that we saw
+[00:28:36] session speak in events and not
+[00:28:37] responses in and tokens in tokens out
+[00:28:40] from a request response perspective like
+[00:28:42] we see typical with things like message
+[00:28:43] API or other APIs that we see.
+[00:28:46] With Cloud Managed Agents, instead of
+[00:28:48] just having a request response, we
+[00:28:49] actually have events appended to the
+[00:28:51] logs.
+[00:28:52] Again, this is a huge portion of why
+[00:28:54] Cloud Managed Agents is so reliable and
+[00:28:56] secure, because events are coming
+[00:28:58] through and just added into an existing
+[00:29:00] session logs, so that it's easy to then
+[00:29:02] resume a session and kick back off where
+[00:29:04] you left off, and it's easy to then come
+[00:29:06] in and look at everything from a log
+[00:29:08] perspective. This is also really
+[00:29:09] important from a reliability perspective
+[00:29:11] when we separate the hands from the
+[00:29:13] brain of the agent. If a container goes
+[00:29:15] down, we can just spin that container
+[00:29:17] back up again, and we don't have to
+[00:29:18] restart the entire agent loop alongside
+[00:29:21] that container.
+[00:29:24] The next thing here is that we saw the
+[00:29:26] ability to implement local tools.
+[00:29:29] And we implemented in our workshop these
+[00:29:31] local tools defined in JSON and loading
+[00:29:33] them in via our local files here. We
+[00:29:36] were then actually able to see how with
+[00:29:38] our Cloud Managed Agents Harness, the
+[00:29:40] execution of the agent is completely
+[00:29:42] separate from the agent loop.
+[00:29:44] We defined everything that executed
+[00:29:46] locally on our laptops and our scripts,
+[00:29:48] um and our agent loop ran on the cloud
+[00:29:50] inside of Anthropic's managed
+[00:29:51] infrastructure.
+[00:29:53] Again here, especially with what we just
+[00:29:55] released with bring your own compute and
+[00:29:57] bring your own sandboxing here, you can
+[00:29:59] swap out where you want that agent to
+[00:30:01] execute its tools in your own
+[00:30:02] infrastructure or on Anthropic managed
+[00:30:04] infrastructure, but within your own
+[00:30:06] environments and your own containers as
+[00:30:08] well as you spin them up. Moving from
+[00:30:10] things like loading our tools in from
+[00:30:12] JSON into anywhere you want to have your
+[00:30:15] tools run, like a Data Dog client using
+[00:30:17] the same wire protocol, making it very
+[00:30:20] easy to then go from initially building
+[00:30:22] the agent for Cloud Managed Agents to
+[00:30:24] then actually producing it and deploying
+[00:30:26] it on production-ready infrastructure.
+[00:30:31] Next thing we saw here as we thought
+[00:30:33] about how our sessions are being
+[00:30:34] streamed into our users and what we see
+[00:30:37] from a front end perspective
+[00:30:39] is that we saw when our events were
+[00:30:41] being able to be streamed to our users,
+[00:30:43] these were in the forms of actually
+[00:30:44] things we care about as a user. We saw
+[00:30:46] events come in and we saw the agent's
+[00:30:48] ability to actually log everything to
+[00:30:51] its observability console.
+[00:30:53] And another key thing here is that as we
+[00:30:55] think about how sessions are controlled
+[00:30:56] in Cloud Managed Agents, you can
+[00:30:58] actually think about the state as being
+[00:30:59] something very powerful when you can
+[00:31:01] start to take action on behalf of
+[00:31:03] events.
+[00:31:05] What that means is that we saw a couple
+[00:31:07] of key states for sessions in CMA or
+[00:31:09] Cloud Managed Agents.
+[00:31:11] We went from idle to running,
+[00:31:12] rescheduling if the agent needs to retry
+[00:31:14] anything, or terminated if any of the
+[00:31:16] sessions fail.
+[00:31:18] And so the agent is able to restart from
+[00:31:20] a reliability perspective, a
+[00:31:21] resumability perspective, but also it
+[00:31:23] can actually do some very powerful
+[00:31:25] things.
+[00:31:26] For instance, you can actually have a
+[00:31:27] webhook run, and when an event happens
+[00:31:30] from a webhook, the agent receives that
+[00:31:32] webhook in and can then do something
+[00:31:34] like resume a session or kickstart a
+[00:31:35] specific state based on external events.
+[00:31:39] So again, this powerful form of having
+[00:31:41] events and sessions be the core concepts
+[00:31:43] of how Cloud Managed Agents runs means
+[00:31:45] that you can make it very, very easy to
+[00:31:47] compose your agent however you want it
+[00:31:49] to, and have the agent listen for things
+[00:31:51] that happen both internally and
+[00:31:52] externally via webhooks to take actions
+[00:31:55] or resume your agent as you desire.
+[00:31:59] And lastly here, something that we saw
+[00:32:01] come through through the agent that we
+[00:32:02] all built for the site reliability
+[00:32:04] agent, is that everything lives in the
+[00:32:06] cloud from the agent loops perspective.
+[00:32:09] The conversation is persisted. When we
+[00:32:11] hard refresh the page, we saw that those
+[00:32:13] same sessions were maintained. And we
+[00:32:15] saw that if we were able to, let's say,
+[00:32:17] exit out of the agent and come back, we
+[00:32:19] didn't have to manage anything from a
+[00:32:21] database perspective or wire up where
+[00:32:23] the agent is stored. We were just able
+[00:32:25] to have all of that persisted in the
+[00:32:27] cloud, again making it very, very easy
+[00:32:29] to go to production-ready agents.
+[00:32:35] And lastly here, I just want to talk you
+[00:32:36] through we just built the very basic
+[00:32:38] form of Claude managed agents. We saw
+[00:32:40] what was possible with just the very,
+[00:32:42] very simple primitives that we all built
+[00:32:44] with, the basic level of what you can do
+[00:32:46] with Claude managed agents. And already
+[00:32:48] there we were able to have something
+[00:32:49] that would usually take us a lot of time
+[00:32:51] to spin up from a production
+[00:32:52] perspective. All of compaction, caching,
+[00:32:55] tool calling, all of that was handled
+[00:32:57] for us there's via Claude managed
+[00:32:59] agents.
+[00:33:00] And even if we wanted to go beyond that
+[00:33:02] to make our agent much, much more
+[00:33:03] powerful,
+[00:33:04] we can do things like add in skills, add
+[00:33:06] in subagents, add in memory, add in
+[00:33:09] outcomes. These are all core components
+[00:33:11] that we offer to developers out of the
+[00:33:13] box from Claude managed agents.
+[00:33:16] I'll just briefly talk you through a
+[00:33:17] couple of the key components, but want
+[00:33:18] to encourage everyone to check out our
+[00:33:20] documentation, what's publicly available
+[00:33:22] on Claude managed agents, attend the
+[00:33:24] session after this one on dreaming to
+[00:33:26] dive in deeper onto these topics.
+[00:33:29] Subagents or multi-agents is a way for
+[00:33:31] you to have an orchestrator agent spin
+[00:33:33] up context with other agents so that you
+[00:33:35] can manage it from a context engineering
+[00:33:37] perspective where subagents can then
+[00:33:39] handle tasks and have their own context
+[00:33:41] windows and contribute back to the main
+[00:33:42] agent making it much more powerful from
+[00:33:44] a parallelization perspective as well as
+[00:33:47] the ability for context management.
+[00:33:49] Memory is something that's always very
+[00:33:50] important as we're building agents. I
+[00:33:52] hear a lot of questions about how you
+[00:33:54] can build self-improving agents or
+[00:33:55] agents that learn from user corrections,
+[00:33:57] agents that start to remember user
+[00:33:59] preferences. That's where we're offering
+[00:34:01] memory and a dreaming service for Claude
+[00:34:03] managed agents out of box.
+[00:34:05] What dreaming means for managed agents
+[00:34:07] is that Claude can actually come in and
+[00:34:08] also look through its own memory logs
+[00:34:11] and determine what to keep and determine
+[00:34:13] how it can actually start to memorize
+[00:34:15] and manage context for its own memory.
+[00:34:17] So, it can actually be able to really
+[00:34:18] accurately remember which parts of your
+[00:34:20] user preferences matter and which part
+[00:34:22] of user corrections you want to retain
+[00:34:24] for future sessions you run on that same
+[00:34:26] agent.
+[00:34:28] Outcomes is another one of my favorites
+[00:34:29] where for Claude managed agents, this
+[00:34:31] means that you can actually define a
+[00:34:32] rubric for your agent outcomes. So, you
+[00:34:35] can start to think of your agent's tasks
+[00:34:36] as something where you want the agent to
+[00:34:38] reach a desired outcome instead of just
+[00:34:40] executing calls and doing things on your
+[00:34:42] behalf, but not associating that to a
+[00:34:44] result that you want.
+[00:34:46] So, with outcomes, you can define a
+[00:34:48] rubric of exactly what you want the
+[00:34:49] agent to produce, and it'll figure out
+[00:34:51] along the way which tool calls and what
+[00:34:53] it needs to do to execute towards that
+[00:34:55] final result.
+[00:34:57] Vaults is something also that I hear
+[00:34:59] come up a lot as of interest for Cloud
+[00:35:01] Managed Agents because managing user
+[00:35:03] credentials is something that's very
+[00:35:04] painful from an access management
+[00:35:06] perspective, making sure that your
+[00:35:08] agents are secure and safe to run.
+[00:35:10] So, for vaults and Cloud Managed Agents,
+[00:35:11] there's actually an encryption that
+[00:35:13] happens between where the credentials
+[00:35:14] are stored on a separate endpoint and
+[00:35:16] what the agent is actually able to
+[00:35:18] access. So, you can manage these
+[00:35:19] credentials on a per user, per session
+[00:35:21] basis, all very safely and securely. And
+[00:35:24] this relies in large part during to that
+[00:35:26] architecture that I described earlier of
+[00:35:28] how the brains and the hands of the
+[00:35:29] agent are separated, so that credentials
+[00:35:31] can be stored very securely in these
+[00:35:33] vaults. This means that you don't have
+[00:35:35] to set up your own secret stores or your
+[00:35:37] own credential stores, and you can just
+[00:35:39] rely on the built-in capability here.
+[00:35:42] There are a couple other things here
+[00:35:43] that I won't have time to go through in
+[00:35:44] depth. So, again, encourage everyone to
+[00:35:46] check them out in more detail. There are
+[00:35:47] things like the ability to do web hooks
+[00:35:49] and really make this agent run on
+[00:35:51] external events, things like detailed
+[00:35:53] and fine-grained permission policies,
+[00:35:55] the MCP servers that I mentioned where
+[00:35:57] we just released new MCP uh server
+[00:36:00] controls as well. And something that I
+[00:36:02] also love just to briefly touch on is
+[00:36:04] the console agent builder where we have
+[00:36:06] built in a lot of capability and
+[00:36:07] functionality into the default developer
+[00:36:09] console, where you can start to see a
+[00:36:11] beautiful observability dashboard come
+[00:36:13] through and other ways for you to define
+[00:36:15] Cloud Managed Agents right there on your
+[00:36:16] consoles.
+[00:36:20] So, just as a quick recap to end us off
+[00:36:22] here of what we were able to accomplish
+[00:36:24] today, hopefully everyone leaves here
+[00:36:26] with a bit of a mental model about how
+[00:36:27] manage agents actually works under the
+[00:36:29] hood and be proud of yourselves for
+[00:36:31] everyone that was able to come in and
+[00:36:33] build on your laptops and actually ship
+[00:36:35] a site reliability agent so you can all
+[00:36:37] leave here being very happy with
+[00:36:39] yourselves that you were able to come in
+[00:36:40] and save future developers hours of time
+[00:36:42] of being woken up at 3:00 a.m. or 2:00
+[00:36:44] a.m. in the morning and being able to
+[00:36:45] handle incidents for them.
+[00:36:47] And next you also learned a little bit
+[00:36:49] about where to go next for how you can
+[00:36:50] really start to unlock the power that
+[00:36:52] comes with manage agents and think about
+[00:36:53] how your agents can become super powered
+[00:36:56] with all of these additional
+[00:36:57] functionalities.
+[00:36:59] So that is where I'll end up today but
+[00:37:01] thank you all so much for coming. I'll
+[00:37:03] be around on the side.
+[00:37:04] >> [music and applause]

@@ -1,0 +1,874 @@
+Title: Making agentic workflows trustworthy and verifiable with a custom DSL
+Video: https://www.youtube.com/watch?v=qOjleN2-50c
+Caption: auto (en) via android_vr
+================================================================================
+
+[00:00:15] My name is is James Brady. I work at
+[00:00:17] Allicit. And today I'm going to be
+[00:00:19] talking about how we make our agentic
+[00:00:22] workflows trustworthy and verifiable
+[00:00:24] with a custom domain-specific language.
+[00:00:29] Okay, so
+[00:00:30] uh in terms of the the structure of
+[00:00:32] today,
+[00:00:33] I'm going to start with a high-level
+[00:00:35] overview of why we went for a DSL in the
+[00:00:37] in the first place.
+[00:00:39] Talk a little bit about the language,
+[00:00:40] how we made the decisions we did
+[00:00:43] um in its design.
+[00:00:45] How we integrated it into Allicit. We'll
+[00:00:47] do a quick demo.
+[00:00:48] And then uh and then wrap up at the end.
+[00:00:51] But uh let me start with a question. So,
+[00:00:53] let's say that two systems produce
+[00:00:55] identical output.
+[00:00:57] Do you trust them equally?
+[00:01:01] And the answer is, of course, well, it
+[00:01:03] depends. It depends on
+[00:01:06] what went on inside of those systems to
+[00:01:08] produce that output.
+[00:01:10] I would say that the
+[00:01:14] the the mechanism, the how of how how an
+[00:01:17] answer is produced is as important and
+[00:01:19] important in a different way compared to
+[00:01:22] just the the final output itself. Let me
+[00:01:24] try and make this a bit more concrete.
+[00:01:26] So, let's say you're running a static
+[00:01:28] analysis tool over your code base.
+[00:01:32] And it runs for a while and in the end
+[00:01:34] in the end it says, "This code is free
+[00:01:37] of security security vulnerabilities.
+[00:01:39] Safe to ship to production."
+[00:01:41] I would contest that if you knew the
+[00:01:43] system
+[00:01:44] was built on, let's say, an older model,
+[00:01:46] 3.5 Sonar, something like this. If the
+[00:01:49] system is using an older model like
+[00:01:50] that, this is option one.
+[00:01:53] And option two is it's a latest and
+[00:01:56] greatest state-of-the-art model. It's
+[00:01:58] done all sorts of tool use. It's done
+[00:02:01] critique and redrafting. That's just a
+[00:02:03] fundamentally different kind of an
+[00:02:05] object. The
+[00:02:06] The message might be literally
+[00:02:07] identical, but you would react very
+[00:02:09] differently to those two messages if it
+[00:02:12] came from a kind of older model that
+[00:02:13] was, you know, not so powerful versus
+[00:02:15] something that has a used a lot more
+[00:02:18] tokens and and intelligence.
+[00:02:20] So, the mechanism matters.
+[00:02:22] And there isn't a a sort of single
+[00:02:25] correct mechanism. There isn't a kind of
+[00:02:27] single canonical
+[00:02:29] um
+[00:02:30] best way of designing the internal
+[00:02:33] structure of of the systems that you're
+[00:02:34] building. I really think that it's a
+[00:02:36] it's a design choice. It depends on what
+[00:02:38] it's you're trying to do. It depends on
+[00:02:40] the domain that you're building with
+[00:02:41] building in. It depends on the user. It
+[00:02:44] depends on the task, like what it is
+[00:02:45] that the user's doing within the domain.
+[00:02:48] We found that there's definitely a speed
+[00:02:49] versus rigor trade-off. So, if you're
+[00:02:51] trying to do something which is
+[00:02:54] uh extremely in depth and extremely
+[00:02:56] defensive and extremely high quality,
+[00:02:58] that naturally takes a bit longer than
+[00:03:00] uh than than something a bit more
+[00:03:01] surface level.
+[00:03:03] And there's no, you know, there's no
+[00:03:04] correct answer. Sometimes you want you
+[00:03:06] want fast and sometimes you want really,
+[00:03:07] really high quality.
+[00:03:08] Uh the provider's brand and taste is
+[00:03:10] interesting here. So,
+[00:03:12] uh I don't know if I would have called
+[00:03:14] this before we started working this
+[00:03:15] ourselves, but Elicit prides itself on
+[00:03:19] super high reliability, really high
+[00:03:21] quality, data provenance. We really kind
+[00:03:24] of stand behind the results that we put
+[00:03:25] in in front of people. I'll show you a
+[00:03:26] demo of what I'm talking about a bit
+[00:03:28] later on.
+[00:03:29] And these are some of the some of the
+[00:03:32] concerns that we had in our mind when we
+[00:03:34] were thinking about, well, what is the
+[00:03:35] We know the mechanism matters, but what
+[00:03:37] is the right mechanism for us at Elicit?
+[00:03:40] And uh I think it came down to these
+[00:03:41] three desiderata when we were building
+[00:03:43] out our research agent, which will be
+[00:03:45] the demo in in a few minutes.
+[00:03:48] So, firstly, the research agent's
+[00:03:50] process must be legible. It needs to be
+[00:03:52] legible to the user and also, by the
+[00:03:54] way, it needs to be legible to other
+[00:03:55] agents. We want for um
+[00:03:58] the
+[00:04:01] the the process, the algorithm, the kind
+[00:04:02] of like internal set of steps that the
+[00:04:04] that the agent is taking to be
+[00:04:08] um spot-checkable by the human,
+[00:04:10] spot-checkable by other agents. We can
+[00:04:12] run you know, sort of critique agents
+[00:04:14] over it, that kind of a thing.
+[00:04:16] The second desideratum, the iteration on
+[00:04:18] the process retains fidelity. This is
+[00:04:20] maybe
+[00:04:22] Let me explain this a bit more because
+[00:04:23] it's it's a bit of a fiddly one.
+[00:04:26] What I've found and I maybe what some of
+[00:04:27] you found as well is that if you're
+[00:04:29] iterating on a piece of work and you're
+[00:04:32] saying that's not quite right, it's kind
+[00:04:33] of going this other direction. Oh, you
+[00:04:35] know, I I want to add this other layer,
+[00:04:36] this other consideration.
+[00:04:38] I found that you can sometimes drift a
+[00:04:41] little bit from what you were initially
+[00:04:42] trying to do and the model ends up
+[00:04:44] getting a bit confused and you have to
+[00:04:45] say, you know, let's start again or
+[00:04:46] backtrack or something. It's kind of
+[00:04:48] kind of kind of annoying. And it it
+[00:04:50] definitely harms trust. So, we want to
+[00:04:51] avoid that. We want to be able to add to
+[00:04:54] the work. We want to be able to add
+[00:04:56] layers. We want to be able to be able to
+[00:04:57] go in different directions without
+[00:04:59] losing that kind of
+[00:05:01] uh clarity and consistency of what the
+[00:05:04] user was initially interested in doing.
+[00:05:06] And lastly and certainly not leastly is
+[00:05:09] the process is followed faithfully. So,
+[00:05:10] let's say we've got the process, it's
+[00:05:12] legible, we've checked it, the user's
+[00:05:13] checked it. It's great. And we've
+[00:05:16] iterated on it and we've kind of stayed
+[00:05:17] true to what it is the user's interested
+[00:05:19] in. Well, we have to actually ensure the
+[00:05:21] system does in fact do that set of
+[00:05:23] steps, otherwise, you know,
+[00:05:25] what are we what are we doing here?
+[00:05:27] So, uh
+[00:05:29] those are the considerations that we
+[00:05:32] foregrounded when we we were thinking
+[00:05:33] about how we want for elicit elicit to
+[00:05:35] work. And that that led us to reaching
+[00:05:38] for a DSL. I'm not saying that everyone
+[00:05:40] should be using a DSL, you shouldn't.
+[00:05:42] What I'm saying is that these three
+[00:05:44] things really kind of led naturally
+[00:05:47] towards well, a DSL could be a great
+[00:05:49] choice for us. So our DSL is called Ash
+[00:05:51] PL. The kind of weird smushed together
+[00:05:53] AE thing is apparently called Ash. It's
+[00:05:55] like an old English um
+[00:05:57] diphthong or something.
+[00:05:59] Uh
+[00:06:00] so Ash PL and this is our domain
+[00:06:02] specific language for the agentic
+[00:06:04] workflows in the in the illicit um in
+[00:06:05] the illicit product.
+[00:06:08] And Ash PL has a few distinguishing
+[00:06:10] factors. So uh firstly it is Turing
+[00:06:13] incomplete. It's relatively simple.
+[00:06:15] There's no loops. There's no uh yeah
+[00:06:18] there's no there's no recursion. There's
+[00:06:20] no there's no mutation. It's purely
+[00:06:22] functional. It's a reactive language and
+[00:06:25] it's an opinionated subset of of Python
+[00:06:28] and the opinionated is is important
+[00:06:29] here. So it's not just a kind of generic
+[00:06:33] simplification of Python if you will.
+[00:06:34] Not like Python with couple of bits
+[00:06:36] taken off at random.
+[00:06:38] Um what we did is we
+[00:06:41] uh we disallow we sort of take out the
+[00:06:43] language features of Python that just
+[00:06:44] aren't aren't that helpful and we add
+[00:06:46] stuff in. We add some extra primitives
+[00:06:48] in which are specific to our domain. So
+[00:06:50] our domain is scientific research and uh
+[00:06:54] empirical decision-making high-stakes
+[00:06:55] decision-making.
+[00:06:57] And the primitives that we put into our
+[00:07:00] DSL match that. You know we've got
+[00:07:02] retrieving academic uh research papers
+[00:07:05] or clinical clinical trials. You know
+[00:07:06] things things like that are are built
+[00:07:08] into the built into the language.
+[00:07:11] Okay. Um
+[00:07:13] yeah let's have a look at some Ash PL.
+[00:07:15] So hopefully this isn't too small for
+[00:07:17] you all. Um you don't need to read the
+[00:07:19] the code obviously.
+[00:07:20] Uh what I'm trying to show here is that
+[00:07:22] the Ash PL on the right looks a lot like
+[00:07:25] Python because it is a subset of Python.
+[00:07:28] Uh we're keen on types. It's it's it's
+[00:07:30] typed. That lets us do uh fast kind of
+[00:07:32] redrafts if you've got a type error.
+[00:07:34] And I think this example program uh just
+[00:07:37] FYI was the
+[00:07:41] the process that we wanted to go through
+[00:07:43] to do a competitive competitive analysis
+[00:07:45] for illicit itself. So, we're looking
+[00:07:47] for other
+[00:07:49] academic search engines and AI
+[00:07:51] assistants. It looks like systematic
+[00:07:53] review tools. We're We're doing web
+[00:07:56] searches for those. We're joining the
+[00:07:57] results. We're enriching the sources,
+[00:07:58] you know, that This is the kind of the
+[00:08:01] set of steps that we want to go through
+[00:08:03] that we think is a good process for
+[00:08:05] doing a competitive
+[00:08:08] landscape overview.
+[00:08:10] And um
+[00:08:12] the core engine of what goes on within
+[00:08:15] an illicit user session is that we have
+[00:08:17] a component which I'll show in in in the
+[00:08:19] in the next slide, which is writing the
+[00:08:22] ASPL.
+[00:08:23] And then we interpret the ASPL. That's
+[00:08:26] just done in like plain old Python code.
+[00:08:28] And then we redraft the ASPL based on
+[00:08:30] what just happened. So, in a simple
+[00:08:32] case, you can imagine
+[00:08:34] we write we we we write some ASPL.
+[00:08:37] There's a type error. Okay, there must
+[00:08:38] be a problem. So, that gets kicked back
+[00:08:41] to the ASPL kind of writer component. It
+[00:08:44] tries again, fixes the type error. We
+[00:08:45] reinterpret the ASPL.
+[00:08:47] It runs this time. We get some results
+[00:08:49] back. We rewrite the ASPL. There's that
+[00:08:51] kind of constant loop of
+[00:08:54] writing and then interpreting and then
+[00:08:56] rewriting and then interpreting. And
+[00:08:58] that's that's like the core
+[00:09:00] engine of of making progress inside of
+[00:09:02] inside of illicit.
+[00:09:04] Okay, so that's the language. Let me
+[00:09:07] show you how we integrated it into um
+[00:09:09] into like more of a into more of a
+[00:09:11] system. So, we have the UI in the top
+[00:09:14] left. That is what the user is is
+[00:09:17] interacting with. It's just in a in a
+[00:09:18] web browser. That's what we'll have a
+[00:09:19] look at in a second in the demo.
+[00:09:22] The
+[00:09:24] The UI is talking to an event log
+[00:09:26] that can append-only event log. That's
+[00:09:29] how we
+[00:09:30] manage our our distributed data
+[00:09:32] structure. We've got a Python service in
+[00:09:34] the top right. And
+[00:09:36] uh then the Python service is talking to
+[00:09:38] the sandbox in the bottom right or kind
+[00:09:41] of bottom right-ish.
+[00:09:43] Um and the curator in the sort of orange
+[00:09:46] ochre color, the sort of um colored
+[00:09:48] color, the tropic color,
+[00:09:50] uh that's the that's the piece that's
+[00:09:51] writing the Ash PL.
+[00:09:53] So, let me let me uh add a a touch more
+[00:09:55] detail here.
+[00:09:56] The user is interacting with UI.
+[00:09:59] The uh events are emitted as they click
+[00:10:02] buttons and enter search queries and
+[00:10:03] whatnot. That gets uh added appended
+[00:10:06] onto the event log. The Python service
+[00:10:08] is a message broker for that uh for for
+[00:10:10] the um for the event sourcing pattern.
+[00:10:13] And then it's the the sandbox which is
+[00:10:15] doing the the writing of the of the Ash
+[00:10:17] PL. And it's the Python service which is
+[00:10:19] interpreting the Ash PL. So, that kind
+[00:10:21] of bouncing back and forth thing that I
+[00:10:22] mentioned of writing Ash PL and then
+[00:10:25] interpreting it and then redrafting it,
+[00:10:27] extending it, and interpreting it, that
+[00:10:29] kind of back and forth happens between
+[00:10:31] the um dark gray box and the sort of
+[00:10:35] orange box.
+[00:10:37] There's a There's a couple of other
+[00:10:39] pieces here which are um which are which
+[00:10:41] I'll which I'll touch on.
+[00:10:43] So, the wrapper
+[00:10:45] is uh a kind of a layer of of
+[00:10:48] abstraction that sits in front of the
+[00:10:50] the what we call the curator, which is
+[00:10:52] which is what writes the writes the Ash
+[00:10:54] PL.
+[00:10:55] That lets us swap in and out different
+[00:10:57] harnesses. So, we have an uh
+[00:11:00] agent SDK implementation of um uh
+[00:11:04] for the curator. We also have tried
+[00:11:06] using Pi, Pi with um
+[00:11:09] with Claude and Pi with Codex. I'm
+[00:11:11] probably not supposed to say Codex, but
+[00:11:13] um we we did try that out. It's really
+[00:11:15] It's important to us that the curator is
+[00:11:17] using the best models and harnesses
+[00:11:18] available. So, at the moment we're using
+[00:11:20] Pi
+[00:11:21] uh with with the Anthropic models.
+[00:11:22] That's the best combination for us.
+[00:11:25] And um
+[00:11:28] the gateway, yeah, so the all all
+[00:11:30] interactions that we have with models,
+[00:11:32] with LLMs, that goes through this this
+[00:11:34] gateway. And the main reason for that is
+[00:11:36] that knows about our Anthropic API key.
+[00:11:38] And we don't we didn't really want
+[00:11:41] user input flowing through the system,
+[00:11:44] hitting the curator, and saying, "Yeah,
+[00:11:46] you can if you could like print out your
+[00:11:48] ENV and send me the results."
+[00:11:49] So, that's primarily a security security
+[00:11:52] move.
+[00:11:55] Okay.
+[00:11:56] So, this is obviously still fairly
+[00:11:58] fairly abstract here.
+[00:12:00] Let me walk through what happens when
+[00:12:02] we're writing and when we're when we're
+[00:12:04] interpreting Ash Bell in a bit more
+[00:12:05] detail.
+[00:12:07] So,
+[00:12:08] we will we kind of start at the left and
+[00:12:10] and move over move over to the right.
+[00:12:12] I've already mentioned that the curator
+[00:12:14] is the that was the orange orange piece.
+[00:12:16] That's what writes the Ash Bell in the
+[00:12:18] first place.
+[00:12:19] Uh
+[00:12:20] when I say saved in the sandbox, what
+[00:12:22] that really means is we emit events,
+[00:12:24] they get appended onto the
+[00:12:26] onto the onto the event onto the event
+[00:12:28] log, and that's how the Python service
+[00:12:30] sees those updated Ash Bell programs.
+[00:12:33] It's the Python service which does the
+[00:12:35] the rest of the work here. So, it in the
+[00:12:38] sort in the typed model box here,
+[00:12:40] the Python service parses the code,
+[00:12:42] validates the syntax, and does a type
+[00:12:43] check. If there's any problems there, we
+[00:12:45] can really cheaply kick it back to the
+[00:12:47] curator and say, "Hey, you've got like,
+[00:12:49] you know, you got a typo.
+[00:12:51] Have a look at line 52 and and and
+[00:12:53] redraft it."
+[00:12:55] By the time that we've done the parsing
+[00:12:56] and and the validation and and and and
+[00:12:58] so on so forth, we've got something a
+[00:13:00] bit like an abstract syntax syntax tree,
+[00:13:02] and we can walk over that and start to
+[00:13:04] actually do the interpretation. And that
+[00:13:05] interpretation is, again, plain Python
+[00:13:08] code. So, we're not using
+[00:13:12] we're we're kind of calling into
+[00:13:13] language models and whatnot at this
+[00:13:15] point, but we've got Python code which
+[00:13:17] walks over a tree of a program and knows
+[00:13:20] about closures and knows about special
+[00:13:21] forms and
+[00:13:23] knows about the different sort of
+[00:13:24] language primitives that we have
+[00:13:25] available.
+[00:13:27] One really important thing here for us
+[00:13:29] is the content address store. So, this
+[00:13:32] is what enables us to do caching,
+[00:13:35] memorization. And this is super duper
+[00:13:37] crucial. Like, nothing would work here
+[00:13:39] if we weren't really careful about this.
+[00:13:43] The reason I say that is because
+[00:13:47] again, we rewrite a whole SQL program
+[00:13:50] and we reinterpret the whole thing every
+[00:13:52] time. We don't just interpret the actual
+[00:13:54] code that's been re written. We re we
+[00:13:56] re-address the program and then
+[00:13:57] reinterpret the whole kitten caboodle
+[00:13:59] from top to bottom. And that would
+[00:14:01] obviously be like super slow if we're
+[00:14:03] really redoing the work every single
+[00:14:04] time we went around the loop.
+[00:14:06] In reality, it's it's nice and fast for
+[00:14:08] us because
+[00:14:09] uh because of the language features like
+[00:14:11] the you know, it's a pure language that
+[00:14:12] that really helps to with memorization,
+[00:14:14] we can hash uh an expression and say if
+[00:14:17] this has been evaluated before, we just
+[00:14:19] store that away
+[00:14:21] in um
+[00:14:22] in a map. And if we if we meet that
+[00:14:24] expression again when we're when we're
+[00:14:25] walking the tree, we can say, "Oh, yeah,
+[00:14:27] this this like
+[00:14:28] this boiled down to 42 or something." We
+[00:14:30] can just use that straight away from the
+[00:14:31] hash.
+[00:14:33] Uh okay, I think that's all I want to
+[00:14:36] say on this one. So, I'm going to switch
+[00:14:37] to a demo now.
+[00:14:39] And um
+[00:14:42] the
+[00:14:43] uh
+[00:14:46] I said before that there's often a
+[00:14:47] trade-off between rigor and speed. On
+[00:14:50] that on that continuum, we are very much
+[00:14:53] focused on the rigor uh side of things.
+[00:14:55] We do do things quickly if it's a simple
+[00:14:57] query, but that's not really where
+[00:15:00] we differentiate ourselves. It's not
+[00:15:02] really where our special sauce is uh so
+[00:15:03] to speak.
+[00:15:05] So,
+[00:15:06] if you go to elicit.com, um you would
+[00:15:08] see something a bit like this. We have a
+[00:15:10] bunch of uh
+[00:15:12] sort of templates you can start with
+[00:15:13] creating table slides, drafting a
+[00:15:15] report. Um I'm going to show you a
+[00:15:17] research landscape,
+[00:15:19] which uh
+[00:15:21] again is like a much I think it probably
+[00:15:23] took in total,
+[00:15:25] I don't know, like a couple of hours or
+[00:15:26] something of of it doing work and me
+[00:15:29] adding layers on top of it, so can't do
+[00:15:30] it in a demo format. Uh, but I've got a
+[00:15:32] session saved away that we're going to
+[00:15:33] take a look at.
+[00:15:35] Uh, but yeah, yeah. It doesn't need to
+[00:15:37] take that long. It's just, you know, it
+[00:15:38] gets a bit a bit more interesting when
+[00:15:39] it's a more in-depth thing.
+[00:15:41] So, this is the research landscape that
+[00:15:42] we're going to take a take a look at
+[00:15:44] here. And my initial query was to map
+[00:15:47] the companies and institutions investing
+[00:15:49] in foundation model models for biology.
+[00:15:52] And you can see that the first thing
+[00:15:54] that we did here was Alissa asked asked
+[00:15:58] me a question. It was like, "Okay, I get
+[00:16:00] the kind of overall big picture. Let me,
+[00:16:02] um, narrow that down a little bit. Are
+[00:16:04] you interested in a broad landscape?" I
+[00:16:06] think the other options here were you
+[00:16:07] you interested in something,
+[00:16:09] um,
+[00:16:10] like a you know, a particular foundation
+[00:16:12] model in more interested in academic
+[00:16:14] institutions or companies, that kind of
+[00:16:16] a thing. And I just said, "Yeah,
+[00:16:18] the broad landscape."
+[00:16:20] Um, is is what I'm looking for.
+[00:16:22] And then the rest of, uh,
+[00:16:25] the rest of the steps here are driven by
+[00:16:28] Ash PL. So, this, uh,
+[00:16:31] first analysis step, you can see, if
+[00:16:33] anyone can't see this and needs to be
+[00:16:35] bigger, then please do say.
+[00:16:37] Uh, you don't need to be able to read
+[00:16:38] all the text in detail, but okay.
+[00:16:40] I'll go with that as it is.
+[00:16:42] So, this first analysis block, we're
+[00:16:43] doing a bunch of searches. We're looking
+[00:16:45] for academic papers relating to genomic
+[00:16:47] foundation model pre-training
+[00:16:48] transformer. We're doing some web
+[00:16:50] searches.
+[00:16:51] Uh, we're trying to fetch the full text
+[00:16:54] of papers when available. We're doing
+[00:16:56] some screening, like filtering. All of
+[00:16:58] these steps, all of these stages, uh,
+[00:17:01] are encoded into Ash PL, and then we run
+[00:17:04] they're actually, um,
+[00:17:09] the Ash PL is not just a representation
+[00:17:10] of a plan. It is literally the plan
+[00:17:12] which is executable, you know. Uh, that
+[00:17:14] that's what lets us really be be sure
+[00:17:16] that we're following through on the plan
+[00:17:18] as as stated.
+[00:17:19] Um so, let me go a bit deeper here.
+[00:17:22] That was the kind of first the first um
+[00:17:24] analysis stage of us looking for
+[00:17:25] organizations, looking for institutions.
+[00:17:28] Looks like we did Yeah, did some more
+[00:17:30] analysis here. I think this one is All
+[00:17:33] right, at this point we've got some
+[00:17:34] actual institutions. We've got Howard
+[00:17:36] Hughes Medical Institute, Stanford
+[00:17:38] University, et cetera.
+[00:17:40] Um again, this is all coming from HPL.
+[00:17:43] We're doing some more searches. We're
+[00:17:45] doing some more searches. We're doing
+[00:17:46] some more screening. Um yeah, you can
+[00:17:48] see we go pretty deep um when we when
+[00:17:51] we're in this mode.
+[00:17:53] Let me skip forward to the results here.
+[00:17:56] And I'll get this sidebar out of the
+[00:17:57] way.
+[00:17:58] So, uh after some humming and whirring
+[00:18:01] and um quite a few tokens, we end up
+[00:18:03] with a table like this. We call this an
+[00:18:06] artifact, and uh each row is a In this
+[00:18:10] case, an organization which has got some
+[00:18:12] kind of a interest in biological um
+[00:18:15] foundation models. Got GDM, we've got
+[00:18:17] Meta, Microsoft Research, et cetera, et
+[00:18:19] cetera.
+[00:18:20] And you can see that we've extracted
+[00:18:22] some
+[00:18:23] uh some attributes alongside that from
+[00:18:25] the foundation models that they've
+[00:18:27] created, uh the modalities that they're
+[00:18:29] that they're interested in, notable
+[00:18:31] collaborations, it looks like.
+[00:18:33] So, I've been saying that this is driven
+[00:18:34] by HPL, but um
+[00:18:36] how do you how do I know that? Uh
+[00:18:39] you know, what's the what's the
+[00:18:39] connection here?
+[00:18:40] For each of these artifacts, we can
+[00:18:42] actually look at the HPL code that was
+[00:18:45] used to to generate it. So, um this is
+[00:18:48] literally the the executable DSL that
+[00:18:52] was um
+[00:18:53] behind the creation of that table we
+[00:18:54] were just looking at.
+[00:18:56] And you can see that first of all, we're
+[00:18:57] doing some uh
+[00:18:59] some web searches for foundation models,
+[00:19:02] uh multimodal biology AI model that you
+[00:19:03] know, you can you can see this.
+[00:19:05] Uh looking for academic academic papers,
+[00:19:07] again.
+[00:19:09] We are I guess joining these together at
+[00:19:12] some point. Uh, yep, that's where the
+[00:19:14] join is.
+[00:19:16] Um, and uh,
+[00:19:19] as you can probably tell, looking at the
+[00:19:20] AshPL is not particularly fun.
+[00:19:23] Um,
+[00:19:24] most people don't do this and and that's
+[00:19:26] not really the the kind of the core
+[00:19:28] driver of why we have this. We we have
+[00:19:30] this because we want to know that a list
+[00:19:32] of the system is following and the the
+[00:19:35] following the instructions that we came
+[00:19:36] up with, right? Like that's the kind of
+[00:19:38] primary thing.
+[00:19:39] Um,
+[00:19:41] it is useful for other agents to be able
+[00:19:42] to look at this AshPL though and say,
+[00:19:44] you know, you've you've missed
+[00:19:45] something, you've overlooked something,
+[00:19:47] you have, I don't know, there's a
+[00:19:49] there's a a key search that you've you
+[00:19:51] should have considered or there's a part
+[00:19:52] of the user's query that that you didn't
+[00:19:54] uh, take into account. Uh, so that's
+[00:19:56] something which is which is really handy
+[00:19:57] when the plan is so legible in in this
+[00:19:59] format. Something which is a bit more
+[00:20:01] useful from a user perspective, a bit
+[00:20:03] more ergonomic, is a uh,
+[00:20:06] a graphical representation of what's
+[00:20:07] done within the system. So, this is um,
+[00:20:10] derived directly from, um,
+[00:20:13] you know, from from the AshPL.
+[00:20:15] This isn't just a kind of
+[00:20:17] um,
+[00:20:18] I don't know,
+[00:20:19] a made-up nice visualization or
+[00:20:22] something. It literally is derived
+[00:20:24] directly from the same thing that the
+[00:20:25] that the plan uh, was executing over.
+[00:20:29] And I think in this case it's it's
+[00:20:30] pretty pretty linear, so it's not super
+[00:20:32] interesting, but um, yeah, we start off
+[00:20:34] with a couple of searches,
+[00:20:36] did some enrichment, which means
+[00:20:38] fetching um, full text of papers, that
+[00:20:40] kind of a thing, extracting,
+[00:20:43] um,
+[00:20:44] curating, which means filtering, do some
+[00:20:45] more searches, etc. So, I I do actually
+[00:20:48] find looking at this to be quite handy
+[00:20:50] if I'm trying to
+[00:20:52] convince myself or not that I would
+[00:20:54] endorse the process that the that a list
+[00:20:56] of the that a list of took. Uh, and you
+[00:20:58] can quite qui- quite quickly notice when
+[00:21:01] there's something that looks a little
+[00:21:02] bit um,
+[00:21:03] skewiff.
+[00:21:05] But,
+[00:21:07] I wouldn't be I wouldn't stop here
+[00:21:09] necessarily, right? Like there's other
+[00:21:11] kinds of um
+[00:21:14] layers to this investigation that I
+[00:21:15] might want to add on. So,
+[00:21:17] I think I did a few things there. Yeah,
+[00:21:19] I asked for a comparison of open and
+[00:21:21] closed source strategies for the
+[00:21:23] different organizations. We did some
+[00:21:24] work for that.
+[00:21:26] I then asked for
+[00:21:28] the commercialization commercialization
+[00:21:30] strategy, the GTM approach, and we did
+[00:21:32] some work for that.
+[00:21:34] I then asked for
+[00:21:37] um I think you know, you can see where
+[00:21:39] another artifact was created.
+[00:21:41] Um I think the next thing I was
+[00:21:42] interested in was I missed a missed a
+[00:21:44] block here.
+[00:21:46] Here we go. Yeah. Mapping out the
+[00:21:47] different government orgs and other kind
+[00:21:49] of oversight institutions. I did some
+[00:21:51] work for that. And then And then at the
+[00:21:53] at the end of this user session of my
+[00:21:55] user session,
+[00:21:57] we have um
+[00:21:59] I asked for a join, right? So, we've got
+[00:22:01] effectively a table of data which is the
+[00:22:03] organizations. We've got a table of data
+[00:22:05] which is the oversight bodies. And just
+[00:22:07] in natural language, I can say I kind of
+[00:22:08] want to I want to join these together
+[00:22:09] and see how the labs have been have
+[00:22:11] interacted with the oversight bodies.
+[00:22:13] And uh that's come up with this table.
+[00:22:17] Uh we can see how Anthropic has
+[00:22:19] interacted with um US AI Safety
+[00:22:21] Institute and AC in the UK and and so on
+[00:22:24] and so forth.
+[00:22:25] Um
+[00:22:27] And if I look at the
+[00:22:29] uh AshPL for this
+[00:22:33] table,
+[00:22:34] what you might notice is that the top of
+[00:22:37] the program um is identical to what we
+[00:22:40] had before. So, this is this these are
+[00:22:41] the same web same same web queries and
+[00:22:44] paper queries that we had for that very
+[00:22:46] first table we were looking at.
+[00:22:49] And this is all the same code. It's got
+[00:22:50] the org mentions. The I guess the join's
+[00:22:52] going to be down here a little bit. Like
+[00:22:53] this is the same stuff as what we were
+[00:22:55] looking at before.
+[00:22:56] The difference is this program is now
+[00:22:59] a lot like a a longer. I think the last
+[00:23:01] one was
+[00:23:02] I don't know, 100 lines, 150 lines.
+[00:23:04] We're up to like a 1,000 or so, a bit
+[00:23:07] bit a bit more. And it's only when you
+[00:23:09] write down here
+[00:23:10] that we're starting to talk about
+[00:23:14] um yeah, you can see that we're looking
+[00:23:17] at the oversight
+[00:23:19] uh oversight bodies and the in and the
+[00:23:20] interactions between those and the and
+[00:23:22] the labs here. Here we're talking about
+[00:23:24] oversight. This is the sort of a
+[00:23:27] the the model for a lab interacting with
+[00:23:30] a with an oversight body. And at the
+[00:23:33] point of generating that last table, we
+[00:23:35] would have interpreted this whole
+[00:23:37] um program again from scratch, except
+[00:23:40] this that cache that I talked about. So,
+[00:23:42] the fact that we had already done
+[00:23:47] all this stuff up here, we'd already
+[00:23:48] done all these all these web queries web
+[00:23:50] queries and paper searches and and so
+[00:23:53] and so forth, meant we can interpret the
+[00:23:55] whole the whole um program from scratch,
+[00:23:57] but you know, the vast majority of it is
+[00:23:59] is just memorized and you get it back
+[00:24:01] straight away.
+[00:24:03] One of the reasons we took that design
+[00:24:04] design decision is because
+[00:24:07] um
+[00:24:09] it's easy to be confident about and and
+[00:24:13] and make statistical guarantees of of
+[00:24:14] kind of cohesion and correctness when
+[00:24:16] you're literally interpreting the whole
+[00:24:18] program every single time. You know, if
+[00:24:20] you're just interpreting little
+[00:24:21] snippets, that's where the drift can
+[00:24:22] come in that I mentioned before. That
+[00:24:24] That's one of the places the drift can
+[00:24:25] come in.
+[00:24:27] Uh
+[00:24:29] okay.
+[00:24:30] So, um can we switch back to the slides,
+[00:24:33] please? I think that's that's it for the
+[00:24:34] that's it for the demo.
+[00:24:36] Um okay.
+[00:24:38] Again, I'm not saying that everyone
+[00:24:40] should be using a DSL. It's
+[00:24:43] uh
+[00:24:45] it's not the easiest thing to build.
+[00:24:47] Uh I don't know, it wasn't it wasn't so
+[00:24:48] bad, but um
+[00:24:50] it's the kind of thing that you should
+[00:24:51] reach for if
+[00:24:52] the desiderata for your product and for
+[00:24:55] your organization points you in that
+[00:24:57] direction. And if they do, it's great.
+[00:24:59] We we're really really happy with how
+[00:25:01] it's working for us. But again, Ellicit
+[00:25:03] is uh based on and and kind of really
+[00:25:06] anchors around
+[00:25:08] high quality, dependability, robustness,
+[00:25:11] data provenance, all that stuff that I
+[00:25:13] was just talking about, and that's why
+[00:25:14] we went for it. If you're in a similar
+[00:25:16] position, or you can think there's some
+[00:25:17] other desiderata that could lead to a
+[00:25:19] different DSL that might be a good fit.
+[00:25:21] Here are some of the things that you you
+[00:25:22] should be should be thinking about.
+[00:25:25] So, firstly and most obviously, you need
+[00:25:28] a DSL. And the uh agent ergonomic piece
+[00:25:31] here, what I mean by that is
+[00:25:34] firstly,
+[00:25:35] we have found that
+[00:25:37] you'll have a better time if you base
+[00:25:39] your DSL on an existing language that
+[00:25:41] has a lot of
+[00:25:42] examples of in the training data because
+[00:25:44] then, you know, it doesn't the the the
+[00:25:46] model, the curator in our case, doesn't
+[00:25:48] need to like learn the syntax, uh right?
+[00:25:50] It just needs to know there's a subset
+[00:25:51] that it can go for.
+[00:25:53] Um
+[00:25:54] and um
+[00:25:55] I would say
+[00:25:56] a surprisingly small amount of work went
+[00:25:58] into the DSL compared to everything
+[00:26:00] else. Everything else is kind of like
+[00:26:02] conventional software engineering to
+[00:26:04] really turn it into a a system that
+[00:26:06] works.
+[00:26:07] And that's where the majority of the of
+[00:26:09] the work was there.
+[00:26:10] So, I mentioned the wrapper. Um yeah,
+[00:26:12] that's like letting you switch between
+[00:26:13] different harnesses
+[00:26:15] uh and models.
+[00:26:16] Um interrupt handling. So,
+[00:26:19] when you're in an Ellicit and you're,
+[00:26:21] you know, waiting for the results to
+[00:26:23] come back, you can add other things into
+[00:26:24] the chat, and we want for that to
+[00:26:26] gracefully flow back into the curator so
+[00:26:27] it can redraft its plan without stopping
+[00:26:29] the world. That isn't something that any
+[00:26:31] harness handles natively, so that's
+[00:26:33] something we had to build.
+[00:26:34] We can come back to sessions in the
+[00:26:36] future and like rehydrate them, so we
+[00:26:37] had to whole build a whole thing for for
+[00:26:39] that. That's not really a native
+[00:26:40] feature. Credential isolation is that
+[00:26:42] wrapper thing that I mentioned.
+[00:26:44] Um there's a
+[00:26:46] weirdly annoyingly amount of
+[00:26:48] an annoying amount of stuff to handle
+[00:26:50] messages coming out of the models and
+[00:26:51] make sure that they're not just like
+[00:26:53] lost to standard out. You know, just
+[00:26:55] like if you've worked with models a lot,
+[00:26:56] it's the kind of stuff that you're used
+[00:26:58] to being a bit annoying.
+[00:27:00] Um
+[00:27:02] And number seven, yeah, we use event
+[00:27:04] sourcing. We We're really happy with
+[00:27:05] that pattern.
+[00:27:06] Uh that's not a small lift. Um I guess
+[00:27:09] you don't need to I think I think most
+[00:27:11] people would probably need to do three,
+[00:27:15] four, five, and six.
+[00:27:18] Would recommend number two. I guess you
+[00:27:19] have to do one. That's obvious.
+[00:27:21] Um number seven, you have to do
+[00:27:23] something there. And eight,
+[00:27:25] I've not mentioned this, but yeah,
+[00:27:28] I I I guess I said before that we're
+[00:27:29] really pri- We really pride ourselves on
+[00:27:31] accuracy and um
+[00:27:33] uh and robustness and and truth- and
+[00:27:35] trustworthiness. And we have a dedicated
+[00:27:37] eval team who are great. Uh
+[00:27:41] It's so hard to do eval when the the
+[00:27:43] system is like writing programs and
+[00:27:45] executing them on the fly. Like it's
+[00:27:46] just a very complex dynamic um
+[00:27:48] domain to begin.
+[00:27:50] Um but we've invested a lot of time
+[00:27:51] there, and I'd really strongly recommend
+[00:27:53] that you do the same. Um
+[00:27:56] if you're doing a kind of DSL DSL-based
+[00:27:57] system.
+[00:28:00] Okay. So, let me uh let me finish where
+[00:28:03] I began.
+[00:28:04] The uh
+[00:28:06] example I gave at the beginning was
+[00:28:07] let's uh let's imagine two systems
+[00:28:11] produce identical output. And
+[00:28:13] should you trust it?
+[00:28:16] I think it's it's not crazy to imagine
+[00:28:18] Opus coming up with one of those tables
+[00:28:20] that I was just showing. I didn't show a
+[00:28:22] bunch of the fe- I just because of time,
+[00:28:24] there's a bunch of features there that
+[00:28:25] um
+[00:28:26] are really important to us, but at
+[00:28:28] certainly at least at a surface level,
+[00:28:30] the table itself isn't like a crazy
+[00:28:32] thing to imagine a state-of-the-art
+[00:28:33] model coming up with.
+[00:28:34] However, the fact that we go through a
+[00:28:37] very particular
+[00:28:39] um and sort of painstaking process to
+[00:28:41] generate it, and we expose that in a
+[00:28:43] ergonomic way to the user, you know,
+[00:28:46] right with the ASPL and that graphical
+[00:28:48] interface and a few of the bells and
+[00:28:49] whistles. I think that's the thing that
+[00:28:52] makes me think and know from
+[00:28:54] conversations with our users that they
+[00:28:56] hold they would hold those two things
+[00:28:58] quite differently. Like a a table like
+[00:28:59] that in in a lucid is a is a
+[00:29:01] fundamentally different thing to a table
+[00:29:04] that's just you know being bubbled out
+[00:29:06] from a from a model. Um and maybe
+[00:29:08] there's something that kind of
+[00:29:10] has that same dynamic for you for your
+[00:29:12] for your business and and for your
+[00:29:13] product.
+[00:29:14] So, yeah. My My pitch here is not that
+[00:29:18] you should go and use a a DSL.
+[00:29:20] Um
+[00:29:21] my pitch is that you should care a lot
+[00:29:23] about the mechanism.
+[00:29:25] Um because the mechanism the mechanism
+[00:29:28] matters.
+[00:29:29] Okay.
+[00:29:30] That's it for me. Thank you very much.

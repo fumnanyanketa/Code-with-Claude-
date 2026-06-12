@@ -1,0 +1,1182 @@
+Title: Tool, skill, or subagent? Decomposing an agent that outgrew its prompt
+Video: https://www.youtube.com/watch?v=mWvtOHlZM-I
+Caption: auto (en) via web_safari
+================================================================================
+
+[00:00:00] [music]
+[00:00:05] [music]
+[00:00:09] [music]
+[00:00:14] [music]
+[00:00:19] >> All right, fantastic. Can everyone hear
+[00:00:21] me? Thumbs up, all good? All right.
+[00:00:25] Everyone, I hope that you have had a
+[00:00:26] fantastic day at Code with Claude London
+[00:00:29] and so far today. My name is Will. I'm
+[00:00:32] on our engineering team at Anthropic. I
+[00:00:34] sit on a team called Applied AI. What
+[00:00:37] that means is I essentially split my
+[00:00:38] time between internal engineering work
+[00:00:41] and time spent building agents with
+[00:00:44] customers. So, folks, imagine that you
+[00:00:47] built and shipped an agent to solve a
+[00:00:50] problem. I'm sure that's something that
+[00:00:52] a lot of the folks in this room have
+[00:00:54] actually done. And imagine this that
+[00:00:56] this agent worked fantastic, right? But
+[00:00:59] it works so well that a few weeks after
+[00:01:02] shipping,
+[00:01:03] you were asked to add some additional
+[00:01:05] capability to the agent. A few weeks
+[00:01:08] after that, you received more business
+[00:01:10] requirements and you added additional
+[00:01:12] capability. This pattern continued and
+[00:01:15] continued until before you know it, your
+[00:01:18] system prompt had grown to become
+[00:01:20] several hundred lines long. You have
+[00:01:23] dozens of tools and sub-agents that
+[00:01:25] exist for your agent. And because of the
+[00:01:28] complexity,
+[00:01:29] you've started to see regressions in the
+[00:01:32] areas that your agent was previously
+[00:01:35] accelerating in. So, if this is you,
+[00:01:36] you're not alone. We see this type of
+[00:01:39] scenario happen pretty commonly with
+[00:01:41] customers and actually with ourselves
+[00:01:43] included in that. So, within this
+[00:01:45] workshop, we are going to simulate an
+[00:01:48] agent that is essentially grown to a
+[00:01:51] complexity where we start to see
+[00:01:53] degradation in its performance. We're
+[00:01:56] then going to walk through some of the
+[00:01:58] decisions that we as engineers and
+[00:02:00] architects make
+[00:02:02] in order to improve the design of our
+[00:02:05] agent to restore the performance that we
+[00:02:08] expect with the additional capability.
+[00:02:11] Specifically, we're going to make some
+[00:02:12] decisions around tools and skills and
+[00:02:15] sub agents.
+[00:02:17] As we modernize the stack of our agent,
+[00:02:20] we want to make sure that we're using
+[00:02:21] the right agentic primitives at the
+[00:02:23] right time. So, when do you use a tool,
+[00:02:26] when do you use a skill, and when do you
+[00:02:28] use a sub agent? We're going to talk
+[00:02:29] through all of that in this session. As
+[00:02:32] I mentioned, folks, this session will be
+[00:02:35] hands-on. So, let's go ahead and get
+[00:02:36] started. I first want to walk you
+[00:02:39] through our problem statement in our
+[00:02:42] agent. So, for the purposes of this
+[00:02:44] session, we're going to be focusing on
+[00:02:45] an agent called Stock Pilot. This is an
+[00:02:49] inventory management agent that was
+[00:02:52] designed by and for a mid-size uh uh
+[00:02:55] retailer.
+[00:02:56] The agent that you see on the screen can
+[00:02:57] do several things. It can flag low
+[00:02:59] levels of stock. It can forecast demand.
+[00:03:03] It can pick suppliers. It can file POs.
+[00:03:05] And ultimately, it can write weekly
+[00:03:07] reports for the employees of this
+[00:03:10] retailer. Now, none of these
+[00:03:12] capabilities are particularly complex on
+[00:03:15] their own. But again, the issue is that
+[00:03:17] we've essentially bolted capabilities
+[00:03:20] onto our agent over time without
+[00:03:23] modernizing our architecture. This
+[00:03:25] complexity has started to cause some
+[00:03:28] problems. Let's take a look at the
+[00:03:30] actual architecture today of the agent.
+[00:03:33] Folks, today the agent is facilitated by
+[00:03:35] a single orchestrator. So, you see the
+[00:03:37] Stock Pilot orchestrator sitting at the
+[00:03:39] top of the screen.
+[00:03:41] The agent has a system prompt, as I
+[00:03:43] mentioned, that's grown to be about 400
+[00:03:46] lines long. It has 12 different tools.
+[00:03:49] Three of those tools happen to be
+[00:03:52] wrappers around sub agents with
+[00:03:54] completely isolated context windows. So,
+[00:03:57] if you have the repo pulled up,
+[00:03:59] which we'll go into more detail in just
+[00:04:01] a bit, there's an agent that's under a
+[00:04:03] folder called before, which essentially
+[00:04:05] walks through this this agent exactly.
+[00:04:08] So again, orchestrator, long system
+[00:04:11] prompt, a lot of tools, we have a lot of
+[00:04:13] sub agents.
+[00:04:15] The result of this is that our evals
+[00:04:18] have started to dip. So, let's imagine
+[00:04:19] how we got here for a moment. Again,
+[00:04:21] like we built that agent up front to
+[00:04:23] solve a really specific problem.
+[00:04:26] We received business requirements to say
+[00:04:29] add maybe some forecasting capability to
+[00:04:31] our inventory management agent. So, what
+[00:04:33] we decided to do was essentially just
+[00:04:35] spin up a forecaster as a sub agent.
+[00:04:38] Again, later on we we received more
+[00:04:40] requirements to add report writing
+[00:04:42] capability to our agent. So, we decided
+[00:04:45] to add another sub agent for that report
+[00:04:48] writing capability.
+[00:04:50] Again, our evals started to dip over
+[00:04:52] time because we added more and more
+[00:04:55] complexity while just bolting this
+[00:04:57] capability on. So, let's take just a
+[00:04:59] little bit of time and talk about evals
+[00:05:02] specifically.
+[00:05:05] For this agent, folks, we have 12
+[00:05:07] different eval tasks across five
+[00:05:11] different types of graders. So, my
+[00:05:13] colleague gave a talk on evals shortly
+[00:05:15] before this. Evals will have a component
+[00:05:18] within this workshop, but it won't be
+[00:05:19] the main focus. I'll give you a quick
+[00:05:22] summary of the tactical evals that we're
+[00:05:24] using for this agent.
+[00:05:26] On the left side of the screen, you see
+[00:05:28] some IDs. You see several evals that
+[00:05:30] start with the letter R. This stands for
+[00:05:32] regression. These are more realistic
+[00:05:35] single-turn tasks that we grade the
+[00:05:38] model's capability on. So, imagine I
+[00:05:41] give the model a task, the model
+[00:05:43] comprehends that task in the form within
+[00:05:45] the agent, uh calls some tools, and then
+[00:05:47] provides a response back to me. We're
+[00:05:50] essentially evaluating that response.
+[00:05:52] We also have some more complex tasks
+[00:05:55] that we're grading the model on. So, you
+[00:05:56] see those F
+[00:05:58] IDs, the IDs that start with F on the
+[00:06:00] left side of the screen. That stands for
+[00:06:02] failure mode. In this case, we're
+[00:06:03] evaluating the model over a more
+[00:06:06] complicated multi-turn task that we're
+[00:06:09] grading. Now, again, I won't go into
+[00:06:12] evals too specifically. We have a number
+[00:06:14] of different types of graders that are
+[00:06:17] both deterministic and
+[00:06:18] non-deterministic.
+[00:06:20] Right? When I talk about not when I talk
+[00:06:22] about deterministic evals, we're grading
+[00:06:25] things like turn count and like latency
+[00:06:28] and like the number of tokens that are
+[00:06:30] used as our agent is completing a
+[00:06:32] particular task and we're tracking those
+[00:06:34] deterministic metrics over time.
+[00:06:37] We're also using the idea of LLM as a
+[00:06:40] judge to evaluate the non-deterministic
+[00:06:42] characteristics of our agent. So,
+[00:06:45] personality and tone and style and
+[00:06:47] output quality, we're using a
+[00:06:49] non-deterministic grader as a part of
+[00:06:51] our eval to evaluate our agent's
+[00:06:54] non-deterministic characteristics.
+[00:06:58] Now, we're going to run the evals for
+[00:06:59] our agent in just a bit, but when you
+[00:07:01] do, you'll find that the agent is
+[00:07:02] struggling a bit. I'll talk about some
+[00:07:05] of these evals in just a little bit more
+[00:07:06] depth. So, F1 on the screen, third from
+[00:07:10] the bottom, this is essentially
+[00:07:11] simulating a daily low stock sweep. this
+[00:07:15] is an inventory agent. We're simulating
+[00:07:17] our ability to look through all of our
+[00:07:19] inventory and pull the low levels of
+[00:07:21] stock.
+[00:07:22] This eval you'll find will actually fail
+[00:07:25] because the agent is going to do the
+[00:07:27] right thing, but it's going to take a
+[00:07:28] very winding path to do so. So, instead
+[00:07:31] of taking the straightest line from
+[00:07:33] point A to point B, the agent is going
+[00:07:36] to take a very inefficient path. It's
+[00:07:37] going to get to the right end, but it's
+[00:07:39] going to fail the eval because it's not
+[00:07:41] at the efficiency that we'd like.
+[00:07:43] F2 on the screen is another eval that
+[00:07:46] you'll see fail.
+[00:07:47] This eval actually evaluates the
+[00:07:49] ordering process under a particular
+[00:07:52] promotion package. This is going to fail
+[00:07:55] because we are using a sub agent for
+[00:07:58] this particular task. The sub agent is
+[00:08:01] actually getting the task right, but
+[00:08:04] there's a communication breakdown
+[00:08:06] between our sub agent and our
+[00:08:07] orchestrator. This is a really common
+[00:08:09] point of failure that we see when
+[00:08:11] customers have have really complicated
+[00:08:13] systems with a lot of sub agents. It's
+[00:08:15] important to get the communication
+[00:08:17] between your sub agents and your
+[00:08:19] orchestrator just right. In the case of
+[00:08:21] F2 like you see on the screen, this is
+[00:08:23] an eval that's going to fail because we
+[00:08:24] have a breakdown
+[00:08:27] in that communication.
+[00:08:29] The last one that I'll highlight that
+[00:08:30] you'll see fails is R8 on the screen.
+[00:08:34] R8 will essentially check the
+[00:08:36] forecasting during a particular
+[00:08:38] promotion month.
+[00:08:39] This eval is also going to fail because
+[00:08:43] we have two different policies that live
+[00:08:45] in very different parts of our system
+[00:08:47] prompt and actually end up contradicting
+[00:08:50] each other. So, I mentioned over time
+[00:08:51] our system prompt has grown. We start to
+[00:08:53] have some conflicts and the model gets
+[00:08:55] confused leading towards a failure for
+[00:08:58] this particular eval.
+[00:09:01] Now, in the repo, you'll see it in the
+[00:09:02] read me when we run these evals, you'll
+[00:09:04] see that they're going to pass up front
+[00:09:06] at about 83%
+[00:09:09] which is okay, but if you work in the
+[00:09:10] world of manufacturing, that is not
+[00:09:12] okay. 17% failure is a really expensive
+[00:09:16] failure percentage.
+[00:09:18] Now, let's double click on R8 again just
+[00:09:21] so that we can understand a little bit
+[00:09:23] about what's happening behind the
+[00:09:25] scenes. Again, R8 is where we're
+[00:09:26] essentially calculating the forecast
+[00:09:30] during a particular month with a
+[00:09:32] promotion. And so, in my
+[00:09:34] uh on my screen here on the right side
+[00:09:36] where you see kind of the simulated
+[00:09:37] terminal window.
+[00:09:39] Uh within the first block under the
+[00:09:41] commented text, we can see that the
+[00:09:43] agent pulled the right forecasting
+[00:09:45] baseline and also pulled the right
+[00:09:47] promotion multiplier. So, forecasting
+[00:09:50] baseline 12 units a day, promotion
+[00:09:52] multiplier 3.1x.
+[00:09:55] This is all correct. But, in the
+[00:09:56] calculation part below that, we can see
+[00:09:59] that there was actually some kind of
+[00:10:00] hallucination that happened. Instead of
+[00:10:02] using that 3.1x promo multiplier,
+[00:10:06] the agent actually ended up using 1.35.
+[00:10:09] So, something happened along the way.
+[00:10:12] A hint here is that the reason for this
+[00:10:14] is that we have context problem. So,
+[00:10:16] this isn't a model problem. It's an
+[00:10:18] issue with our the information that
+[00:10:20] we're surrounding the model with. Our
+[00:10:22] system prompt has grown to be really
+[00:10:24] long and is very confusing for the model
+[00:10:26] and has some conflicts in it, which lead
+[00:10:29] to the issue that shows up within this
+[00:10:31] eval.
+[00:10:33] So, folks, our objective in this
+[00:10:34] workshop will first be to run our suite
+[00:10:37] of evals.
+[00:10:39] We're going to triage the issues and
+[00:10:41] we're going to update the design of our
+[00:10:43] agent accordingly. And then, we're going
+[00:10:46] to do something that we call internally
+[00:10:47] hill climbing towards eval improvement.
+[00:10:50] Right? So, we run our evals, we get a
+[00:10:51] baseline. It's going to be about 83%.
+[00:10:54] We're then going to optimize the
+[00:10:55] architecture of our agent and we're
+[00:10:57] going to continue then running our eval
+[00:10:59] so that we climb on them, hopefully
+[00:11:02] seeing the success percentage uh improve
+[00:11:05] over time. In this lab, we're also going
+[00:11:08] to start with an agent that is
+[00:11:10] self-created on our messages API. Um
+[00:11:14] again, if you have the repo and you
+[00:11:15] click on the before folder, I'll show
+[00:11:17] you this in just a bit.
+[00:11:19] This is an agent that is built from
+[00:11:21] scratch on our messages API. We're going
+[00:11:24] to actually migrate that that agent to
+[00:11:27] Claude managed agents.
+[00:11:31] Claude managed agents essentially allows
+[00:11:33] us to offload the messiness that comes
+[00:11:37] with maintaining an agentic harness in
+[00:11:40] scaling agents safely and securely to
+[00:11:43] thousands and tens of thousands of
+[00:11:46] users, right? Like if I want to build my
+[00:11:48] agent locally and run it locally, I can
+[00:11:51] do that pretty quickly and pretty
+[00:11:52] easily. But the moment that I need to
+[00:11:54] take that agent, I need to host it
+[00:11:57] remotely, and I need to allow hundreds
+[00:11:59] and and and and thousands of users to at
+[00:12:02] the same time engage with that agent,
+[00:12:05] there's an infrastructure problem,
+[00:12:06] there's a scaling problem, there's
+[00:12:08] memory, there's security, there's so
+[00:12:10] much that I have to account for. So, in
+[00:12:12] order to offload that, so I can just
+[00:12:15] worry about the architecture of my agent
+[00:12:18] itself and make decisions around tools,
+[00:12:21] skills, and sub-agents, I'm going to
+[00:12:24] offload everything else to Claude
+[00:12:27] managed agents.
+[00:12:29] So, again, to break that down just a
+[00:12:31] bit, um there's been a few talks on CMA
+[00:12:34] so far today, but this is really where
+[00:12:36] we're able to separate the agent from
+[00:12:39] the session details, from the sandboxed
+[00:12:42] environment where tool calls are
+[00:12:44] actually happening.
+[00:12:46] Um again, this allows us to offload
+[00:12:48] particular parts of the stack to then
+[00:12:51] worry about the to then only worry about
+[00:12:53] the design of our agent itself.
+[00:12:58] All right.
+[00:12:59] I mentioned that we're going to get
+[00:13:00] hands-on in this workshop. We are going
+[00:13:03] to go ahead and do that right now.
+[00:13:08] Now, what you see on the screen here
+[00:13:12] is the workshop URL as well. Um if you
+[00:13:15] haven't had a chance to grab it, feel
+[00:13:16] free to go ahead and do so. Um this is
+[00:13:18] where we're keeping all of the different
+[00:13:20] workshops throughout Code with Claude
+[00:13:22] within London, so you can go back and
+[00:13:23] revisit them if helpful. Within this
+[00:13:26] workshop, we're going to be working on
+[00:13:27] agent decomposition. So, that's going to
+[00:13:29] be the name of the folder that we're
+[00:13:31] actually going to be working within.
+[00:13:36] Great.
+[00:13:37] Let me jump forward here.
+[00:13:41] Perfect. So, the first thing that we're
+[00:13:42] going to do
+[00:13:45] as a part of this workshop is we're
+[00:13:46] first going to get a baseline. So, when
+[00:13:48] you open up that link,
+[00:13:51] you'll first clone the repo. So, we're
+[00:13:54] going to clone the repo locally. We have
+[00:13:56] a UV project that's set up. So, we're
+[00:13:58] going to run UV sync in order to make
+[00:14:00] sure that we have all of our packages
+[00:14:02] and our dependencies to be able to
+[00:14:04] invoke the Anthropic SDK and then
+[00:14:06] eventually deploy our agent to Claude
+[00:14:08] managed agents. So, we can run UV sync
+[00:14:10] to do that. I mentioned previously that
+[00:14:12] we're going to need an API key for this
+[00:14:14] workshop as well. So, using those
+[00:14:16] credits that you got at the start of
+[00:14:18] this session, you can go to your Claude
+[00:14:20] console account and create an API key.
+[00:14:23] If you copy the ENV example, you'll just
+[00:14:25] have to manually copy your API key into
+[00:14:27] the ENV file that's created for you.
+[00:14:31] Now, all the 12 evals that I previously
+[00:14:34] walked you through, we have all of those
+[00:14:36] set up already. So, in order to get a
+[00:14:37] baseline and run those evals, you have
+[00:14:40] to run UV run evals {dash} {dash} agent
+[00:14:43] before. This is all in the read me, but
+[00:14:45] if you just run that command, you will
+[00:14:48] be able to
+[00:14:50] actually go about running your evals.
+[00:14:55] Now, in terms of our building here,
+[00:14:57] we're going to take a number of steps to
+[00:14:58] actually go about running our evals
+[00:15:01] using Claude code to triage the results
+[00:15:03] of them and then climbing accordingly on
+[00:15:07] our agent.
+[00:15:09] So, we're first going to take some We're
+[00:15:11] going to take a look at our the system
+[00:15:13] prompt that we have for our agent
+[00:15:14] itself. So, I mentioned earlier that our
+[00:15:16] system prompt is currently sitting at
+[00:15:18] about 400 lines long. We've been
+[00:15:19] stacking information on our system
+[00:15:22] prompt over and over again as we've
+[00:15:24] continued to get more business
+[00:15:25] requirements. So, our system prompt is
+[00:15:27] very long. We'll take a look at that.
+[00:15:30] We are then going to take some time to
+[00:15:31] evaluate the tools that we're using.
+[00:15:33] Right now, as I mentioned, we have 12
+[00:15:35] different tools. Three of them are
+[00:15:36] actually kind of wrapped sub-agents, so
+[00:15:38] we'll take a look to see what we can do
+[00:15:40] to make that more efficient. And then
+[00:15:42] lastly, if there are any sub-agents that
+[00:15:44] we really need to make our agent
+[00:15:46] effective, we're going to take a look at
+[00:15:47] the best way
+[00:15:49] um to actually construct sub-agents with
+[00:15:53] Claude managed agents.
+[00:15:57] I'm going to jump back just for a
+[00:15:58] moment. There's one thing that I forgot
+[00:15:59] to mention for you as you get started.
+[00:16:02] Um within the repo folder, there's two
+[00:16:05] different uh folders that you'll see.
+[00:16:07] There's a before folder, and then
+[00:16:09] there's a starter folder. Those contain
+[00:16:12] two separate agents. So, if you want to
+[00:16:14] view the messages API version of the
+[00:16:17] agent, again, this is just me building
+[00:16:19] my own agent loop and my own agent
+[00:16:21] harness around the Anthropic messages
+[00:16:24] API to invoke Claude, you'll see that
+[00:16:27] within the before folder.
+[00:16:29] If you want to view what that agent
+[00:16:32] looks like when deployed on Claude
+[00:16:34] managed agents, um you can look in the
+[00:16:36] starter folder, which exists right below
+[00:16:38] that. If you want to deploy your agent
+[00:16:41] on Claude managed agents, you can run UV
+[00:16:45] run deploy a starter. So, again, run
+[00:16:47] your evals using the messages API
+[00:16:50] version uh {dash} {dash} agent before,
+[00:16:53] you can then deploy your agent on Claude
+[00:16:56] managed agents. We already had it built
+[00:16:57] for you, and it's really easy to use
+[00:16:59] Claude code to kind of compare the two
+[00:17:02] um and understand exactly what's going
+[00:17:03] on and what some of the differences are
+[00:17:06] uh with Claude managed agents.
+[00:17:09] Okay, so I'm going to jump over here,
+[00:17:10] and we're just going to open up Claude
+[00:17:12] code,
+[00:17:13] and we are going to build together. I'm
+[00:17:15] I'm to zoom in very far so that you can
+[00:17:17] see everything and so that I can see
+[00:17:19] everything and we'll just talk through
+[00:17:21] exactly what happens when I run some of
+[00:17:23] these evals and we'll talk through the
+[00:17:25] process that we usually go through to do
+[00:17:27] what I just called hill climbing on the
+[00:17:30] evals themselves. Okay, so if you're
+[00:17:32] looking at Claude code here, again, I
+[00:17:34] just used Claude code to actually run my
+[00:17:35] evals because I want Claude's help in
+[00:17:38] triaging what's going on.
+[00:17:40] Um, so this is me. I'm using Claude
+[00:17:42] code. I have Opus 4.7 running as you can
+[00:17:45] see on the screen. Uh, my effort level
+[00:17:48] is set to extra high. I usually set
+[00:17:51] effort as extra high with Opus 4.7 and I
+[00:17:54] forget about it. That's the effort level
+[00:17:55] that I usually stand. We find that it
+[00:17:57] gets great performance
+[00:17:59] um, with extra high effort all together.
+[00:18:03] Now, you can see on the screen the first
+[00:18:04] thing that I did was I ran my eval. So,
+[00:18:07] I used the bash capability in Claude
+[00:18:09] code and I ran UV run evals {dash}
+[00:18:11] {dash} agent before.
+[00:18:14] Claude actually went ahead and ran my
+[00:18:16] eval. So, I'm going to scroll down and
+[00:18:18] we're going to look at what Claude found
+[00:18:21] while actually running those. So, you
+[00:18:23] can see the response that we got, the
+[00:18:26] results that we got from this eval run
+[00:18:28] was actually lower than what I told you
+[00:18:29] before. So, we ran them and we got 62%
+[00:18:33] which is worse than the 83% that we
+[00:18:34] started with.
+[00:18:36] So, we passed seven out of 12 of them
+[00:18:39] and it looks like Claude has provided us
+[00:18:42] with a diagnosis for the different evals
+[00:18:45] that we actually failed.
+[00:18:49] Let's scroll down just a bit more.
+[00:18:55] And we are going to use Claude to
+[00:18:57] understand a little bit more about why
+[00:18:59] this actually happened. So, you can see
+[00:19:02] here I am using Claude
+[00:19:04] to provide me some of the themes around
+[00:19:07] why we actually failed some of these
+[00:19:09] evals. Again, this is a a technique if
+[00:19:10] you have evals for your agent. Um again,
+[00:19:13] as Geary showed before this session, you
+[00:19:15] can use Claude actually go about
+[00:19:16] triaging these. So, it looks like
+[00:19:18] there's a few different themes that
+[00:19:19] Claude is figuring out based on this
+[00:19:21] agent. So, the first thing Claude is
+[00:19:23] seeing that our model is taking on a lot
+[00:19:26] of work that it should have tools in
+[00:19:29] order to do. So, our model is doing a
+[00:19:30] lot of reasoning across information that
+[00:19:33] it just doesn't have the tools to be
+[00:19:35] able to complete.
+[00:19:37] It looks like there is some issues that
+[00:19:39] we have with the enforcement of output
+[00:19:41] structure. So, our model and our
+[00:19:43] sub-agents are producing information in
+[00:19:46] a particular output structure that
+[00:19:48] doesn't align um exactly with uh what
+[00:19:51] we're looking for with um
+[00:19:54] to to pull the best performance from uh
+[00:19:57] from our agent.
+[00:19:59] If I continue to scroll down here, you
+[00:20:01] can see there was some policy issues,
+[00:20:02] etc. Um as I mentioned before, we have a
+[00:20:05] system prompt that's really long right
+[00:20:07] now. Um and so, Claude is seeing some
+[00:20:10] confusions based on the information
+[00:20:12] that's found within the system prompt.
+[00:20:14] So, again, you can see Claude has found
+[00:20:16] some root causes.
+[00:20:19] Now, we're going to do a few different
+[00:20:20] things here. Again, we're going to go
+[00:20:21] one-by-one and address some of the areas
+[00:20:24] um that we're seeing issues on within
+[00:20:26] our agent. So, I'm going to scroll down
+[00:20:27] here and we are going to use um Claude
+[00:20:31] code to triage some things within our
+[00:20:34] agent. Okay. So, the first thing that
+[00:20:36] I'm going to ask Claude to do, we're
+[00:20:37] going to talk through this. Claude is
+[00:20:39] making some changes, which is great. Um
+[00:20:41] system prompts tend to get very, very
+[00:20:43] long when we accumulate agents over
+[00:20:46] time. So, the first prompt that I ran,
+[00:20:48] if you're following along, feel free to
+[00:20:50] go ahead and do this. I encouraged
+[00:20:52] Claude to look at my agent.py file,
+[00:20:54] which is where our main CMA um agent
+[00:20:58] loop is located. Again, that's agent.py.
+[00:21:02] And I essentially said, "Hey Claude, do
+[00:21:03] you have any thoughts on the system
+[00:21:05] prompt? Maybe I can use skills instead
+[00:21:08] of a long-running system prompt for
+[00:21:09] progressive disclosure. So, the first
+[00:21:12] thing that we'll talk about is skills.
+[00:21:13] There's been a few other sessions on
+[00:21:15] skills. The short definition that I like
+[00:21:17] to use is that skills are packaged and
+[00:21:20] composable information that Claude has
+[00:21:24] the ability to pull into context
+[00:21:26] whenever Claude realizes that it needs
+[00:21:28] that information to complete a
+[00:21:30] particular task. Right? Skills are
+[00:21:32] really useful with Claude code. Like if
+[00:21:34] you need to provide Claude information
+[00:21:37] on your testing process, or if you want
+[00:21:39] to package up your brand and your UI
+[00:21:42] components, and bundle them into a skill
+[00:21:45] that Claude can pull into context
+[00:21:47] whenever needed, skills are fantastic.
+[00:21:50] Skills are also useful within the agents
+[00:21:52] that you're building for your customers.
+[00:21:55] So, if you're building a product, and
+[00:21:57] you are going to give that product to
+[00:21:59] customers, you're building an agent,
+[00:22:02] skills are great within that.
+[00:22:04] In the case of the agent that we have on
+[00:22:06] the screen here,
+[00:22:07] um again, we have a lot of different
+[00:22:10] policies and a lot of procedures that go
+[00:22:13] into our inventory management system. As
+[00:22:17] I accumulated requirements over time,
+[00:22:20] instead of building skills, I decided to
+[00:22:23] take all of that information and keep
+[00:22:25] appending it to my system prompt. So, my
+[00:22:28] system prompt got longer and longer and
+[00:22:30] longer over time.
+[00:22:32] This is not something that we recommend
+[00:22:34] you do based on the introduction of
+[00:22:36] skills. Right? Leave the system prompt
+[00:22:39] only for the information that Claude
+[00:22:41] needs in its mind, regardless of the
+[00:22:44] task that you give it.
+[00:22:46] Skills are fantastic for packaging
+[00:22:49] information that Claude is going to need
+[00:22:52] some of the time, not all of the time.
+[00:22:55] Right? So, if I ask Claude to go build a
+[00:22:56] forecast, Claude is going to um go ahead
+[00:23:00] and do that. Let's see, I lost my
+[00:23:02] computer just for a second. Here we go.
+[00:23:05] If I ask Claude to go ahead and build a
+[00:23:07] forecast, right, Claude is not going to
+[00:23:10] need forecasting information unless I
+[00:23:13] specifically ask it to go ahead and and
+[00:23:16] build that forecast, right? So, in the
+[00:23:18] case of that particular task, I want
+[00:23:20] Claude to pull forecasting information
+[00:23:23] into its context window. Skills are also
+[00:23:26] fantastic for making sure that you are
+[00:23:29] being efficient with context because if
+[00:23:31] you stuff all of this information into
+[00:23:33] the system prompt, you're polluting that
+[00:23:36] context window with information that
+[00:23:38] Claude does not need
+[00:23:40] >> [snorts]
+[00:23:40] >> um, in order to complete a particular
+[00:23:42] task. So, again, the first thing that I
+[00:23:44] did, I'll zoom in just a bit more so
+[00:23:46] that you can see this, and I'll scroll
+[00:23:48] up just a bit.
+[00:23:51] I said, "Hey Claude, can you help me
+[00:23:53] take a look through my system prompt?
+[00:23:56] Can I use skills instead?
+[00:23:59] My system prompt is too long and I need
+[00:24:01] some help." And so, Claude did an
+[00:24:03] analysis of this and realized that I
+[00:24:05] have some pre-built skills that I can
+[00:24:08] use to supplement information in my
+[00:24:10] system prompt. So, the first correction
+[00:24:13] or fix that we're going to make to
+[00:24:15] modernize our architecture here
+[00:24:17] >> [snorts]
+[00:24:17] >> is we are actually going to um, remove
+[00:24:21] uh,
+[00:24:22] many of much of the system prompt and
+[00:24:25] we're going to put that information into
+[00:24:26] skills. And so, you can see here the
+[00:24:28] first thing that we're doing with Claude
+[00:24:31] is we are activating a number of
+[00:24:33] different skills that previously were
+[00:24:35] not there before, and we're actually
+[00:24:37] swapping our system prompt to be a short
+[00:24:39] prompt instead of a long one. So, if
+[00:24:42] you're curious, if you feel like you
+[00:24:43] have a long system prompt within the
+[00:24:44] agents that you're building, feel free
+[00:24:46] to take a look at this to see the
+[00:24:47] differences between what was like a
+[00:24:49] 400-line system prompt compared to about
+[00:24:51] a 50-line system prompt, we've
+[00:24:53] supplemented that and we've switched a
+[00:24:55] lot of that information to skills.
+[00:25:00] Great.
+[00:25:01] I am now going to continue working with
+[00:25:03] Claude. You can see we made those
+[00:25:05] changes here, which is fantastic.
+[00:25:07] There's some evals that I can go rerun.
+[00:25:10] I'm going to ask Claude to do one more
+[00:25:11] thing, and then we're going to we're
+[00:25:13] going to rerun some of our evals to see
+[00:25:15] where we've improved.
+[00:25:17] So, I mentioned before that we have 12
+[00:25:18] different tools. You saw those on the
+[00:25:20] screen in the second slide that I
+[00:25:23] shared. As a part of this inventory
+[00:25:25] management agent, we have we have tools
+[00:25:28] that we've created for everything. So,
+[00:25:30] whenever Claude needs to retrieve data,
+[00:25:31] we have a tool. Whenever Claude needs to
+[00:25:33] analyze data, we have a tool for that.
+[00:25:36] We have tools for everything. So, I'm
+[00:25:38] going to ask Claude to take a look at
+[00:25:41] the tools that my agent has and help me
+[00:25:45] think through how I can optimize here.
+[00:25:49] So, right now Claude is running an
+[00:25:50] analysis across the different tools that
+[00:25:52] I have for my agent.
+[00:25:55] And we're going to get to see what some
+[00:25:57] of the results for.
+[00:25:59] Now, while this is working, I'll give
+[00:26:01] you a tip when it comes to building
+[00:26:04] agents that we carry with us at
+[00:26:06] Anthropic for our agents internally and
+[00:26:08] the agents built with customers.
+[00:26:10] Whenever we build agents, we lean into
+[00:26:12] the same primitives that we as humans
+[00:26:15] have access to. So, imagine yourself
+[00:26:18] when you show up to work, right? You
+[00:26:19] have a computer that's sitting in front
+[00:26:21] of you. You have the ability to navigate
+[00:26:23] files on a file system. You can type in
+[00:26:25] the browser and you can search the web.
+[00:26:27] If you're an engineer, you have the
+[00:26:29] ability to write and execute code.
+[00:26:32] When you think about Claude code as an
+[00:26:34] agent, we've effectively given Claude
+[00:26:37] access to all of the same primitives
+[00:26:39] that you and I have access to when we
+[00:26:40] show up to work every single day. Like
+[00:26:42] Claude code is a great coding agent
+[00:26:45] because Claude is really good at code,
+[00:26:47] but essentially what we've done with
+[00:26:48] Claude code is we've just given Claude
+[00:26:50] access to a computer.
+[00:26:53] Right? And this is really powerful
+[00:26:54] because this allows us to drop in better
+[00:26:58] versions of Claude as we continue to
+[00:27:01] release new models, and Claude just uses
+[00:27:04] those primitives better than it did
+[00:27:06] before.
+[00:27:07] Right? Like imagine yourself after this
+[00:27:09] conference compared to yourself when you
+[00:27:11] walked in. You're going to have the same
+[00:27:12] tools at your fingertips, but you're
+[00:27:15] theoretically, your brain's going to be
+[00:27:17] a little bit bigger, you're going to be
+[00:27:18] smarter based on what you learned here,
+[00:27:20] and you're going to be more effective
+[00:27:21] while using the same tools. Claude works
+[00:27:24] the same exact way.
+[00:27:25] Right? And so whenever we build agents,
+[00:27:28] we lean into human-like primitives
+[00:27:31] first. These primitives are things like
+[00:27:35] code execution
+[00:27:36] and the navigation of a file system, the
+[00:27:39] keeping of a to-do list, the ability to
+[00:27:41] search the web. These are foundational
+[00:27:43] tools that we always start with when we
+[00:27:45] build agents, and we remove them as
+[00:27:48] needed. An example that I like to give
+[00:27:50] is with file, uh, like document
+[00:27:53] analysis.
+[00:27:55] If you're building an agent that
+[00:27:56] requires document analysis, maybe you
+[00:27:59] have a lot of
+[00:28:01] CSVs or Excel sheets that your agent is
+[00:28:03] going to be looking over, code
+[00:28:05] execution, so the ability to write and
+[00:28:07] run code is one of the best ways of uh,
+[00:28:11] uh, doing data analysis and working
+[00:28:15] across lots of documents, right? Like if
+[00:28:18] you need Claude to look across the CSV,
+[00:28:20] giving Claude a bash tool so that Claude
+[00:28:23] can write a quick Python script and
+[00:28:26] reason across the results after running
+[00:28:29] that Python script is much more
+[00:28:31] effective than just uploading the entire
+[00:28:33] CSV into Claude's context window.
+[00:28:37] Right? So again, we lean into these, uh,
+[00:28:39] computer-like primitives first when
+[00:28:42] building an agent.
+[00:28:44] So if If scroll down here, that's
+[00:28:46] exactly what we did here. You can see we
+[00:28:48] took a lot of steps and we actually
+[00:28:49] removed most of the tools that exist
+[00:28:53] within our agent and we replaced them
+[00:28:56] with some of the primitives that I
+[00:28:58] talked through previously. This is an
+[00:29:00] inventory management agent that leans
+[00:29:02] really well to this. Um I have the
+[00:29:05] ability to consolidate and remove a lot
+[00:29:08] of the tools that I'm using to reason
+[00:29:10] across Excels and reason across
+[00:29:14] forecasting data and just give Claude
+[00:29:16] access to the same tools that Claude
+[00:29:18] code has in order to do that. What's
+[00:29:21] cool about this is that when you build
+[00:29:23] using
+[00:29:24] Claude managed agents,
+[00:29:27] these tools are actually included by
+[00:29:29] default. So if you want to give Claude
+[00:29:32] access to those same tools that Claude
+[00:29:35] code has and use them to drive powerful
+[00:29:40] capability within your agent, you don't
+[00:29:41] have to worry about writing a tool that
+[00:29:44] gives Claude the ability to write and
+[00:29:45] run code. Or you don't have to write a
+[00:29:47] tool that gives Claude the ability to
+[00:29:49] use the file system. You can just rely
+[00:29:52] on those built-in tools
+[00:29:55] that we have built ourselves for Claude
+[00:29:57] code that we just make available through
+[00:30:01] Claude managed agents.
+[00:30:03] I'm going to ask Claude to rerun an
+[00:30:05] eval.
+[00:30:07] The evals to see if we are getting
+[00:30:11] better.
+[00:30:14] Now with your agent, there's always
+[00:30:16] going to be the need to add some custom
+[00:30:18] tools as well. Like you're not you're
+[00:30:19] only going to get so far by giving your
+[00:30:21] agent the same tools that we give Claude
+[00:30:23] code.
+[00:30:25] So we always start with those primitives
+[00:30:29] like code execution and web search and
+[00:30:31] to-do lists, etc.
+[00:30:33] We always start there and then we either
+[00:30:36] remove those tools as we don't need
+[00:30:39] them. Right? There might be some agents
+[00:30:40] where we just don't need web search, so
+[00:30:42] we'll go ahead and remove that tool. Um
+[00:30:44] Um and then we'll add custom tools
+[00:30:46] whenever we need them, right? So again,
+[00:30:48] when you think about tools, I encourage
+[00:30:51] you to start with those Claude code
+[00:30:53] primitives, those human-like primitives,
+[00:30:55] and then add custom tools only as you
+[00:30:58] need them. In the case of this specific
+[00:31:00] inventory agent, um we were able to
+[00:31:04] remove most of the tools and replace
+[00:31:06] them with Claude codes. So you can see
+[00:31:07] right now, Claude is redeploying my
+[00:31:10] agent to Claude managed agents. So
+[00:31:12] again, I have my agent locally. I am
+[00:31:15] redeploying it based on some of the
+[00:31:16] changes that we've made, and now I can
+[00:31:18] rerun some of my evals to see the
+[00:31:22] result. So you can see in that last
+[00:31:23] command, I'm rerunning uh the F1 eval,
+[00:31:27] and we're going to see what happens as a
+[00:31:29] result.
+[00:31:31] Now, we always get a lot of questions
+[00:31:32] when it comes to MCP. So in the case of
+[00:31:36] CMA here, you have a couple different
+[00:31:38] options when it comes to tools. You can
+[00:31:40] first lean on those Claude code
+[00:31:41] primitives, things like web search and
+[00:31:43] code execution and file system. Again,
+[00:31:45] that's what we start with. You can then
+[00:31:47] create uh just custom tools, so
+[00:31:49] standalone tools that only your agent
+[00:31:52] has the ability to use.
+[00:31:54] Then you can connect your agent to MCP.
+[00:31:57] We see a lot of folks run towards MCP
+[00:31:59] first, and a lot of our customers end up
+[00:32:02] in this ecosystem where there's a lot of
+[00:32:05] kind of chaotic MCP servers that exist.
+[00:32:08] A lot of times they have overlap, um
+[00:32:10] which can create some problems. So when
+[00:32:12] we build agents, again, we start with
+[00:32:14] those Claude code tools.
+[00:32:16] We then create local tools only for our
+[00:32:19] agent. We don't run to MCP. And then
+[00:32:22] only in the case where we have a common
+[00:32:25] collection of tools that multiple
+[00:32:27] clients will benefit from accessing, do
+[00:32:30] we go about the process of collecting
+[00:32:32] those and publishing them as an MCP
+[00:32:34] server. So only when we have multiple
+[00:32:37] agents, maybe multiple Claude code
+[00:32:40] clients that need to access the same set
+[00:32:43] of standardized and governed tools, we
+[00:32:46] run towards MCP.
+[00:32:48] Something else that's becoming
+[00:32:49] increasingly common throughout the
+[00:32:51] industry is leaning on Claude's ability
+[00:32:54] to effectively use code execution as a
+[00:32:58] means of executing tools. So, we see a
+[00:33:00] lot of capabilities coming out around
+[00:33:03] just giving Claude access to uh use CLIs
+[00:33:07] and invoke APIs using code and actually
+[00:33:10] run tools using code instead of MCP. One
+[00:33:14] of the drawbacks of MCP is that it does
+[00:33:16] um cause some uh it can cause some
+[00:33:18] context issues just in terms of
+[00:33:20] polluting context and taking up a lot of
+[00:33:23] space. So, there may be some cases where
+[00:33:25] you can just rely on code execution
+[00:33:28] either through CLIs or just by giving
+[00:33:30] Claude the ability to invoke APIs using
+[00:33:33] code as a means of um creating more
+[00:33:37] flexibility for your agent where you do
+[00:33:39] not have to use MCP. So, just something
+[00:33:42] to keep in mind as you're building.
+[00:33:46] Great. Okay, so Claude just got done. Um
+[00:33:49] looks like we have the before and after
+[00:33:51] from some of the changes that we've made
+[00:33:53] and I think that this is pretty
+[00:33:54] compelling, right?
+[00:33:56] The first thing that jumps off the
+[00:33:59] screen to me is the token usage. So,
+[00:34:01] before I was using over 200,000 tokens
+[00:34:05] for a particular task, after leaning in
+[00:34:08] on some of those file system primitives,
+[00:34:10] you can see that that went down
+[00:34:11] dramatically. This is a direct result of
+[00:34:14] giving my agent code execution. So
+[00:34:16] again, imagine instead of giving my
+[00:34:18] agent a full CSV that needs to be read
+[00:34:21] into context, I just give my agent the
+[00:34:23] ability to write and run Python as a
+[00:34:26] means of kind of navigating across all
+[00:34:28] of that information. The agent uses a
+[00:34:30] lot less tokens when it can write code
+[00:34:32] and then run code and then read the
+[00:34:34] results instead of having to consume all
+[00:34:37] of that data in Claude's mind and then
+[00:34:40] use all of that kind of collective
+[00:34:42] brainpower to then make decisions based
+[00:34:44] on the results. Um a few other things.
+[00:34:47] Um we can see that our cost went down as
+[00:34:49] well because we're just not using as
+[00:34:50] many tokens, which makes sense.
+[00:34:52] Um our our our execution time went down
+[00:34:56] as well. So, this was a pretty good case
+[00:34:59] where I think we got better overall, but
+[00:35:01] this is not something that will happen
+[00:35:02] all the time, right? We like we might
+[00:35:04] see some cases where we regress, but
+[00:35:06] this was the case where using some of
+[00:35:08] those primitives as opposed to some of
+[00:35:10] our more stagnant tools was clearly the
+[00:35:13] uh the right decision.
+[00:35:17] Great. Okay, we're going to jump back
+[00:35:19] and we're going to talk about subagents
+[00:35:21] for just a bit.
+[00:35:23] I'm going to copy another prompt to
+[00:35:24] Claude and we are going to um
+[00:35:27] investigate subagents.
+[00:35:30] Now, I mentioned before that we had 12
+[00:35:33] different tools. Three of them were
+[00:35:35] effectively wrapping subagents. So, if
+[00:35:37] I'm Claude, I have the ability to call
+[00:35:39] on a tool, that tool's a wrapper for a
+[00:35:41] subagent. I can then go and invoke that
+[00:35:43] subagent.
+[00:35:45] See, Claude's doing a lot here. I'll
+[00:35:46] scroll up just a bit and then we'll talk
+[00:35:47] through it.
+[00:35:49] The two main use cases
+[00:35:52] where or the two main instances where we
+[00:35:54] see subagents initially as being really
+[00:35:57] effective is first when you want to
+[00:35:59] throw a lot of Claude at a problem,
+[00:36:01] right? So, let's say that you're trying
+[00:36:02] to do deep research or like web search.
+[00:36:04] Um let's say that you're trying to do in
+[00:36:06] the case of Claude code code-based
+[00:36:08] exploration. That's a great case where
+[00:36:10] like having many different minds running
+[00:36:12] at the same problem makes sense. So,
+[00:36:15] subagents are a great way to parallelize
+[00:36:18] and throw a lot of Claude at a problem
+[00:36:20] to get it done faster and more
+[00:36:21] effectively.
+[00:36:23] The second case where it's really common
+[00:36:25] to use subagents is when you need a
+[00:36:28] fresh mind to look at a problem. So, I
+[00:36:31] use the Claude code example first. If
+[00:36:34] I'll use my example as a developer, if I
+[00:36:36] am writing code, I do not want to be the
+[00:36:38] same person that is writing and also
+[00:36:41] reviewing my code. I'm going to have
+[00:36:43] somebody else review my code. So, in the
+[00:36:45] case of Claude code, it makes a lot of
+[00:36:47] sense to have one instance of Claude
+[00:36:49] doing the writing of the code
+[00:36:52] and then another instance of Claude
+[00:36:54] coming over the top and reviewing that
+[00:36:56] that does not have context about the
+[00:36:57] initial
+[00:36:59] instance of Claude. This is a great case
+[00:37:01] for a subagent. Using just a code review
+[00:37:03] subagent and layering it over the top is
+[00:37:05] a great way to do this.
+[00:37:07] We also have a
+[00:37:09] subagent within
+[00:37:11] our
+[00:37:13] our agent here, our inventory management
+[00:37:15] agent, that we've actually kept as the
+[00:37:18] result of
+[00:37:20] of some of the changes that we made and
+[00:37:22] that's for forecasting specifically. So,
+[00:37:24] again, I have a forecasting capability
+[00:37:26] that's within my inventory management
+[00:37:28] agent. I do want to keep my forecasting
+[00:37:31] separate from my main instance of
+[00:37:34] Claude. I don't want anything in my
+[00:37:36] initial context window to distort the
+[00:37:39] forecasting process. I do have a skill
+[00:37:42] that kind of walks through the
+[00:37:43] step-by-step sequence and the guidelines
+[00:37:45] that I prefer Claude use when writing
+[00:37:48] and building forecasts, but again, I
+[00:37:50] don't want the same Claude that I'm that
+[00:37:52] my customer is talking with to also be
+[00:37:54] the Claude that writes the forecast,
+[00:37:56] right? So, I want to divide that. So,
+[00:37:58] I'm leaning on that second example of
+[00:37:59] when to use a subagent as the place
+[00:38:02] where we'd like to go about doing this.
+[00:38:05] So, in this case
+[00:38:07] we've removed our other subagents and
+[00:38:09] we've just replaced them with primitive
+[00:38:10] tools,
+[00:38:12] but we are going to leave the
+[00:38:13] forecasting subagent. Now, we're not
+[00:38:16] going to expose our subagent as a tool.
+[00:38:21] Using Claude managed agents, there's a
+[00:38:23] native capability for sub agents
+[00:38:26] um that allows the logging and the
+[00:38:30] observability of your sub agents um to
+[00:38:33] be really effective. One of the problems
+[00:38:35] with sub agents is that when you have
+[00:38:37] multiple instances of Claude running,
+[00:38:39] first off, it's difficult to make sure
+[00:38:41] that the communication between your
+[00:38:43] orchestrators and your sub agents is
+[00:38:45] accurate and is seamless, right? There's
+[00:38:47] a lot that can get lost in translation.
+[00:38:49] Just like when I'm talking to one of my
+[00:38:51] colleagues, I might be thinking
+[00:38:52] something, they might be interpreting it
+[00:38:54] completely differently. The same thing
+[00:38:55] happens with orchestrators and sub
+[00:38:57] agents.
+[00:38:59] The um
+[00:39:00] the other thing that can happen is
+[00:39:03] logging is really difficult in some
+[00:39:05] cases, right? Because then you have to
+[00:39:06] worry about collecting the transcripts
+[00:39:09] from multiple different agents. So,
+[00:39:11] within Claude managed agents, we've
+[00:39:14] added this native sub agent capability.
+[00:39:16] I saw it on here. Let me scroll up just
+[00:39:18] a bit.
+[00:39:20] I think Claude found it. Yes. So,
+[00:39:21] there's this callable agents capability
+[00:39:23] that exists within Claude managed
+[00:39:25] agents, which is essentially just like
+[00:39:27] managed sub agents, so that within your
+[00:39:29] session information, you have
+[00:39:32] observability and metrics about what
+[00:39:34] exactly your sub agents are doing that
+[00:39:37] is as accurate as your initial
+[00:39:39] orchestrator.
+[00:39:40] Right? Um this is again meant to solve
+[00:39:43] one of the common problems of just
+[00:39:44] having uh a lot of information that is
+[00:39:46] hard to track with sub agents.
+[00:39:49] We did some building. Again, I'm going
+[00:39:51] to skip through these because we spent
+[00:39:53] some time talking about them. We just
+[00:39:54] talked about sub agents. Again, there's
+[00:39:56] a few different cases where you can use
+[00:39:58] them. We just talked about callable
+[00:40:00] agents. You can also just define your
+[00:40:02] sub agent as a tool, which is what we
+[00:40:04] did previously, but we actually moved
+[00:40:06] away from that and we decided to use the
+[00:40:07] CMA native capability.
+[00:40:09] Um there are a lot of cases where you
+[00:40:11] can just now scrap the sub agent
+[00:40:13] entirely and just give more flexibility
+[00:40:16] and capability to your main agent. So,
+[00:40:18] what we have a lot of customers doing is
+[00:40:20] actually just consuming capability into
+[00:40:23] their main, in this case, orchestrator,
+[00:40:25] because frontier models have gotten
+[00:40:28] intelligent enough to manage across more
+[00:40:30] information where you just don't need as
+[00:40:32] many sub-agents. So, again, when you're
+[00:40:34] thinking sub-agent, I had a lot of cla-
+[00:40:36] or I have a big problem that I want to
+[00:40:37] throw a lot of Claude at, or I want a
+[00:40:39] separate Claude to kind of look at um
+[00:40:41] the work of either me or of a different
+[00:40:45] instance of Claude. Two great times to
+[00:40:47] use sub-agents.
+[00:40:49] Okay. So, let's look at the architecture
+[00:40:52] that we ended with. Again, refreshing
+[00:40:54] us, we started with an orchestrator
+[00:40:56] system prompt of about 400 lines long.
+[00:40:59] We had 12 tools, three of them were
+[00:41:00] sub-agents. What did we end with after
+[00:41:02] this exercise? We still have an
+[00:41:04] orchestrator,
+[00:41:06] but we deployed that on Claude managed
+[00:41:07] agents because I didn't want to have to
+[00:41:09] worry about infrastructure, scaling,
+[00:41:10] security, etc. I just wanted to worry
+[00:41:13] about my agent, right? Like in in Will's
+[00:41:16] simple terms, like that is when I reach
+[00:41:18] for Claude managed agents because I just
+[00:41:20] want to worry about building the best
+[00:41:22] thing possible and not all the messiness
+[00:41:24] that comes with it. We simplified our
+[00:41:26] tools. We now have uh we have
+[00:41:30] right now three different tools. So, we
+[00:41:31] actually simplified everything to just
+[00:41:33] use bash, read, and write.
+[00:41:35] >> [snorts]
+[00:41:35] >> Now, when our agent starts executing, we
+[00:41:37] sync some data into the Claude managed
+[00:41:40] agent's environment so that it can
+[00:41:41] reason across that data.
+[00:41:44] We actually simplified our system prompt
+[00:41:46] to 15 lines long, and we replaced all of
+[00:41:49] our business logic with skills. So,
+[00:41:52] again, I was just stuffing requirement
+[00:41:54] after requirement into my system prompt.
+[00:41:56] I decided to take that, package it up as
+[00:41:59] skills so that Claude could pull that
+[00:42:00] information into its brain only when
+[00:42:03] Claude realized that it needed it in
+[00:42:05] order to solve a problem.
+[00:42:07] As a result of this, we showed how we
+[00:42:09] can then start hill climbing on evals to
+[00:42:11] see improvements over time.
+[00:42:13] So at the end of this, my eval score is
+[00:42:15] about 92%. I've simplified my design.
+[00:42:19] I'm leaning into some of the primitives
+[00:42:22] um that make uh Claude great
+[00:42:26] um and I'm seeing the positive results
+[00:42:28] after doing so.
+[00:42:31] Again, some of the eval results, you see
+[00:42:33] that here after running this, um we're
+[00:42:36] getting faster, we're using fewer tokens
+[00:42:38] because we're leaning into code
+[00:42:40] execution. Um our turn count is
+[00:42:43] remaining sort of the same, but again,
+[00:42:45] because the token usage and the cost is
+[00:42:47] going down, I'm actually okay with
+[00:42:49] Claude taking more turns. There are some
+[00:42:52] cases where we'll see the latency not
+[00:42:54] drop maybe as much as you would expect,
+[00:42:56] but for some of these more sophisticated
+[00:42:58] high-intelligence agents where like
+[00:42:59] forecasting is at play, I'm willing to
+[00:43:02] take a little bit higher latency um at
+[00:43:05] the expense of seeing my performance
+[00:43:07] improve and my costs go down.
+[00:43:10] All right, let's wrap with some some
+[00:43:13] takeaways here in our last minute.
+[00:43:17] When we build agents, we start with a
+[00:43:20] single agent loop that it that is
+[00:43:22] equipped with very simple primitives
+[00:43:25] that give Claude some of these
+[00:43:27] human-like capabilities like the ability
+[00:43:29] to use the file system like the one that
+[00:43:31] you have on your computer, web search,
+[00:43:34] code execution,
+[00:43:36] um
+[00:43:36] sometimes a to-do list. Again, we start
+[00:43:38] there and then we build accordingly.
+[00:43:41] The next thing that we did is we use
+[00:43:42] progressive disclosure through skills.
+[00:43:44] Instead of stuffing our system prompt
+[00:43:46] with a lot of information, we made
+[00:43:48] information accessible to Claude
+[00:43:51] whenever Claude realized that it needed
+[00:43:53] that information in order to solve a
+[00:43:54] problem. This is great because we can
+[00:43:55] run more efficiently
+[00:43:57] and uh we're not polluting our context
+[00:44:00] window um and we're giving Claude more
+[00:44:02] flexibility to make decisions. The last
+[00:44:05] thing that I want you to walk away with,
+[00:44:06] write evals in general. This idea of
+[00:44:08] hill climbing is a concept that we lean
+[00:44:11] on really heavily at Anthropic. Right,
+[00:44:14] you have evals as you establish a
+[00:44:16] baseline, you then tweak your
+[00:44:17] architecture and you rerun evals and you
+[00:44:20] get better over time. Now, as a result,
+[00:44:23] it's important to make sure that your
+[00:44:24] evals are updated as your product
+[00:44:26] capability expands. Always make sure
+[00:44:28] that your evals are encompassing the
+[00:44:30] things that you care about and that
+[00:44:32] you're measuring within your agent so
+[00:44:34] that you can actually make sure that
+[00:44:35] your agent is accomplishing the thing
+[00:44:37] that you set out to accomplish.
+[00:44:41] With that, folks, we're going to go
+[00:44:43] ahead and wrap. I really appreciate your
+[00:44:45] time today.
+[00:44:46] I'll be in the back after the session
+[00:44:48] just outside of this room in case you
+[00:44:51] have any questions at all.
+[00:44:53] Thank you for spending your day at Code
+[00:44:55] with Claude in London. I hope you have a
+[00:44:57] great rest of your day. Appreciate it.
+[00:44:58] >> [music]

@@ -1,0 +1,769 @@
+Title: Agents that remember
+Video: https://www.youtube.com/watch?v=geUv4CjPpxI
+Caption: auto (en) via ios
+================================================================================
+
+[00:00:19] Hello everyone. Thank you all for
+[00:00:21] joining us today.
+[00:00:23] Um my name is Kevin.
+[00:00:25] Uh I'm an engineer here at Anthropic and
+[00:00:27] today we'll be learning about how to
+[00:00:29] build agents that remember. Um so
+[00:00:32] uh today we're going to talk a little
+[00:00:34] bit about the base case with agents
+[00:00:36] today, uh which is that they're isolated
+[00:00:38] and this kind of limits their usefulness
+[00:00:40] in a lot of real-world workflows.
+[00:00:42] Uh we'll look at how we can actually
+[00:00:43] solve this problem uh with our new agent
+[00:00:46] memory stores feature that we've
+[00:00:47] launched. Uh this will give agents
+[00:00:49] access to a live memory store that they
+[00:00:51] can read and write to over multiple
+[00:00:53] sessions.
+[00:00:55] And then we'll look at how we can
+[00:00:56] improve these memory stores over time uh
+[00:00:59] using a new feature that we call
+[00:01:00] dreaming.
+[00:01:01] Uh and then finally we'll get to see how
+[00:01:03] all of this ties together with both our
+[00:01:05] CLI and also our awesome console
+[00:01:07] interface.
+[00:01:11] Um so in the previous uh workshops, I
+[00:01:14] think we've learned a little bit about
+[00:01:15] how Claude managed agents has these
+[00:01:17] concepts called an agent, environment,
+[00:01:20] and a session.
+[00:01:21] Uh in this workshop, we're going to add
+[00:01:22] two additional concepts here. The first
+[00:01:24] one here is a memory store. Uh so a
+[00:01:27] memory store is a persistent file
+[00:01:29] system-like store that gives uh that it
+[00:01:32] attaches as a resource to sessions that
+[00:01:34] you create and it gives agents access to
+[00:01:37] uh it gives agents the ability to read
+[00:01:39] and write information across sessions.
+[00:01:42] A dream uh is what is is a asynchronous
+[00:01:45] job that runs in the background. Uh it
+[00:01:48] looks over an input memory store and a
+[00:01:50] bunch of your previous sessions that are
+[00:01:53] represented as transcripts and then we
+[00:01:55] run a harness over them to distill new
+[00:01:58] information that maybe the original
+[00:01:59] agents missed. We do things like
+[00:02:01] fact-checking.
+[00:02:03] Uh we also organize and consolidate and
+[00:02:05] deduplicate information so that your
+[00:02:06] memory stores don't grow unbounded over
+[00:02:08] time.
+[00:02:12] So uh also in case anyone in this room
+[00:02:15] has not already uh downloaded the
+[00:02:16] workshop repository you'll need for
+[00:02:18] this, uh here is the URL.
+[00:02:21] I'll give a few seconds for folks to
+[00:02:22] just grab that. Okay.
+[00:02:25] Um so, let's kind of like talk a little
+[00:02:27] bit about the problems today. So, when
+[00:02:28] you when you create agents on Cloud AI
+[00:02:30] today and sessions,
+[00:02:32] um most of the time you're creating one
+[00:02:34] session at a time and these are
+[00:02:35] isolated, right? The agent doesn't
+[00:02:36] remember information from the past and
+[00:02:38] it doesn't transfer information to
+[00:02:39] future sessions. Um so, I want to kind
+[00:02:41] of like take us through this this base
+[00:02:43] case today.
+[00:02:45] Uh so, if I switch over to my computer,
+[00:02:49] um I'm in our workshop repository here.
+[00:02:52] Uh hopefully everyone can see this uh in
+[00:02:54] the back, but I've just run the
+[00:02:56] bootstrap script that we've uh included
+[00:02:58] in the repository.
+[00:02:59] Uh and what this has done is basically
+[00:03:01] created uh some seed information for us.
+[00:03:03] So, we have an agent,
+[00:03:04] uh we have an environment, we have a few
+[00:03:06] like previous sessions that talk about
+[00:03:08] things like the keynotes uh from day one
+[00:03:11] as well as you know uh a previous
+[00:03:12] workshop.
+[00:03:14] And so, uh what I'm going to do from
+[00:03:15] here
+[00:03:16] is actually go ahead and start walking
+[00:03:20] through this guide with you guys. Feel
+[00:03:22] free to follow along on your computers.
+[00:03:24] Uh I'll be using the CLI and then also
+[00:03:26] showing kind of the console interface uh
+[00:03:29] for each of these steps.
+[00:03:31] So, first we're going to create uh a
+[00:03:32] session that basically tells it some
+[00:03:34] some new information. Uh
+[00:03:36] So, I'm going to copy this command here.
+[00:03:39] And as you can see, we are creating a
+[00:03:41] session with the agents that we've
+[00:03:43] created before
+[00:03:44] uh with the environment ID.
+[00:03:46] Uh and we've given it a title here of
+[00:03:47] just like write test with no memory.
+[00:03:51] Great. Uh so, now that we created this
+[00:03:52] session, uh I'm going to quickly switch
+[00:03:54] over to my console here.
+[00:03:56] Um and you'll see that
+[00:03:58] uh let me just move this over. You'll
+[00:04:00] see that the session shows up in
+[00:04:01] console. Uh it doesn't it has a status
+[00:04:03] of idle, nothing running yet.
+[00:04:05] Uh so then we're going to switch back
+[00:04:06] and then I'm going to send
+[00:04:08] this session some new information.
+[00:04:11] Uh so once I copy this
+[00:04:18] And what I'm doing here is sending a
+[00:04:20] first user message here with information
+[00:04:22] about the CMA talk yesterday, uh
+[00:04:25] naming a few keywords like multi-agent
+[00:04:27] orchestration multi-agent orchestration
+[00:04:29] outcomes and memory. And I've also just
+[00:04:31] given it this URL, you know, example
+[00:04:33] that I took notes and uploaded them
+[00:04:34] here.
+[00:04:37] So if I switch back over to my console,
+[00:04:41] uh we should see this event pop up.
+[00:04:45] And what we sort of expect the the agent
+[00:04:47] or the model will do here is it'll just
+[00:04:49] respond say like, "Great. Thanks for the
+[00:04:51] information.
+[00:04:52] Not sure what else you want me to do
+[00:04:53] here." Uh so we'll give it a sec
+[00:04:56] and maybe folks to catch up.
+[00:05:01] Let's see if we get a little refresh.
+[00:05:03] Ah, sorry.
+[00:05:05] Yeah, so it looks like the model
+[00:05:06] responded here.
+[00:05:07] Uh let's collapse this. Yeah, it's
+[00:05:09] basically saying, "Okay, great. Thanks
+[00:05:11] for telling me this information."
+[00:05:12] Uh so then if we go
+[00:05:14] Sorry?
+[00:05:16] Uh this is using, I believe, Sonnet, the
+[00:05:19] agent that was created at the beginning.
+[00:05:22] Yeah.
+[00:05:23] Um
+[00:05:25] Cool. So if I go back here uh
+[00:05:27] to my workshop here, we're going to
+[00:05:29] create basically a second session that's
+[00:05:30] kind of the retest. So I'll go through
+[00:05:33] these steps a little bit faster.
+[00:05:38] Uh and then again, I'll send it a
+[00:05:40] message here that's this time I'm going
+[00:05:42] to ask it for information about the
+[00:05:44] stuff that I just told it.
+[00:05:48] And if I go back to our console here and
+[00:05:50] check out the other session that should
+[00:05:52] have been created,
+[00:05:55] we would expect the agent to basically
+[00:05:58] um say something like, "Yeah, I don't
+[00:06:00] really have access information. I can
+[00:06:02] help you in these various ways." Great.
+[00:06:04] So, that's effectively the base case
+[00:06:06] today. Uh so, if I go back to the slides
+[00:06:10] real quick, this is a quick recap of
+[00:06:12] what we did. We told it something, asked
+[00:06:14] another session about it later, no
+[00:06:16] information is transferred between the
+[00:06:17] sessions.
+[00:06:19] So, how do we solve this problem, right?
+[00:06:21] Um
+[00:06:22] just like in humans, uh we've introduced
+[00:06:24] the sort of concept of memory. And
+[00:06:25] again, a memory store here in the Cloud
+[00:06:29] Manager Agent platform is a file
+[00:06:30] system-like store. Uh under the hood,
+[00:06:33] you can or you can create as many memory
+[00:06:35] stores as you like here, so you don't
+[00:06:36] have to necessarily restrict a memory
+[00:06:38] store to one organization. You can
+[00:06:40] create it per user, per workspace, etc.
+[00:06:42] It's up to you to kind of define what
+[00:06:44] the boundaries of the memory store are.
+[00:06:47] Uh and then under the hood, this memory
+[00:06:48] store gets attached as a file system to
+[00:06:50] the the session container, and the model
+[00:06:53] has tools to read and write to it. Uh
+[00:06:55] the actual interesting thing here is
+[00:06:56] that we've actually
+[00:06:57] mounted it as a file system because it's
+[00:06:58] such a powerful interface for the model.
+[00:07:01] Uh you can use things like bash to like
+[00:07:04] uh like explore the file system. It can
+[00:07:07] use grep to kind of search for keywords.
+[00:07:09] Uh it can also read files and do a bunch
+[00:07:11] of like really powerful things um that
+[00:07:13] make it much more useful for the agent.
+[00:07:17] Um so, I'll switch back to my computer
+[00:07:20] here, and we'll walk through kind of how
+[00:07:22] to create a memory store.
+[00:07:25] Um so, first things first is actually
+[00:07:27] creating it. So, I'm going to copy this
+[00:07:28] uh command here. Feel free again to
+[00:07:31] follow along on your computers.
+[00:07:33] Um and the kind of parameters that you
+[00:07:35] need here are mainly just like a name.
+[00:07:37] Uh so, I'm calling mine CWC memory.
+[00:07:39] You can give it a quick description. Uh
+[00:07:41] and then I'll show you also in console
+[00:07:43] later that there are two additional
+[00:07:44] parameters that you can set here, but
+[00:07:45] let me just follow through with the
+[00:07:46] simple example.
+[00:07:49] Uh once I create this memory store, you
+[00:07:51] can actually see it in console
+[00:07:53] under manage agents, memory stores.
+[00:07:58] And you'll see that it's active. Uh you
+[00:08:00] can actually click into it and view uh
+[00:08:04] essentially a file system viewer of
+[00:08:05] what's currently in it. Of course,
+[00:08:06] there's nothing in it right now.
+[00:08:09] Additionally, uh we offer functionality
+[00:08:11] uh we offer the ability for you to like
+[00:08:13] add manually add memories, so you can
+[00:08:15] create like a file under a specific
+[00:08:17] path, add some content, etc.
+[00:08:20] If I go back just a brief second and
+[00:08:22] talk about uh creating a new memory
+[00:08:24] store, there's actually two sort of
+[00:08:26] additional parameters that you can uh
+[00:08:29] set on the memory store
+[00:08:31] uh when we actually mount it. So, if I
+[00:08:35] go back to the repository here,
+[00:08:37] um the next step once you create a
+[00:08:40] memory store is to actually use it with
+[00:08:41] your sessions.
+[00:08:42] So, I'm going to again copy a few of
+[00:08:44] these commands. So, the first one here
+[00:08:47] is basically just
+[00:08:49] giving us the shape that we need to pass
+[00:08:51] the sessions API requests. I'll paste it
+[00:08:53] in our terminal here so we can see it
+[00:08:55] better.
+[00:08:57] Um so again, the memory store here, you
+[00:08:59] just pass in a memory store ID.
+[00:09:01] Uh and you can also give it a prompt
+[00:09:03] around uh that will steer the agent to
+[00:09:05] read and write specific information. So,
+[00:09:07] you might want it to focus on maybe like
+[00:09:10] a specific um link or a specific like
+[00:09:13] area of focus on. Let's say you're
+[00:09:14] baking making like a investment agent,
+[00:09:17] right? Uh and you want to focus on
+[00:09:18] specific things to remember for the
+[00:09:19] future.
+[00:09:20] Uh so, you can do that with the prompt
+[00:09:21] parameter.
+[00:09:22] Uh additionally, there is an access
+[00:09:24] field uh that defaults to read or write.
+[00:09:27] Um you can change that to read only,
+[00:09:29] which will make it so that the session
+[00:09:31] and the agent will only be able to read
+[00:09:33] from that memory store, cannot update
+[00:09:35] it.
+[00:09:36] So, once I run this,
+[00:09:38] um you'll see I have created a new
+[00:09:40] session in console.
+[00:09:44] Uh and this time it'll have a memory
+[00:09:45] store attached.
+[00:09:49] And then if I send it events here, this
+[00:09:50] time we'll just basically repeat the
+[00:09:52] test that we did just before. So, let me
+[00:09:54] grab this.
+[00:10:02] Again, same text as before, we're
+[00:10:03] telling it new information.
+[00:10:05] Uh and hopefully we'll be able to
+[00:10:06] observe a different behavior this time.
+[00:10:15] Yeah, so clicking into uh if you click
+[00:10:16] into the session details, you'll see the
+[00:10:18] the information that I just gave it.
+[00:10:21] And now the model is like first looking
+[00:10:23] at memory to see, okay, was there
+[00:10:24] anything that like I need to remember
+[00:10:26] for this conversation?
+[00:10:28] Uh and now it's going to actually like
+[00:10:30] Of course, there's nothing in our memory
+[00:10:31] store. So, now what it's going to do is
+[00:10:33] actually save the content that I told it
+[00:10:35] to that memory store directly.
+[00:10:38] And it saved it under this like
+[00:10:39] sessions.md file.
+[00:10:42] And it's great telling me that uh what
+[00:10:43] it did.
+[00:10:48] Um so, then if I go back and do that
+[00:10:50] same test that we did before, this time
+[00:10:52] I'll just copy both.
+[00:10:56] Uh sorry, just
+[00:11:02] Again, or this time we're going to
+[00:11:03] create a new session with the same
+[00:11:05] memory store that we were just using.
+[00:11:09] Uh and we will send it
+[00:11:12] an event here
+[00:11:13] asking it what are the things that it
+[00:11:15] found uh or learned from the CMA talk.
+[00:11:21] Once again, going back to our console
+[00:11:23] UI, we can see the recall test running.
+[00:11:26] And as we would expect, the model is now
+[00:11:30] first looking at its memory store to see
+[00:11:32] if there's any information.
+[00:11:34] And again, it's now using grep to find
+[00:11:37] uh any sort of keywords here. It's
+[00:11:38] looking for CMA.
+[00:11:40] And great, it found like a lot of
+[00:11:41] information that we just told it from
+[00:11:43] the from our previous session.
+[00:11:45] And it now it's able to answer my
+[00:11:46] question, right? Um and this is like of
+[00:11:48] course a very simple example, but this
+[00:11:49] illustrates kind of the power of of
+[00:11:51] memory and this is like something that
+[00:11:53] was kind of difficult to do before,
+[00:11:54] right?
+[00:12:01] I'll give quick pause in case anyone's
+[00:12:04] straggling.
+[00:12:08] Um okay, great. So, what what else kind
+[00:12:10] of can you can you do with the memory
+[00:12:11] store here? Well, we actually offer uh
+[00:12:13] additional sort of endpoints that allow
+[00:12:15] you to manually inspect the store
+[00:12:17] itself. Uh so, I'll use the CLI here,
+[00:12:19] but for instance, you can list all of
+[00:12:21] the memory files that are in the memory
+[00:12:23] store.
+[00:12:25] We can like
+[00:12:26] do that.
+[00:12:28] Um there's also each um memory a memory
+[00:12:30] store's a memory files in a memory store
+[00:12:32] are also versioned. Uh so, anytime you
+[00:12:35] make a change to a file, etc., there's a
+[00:12:37] new version that's created and we offer
+[00:12:39] a set of endpoints for that.
+[00:12:43] And then I can also kind of take you
+[00:12:44] through the memory store UI.
+[00:12:52] So, each memory store you create again
+[00:12:54] is here. And if we go back to our like
+[00:12:56] kind of file system view, you can
+[00:12:57] actually see the files that it created.
+[00:13:00] Uh there will be like a directory
+[00:13:01] structure here if Claude is creating
+[00:13:02] kind of subdirectories to organize
+[00:13:04] memory files.
+[00:13:06] You can actually edit these memory files
+[00:13:07] directly if you wanted to. So, for
+[00:13:09] instance, if Claude wrote something um
+[00:13:11] that was incorrect or maybe you just
+[00:13:13] wanted to add more information, you can
+[00:13:14] do that. And again, as we saw before,
+[00:13:16] you can add additional memories to a
+[00:13:18] memory store.
+[00:13:26] Uh okay, so
+[00:13:28] I'm going to go back to the slides real
+[00:13:29] quick.
+[00:13:32] And as we just talked about, uh, this is
+[00:13:34] how you create a memory store and then
+[00:13:36] mount it on a session that you want to
+[00:13:37] use it on. Again, it's up to you to kind
+[00:13:39] of decide which of your sessions will
+[00:13:41] use memory, which ones will not.
+[00:13:47] Uh, we also saw how you can like list
+[00:13:49] memories and see what's currently in a
+[00:13:50] memory store.
+[00:13:54] And let's just move on to talk a little
+[00:13:55] bit about dreaming now. Um, so
+[00:13:59] when you have agents that are reading
+[00:14:01] and writing to this memory store over
+[00:14:02] time, uh, we've noticed that often times
+[00:14:04] they can start just kind of dumping
+[00:14:05] information to that memory store. So,
+[00:14:07] it'll start writing maybe every every
+[00:14:09] task you ask it to do it'll maybe record
+[00:14:11] its information, right? And over time
+[00:14:12] your memory store is going to grow,
+[00:14:14] right? And there's no real process, uh,
+[00:14:16] before that would allow you to sort of
+[00:14:18] organize that memory, maybe check to see
+[00:14:20] if anything was stale, and and
+[00:14:22] consolidate any duplicates, right? And
+[00:14:24] so, this is where the dreaming comes in.
+[00:14:26] Uh, dreaming is a is a batch process
+[00:14:29] that runs again asynchronously. You
+[00:14:31] launch it, uh, using uh, our API or
+[00:14:33] through console, and it'll run a a new
+[00:14:36] dreaming harness that we built that is a
+[00:14:38] multi-agent setup. It will look over
+[00:14:40] each of the input sessions that you've
+[00:14:43] given it. So, you specify like an input
+[00:14:45] memory store that you want it to dream
+[00:14:46] over along with like a group of
+[00:14:48] transcripts that you think might help or
+[00:14:50] enrich that memory store. It'll look
+[00:14:52] through each one, do again
+[00:14:54] fact-checking, enriching with additional
+[00:14:56] details, maybe dates, specific
+[00:14:58] identifiers, uh, and then it will also
+[00:15:01] organize those memory files and see if
+[00:15:02] there's any duplicates, anything that it
+[00:15:03] can help uh, fix so that when you and
+[00:15:07] it'll produce an output memory store
+[00:15:08] such that in the future, when you attach
+[00:15:10] that output to additional sessions, it
+[00:15:13] will hopefully increase efficiency,
+[00:15:15] uh, efficiency of like information
+[00:15:17] retrieval, and also hopefully increase
+[00:15:18] the intelligence of the agent.
+[00:15:22] So, let's take a look at how this works.
+[00:15:25] I'll again switch back to my computer
+[00:15:26] and we'll walk through it together.
+[00:15:35] Uh so, what you to to get get started
+[00:15:38] with dreaming, basically, you'll need to
+[00:15:39] actually create the dream job.
+[00:15:43] And I'll I'll go through a little bit of
+[00:15:45] the parameters here. So, the model uh
+[00:15:47] here that we're choosing is Claude Opus
+[00:15:48] 47. You can choose between or Sonnet 46,
+[00:15:52] depending on kind of the level of
+[00:15:53] quality you want, as well as maybe like
+[00:15:55] token costs.
+[00:15:56] Uh it takes in two inputs. So, you'll
+[00:15:59] need the memory store that you want it
+[00:16:00] to dream over, as well as a list of
+[00:16:03] session IDs. Uh so, this is up to you to
+[00:16:05] decide. You can,
+[00:16:06] you know, maybe dream over daily and
+[00:16:08] dream over maybe like 10 sessions at a
+[00:16:10] time or 20, right? It could go, you
+[00:16:11] know, all the way up to like 100. We're
+[00:16:13] also looking to scale it further uh
+[00:16:15] beyond that.
+[00:16:16] I Optionally, you can also provide the
+[00:16:18] dream job some additional instructions
+[00:16:20] that you might add. So, we provide it
+[00:16:21] with a default prompt that does a bunch
+[00:16:24] of things. If you wanted dreaming to,
+[00:16:26] for instance, specifically fix a few
+[00:16:28] things, like maybe you're working in a
+[00:16:29] domain that requires like very specific
+[00:16:31] details, right? You might ask a dream
+[00:16:33] job to really focus on, "Hey, make sure
+[00:16:36] you backfill these details so I remember
+[00:16:37] for the future, right?" You can also get
+[00:16:39] it to You can also steer it to maybe
+[00:16:41] like organize files a bit more, like I
+[00:16:43] want the specific structure in my memory
+[00:16:44] store, please do that.
+[00:16:47] Uh so, let's actually go and run this
+[00:16:48] command here.
+[00:16:50] Great. We'll get We'll get back a dream
+[00:16:52] ID.
+[00:16:53] And then, once again, I'll go back to
+[00:16:55] our console here.
+[00:16:56] And so, dreams are under, again, manage
+[00:16:58] agents, dreams.
+[00:17:01] And once I create the dream job, it'll
+[00:17:02] start pen- it'll start with pending, but
+[00:17:04] it'll start running pretty shortly
+[00:17:05] after.
+[00:17:06] And you can actually see the status of
+[00:17:08] the job both in console and through the
+[00:17:09] API. I'll show both. But in console
+[00:17:11] here, you'll see the input memory store,
+[00:17:13] as well as a token count.
+[00:17:15] And generally, like uh dream job can
+[00:17:18] take, you know, depending on the size or
+[00:17:19] the number of transcripts that you give
+[00:17:21] it, it could take anywhere from, you
+[00:17:23] know, a couple minutes to hours at a
+[00:17:25] time.
+[00:17:26] And that's really the benefit of doing
+[00:17:28] it asynchronously, right? Like this is
+[00:17:29] not something that you want to do live
+[00:17:30] while your agents are working.
+[00:17:32] And we'll just give it a a minute here
+[00:17:34] to to run. As you guys can see,
+[00:17:36] as it's running, as agents or as the
+[00:17:38] harness itself is running, we're
+[00:17:39] updating the token count for you, so you
+[00:17:40] can track its progress over time.
+[00:17:42] The other really cool thing here is that
+[00:17:44] Dreamings actually built directly on top
+[00:17:46] of Cloud Managed Agents primitives.
+[00:17:48] So you can actually see that we are
+[00:17:50] creating a session for the dream job
+[00:17:53] itself. And you can actually click into
+[00:17:54] it to see exactly what the dream is
+[00:17:56] doing. This offers a really nice amount
+[00:17:57] of like observability as you can like
+[00:17:59] diagnose issues potentially.
+[00:18:01] And so you can see the prompt that we
+[00:18:03] give it. There's a lot of details here
+[00:18:05] that I'll kind of that you can explore
+[00:18:07] on your own time. But the under the
+[00:18:09] hood, the the Dreaming Harness itself is
+[00:18:12] launching sub agents to look over all of
+[00:18:15] the transcripts that you've given it.
+[00:18:18] And each sub agent essentially has a
+[00:18:20] system prompt that tells it what to do,
+[00:18:22] look over it. And the orchestrator is
+[00:18:23] responsible for just like making sure
+[00:18:25] all the agents are running and kicking
+[00:18:26] them off as they go.
+[00:18:29] So we'll give it another minute for to
+[00:18:31] let this run.
+[00:18:56] Another thing to call out here is that
+[00:18:58] while
+[00:19:00] we don't actually touch the input memory
+[00:19:02] store at all that you create. So this is
+[00:19:03] a non-destructive process. What we
+[00:19:05] actually do is we will clone your input
+[00:19:07] memory store into what's called an
+[00:19:08] output memory store. And the dream job
+[00:19:10] will be writing basically to a new
+[00:19:12] memory store such that any edits that
+[00:19:15] are made are non-destructive and then
+[00:19:16] we'll see down the line how you can
+[00:19:18] utilize this output memory store in your
+[00:19:20] future sessions.
+[00:19:24] Generally this takes about a minute or
+[00:19:25] so depending on
+[00:19:27] how fast the job runs.
+[00:19:45] Uh one other thing is that you'll see
+[00:19:47] that I'm sort of checking on the job
+[00:19:48] periodically as it's running in console.
+[00:19:51] When you do this programmatically we
+[00:19:52] offer an API that allows you to just
+[00:19:54] essentially query
+[00:19:56] for the dream job and it'll have a
+[00:19:57] status so you can pull for the status.
+[00:20:01] Great. So looks like it just completed
+[00:20:03] and the cool thing here is that in
+[00:20:05] console we actually show you a diff of
+[00:20:07] what it did. So you can see dreaming
+[00:20:09] here
+[00:20:10] it created an index file. This index
+[00:20:12] file has sort of these slugs that
+[00:20:15] reference the various like memory files
+[00:20:17] that
+[00:20:19] a future agent might need. And the main
+[00:20:21] goal of this is really just that future
+[00:20:22] agents it's a lot more efficient to kind
+[00:20:24] of look at an index file and it quickly
+[00:20:26] grok like what it needs to go look for
+[00:20:28] instead of maybe doing a a wider grep.
+[00:20:31] Additionally it's actually adding like
+[00:20:32] additional information that was not
+[00:20:34] present in the in the first couple of
+[00:20:36] sessions that I created. So it's
+[00:20:37] creating this event logistics file that
+[00:20:39] gives the whole schedule of Code with
+[00:20:41] Claud.
+[00:20:42] Um a bunch of names as well.
+[00:20:46] Uh and again schedule for day two.
+[00:20:49] Uh and you'll also see that it actually
+[00:20:51] kind of reformatted the memory file that
+[00:20:53] I created in a previous session. So this
+[00:20:54] time it is adding again a slug a
+[00:20:57] description of the event some additional
+[00:20:59] metadata.
+[00:21:00] And again adding more details. And
+[00:21:02] generally we find that like
+[00:21:04] more information actually really does
+[00:21:06] help future sessions. And if you think
+[00:21:08] about it intuitively, um a while an
+[00:21:10] agent's working on a task currently,
+[00:21:12] it's kind of hard to predict down the
+[00:21:13] line what it might need, right? That's
+[00:21:15] just generally a harder prediction
+[00:21:16] problem. So, it's actually good to kind
+[00:21:18] of write additional details down that a
+[00:21:19] future agent might remember. And
+[00:21:21] dreaming can always like go back and
+[00:21:23] like remove stuff that is no longer
+[00:21:24] needed.
+[00:21:27] Uh and if I go to the output memory
+[00:21:28] store here,
+[00:21:29] I'll just click on it.
+[00:21:32] Um
+[00:21:33] again, you can see all the files that I
+[00:21:35] created. It's another good way to sort
+[00:21:37] of see what's going uh what dream
+[00:21:39] dreaming did. Uh and if you wanted like
+[00:21:41] a human in the loop kind of review
+[00:21:43] process, this is kind of where uh this
+[00:21:45] is super helpful. Uh human can kind of
+[00:21:47] go in and see if the
+[00:21:49] dreaming harness made any mistakes.
+[00:21:54] Okay, great. Um just going to switch
+[00:21:56] back to the slides real quick cuz I want
+[00:21:57] to show a diagram.
+[00:22:01] Um
+[00:22:03] yeah. So, again, under the hood, this is
+[00:22:05] sort of what how dreaming works, right?
+[00:22:06] This is a multi-agent harness. Uh we
+[00:22:10] have an orchestrator that is mainly
+[00:22:11] responsible for spinning up sub-agents.
+[00:22:13] And again, we spawn one sub-agent per
+[00:22:16] input session that you give it.
+[00:22:18] Um and kind of the the reasons behind
+[00:22:20] this are we actually kind of want
+[00:22:22] dreaming to be exhaustive by design. Uh
+[00:22:25] if you give it a 100 chances, you want
+[00:22:26] to make sure like Claude is looking over
+[00:22:27] all the information to make sure it's
+[00:22:28] not missing anything, right? Um
+[00:22:32] great. So, let me let me switch back to
+[00:22:33] my computer again.
+[00:22:36] Uh and this time I'm going to actually
+[00:22:37] like walk through how we might use this
+[00:22:39] in a future session.
+[00:22:44] So, uh once the dream uh is done, you
+[00:22:46] can actually go and grab the output
+[00:22:48] memory store using this. So, again,
+[00:22:50] we're we're just retrieving the dream
+[00:22:51] resource uh with the dream ID that we
+[00:22:53] created and then
+[00:22:55] uh querying or just grabbing the the
+[00:22:57] JSON memory store ID.
+[00:23:00] Great. So, this is the memory store.
+[00:23:02] And again, you can
+[00:23:04] look through what memories it created.
+[00:23:13] Uh and then now we'll do this sort of
+[00:23:15] test again that we did before with the
+[00:23:16] two sessions. So, I will create a new
+[00:23:19] session here.
+[00:23:21] And you'll notice that this is now using
+[00:23:23] the output memory store from dreaming.
+[00:23:30] Once again, we'll send it an event here.
+[00:23:38] We're just asking it
+[00:23:40] what sessions I attended, what resources
+[00:23:42] do I have links for, and what follow-ups
+[00:23:44] did I flag.
+[00:23:51] Once again, going back to the console,
+[00:23:53] it's really a great way to, you know,
+[00:23:55] visualize what's going on here.
+[00:24:00] And you'll see that this time when it's
+[00:24:02] reading from memory, you'll see all the
+[00:24:04] stuff that dreaming did, right? So, the
+[00:24:06] index, the event logistics.
+[00:24:11] And it's now reading kind of it's
+[00:24:12] starting to read the index first.
+[00:24:17] Okay, great. Now it knows I'm going to
+[00:24:18] go straight to the sessions file.
+[00:24:25] It's being a little exhaustive here,
+[00:24:26] just checking for, you know, event
+[00:24:27] logistics.
+[00:24:42] Okay, great. Let's see what it came up
+[00:24:43] with. So,
+[00:24:45] as you can see, I
+[00:24:47] I'd have to go back and show you the the
+[00:24:48] previous session, but this time I think
+[00:24:49] there's a lot actually a lot more
+[00:24:50] information here. So, it gave me a recap
+[00:24:52] of all the sessions I I attended. Uh
+[00:24:54] it's giving me timestamps now about like
+[00:24:56] all the sessions that were that were
+[00:24:58] planned for day two, as well as like the
+[00:25:00] resource links, right? I think this kind
+[00:25:02] of showcases again like how dreaming can
+[00:25:04] really enrich information that is
+[00:25:06] transferred between sessions.
+[00:25:11] And then optionally at the end, you
+[00:25:13] know, if you're really happy with the
+[00:25:15] output memory store here, you can go
+[00:25:16] ahead and actually retire the old memory
+[00:25:17] store.
+[00:25:19] So this won't affect like your previous
+[00:25:20] sessions. It just means that you know it
+[00:25:23] will keep you the number of memory
+[00:25:24] stores in your organization down to a
+[00:25:26] reasonable level.
+[00:25:30] Great. So I'm going to kind of switch
+[00:25:33] back to the slides here.
+[00:25:39] And talk a little bit how you can kind
+[00:25:40] of view sessions, memory stores and
+[00:25:43] dreaming as three composable layers
+[00:25:45] here, right? If you think of a session
+[00:25:47] as a as an isolated instance of an agent
+[00:25:49] running,
+[00:25:50] it's one usually typically one
+[00:25:52] conversation thread, typically
+[00:25:53] ephemeral, right? A memory store
+[00:25:55] augments that. So now you can connect
+[00:25:58] information between your sessions across
+[00:26:00] multiple sessions, right?
+[00:26:02] And then finally with dreaming, you're
+[00:26:03] now organizing, enriching, and improving
+[00:26:07] your memory stores over time, so that as
+[00:26:10] you scale up the number of sessions you
+[00:26:11] have, and as you scale up the
+[00:26:12] information that is being processed
+[00:26:14] through those sessions, your memory
+[00:26:16] stays at a reasonable level. It's
+[00:26:18] manageable. It doesn't blow up. Also, it
+[00:26:22] checks for things like staleness to make
+[00:26:23] sure all the information is most is
+[00:26:25] up-to-date. Okay?
+[00:26:26] I wanted to highlight some of the maybe
+[00:26:28] good questions that I got from the
+[00:26:29] audience here. So one of them was around
+[00:26:31] generally like sort of what is the like
+[00:26:33] token usage of this feature like? So as
+[00:26:36] I said before, like I think by design we
+[00:26:37] actually do want it to be exhaustive, so
+[00:26:39] we do expect it to use a lot of tokens.
+[00:26:41] The the nice thing here is that because
+[00:26:44] most of the processing is agentic, most
+[00:26:47] of the tokens are actually cached. So
+[00:26:49] we're expecting like about a 95% cache
+[00:26:51] rate, cash hit rate on um um
+[00:26:55] like most dream sessions, right? And
+[00:26:57] additionally, we are exploring like
+[00:26:59] other ways of offering this at lower
+[00:27:01] costs to you. So, uh example of this
+[00:27:04] would be like similar to our batch API,
+[00:27:06] we could offer things at a 50% discount
+[00:27:08] by scheduling at different times. Uh
+[00:27:10] other additional like token usage
+[00:27:12] controls include like switching the
+[00:27:13] model, steering the prompt a little bit
+[00:27:15] more, also providing more like just
+[00:27:17] general budgeting of tokens.
+[00:27:22] Um
+[00:27:26] Great. Um so, I think we're just about
+[00:27:29] winding down. So, I'm going to quickly
+[00:27:32] kind of go over again for the folks
+[00:27:34] remaining in the room uh like what we
+[00:27:36] went over today.
+[00:27:37] Uh so again, we talked about the problem
+[00:27:40] that most agents face today, which is
+[00:27:42] like how do you remember information
+[00:27:43] across sessions? I think this is
+[00:27:45] a pretty like well-established kind of
+[00:27:47] problem now.
+[00:27:48] And we talked about how memory is kind
+[00:27:50] of the first step to addressing this,
+[00:27:51] right? You give agents access to
+[00:27:53] something where they can dump the
+[00:27:54] information, read from it, etc.
+[00:27:57] Uh but we also saw how this creates a
+[00:27:58] problem where memory stores are can grow
+[00:28:00] unbounded over time. They can grow
+[00:28:02] disorganized, information can grow
+[00:28:04] stale, etc. And then we saw how dreaming
+[00:28:07] can be used as a way to mitigate this
+[00:28:09] problem, right? So, we we take another
+[00:28:11] set of agents that their entire job is
+[00:28:14] to improve that memory store for future
+[00:28:16] use.
+[00:28:21] Um and with that, I'd like to thank
+[00:28:23] everyone for for coming to today's
+[00:28:24] workshop. Um hopefully, it was helpful.
+[00:28:27] And hopefully, by the end you'll learn
+[00:28:29] how to uh or you'll you'll know how to
+[00:28:30] like integrate maybe memory into your
+[00:28:32] own use cases.

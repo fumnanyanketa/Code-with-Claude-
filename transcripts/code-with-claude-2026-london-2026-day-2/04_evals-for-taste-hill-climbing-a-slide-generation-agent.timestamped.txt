@@ -1,0 +1,1206 @@
+Title: Evals for taste: Hill-climbing a slide-generation agent
+Video: https://www.youtube.com/watch?v=v9FTCvkV_a0
+Caption: auto (en) via ios
+================================================================================
+
+[00:00:03] [music]
+[00:00:10] [music]
+[00:00:19] >> Hello. Hello. Hello. Good afternoon,
+[00:00:21] everyone. I hope you all had a wonderful
+[00:00:24] lunch. Um there's so many of you as
+[00:00:26] well. I'm actually kind of surprised by
+[00:00:28] this. Um
+[00:00:30] happy to see that there's that much
+[00:00:31] interest in talking about uh Evals. Um I
+[00:00:35] personally am a big fan of anything
+[00:00:36] Evals related.
+[00:00:38] But I know not everyone's That's not
+[00:00:39] everyone's cup of tea, right? Um
+[00:00:42] so very happy to see this many people of
+[00:00:43] you. Um
+[00:00:45] So yeah, this So today's session is
+[00:00:47] really going to be about Evals. Um and I
+[00:00:50] guess my
+[00:00:51] goal for this session is for you all to
+[00:00:53] be afterwards to be inspired to build
+[00:00:55] Evals, to be like, "Okay, Evals are
+[00:00:58] actually really useful."
+[00:00:59] Um and how you can act on them, right?
+[00:01:01] Like, we're going to be building Evals.
+[00:01:04] I want you to get a better sense of
+[00:01:06] like, "Okay, how should I be thinking
+[00:01:07] about building Evals? What are useful
+[00:01:10] type of Evals? And then also, how can we
+[00:01:13] use and take these Evals to then make
+[00:01:16] better agents, right?" So that's the
+[00:01:18] main goal of this session.
+[00:01:20] Um and the way we're going to do this is
+[00:01:22] by building a slide generation agent and
+[00:01:25] then finding out like, "Okay, what are
+[00:01:27] some good Evals? What do we want to
+[00:01:29] measure? And then, how can we build now
+[00:01:32] better agents based on the feedback that
+[00:01:34] we're getting from our Evals?"
+[00:01:37] And the first thing that we all need to
+[00:01:40] set the stage on is, "What are Evals,
+[00:01:43] right?"
+[00:01:44] So Evals are systematic tests that
+[00:01:47] measure how well an AI system performs
+[00:01:49] on a specific domain or use case, right?
+[00:01:53] So they give you information about like,
+[00:01:55] "What's the quality of the results? Um
+[00:01:57] what did it do well? What was it not
+[00:01:59] good at? How can we improve, right?
+[00:02:01] And evals they are made up of tasks
+[00:02:04] define certain scenarios
+[00:02:07] that then encode certain expectations
+[00:02:10] through the grading logic. So, one way
+[00:02:12] that we're thinking about evals is
+[00:02:15] if you for example are building an AI
+[00:02:17] system and AI agent and you want to make
+[00:02:20] sure that the output adheres to like a
+[00:02:22] certain type of quality or you want need
+[00:02:25] to make sure like this must always be
+[00:02:27] present.
+[00:02:28] Evals are a way to kind of encode this
+[00:02:31] behavior in a way where then afterwards,
+[00:02:33] if your evals fail, you know like, okay,
+[00:02:35] my agent is not doing or behaving the
+[00:02:38] way it is intended, right? So, that's
+[00:02:41] the way how we can use these evals.
+[00:02:43] And then evals is also the bridge
+[00:02:45] between things like it seems to work or
+[00:02:48] like
+[00:02:49] we know it works or maybe it's all like,
+[00:02:51] ah, it kind of feels a little bit worse
+[00:02:53] today for some reason.
+[00:02:55] It's always very hard to act on these
+[00:02:57] types of vibes, right? Like I think
+[00:02:59] vibes definitely have their own place. I
+[00:03:01] think they're useful just to get like a
+[00:03:03] general sense check of like how people
+[00:03:05] are feeling. But they're not very
+[00:03:07] actionable, right? And that's kind of
+[00:03:10] what you want to get out of evals. We
+[00:03:11] want to have something that's
+[00:03:12] actionable.
+[00:03:15] So, then
+[00:03:18] we always ship eval. Like we always once
+[00:03:20] we release like a model, we always have
+[00:03:22] this accompanying benchmark scorecard,
+[00:03:25] right? And then we always list like, oh,
+[00:03:26] these are like a bunch of evals. This is
+[00:03:28] what we achieve, what our models
+[00:03:30] achieve. We compare them to other
+[00:03:31] models. We compare them to competitor
+[00:03:33] models, right? Um
+[00:03:35] And there's like always a few usual
+[00:03:36] suspects, right? Like for example,
+[00:03:39] um
+[00:03:39] SweetBench is a very famous one which
+[00:03:42] measures agentic coding abilities.
+[00:03:45] Terminal Bench is one that's also quite
+[00:03:46] popular. But we also have other types of
+[00:03:48] evals, right? We have like tool use and
+[00:03:50] agents like for example like Tower
+[00:03:51] Bench,
+[00:03:52] OSWorld, which are some other evals that
+[00:03:54] measure different things. And then we
+[00:03:56] also have like reasoning and knowledge
+[00:03:58] um like Arc-AGI too.
+[00:04:00] Um
+[00:04:01] Now, this is all fine and dandy, right?
+[00:04:03] And then you look at these evals and we
+[00:04:04] always every time a new model releases
+[00:04:06] like, "Oh, we stopped off the benchmark
+[00:04:08] for these and these um evals, right?" Um
+[00:04:12] and they give us like a general general
+[00:04:13] sense of like how well is the model and
+[00:04:16] how much did we improve upon previous
+[00:04:19] versions, right?
+[00:04:20] But
+[00:04:22] for you guys, if you're like building
+[00:04:23] something, if you're building an agentic
+[00:04:24] system,
+[00:04:26] this doesn't really say much usually,
+[00:04:28] right? Like
+[00:04:29] because like we we don't measure for
+[00:04:30] example like
+[00:04:32] a very specific use case that you guys
+[00:04:34] are building on, right? We measure these
+[00:04:36] generic general benchmark that measure a
+[00:04:38] lot of capabilities,
+[00:04:40] but they might not be applicable to your
+[00:04:42] specific use case, right?
+[00:04:44] So, that's why we always say build your
+[00:04:46] own evals,
+[00:04:48] benchmark the different models,
+[00:04:49] benchmark your AI agent, and make sure
+[00:04:51] that you get the most out of the models,
+[00:04:53] and make sure that you're also using the
+[00:04:54] right model for the job.
+[00:04:56] Right?
+[00:04:59] And so, why are these evals specifically
+[00:05:01] important? So, this is my pitch to you
+[00:05:03] of start using evals, right? So, without
+[00:05:06] evals, suppose you don't have evals. I
+[00:05:07] think we've all been into the scenario
+[00:05:09] where
+[00:05:10] you have like this agent and it's
+[00:05:12] working fine, and then you get like this
+[00:05:14] feedback of like a customer who is like
+[00:05:17] saying like,
+[00:05:18] uh it's it's not really up to par of
+[00:05:20] like this new model switch, ma it's
+[00:05:23] something is off, right? It's very hard
+[00:05:25] like to do anything with that
+[00:05:27] information, right? It's just like,
+[00:05:28] "Okay, um
+[00:05:30] do you have some logs maybe that we can
+[00:05:31] take a look at some specific instances,
+[00:05:33] right?" And then you try to like debug
+[00:05:35] it manually, right?
+[00:05:37] But in a way, you're still flying blind,
+[00:05:39] right? You're always in a reactive loop,
+[00:05:41] so you wait for the feedback and then
+[00:05:42] you're like, "Okay, let's see what we
+[00:05:43] can do about this, right?" So, you
+[00:05:45] basically only catch issues in
+[00:05:46] production. You can fix, for example,
+[00:05:49] like one issue, which then might, for
+[00:05:51] example, create multiple more down the
+[00:05:52] line by making, I don't know, prompt
+[00:05:54] change tweak that suddenly
+[00:05:57] degrades the capabilities on like other
+[00:05:58] tasks that you haven't even considered.
+[00:06:01] Um it's it's also quite annoying to
+[00:06:04] distinguish like genuine feedback from
+[00:06:05] noise, right? Um which is always you
+[00:06:08] don't want to act on every single thing
+[00:06:09] that you see because people have also
+[00:06:11] some um biases in the way they perceive
+[00:06:14] these things, right? Um
+[00:06:16] And then finally, I think which is the
+[00:06:18] most important one is there's no way to
+[00:06:19] verify improvements or regressions on
+[00:06:21] anything that you're building or that
+[00:06:22] you've done, right? So, you like need a
+[00:06:25] way to make sure that the changes that
+[00:06:26] you are making to your agent are
+[00:06:28] actually impacting the quality and
+[00:06:30] making sure that you improve upon the
+[00:06:31] previous versions, right?
+[00:06:33] And so, this is basically what evals do
+[00:06:35] give you. If you add evals, you have
+[00:06:37] clarity. You need to define what does
+[00:06:40] success look like, right? Because like
+[00:06:42] if let's say you don't have evals,
+[00:06:44] right? And you're not even able to
+[00:06:45] articulate like this is how the agent
+[00:06:48] should behave. This is what the
+[00:06:49] successful end product would look like
+[00:06:51] for my agent, then how can you make sure
+[00:06:53] that your agent's actually behaving
+[00:06:54] properly because you can't even vocalize
+[00:06:56] it to yourself like this is what it
+[00:06:58] should be. So, building these evals
+[00:06:59] forces you to define, formalize in a way
+[00:07:03] what you expect your agent to do.
+[00:07:05] Um
+[00:07:07] It also allows you, as I said, to
+[00:07:08] iterate on optimal agent configs.
+[00:07:10] Um
+[00:07:11] you can also adopt new models faster,
+[00:07:13] right? Instead of like saying like oh,
+[00:07:16] we might test out this new model and
+[00:07:17] then see if it's like okay. You now have
+[00:07:20] like some clarity to say like okay, this
+[00:07:21] is better on this and this is not better
+[00:07:23] on this and this is why we should or
+[00:07:25] should not migrate to a new model. Which
+[00:07:27] especially I think is quite relevant
+[00:07:29] with the pace of new models coming out.
+[00:07:32] I think it's also like just taking this
+[00:07:35] load off your back of always constantly
+[00:07:37] having to find like okay, what is the
+[00:07:39] new frontier, right? Um
+[00:07:41] And then finally, making problems
+[00:07:43] visible before launch, right? So, you
+[00:07:44] know, like, oh, if there's like a few
+[00:07:46] um cases that you have that we always do
+[00:07:49] well or that you trust to provide a lot
+[00:07:50] of insight,
+[00:07:52] that's where you get the most value out
+[00:07:54] of evals.
+[00:07:57] And so, how how do evals really fit in?
+[00:07:59] So, originally, um when we were like
+[00:08:01] thinking about like prompt engineering,
+[00:08:03] we had this basically this flow of like
+[00:08:06] how you should optimize a prompt, right?
+[00:08:08] So, first you develop your test cases,
+[00:08:11] which are the evals in the end. Then you
+[00:08:13] write like a prompt, you test out the
+[00:08:15] prompt against the tasks, you refine the
+[00:08:17] prompt a little bit, and then it goes
+[00:08:19] back, you run the prompt again, you
+[00:08:21] refine it until you're like, "Okay, I'm
+[00:08:23] doing good great on my evals. I'm
+[00:08:25] confident that my system is working
+[00:08:26] properly." And then finally, you can
+[00:08:28] like ship the post polished prompt,
+[00:08:30] right? Um over time, systems have gotten
+[00:08:32] a lit little Oh. Ooh, can I go back?
+[00:08:36] Can we go back one slide, please?
+[00:08:39] Thank you. Um so, over time, it has
+[00:08:41] gotten a little bit more complex with
+[00:08:42] now agents coming into the loop with
+[00:08:44] like tool calls, skills, all the
+[00:08:46] different ways to optimize your contacts
+[00:08:48] and all that stuff. So, over time, these
+[00:08:50] systems get more and more complex.
+[00:08:52] So, it's also way more levers that you
+[00:08:54] can pull to make changes to your agents,
+[00:08:57] which makes it once again then more
+[00:08:59] important to have evals
+[00:09:01] that forces you to have concrete way of
+[00:09:04] identifying these are the things that we
+[00:09:06] can change, and these are the things
+[00:09:08] that impact the system in a positive So,
+[00:09:11] once again, like with agents, it's the
+[00:09:13] same flow, right? Um
+[00:09:15] except now with just way more and way
+[00:09:18] more complex things.
+[00:09:20] Um
+[00:09:22] evals, when you create them, there's
+[00:09:23] basically a few graders. A grader is
+[00:09:25] what we consider basically
+[00:09:27] a way how we can judge the output,
+[00:09:29] right? And like one of those ways is,
+[00:09:31] for example, a code-based grader, which
+[00:09:33] is pretty similar to, for example, a
+[00:09:35] unit test, as you might know in like
+[00:09:37] software engineering, right?
+[00:09:39] It can be like a string match, rejects,
+[00:09:41] maybe a fuzzy fuzzy match,
+[00:09:44] but it's like a strict analysis, right?
+[00:09:46] It finds static
+[00:09:48] and tool code checks and the advantages
+[00:09:50] of this one is it's fast, cheap,
+[00:09:52] deterministic,
+[00:09:53] but it has a big drawback which is that
+[00:09:55] it's brittle and it also lacks in
+[00:09:57] nuance, right?
+[00:09:59] Um
+[00:10:00] And with this we mean like especially
+[00:10:01] brittle is quite an interesting one in
+[00:10:03] my opinion because like
+[00:10:06] these deterministic checks they force a
+[00:10:08] certain deterministic behavior, right?
+[00:10:10] But with and sometimes this is
+[00:10:12] absolutely the way we want an agent to
+[00:10:15] behave, right? Like for example, let's
+[00:10:16] say you have an agent that creates a
+[00:10:18] slide deck for example, you want to make
+[00:10:20] sure that in the end there is a slide
+[00:10:22] deck present, deterministic check.
+[00:10:25] But then if you want to have like a
+[00:10:26] check on what's the quality of the slide
+[00:10:28] deck, this is way more nuanced, right?
+[00:10:30] Like you cannot easily encode this in
+[00:10:32] like some deterministic checks, right?
+[00:10:35] And that's why we also have the second
+[00:10:37] type of graders which is the model-based
+[00:10:38] graders, right?
+[00:10:40] And this is like rubric-based reasoning.
+[00:10:42] Um
+[00:10:43] So you for example say like
+[00:10:46] is this slide high quality? Very
+[00:10:49] generic, but that might be for example a
+[00:10:52] rubric or like for example is this text
+[00:10:54] coherent?
+[00:10:55] Also a way to get some intel on how well
+[00:10:58] your agent's performing.
+[00:11:00] Um you can do some interesting things
+[00:11:01] with this as well.
+[00:11:03] Um pairwise comparison is in my opinion
+[00:11:04] quite underrated. Let's say you have two
+[00:11:07] examples, two outputs,
+[00:11:09] um and then you basically ask the model
+[00:11:10] which one of the two do you prefer and
+[00:11:13] why?
+[00:11:13] That's also quite interesting to get
+[00:11:15] some information out of especially
+[00:11:16] especially for these scenarios where you
+[00:11:19] don't really have a clear way of of
+[00:11:21] defining what makes the better one,
+[00:11:23] right?
+[00:11:24] Um
+[00:11:25] And and then another one is the
+[00:11:27] multi-judge consensus which is just for
+[00:11:30] example you take like best of three and
+[00:11:31] you say like three judges score
+[00:11:33] independently and say like majority wins
+[00:11:36] for example, right? Once again, that
+[00:11:38] this multi-judge consensus is
+[00:11:39] interesting because it allows you to
+[00:11:41] introduce some more determinism in a way
+[00:11:45] where if you have like we know that an
+[00:11:46] LLM is undeterministic, right?
+[00:11:49] And the same would be happening for this
+[00:11:51] model-based graders, right? Like if you
+[00:11:52] run them like 100 times, a few times it
+[00:11:55] might say, "Oh, this is great." And a
+[00:11:56] few other times it might say, "Ah, it's
+[00:11:58] not that good." If you have like this
+[00:11:59] multi-judge consensus, you basically are
+[00:12:02] assuming, let's put more compute into
+[00:12:03] this and let's see what the majority of
+[00:12:05] our graders consensus is, right?
+[00:12:08] And this is unlocks a lot of things,
+[00:12:10] right? Like this is flexible, this is
+[00:12:11] scalable, this is nuanced.
+[00:12:13] But as I said, it's non-deterministic,
+[00:12:16] it costs more money, and also it
+[00:12:18] requires some calibration, which we will
+[00:12:19] see is not easy at all.
+[00:12:22] And then finally, the most expensive one
+[00:12:25] are the human graders. And these are
+[00:12:27] probably the graders that
+[00:12:29] when you're building these agentic
+[00:12:31] systems, you will be using the least,
+[00:12:33] right? Because they're like
+[00:12:35] incredibly expensive.
+[00:12:36] Um you have like a whole subject matter
+[00:12:38] expert that will do like a whole review
+[00:12:39] of the system. It will It's expensive,
+[00:12:41] it's slow as well, but it is more It's
+[00:12:44] the highest quality. It is very nuanced.
+[00:12:47] Um and yeah, it's like really good for
+[00:12:48] like some AB testing and some spot
+[00:12:50] checking, right?
+[00:12:52] So, I'm not sure like how many of you
+[00:12:54] were able to clone the repo beforehand
+[00:12:56] and have this all set up. Um I actually
+[00:12:59] wanted to do this session a little bit
+[00:13:00] differently, but given the amount of
+[00:13:01] people, I will probably do a little bit
+[00:13:03] more um
+[00:13:05] myself instead of like letting you um
+[00:13:08] think about all of the things. Um but
+[00:13:10] I'll quickly give you an overview of of
+[00:13:11] what's in the repo, right? Um let me
+[00:13:13] make this a little bit bigger. Um
+[00:13:15] I have made some pre-made uh slides that
+[00:13:18] I will show you in a bit.
+[00:13:19] Um
+[00:13:21] The resources is the main thing where
+[00:13:23] you guys would be working in. So, you
+[00:13:24] have the I'm actually closing this
+[00:13:26] session for now. Um so if like the
+[00:13:28] agent.yaml and this is basically where
+[00:13:30] you would define your agent, right? Like
+[00:13:31] um I think before we did a session.
+[00:13:34] So this is basically what we're going to
+[00:13:36] do use like the manage agent. So for the
+[00:13:37] people who attended that session um
+[00:13:40] before lunch, it's basically the same
+[00:13:42] thing. We define here like an an an
+[00:13:43] agent in this case um and we have given
+[00:13:46] this uh the system prompt, right? So
+[00:13:48] this is a system prompt that we're
+[00:13:49] giving. So basically you are a slide
+[00:13:50] generation agent and when the user gives
+[00:13:52] you a topic, create a PowerPoint file at
+[00:13:54] this location. And then also we tell it
+[00:13:56] you have a shell um
+[00:13:58] with Python PPTX uh pre-installed,
+[00:14:00] right? Um so that's all we give it for
+[00:14:02] now. And then we also have like an
+[00:14:04] environment which we've defined um with
+[00:14:06] like few packages um what is it what it
+[00:14:08] needs to complete this session. Um
+[00:14:11] And then basically that's it. We also
+[00:14:13] have some other things defined, but I
+[00:14:15] will get to that. I think maybe the
+[00:14:16] first question that I have for the
+[00:14:18] audience today is
+[00:14:20] we want to make a slide generation
+[00:14:22] agent, right?
+[00:14:24] What do you guys think is
+[00:14:26] a good eval? What are you trying to
+[00:14:28] measure? What would be some good
+[00:14:29] information that you want to get out of
+[00:14:30] evals?
+[00:14:36] Sorry?
+[00:14:38] Number of words on slides is is it a
+[00:14:39] useful uh thing to track?
+[00:14:43] And anyone else with some ideas?
+[00:14:47] Sorry?
+[00:14:50] Yeah, absolutely valid. Absolutely
+[00:14:52] valid. Yeah, yeah, yeah. Um I I And this
+[00:14:55] actually I like these two examples
+[00:14:57] because they immediately give you like a
+[00:14:58] different sense of um how you can use
+[00:15:00] the type of grades. Like for example,
+[00:15:02] the number of words on a slide is
+[00:15:04] quantifiable, right? It's like easy to
+[00:15:05] say you can count the number of words
+[00:15:06] with like a deterministic grader with
+[00:15:08] like a code grader.
+[00:15:10] >> [snorts]
+[00:15:10] >> The one if it's like overlapping or if
+[00:15:12] it's overspilling, that one is harder to
+[00:15:14] at um
+[00:15:15] um encode in code, right? So for this
+[00:15:17] one you might for example use a model
+[00:15:19] grader. And that's exactly what we did,
+[00:15:21] right?
+[00:15:21] So we have actually defined for you guys
+[00:15:23] already a few graders beforehand.
+[00:15:26] Two specific
+[00:15:27] directories we have the code and we have
+[00:15:30] judge. So, the code one is as I said
+[00:15:31] it's like these these code graders
+[00:15:33] they're quite deterministic like for
+[00:15:34] example if we take a look at emoji count
+[00:15:36] for example is one
+[00:15:38] that we have defined where we basically
+[00:15:40] just count the number of emojis present
+[00:15:43] in the slide deck. Um because we we just
+[00:15:45] noticed that it's quite prevalent. Like
+[00:15:48] for example if I open the slide deck
+[00:15:51] um let me go with environment one in
+[00:15:53] this case. Um
+[00:15:55] so these are the slides that I it's
+[00:15:57] basically the agents running. Um it's
+[00:15:59] it's done beforehand just because it
+[00:16:00] takes can take quite a while um to get
+[00:16:03] the agents running. Um but this is for
+[00:16:04] example the result of the initial
+[00:16:07] agents, right? So, this is slide number
+[00:16:09] one.
+[00:16:10] Um slide number two
+[00:16:12] slide number three um with some
+[00:16:16] weird things on the bottom left. Um
+[00:16:20] slide four and slide five.
+[00:16:23] Now, I I think we can all agree like
+[00:16:24] this is not the best slide deck you guys
+[00:16:26] have ever seen. Um but it's a good
+[00:16:29] start. At least it does a slide deck
+[00:16:31] um
+[00:16:31] that's five slides. I think that's
+[00:16:33] exactly the prompt that we sent it. Um
+[00:16:36] so we have a few slides. There's a few
+[00:16:37] content on here it's like few boxes.
+[00:16:39] It's you know, it's a slide deck. Um
+[00:16:42] given these slides is there anything
+[00:16:44] else that you guys are seeing that like
+[00:16:45] this is something that we would never
+[00:16:47] want in a slide deck?
+[00:16:58] What was that? I
+[00:16:59] No teal No teal. We can if you
+[00:17:02] absolutely want to avoid teal that's
+[00:17:03] absolutely right. I think in this it
+[00:17:05] doesn't do that for every single slide.
+[00:17:07] Like let me see for the career one.
+[00:17:09] Um let me see what it is. Oh, okay maybe
+[00:17:10] it does always use teal actually. Um but
+[00:17:12] for example in this one we see like this
+[00:17:15] overlap of like words and and and this
+[00:17:18] this horizontal
+[00:17:20] what else do we have some weird
+[00:17:22] coloring.
+[00:17:23] Yeah, there's there's there's a few
+[00:17:26] weird things happening generally, right?
+[00:17:29] So yeah, based on this we take you take
+[00:17:31] a look at what it is what the results
+[00:17:32] are and you're like hmm what type of
+[00:17:34] graders do I want to define for this
+[00:17:36] specifically, right? And so we did that
+[00:17:38] and we noticed for example emoji counts
+[00:17:42] is one that's quite prevalent.
+[00:17:44] We want to check how many times do we
+[00:17:46] see an emoji popping up.
+[00:17:47] Another one is for example cluttered
+[00:17:49] slides like how many shapes do we see on
+[00:17:51] the slides like if there's just so too
+[00:17:53] many things it becomes cluttered.
+[00:17:56] Counting the number of slides for
+[00:17:57] example we always ask for five slides
+[00:17:59] making sure that you have five slides.
+[00:18:02] Do we have slides with image, small
+[00:18:04] fonts, text heavy slides. Now this is
+[00:18:06] this is in this case it's quite
+[00:18:08] arbitrarily chosen, right? These were
+[00:18:09] just like things that we like thought
+[00:18:11] were like this is quite representative
+[00:18:13] of what
+[00:18:15] a slide deck might have for graders,
+[00:18:18] right? It really depends like I want
+[00:18:20] really want to stress this like
+[00:18:22] it really depends from use case to use
+[00:18:23] case what makes a good grader, right? I
+[00:18:26] think generally the way I think about
+[00:18:28] this thing is if you have a grader
+[00:18:30] that you get no useful out of
+[00:18:32] information out of
+[00:18:34] then you should not have that part of
+[00:18:36] your evil, right? Like each thing you
+[00:18:38] should be able to tell like for each
+[00:18:39] single scenario that you're testing you
+[00:18:41] should be able to say like this is the
+[00:18:42] information that I want to get out of
+[00:18:44] this. This is the
+[00:18:45] type of this is the part of the system
+[00:18:47] that I'm testing and this is how I can
+[00:18:49] act on if it's being degraded, right?
+[00:18:52] So those were just like a few codes ones
+[00:18:55] and then we also have a few judge ones
+[00:18:56] for example the color judge which
+[00:18:58] basically judged what's the color
+[00:19:00] contrast and then it gives a score from
+[00:19:02] like zero to five. Same with image,
+[00:19:06] the layout, text. And this is the prompt
+[00:19:09] that we give. Let me close this one real
+[00:19:12] quick.
+[00:19:14] Oh.
+[00:19:15] So, let me keep it like this. So, this
+[00:19:17] is basically the system prompt
+[00:19:18] that we give it.
+[00:19:20] Um no.
+[00:19:22] So, we're saying, "Please evaluate the
+[00:19:23] slide based on each of the following
+[00:19:25] criteria. Text,
+[00:19:27] the title should be simple and clear to
+[00:19:28] indicate the main points. For main
+[00:19:30] content, avoid too many texts and keep
+[00:19:32] words concise. Use a consistent and
+[00:19:34] readable font size, style, and color."
+[00:19:36] And I mean, it it goes on and on, right?
+[00:19:37] So, we give like for each of the
+[00:19:38] different things that we want to measure
+[00:19:40] we give like a little information of
+[00:19:41] like "This is what you should be
+[00:19:43] focusing on when you want to measure
+[00:19:44] this."
+[00:19:45] Right? Okay, cool. So,
+[00:19:48] we have these evals.
+[00:19:51] Let's say you have now created a slide
+[00:19:53] deck and you now want to see like,
+[00:19:54] "Okay, what are the results, right? And
+[00:19:56] how can we act on these results?" So, in
+[00:19:59] this wrapper we also have created this
+[00:20:01] nice little script that will
+[00:20:03] automatically score your slide deck for
+[00:20:05] you. And so, at the top here we
+[00:20:06] basically have it all
+[00:20:08] listed out. So, we have like the slide
+[00:20:10] count which is being counted the slides,
+[00:20:12] the number of slides with image,
+[00:20:14] text-heavy slides, cluttered slides,
+[00:20:16] small font size, and so on. We also have
+[00:20:19] our judges over here which are saying
+[00:20:20] like they give a score from like zero to
+[00:20:22] five uh based on like how good is the
+[00:20:24] text, how good is the image at the
+[00:20:26] layout and the color, right? Um
+[00:20:29] uh
+[00:20:29] honestly like these scores you can
+[00:20:30] immediately note that these scores are
+[00:20:32] quite high. So, as we said like we
+[00:20:33] calibrated between zero and five. And as
+[00:20:35] we see like the scores are being given
+[00:20:36] you are like between 2.8 and four which
+[00:20:38] honestly I think are quite high given
+[00:20:41] the slide deck that we have seen, right?
+[00:20:45] So,
+[00:20:46] that's like the part of the calibration
+[00:20:47] that needs to happen as well, right? I
+[00:20:49] think there's also like one thing that I
+[00:20:50] maybe want to stress. It's not because
+[00:20:51] you have set up your evals once
+[00:20:54] that they are now like the ground truth,
+[00:20:56] you know? Um
+[00:20:58] evals over time they can evolve. They
+[00:21:00] need to be a living artifact. It's not
+[00:21:02] like something you make once and then
+[00:21:03] forget and then use it like to make all
+[00:21:05] of your future decisions on, right?
+[00:21:07] Because like we will see over time like
+[00:21:08] as I go through all of the different
+[00:21:10] examples that we have, we will see like
+[00:21:11] there needs to be a way also how we can
+[00:21:14] see how we can make sure that the evals
+[00:21:16] that we create are actually still
+[00:21:18] measuring something useful for us,
+[00:21:19] right?
+[00:21:21] If you ever hear people talk about
+[00:21:22] saturation of evals, that's basically
+[00:21:24] what they mean in a way that like the
+[00:21:26] eval is not giving any more relevant
+[00:21:28] information that we can act on due to
+[00:21:30] several reasons.
+[00:21:32] Cool.
+[00:21:33] So, we see this and I guess maybe the
+[00:21:35] first thing that we want to do in this
+[00:21:37] case is we want to make an agent that is
+[00:21:40] a little bit more polished, right? And
+[00:21:42] so for this, we actually just update our
+[00:21:45] system prompts.
+[00:21:46] So in instead of just having like, "Oh,
+[00:21:48] you are slide generation agent, make a
+[00:21:50] slide deck."
+[00:21:51] We now give it a little bit more
+[00:21:52] information of like what are the
+[00:21:53] expectations that we have of you in
+[00:21:55] terms of typography, right? Because as
+[00:21:58] we noticed, we said like, "Oh, the font
+[00:21:59] is too small. There's too many words on
+[00:22:01] there. It's not readable or it's too
+[00:22:02] big." Right? So we give it a little bit
+[00:22:04] more of information. So we say like,
+[00:22:06] "Slide title should be this size,
+[00:22:08] section header should be this size,
+[00:22:10] body this size, caption this size."
+[00:22:11] Right?
+[00:22:13] And we also give it some information on
+[00:22:14] the layout and density. Like here are
+[00:22:15] the things that we expect from the
+[00:22:16] layout and density point of view. For
+[00:22:19] example, we say, "Keep the body text
+[00:22:20] concise, leave breathing room, and left
+[00:22:23] align paragraphs." Right?
+[00:22:25] And then also we
+[00:22:27] I think everyone kind of
+[00:22:29] I mean I am at least getting like ticked
+[00:22:30] off like if I read something that's
+[00:22:31] clearly AI written, I'm always a little
+[00:22:33] bit skeptical of
+[00:22:35] if I can completely trust the content
+[00:22:37] and if the person sending me this text
+[00:22:39] is like has like read it himself or
+[00:22:41] themselves and is standing behind that
+[00:22:43] content, right? So we also say like
+[00:22:45] avoid these AI generated tells as well.
+[00:22:47] So never use a thin accent lines in the
+[00:22:49] titles and don't pepper slide with
+[00:22:51] emojis as decorative icons, right?
+[00:22:53] So this is based on the things that we
+[00:22:55] have seen in our eval, right? So we have
+[00:22:57] seen as I Let's go back a little bit.
+[00:22:59] We've looked at this slide deck.
+[00:23:01] And we're like, "Oh, this is not
+[00:23:04] properly done. These fonts are a little
+[00:23:07] bit off. Um, there's some emoji used in
+[00:23:10] here. It's like a little bit all over
+[00:23:11] the place."
+[00:23:12] And then based on the score, we were
+[00:23:13] like, "Okay, these are the things that
+[00:23:14] we're clearly failing at, right?" So, we
+[00:23:15] have like emoji counts four in this
+[00:23:17] case, small font slides also four as
+[00:23:20] well, cluttered slides two, and text
+[00:23:21] heavy slides, right? So, based on the
+[00:23:23] information that we have gotten from the
+[00:23:24] eval that we have run, we have made
+[00:23:26] these changes to our new agent, right?
+[00:23:31] Let me now pull up the result of the new
+[00:23:33] agent that we have created in this case,
+[00:23:34] right? Um, so this is slide one,
+[00:23:38] which I think is immediately way more
+[00:23:39] enjoyable to look at. Like, there's no
+[00:23:41] overlapping stuff. Um, there's no dollar
+[00:23:43] sign. There's just generally it's
+[00:23:45] cleaner.
+[00:23:47] This once again, I think this one still
+[00:23:48] has like quite small text, but at least
+[00:23:51] once again, we're like getting a little
+[00:23:52] bit more consistent with the coloring as
+[00:23:54] well.
+[00:23:55] Um, once again, like the whole slide
+[00:23:56] deck is more consistent. This third
+[00:23:58] slide,
+[00:23:59] the fourth slide, and the fifth slide,
+[00:24:02] right?
+[00:24:03] And this is just by basically
+[00:24:05] identifying, "Here's a few failure modes
+[00:24:07] of our original one. Here's how we now
+[00:24:09] make changes based on these things that
+[00:24:11] we found in the system prompt, and now
+[00:24:13] we run it back."
+[00:24:15] And now once again, we can do the same
+[00:24:16] thing. So, this is we're now basically
+[00:24:17] in this loop of finding what's wrong,
+[00:24:20] iterating, finding what's wrong, running
+[00:24:22] it again, and making improvements over
+[00:24:23] time.
+[00:24:25] So, now we can take a look back at what
+[00:24:26] we found over here.
+[00:24:28] Oh, and this is actually way worse
+[00:24:29] suddenly. We see like emoji count 20.
+[00:24:31] I'm wondering where they are. I haven't
+[00:24:32] seen them actually.
+[00:24:34] Wondering where that is at.
+[00:24:36] Hmm.
+[00:24:39] Wonder if this is like a mistake in this
+[00:24:41] case. Um, but generally we see like,
+[00:24:43] okay, small font slides, we've seen
+[00:24:44] that, but we've we've improved upon the
+[00:24:46] cluttering. Um, and let's see, text
+[00:24:49] heavy, is that still the case?
+[00:24:51] Um,
+[00:24:53] I think I think that's fine. I mean,
+[00:24:54] those are a little bit text heavy, but I
+[00:24:56] think it's acceptable, right?
+[00:24:59] So, now we're like
+[00:25:00] So, this once again shows the value of
+[00:25:02] like human review as well, right?
+[00:25:04] Because now we see, oh, these things
+[00:25:06] that we have defined in our evals
+[00:25:08] are maybe not as well defined as we
+[00:25:10] hoped them to be, right? Because now I'm
+[00:25:11] here arguing like, oh, this is not as
+[00:25:13] text-heavy as I expected it to be,
+[00:25:15] right?
+[00:25:15] So, that means that something is
+[00:25:16] actually wrong with the way we're
+[00:25:17] grading. So, now we go back then,
+[00:25:20] we would go back, go to our grader,
+[00:25:22] change the grader, update it, and make
+[00:25:24] sure that it better reflects the actual
+[00:25:25] thing that we want to measure, right?
+[00:25:28] And this is also not something to be
+[00:25:29] underestimated, like this calibration of
+[00:25:31] how your agent should behave um and how
+[00:25:33] your judges should judge the specific
+[00:25:36] output is really something very fickle,
+[00:25:38] right? Like you should spend like proper
+[00:25:40] time trying to
+[00:25:41] find the ways on how you should make
+[00:25:43] this happen.
+[00:25:45] Um
+[00:25:46] let's say now that we want to have an
+[00:25:47] agent. Like I I I I think with this one,
+[00:25:49] I mean, it's fun. I think it's nice, um
+[00:25:51] but it's still quite text-heavy and it's
+[00:25:53] only text, right? Um
+[00:25:56] let's say now that we want to have an
+[00:25:57] agent. Let's say that's one of our
+[00:25:58] requirements, right? That we have an
+[00:25:59] agent that we always want to have
+[00:26:01] includes diagrams. Once again, we go
+[00:26:05] back to our system prompt,
+[00:26:06] we update it, and we now say every slide
+[00:26:08] must include at least one generated
+[00:26:10] diagram or chart inserted as an actual
+[00:26:13] image, right?
+[00:26:14] Um
+[00:26:15] so, once again,
+[00:26:16] we update the system prompt or any part
+[00:26:19] of the agent that you can tune,
+[00:26:21] and then we go again and we check what
+[00:26:24] do we get.
+[00:26:26] Okay, so this one is quite interesting.
+[00:26:28] I'm I guess personally I'm not a fan of
+[00:26:30] having
+[00:26:31] an image on the opening slide, but once
+[00:26:34] again, it is what we defined that it
+[00:26:36] should do, right? So, I'm going to let
+[00:26:37] it slide. But it's it's a nice nice
+[00:26:39] graph. What is saying? It's like no
+[00:26:40] negotiation and active negotiation. So,
+[00:26:41] it's arguing that if you do active
+[00:26:44] negotiation for your salary, you can see
+[00:26:46] over time the gap widens between no
+[00:26:48] negotiation and yes negotiation
+[00:26:50] negotiation.
+[00:26:51] Some extra benchmarks. I I I this looks
+[00:26:53] immediately way
+[00:26:55] better just in the way that it's like
+[00:26:56] kind of grounded into some actual facts
+[00:26:58] right now instead of just waffling its
+[00:27:00] way through the slide deck, right?
+[00:27:04] Yeah, this one I'm not a big fan of. I
+[00:27:06] feel like it's a little bit stretched,
+[00:27:08] but that might also just be the
+[00:27:09] screenshot. Um
+[00:27:12] Yeah, and this one also not the best one
+[00:27:14] either, right?
+[00:27:16] Let me see like let's see what the
+[00:27:18] score.json also says, okay. No emojis,
+[00:27:20] great. No cluttered slides. Still quite
+[00:27:23] text heavy slides surprisingly. Um still
+[00:27:25] small font slide. I think that's fine. I
+[00:27:27] think we just say like with images I
+[00:27:28] think
+[00:27:30] Yeah, I think we we accept like
+[00:27:33] these types of things are fine. Um so
+[00:27:35] once again, shows you some um questions
+[00:27:38] regarding the grader that we have set
+[00:27:40] up.
+[00:27:41] But now we can also take a look at like
+[00:27:42] the judges, right? Like for example
+[00:27:43] because now we have images that we have
+[00:27:44] created, so now we can also consider how
+[00:27:46] does the image judge uh I think this is.
+[00:27:48] And it says it's 3.8 out of five. Um
+[00:27:52] doesn't say give us a lot to go off,
+[00:27:54] right? It just gives us a random number.
+[00:27:57] What does it mean? How can we improve
+[00:27:58] upon this? But that's fine for now.
+[00:28:02] Now one thing that we always see that
+[00:28:04] works just generally quite well, and
+[00:28:05] that's like it's transversal over every
+[00:28:07] single use case is adding
+[00:28:09] a QA loop, right? Um for coding this is
+[00:28:12] quite intuitive. That's basically saying
+[00:28:14] like you create an agent that actually
+[00:28:17] is writing the code, right?
+[00:28:19] And then you add the second agent that
+[00:28:20] is then looking at the code that has
+[00:28:22] been written and just criticizes it. So
+[00:28:23] it's basically saying this is bad, this
+[00:28:25] is bad, this is bad. This introduces a
+[00:28:27] bug, this introduces a bug, this is not
+[00:28:29] according to standards, whatever, right?
+[00:28:30] So it basically is criticizing the the
+[00:28:33] thing that has been created. And then
+[00:28:35] that part of the feedback you give back
+[00:28:36] to your original agent, the creation
+[00:28:38] agent.
+[00:28:39] The creation agent goes off again, does
+[00:28:41] the creation, does the fine-tuning,
+[00:28:42] makes the changes that were informed by
+[00:28:44] the criticizing, and then once again
+[00:28:47] after that is done, it goes back to the
+[00:28:48] criticizing agent. And that loop
+[00:28:50] basically goes on and on and on until
+[00:28:52] both sides are like, "Okay, this is
+[00:28:54] fine. We can ship this."
+[00:28:56] And that's basically what we now do in
+[00:28:57] this next step.
+[00:29:00] Um so, we basically say like, "Okay,
+[00:29:02] require QA loop. Um assume there are no
+[00:29:05] problems.
+[00:29:06] Um oh, assume there are problems, and
+[00:29:08] then your job is to find them. Approach
+[00:29:10] QA as a bug hunt, not a confirmation
+[00:29:12] step." And this is quite interesting,
+[00:29:13] because we're like actively instructing
+[00:29:16] the agent to behave in a way
+[00:29:18] adversarially adversarially, right? Like
+[00:29:20] we're saying like, "There are issues.
+[00:29:21] You need to find them." It's not It's
+[00:29:23] not like, "Oh, there might be something.
+[00:29:25] You might be interested in finding
+[00:29:26] something." No, it's actively saying,
+[00:29:27] "There are issues. Go find them." Um and
+[00:29:30] then we say like we instruct after
+[00:29:31] writing the deck, "Okay, convert it to
+[00:29:32] images. Inspect every slide image
+[00:29:34] yourself. Fix the issues, re-render,
+[00:29:36] re-inspect, and then do not stop until
+[00:29:39] you've completed at least one fixed and
+[00:29:40] verified cycle."
+[00:29:42] Cool. Now,
+[00:29:44] as I said, I think for coding this is
+[00:29:45] quite intuitive, but I think it's also
+[00:29:47] quite intuitive if you take a look at
+[00:29:49] like
+[00:29:50] um
+[00:29:51] the the slides that we have created,
+[00:29:52] right? Because that's basically what we
+[00:29:53] did. We have looked at the slides, and
+[00:29:55] we're like, "Ah, this is not good. This
+[00:29:57] is not good. Let's take that feedback,
+[00:29:59] update our graders, update our system
+[00:30:01] prompt, and let's run it back again,
+[00:30:02] right?" So, let's now see if we can
+[00:30:04] actually if this is actually showing
+[00:30:06] some improvements. Um
+[00:30:08] I think this is immediately a lot
+[00:30:11] better. So, the the the image is way
+[00:30:12] bigger now. I think it's way more
+[00:30:14] readable even from a further distance
+[00:30:16] away. Um still the slides are small, but
+[00:30:19] it's like for example, it's source
+[00:30:20] known. There's a source over here as
+[00:30:21] well, which is quite good. Um I think
+[00:30:24] this is also way better. It is
+[00:30:26] more clearly structured. I think the
+[00:30:28] image is also a little bit better as
+[00:30:29] well, right?
+[00:30:31] A quite interesting graph in this case,
+[00:30:33] uh your value profile versus team
+[00:30:35] average.
+[00:30:37] This one is still a little off in my
+[00:30:39] opinion.
+[00:30:40] Also, we now have like a little
+[00:30:41] introduction of like these weird ticks.
+[00:30:44] Um
+[00:30:45] And this one is also a little bit
+[00:30:47] better, I would say, but I think like
+[00:30:48] the just the image taking is um kind of
+[00:30:50] messing with the slide here. And so then
+[00:30:53] we kind of know the drill by now. We
+[00:30:55] take a look at the score.
+[00:30:56] We see like has it improved? Why do we
+[00:30:59] see still gaps? And now we see like for
+[00:31:00] all of the judges that we have created,
+[00:31:02] it is higher than uh the ones before,
+[00:31:04] right? We're now all good in the four
+[00:31:06] .2 to 4.4 now. Um so we're on a we're on
+[00:31:09] a good track, right?
+[00:31:11] And um
+[00:31:13] you can keep on doing this. You can keep
+[00:31:14] on doing this. Um
+[00:31:17] And you will always make like these
+[00:31:18] little changes, but sometimes
+[00:31:20] and this is I guess where it gets quite
+[00:31:22] interesting and more like more like
+[00:31:24] nuanced is you can also just
+[00:31:27] go to a smarter model, right? Because
+[00:31:30] like now you're like defining, oh, this
+[00:31:31] is what a good slide should look like.
+[00:31:33] This is what it should do. This is what
+[00:31:34] not what you should not do. But with
+[00:31:36] these models getting smarter and better
+[00:31:38] over time, you kind of expect them to be
+[00:31:40] like
+[00:31:42] able to figure that out on their own,
+[00:31:43] right?
+[00:31:44] Um I mean, that would at least be nice.
+[00:31:47] So, that's what we tried out as well.
+[00:31:48] So, now in the last one
+[00:31:50] we basically just changed our model to
+[00:31:52] Opus 4 7 instead of Sonnet 4 7, which we
+[00:31:55] have used up to this point. If you can
+[00:31:58] uh 4 6. Um
+[00:32:00] So, now we have switched to Opus 4 7,
+[00:32:02] and we have basically just given it a
+[00:32:03] simple prompt again. Like you are a
+[00:32:05] slide generation agent, and then when
+[00:32:07] the user gives you a topic, create a
+[00:32:08] PowerPoint file at whatever and then you
+[00:32:10] have a shell. So, it's basically just
+[00:32:12] the initial prompt that we gave to uh
+[00:32:14] our Sonnet model in the beginning,
+[00:32:15] right?
+[00:32:17] And then once again, let's now
+[00:32:19] consider taking a look at the results of
+[00:32:21] those.
+[00:32:24] And this is just a base prompt, right?
+[00:32:25] Like you can immediately see like it's
+[00:32:28] significantly better than the Sonnet
+[00:32:29] one, right? I think there's still clear
+[00:32:31] issues that we can iron out, but
+[00:32:33] generally like it's It's more
+[00:32:35] structured, right?
+[00:32:37] And then we can take a look at the score
+[00:32:38] as well. And I think this is quite
+[00:32:40] interesting and quite telling. Like for
+[00:32:41] example,
+[00:32:44] Opus just does not use any emojis. Like
+[00:32:46] it kind of knows like if you want to
+[00:32:47] make a slide deck about salary increase,
+[00:32:51] emojis are probably not right place to
+[00:32:53] put them, right?
+[00:32:54] Um it also has like fewer small font
+[00:32:56] slides because it's kind of has like
+[00:32:58] this innate knowledge of, "Okay, it
+[00:33:00] should be readable. This is how a slide
+[00:33:01] deck should function. This is what
+[00:33:02] people expect out of a slide deck."
+[00:33:04] Right?
+[00:33:05] And then we get to these judge graders,
+[00:33:07] right?
+[00:33:08] Um we see a 4.4. We see a five for the
+[00:33:11] images. Do we even have an image in this
+[00:33:12] one? I don't think it we do actually.
+[00:33:16] No, we don't. Okay, but then once again,
+[00:33:17] we got a five in this one. Layout judge
+[00:33:19] 4.2 and then the color judge 4.8 and
+[00:33:22] title body coherence 4.4. So, this is
+[00:33:24] like immediately giving like extremely
+[00:33:26] high scores as well, right? Which I
+[00:33:27] think is quite interesting because like
+[00:33:29] this is once again showing that we might
+[00:33:31] not be measuring the right thing.
+[00:33:35] And this is not too unexpected for these
+[00:33:36] types of um graders, right? Or for these
+[00:33:39] judge graders. I think
+[00:33:41] one of these things with like
+[00:33:44] Okay, let's go to the code grades. I
+[00:33:45] think those are quite straightforward. I
+[00:33:46] think most people in the room would have
+[00:33:49] understood by now like how they work and
+[00:33:50] how what we can do with them.
+[00:33:52] Like for example, emoji count, it's
+[00:33:53] quite simple. Just count the number of
+[00:33:55] emojis
+[00:33:56] and that's it. But with this judging,
+[00:33:59] what we have done here is actually quite
+[00:34:01] problematic.
+[00:34:03] We basically say like give a score from
+[00:34:05] zero to five
+[00:34:06] and for text well, the text should uh
+[00:34:08] the title should be simple and clear to
+[00:34:10] indicate the main point for main
+[00:34:11] content. Avoid too many text and
+[00:34:12] keywords.
+[00:34:14] But it has nothing to anchor on, right?
+[00:34:16] Like it doesn't really know what good
+[00:34:17] looks like in this case. It doesn't know
+[00:34:18] what bad looks like.
+[00:34:20] So, there's still like this trade-off
+[00:34:21] between like
+[00:34:23] what does a model actually know
+[00:34:26] and what do we need to give more
+[00:34:27] information
+[00:34:29] on to the model to make sure that it can
+[00:34:31] give like a proper um
+[00:34:33] proper judging of what we actually have
+[00:34:35] produced, right?
+[00:34:37] So, for example, in this case,
+[00:34:39] I would for example say what could help
+[00:34:41] is say like, "Oh,
+[00:34:43] this is a bad example. Like let's say
+[00:34:44] you have a zero. Like everything is just
+[00:34:46] awful. These are some telltale signs
+[00:34:47] that you're dealing with an extremely
+[00:34:49] badly formatted
+[00:34:52] slide deck." And then like over time,
+[00:34:53] different
+[00:34:55] ranges you can kind of express.
+[00:34:58] And then once over time, and then once
+[00:34:59] again, like that doesn't mean it will
+[00:35:01] still be able to give like a good answer
+[00:35:03] because
+[00:35:05] we now have these results. We have this
+[00:35:08] number that our LLM decided to
+[00:35:11] output for some reason. Like for
+[00:35:13] example, in this in this case, it just
+[00:35:15] put out five.
+[00:35:17] Okay, what do we do with that number
+[00:35:18] now? Okay, it's a five. We we we just
+[00:35:20] said there was no not a single image in
+[00:35:22] the slide deck, right? So, how can we
+[00:35:25] interpret this five?
+[00:35:27] One way of doing this is just basically
+[00:35:28] always asking your
+[00:35:30] judge graders to give reasons why it
+[00:35:33] came to that conclusion, right? And one
+[00:35:36] thing that should be very like
+[00:35:38] cautious about is the ordering, right?
+[00:35:41] I've had it happen while I was like
+[00:35:42] setting this up. And I did like this
+[00:35:45] exact thing. So, I had like the number
+[00:35:46] and then I said like, "Okay, give me
+[00:35:47] also reasons why you did that." And so
+[00:35:49] then it said like, "Oh, it's a four and
+[00:35:51] the reasons for this are these these and
+[00:35:52] these."
+[00:35:53] But we know that an LLM it works auto
+[00:35:55] regressively, right? So, if it is
+[00:35:57] anchored on like this four, it will do
+[00:35:59] anything it can to argue why it should
+[00:36:01] be a four, right? Anything. Even if it's
+[00:36:04] like extremely bad. If it's like if it
+[00:36:06] should be like a one, it will still say,
+[00:36:07] "Oh, it is good for these and these
+[00:36:09] reasons." Because it needs to justify
+[00:36:11] the four that it put out.
+[00:36:13] So, once how you do it is you actually
+[00:36:16] turn it around. So, first you say like,
+[00:36:18] "Give me a bunch of reasons. Give me
+[00:36:19] pros. Give me cons. Give me reasons why
+[00:36:21] it should be high. Give me reasons why
+[00:36:22] it should be bad." And then based on all
+[00:36:24] of those reasons together, then you need
+[00:36:27] to make your final decision on the
+[00:36:28] output, right?
+[00:36:29] And that's also that goes also back to
+[00:36:31] like this QA loop as well. Um because
+[00:36:33] then once again, you can get a little
+[00:36:35] bit tricky where you have like multiple
+[00:36:37] agents also doing the verification part
+[00:36:39] where you have like one agent that is
+[00:36:40] like finding all of the issues, and then
+[00:36:43] the other one is like refuting those.
+[00:36:45] For example,
+[00:36:46] one example that I can give, which I
+[00:36:47] think is quite interesting. Let's say
+[00:36:49] you want to make um
+[00:36:51] a document for um
+[00:36:53] where you need to like some analysis.
+[00:36:55] First you need to get a lot of context
+[00:36:56] from the internet, for example, like on
+[00:36:58] a legal document, for example, right? Um
+[00:37:01] and you ask the you ask a model to like
+[00:37:03] make a summary of
+[00:37:05] um a certain case, what was decided,
+[00:37:07] what does this have for legal
+[00:37:08] implications for other cases, right?
+[00:37:10] You need to be very careful with like
+[00:37:11] all of these things that like legal
+[00:37:13] cases are generally like quite tricky.
+[00:37:15] And like an agent would love to create
+[00:37:16] like, "Oh, this and this." and jump to
+[00:37:18] conclusions like, "This is the reason."
+[00:37:19] and that's it, right? And then the
+[00:37:21] grader might be like, "Oh, this is
+[00:37:22] unclear. This is um maybe not as
+[00:37:26] this is maybe
+[00:37:27] uh untrue. This is maybe
+[00:37:29] uh maybe like glossing over the actual
+[00:37:31] facts." All of those type of things,
+[00:37:32] right?
+[00:37:34] But then once again, you can like apply
+[00:37:36] these multiple techniques. You can have
+[00:37:37] like multiple graders, for example,
+[00:37:39] seeing like um evaluating those and
+[00:37:41] seeing like what are the main ones
+[00:37:43] popping up. Um because once again, a
+[00:37:45] grader might still hallucinate things as
+[00:37:47] well, right? Especially in like the very
+[00:37:48] nuanced scenarios, right? So, there's
+[00:37:51] like different ways of how you then can
+[00:37:53] work with these judges
+[00:37:55] to make sure that you actually get like
+[00:37:56] good, consistent output that is
+[00:37:57] actionable, right?
+[00:37:59] And what I've shown you here today is
+[00:38:01] basically just a small introduction to
+[00:38:03] how evals can help you,
+[00:38:06] but it's definitely not the end. I think
+[00:38:08] 45 minutes for a session on evals is, in
+[00:38:11] my opinion,
+[00:38:12] quite [clears throat] short because it
+[00:38:13] can get really deep, right?
+[00:38:15] Because like I started this off this
+[00:38:17] session with talking about benchmarks,
+[00:38:20] which are in the end just evals.
+[00:38:22] And every single time, why would every
+[00:38:24] single model provide or care so much
+[00:38:25] about benchmarks, so much about evils,
+[00:38:28] if it wasn't one of the main important
+[00:38:30] things when we are building new models,
+[00:38:32] right?
+[00:38:36] Exactly. We need to find the things that
+[00:38:37] we are failing at. Exactly. We need to
+[00:38:39] find things. What are we good at? What
+[00:38:41] are we bad at? How can we make the model
+[00:38:43] better in future generations? And that's
+[00:38:45] the same thing when building
+[00:38:47] applications that are consisting that's
+[00:38:49] using AI agents, right? It's the same
+[00:38:51] thing. It's just finding what works,
+[00:38:53] finding what doesn't, iterating, and
+[00:38:56] making sure that the changes that you're
+[00:38:57] making that you're informed on the
+[00:38:59] decisions that you are making, and
+[00:39:00] making sure that the changes you make
+[00:39:02] have actually positive influence on your
+[00:39:05] final outputs. Okay. Thank you guys so
+[00:39:07] much. This is all the time I have. Thank
+[00:39:09] you guys.

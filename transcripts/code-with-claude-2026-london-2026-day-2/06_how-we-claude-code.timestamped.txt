@@ -1,0 +1,861 @@
+Title: How we Claude Code
+Video: https://www.youtube.com/watch?v=IlqJqcl8ONE
+Caption: auto (en) via tv
+================================================================================
+
+[00:00:19] Hello, hello, hello. Welcome all. Thank
+[00:00:23] you for joining the workshop.
+[00:00:25] We have a pretty, pretty full house here
+[00:00:29] today. I'm very pleased to see that. Um
+[00:00:32] quick show of hands
+[00:00:33] who here loves Claude Code?
+[00:00:38] Okay. Yeah.
+[00:00:40] You're in the right place. Yeah. Yeah.
+[00:00:42] Lovely to meet you all. My name is Arno.
+[00:00:44] I'm a member of the Applied AI team. I'm
+[00:00:46] an architect there. I'm here today to
+[00:00:49] tell you how we Claude Code at
+[00:00:51] Anthropic.
+[00:00:52] Do a workshop and uh
+[00:00:55] you can code along. You'll get some
+[00:00:57] credits. I think there'll be a QR code
+[00:00:59] in just a moment, so make sure to grab
+[00:01:00] that. Uh there'll be people floating
+[00:01:02] around that might support you. So, if
+[00:01:04] you have technical difficulties, we can
+[00:01:06] we can help you out.
+[00:01:07] Um
+[00:01:08] Anybody here in this room who hasn't
+[00:01:09] used Claude Code before?
+[00:01:13] Okay, great. Good, good, cuz this is uh
+[00:01:16] there's more to do. There's more to find
+[00:01:17] more more to find out. I'm happy you're
+[00:01:19] here. Let's get started. So let me get
+[00:01:22] my clicker.
+[00:01:24] Ah, yes. Excellent. Yes, please, please,
+[00:01:26] please
+[00:01:27] grab the QR code
+[00:01:29] set yourselves up.
+[00:01:31] There'll be a repo here as well that you
+[00:01:33] can clone.
+[00:01:34] Uh there are three phases in it. We're
+[00:01:36] going to work through.
+[00:01:37] There's an interesting verification
+[00:01:39] setup that you can work through
+[00:01:40] alongside me and it's quite detailed, so
+[00:01:42] you probably will want to investigate it
+[00:01:44] a bit later yourselves.
+[00:01:47] What we're covering today
+[00:01:48] is based on uh this version of the talk
+[00:01:51] that Tariq gave in San Francisco just
+[00:01:55] about a week and a half ago. Who here
+[00:01:57] follows Tarik on on Twitter?
+[00:02:00] Fantastic. Great. Yeah. Yeah. So, he
+[00:02:02] published that as a blog post called The
+[00:02:04] Unreasonable Effectiveness of HTML
+[00:02:06] files. And um
+[00:02:08] he's basically pitching that moving on
+[00:02:10] from markdown files, we're going to be
+[00:02:12] using HTML instead. And we're showing
+[00:02:14] some of that today. Like I said, there's
+[00:02:16] a repo to go along.
+[00:02:17] Uh
+[00:02:18] in enjoy that along the way and later on
+[00:02:21] in the in the week as well.
+[00:02:23] Where are we now? Where's this all
+[00:02:24] going?
+[00:02:26] I think everybody probably notices that
+[00:02:28] agents are becoming more and more
+[00:02:30] capable. Why is that happening? That's
+[00:02:32] happening because the models are
+[00:02:33] becoming more and more capable. And so
+[00:02:35] if the models become more capable, it
+[00:02:37] means agents can run for a longer and
+[00:02:39] you can give them more and more complex
+[00:02:40] tasks. But that also means that we have
+[00:02:43] to change our way of working. You have
+[00:02:45] to change our habits. That's part of
+[00:02:46] what today is about. How can you change
+[00:02:49] the way that you're working with cloud
+[00:02:50] code to get more out of it?
+[00:02:55] If you're going to let your agent run
+[00:02:58] for a longer period of time,
+[00:03:00] then you can burn through a lot of
+[00:03:02] tokens if it does the wrong thing.
+[00:03:04] And you want to avoid that ideally at
+[00:03:06] the beginning.
+[00:03:07] And so that's where the idea came from
+[00:03:09] to to to push more and front-load more
+[00:03:12] of the verification that the human would
+[00:03:15] do in the spec into an HTML file because
+[00:03:17] it's a more rich and more
+[00:03:19] um
+[00:03:21] more human ergonomic way of engaging
+[00:03:23] with the content that your agent is
+[00:03:24] going to be building for you.
+[00:03:28] And we'll see how that works.
+[00:03:32] There are a bunch of things around
+[00:03:34] agents that are worth reading. We have a
+[00:03:36] lot of engineering blogs on our web
+[00:03:38] page.
+[00:03:39] Um we also have the the standard blogs.
+[00:03:41] You should check all of those out.
+[00:03:42] There'll be a lot of information there.
+[00:03:44] There's a lot of interesting information
+[00:03:45] about harnesses, about long-running
+[00:03:47] agents. All of these things are
+[00:03:48] important. Today we'll focus on
+[00:03:50] three levels. Um and there'll be some
+[00:03:53] something a bit more basic, something a
+[00:03:54] bit more next level, and then something
+[00:03:56] that's quite interesting and that'll be
+[00:03:57] a bit more in-depth.
+[00:03:59] The first thing is
+[00:04:01] the more capable the models get
+[00:04:03] the more you should try to resist
+[00:04:06] constraining them. Who here, by the way,
+[00:04:08] has heard of the bitter lesson by
+[00:04:11] Richard Sutton? Great. Fantastic. This
+[00:04:13] is This is great. So, I'll I'll I'll For
+[00:04:15] those who haven't raised their hands,
+[00:04:17] uh, Richard Sutton is basically the the
+[00:04:19] father of reinforcement learning. If you
+[00:04:21] were reading a book about reinforcement
+[00:04:22] learning, it's probably authored by him.
+[00:04:24] And, um, his idea was basically that
+[00:04:28] you know, you could spend all your time
+[00:04:29] trying to
+[00:04:30] with your human capabilities hardcode up
+[00:04:33] front and constrain the system,
+[00:04:35] but in in the end, pouring more data and
+[00:04:38] more compute at it
+[00:04:39] ends up getting more capability than
+[00:04:41] anything that you could have come up
+[00:04:42] with. And there's a similar analogy
+[00:04:43] here, right? The The models are becoming
+[00:04:45] more and more capable.
+[00:04:46] And so,
+[00:04:48] you should accept that the model is
+[00:04:50] probably better at extracting
+[00:04:52] requirements from you than you are at
+[00:04:55] defining your requirements. The The
+[00:04:57] requirements are latent within you, just
+[00:04:58] like when you talk to your users. Your
+[00:04:59] users, they have an idea of They know it
+[00:05:01] when they see it,
+[00:05:03] but they're often not very good at
+[00:05:04] articulating what they need. And
+[00:05:06] likewise, you probably know what you
+[00:05:07] want when you see it, but Claude is
+[00:05:10] likely better at extracting what you
+[00:05:12] want and what you need from you than you
+[00:05:14] are in specifying it to Claude. That's
+[00:05:16] another direction to take this in.
+[00:05:19] So, we'll talk about that, removing
+[00:05:20] ambiguity, letting Claude
+[00:05:23] prompt you and interview you in
+[00:05:24] prompting.
+[00:05:26] Then, how to then understand and plan.
+[00:05:29] We used to do this all with with
+[00:05:30] Markdown files. We still do it with
+[00:05:31] Markdown files. Colleague of mine once
+[00:05:33] said,
+[00:05:34] "The Markdown file is the lingua franca
+[00:05:36] of the AI native software development
+[00:05:38] life cycle." That was pretty poetic.
+[00:05:40] Um,
+[00:05:42] but it seems like that format is a bit
+[00:05:45] constrained. It's getting too long with
+[00:05:46] a lot of lines of markdown file to read.
+[00:05:49] We can condense more information into
+[00:05:51] HTML files, and that's what we're going
+[00:05:52] to do today.
+[00:05:53] And then, how to verify.
+[00:05:56] Not test, actually, but just to verify
+[00:05:58] in this context. Um
+[00:06:00] how to make verification native to the
+[00:06:03] thing itself, so that the agent can
+[00:06:05] drive it alongside a human. Or
+[00:06:07] eventually not, headlessly as well.
+[00:06:08] That's where this is all going as well,
+[00:06:10] right? The agents are going to be doing
+[00:06:11] more and more of this natively. And how
+[00:06:13] can you set the artifacts up
+[00:06:16] to
+[00:06:17] natively be testable and verifiable in
+[00:06:19] the way that you need.
+[00:06:22] So, we'll do an example.
+[00:06:24] By the way, has everybody had a chance
+[00:06:25] to get grab that QR code and uh set
+[00:06:28] themselves up? Very good. There'll be a
+[00:06:30] link to the repo eventually as well. I
+[00:06:31] think that comes in a bit.
+[00:06:34] Uh let's say we want to do a bill
+[00:06:35] splitting app.
+[00:06:36] Uh
+[00:06:38] very simple, um you know,
+[00:06:41] you want to
+[00:06:42] you go out with friends, you want to
+[00:06:43] find out who owes what. Yeah.
+[00:06:46] Um let's let Claude interview us around
+[00:06:50] doing this. Uh so, in this case, I'm
+[00:06:52] actually going to
+[00:06:56] Yeah, before I do that,
+[00:06:57] give you an example of how you would do
+[00:06:59] this and how you could do this better.
+[00:07:01] Yeah?
+[00:07:02] What's good prompting? What's bad
+[00:07:03] prompting?
+[00:07:07] Bad prompting is when you say, "Just
+[00:07:09] make it better." And a lot of people
+[00:07:11] that I watch uh using Claude code just
+[00:07:13] type, "Make it better." Um make no
+[00:07:15] mistakes. Yeah.
+[00:07:17] Uh that's not good prompting. Um
+[00:07:19] you want to incorp-
+[00:07:21] you want to encourage Claude to extract
+[00:07:23] from you specific details. So, you give
+[00:07:25] give the domains. Don't over specify
+[00:07:29] the outcome, but specify the areas that
+[00:07:30] you are interested in, right? That's
+[00:07:31] what makes this good prompt on the side
+[00:07:33] different and better. Um
+[00:07:36] Remember
+[00:07:37] you know, focusing on the audience, for
+[00:07:38] example,
+[00:07:39] or
+[00:07:41] uh suggesting an open-ended way to
+[00:07:43] answer the question as opposed to
+[00:07:45] predefining it up front. And then that
+[00:07:47] will prompt Claude to iteratively
+[00:07:48] interview.
+[00:07:51] All right. So,
+[00:07:52] um I've got a Claude open here, two
+[00:07:54] different Claude's.
+[00:07:56] Who here has used fast mode?
+[00:07:59] Okay, not that many people use fast
+[00:08:00] mode. That's why set it up here.
+[00:08:02] Um
+[00:08:03] and
+[00:08:05] who here uses auto mode?
+[00:08:08] Oh, I'm very happy that you all use auto
+[00:08:10] mode. You need to be using auto mode. If
+[00:08:11] you're not using auto mode, you need to
+[00:08:12] be using auto mode. It makes it so much
+[00:08:14] easier. Um
+[00:08:16] yeah, use auto mode. Good. Who here is
+[00:08:18] setting their effort parameter?
+[00:08:21] Good. Good. Our recommendation is X
+[00:08:23] high, but you can also set max effort. I
+[00:08:25] mean, in my case I think I kept it at X
+[00:08:26] high for this.
+[00:08:28] Um
+[00:08:29] yeah, yeah, yeah.
+[00:08:32] So, just to touch on how those look,
+[00:08:34] right? Like we've got forward slash
+[00:08:35] effort,
+[00:08:37] which is the effort parameter, forward
+[00:08:38] slash fast,
+[00:08:39] which is the fast mode, which is I've
+[00:08:41] I've turned it on.
+[00:08:42] And then uh we have uh
+[00:08:44] the auto mode, which we cycle into like
+[00:08:46] this, shift tab, yeah? Auto mode is the
+[00:08:48] best. So, I'll copy-paste my my You all,
+[00:08:52] when you have the repo,
+[00:08:54] will see um
+[00:08:56] one of these prompts is in there. So,
+[00:08:57] I'll just copy-paste the prompt in here
+[00:08:58] on the the bill splitting app.
+[00:09:01] So, okay. Claude's going to ask me uh
+[00:09:03] you tap through these, right? Like
+[00:09:05] you'll tap through these like this.
+[00:09:07] Uh and in my case, I want to
+[00:09:10] uh I want to just for friends.
+[00:09:14] And
+[00:09:17] I wanted
+[00:09:19] uh
+[00:09:20] Is there a secondary audience? No, no
+[00:09:22] secondary audience. And we'll leave that
+[00:09:24] as that.
+[00:09:26] The key thing here in the prompt is that
+[00:09:27] you want to use You want to prompt
+[00:09:29] Claude to use the ask user question tool
+[00:09:32] that you saw me use in the prompt
+[00:09:34] earlier before. Let me submit those
+[00:09:35] answers.
+[00:09:36] And then it'll write that spec, right?
+[00:09:38] So, you you saw me in my prompt
+[00:09:41] explicitly referring to the
+[00:09:44] ask you a question tool. That's what
+[00:09:45] triggers this workflow, and you know,
+[00:09:47] depending on how well you specify that
+[00:09:49] prompt, you'll get better outcomes. So,
+[00:09:51] it'll generate a spec. We could then
+[00:09:53] turn that into
+[00:09:56] a bunch of different ways of of of
+[00:09:57] building the app.
+[00:09:59] It's going to take a while, so we'll go
+[00:10:00] back to my slides. Could I go back to
+[00:10:02] the slides, please?
+[00:10:04] Great. So, let's say we have a plan.
+[00:10:06] Generates a plan. We've answered some
+[00:10:07] questions. It
+[00:10:09] it's getting better at extracting turn
+[00:10:11] by turn from me what I actually want
+[00:10:13] without me having to
+[00:10:14] up front verbalize everything myself.
+[00:10:21] Then I want to be able to check, is it
+[00:10:23] what I want?
+[00:10:25] Well,
+[00:10:26] an HTML file is more dense,
+[00:10:28] much more information dense, much more
+[00:10:29] ergonomic for you
+[00:10:31] to understand what the thing is going to
+[00:10:33] look like. You can even use a screenshot
+[00:10:35] with it. You can use the Playwright MCP
+[00:10:36] later on for that as well, right? You
+[00:10:37] can interact with it much more
+[00:10:40] richly than you could with a very long
+[00:10:43] markdown file. And especially if the
+[00:10:44] markdown files get, you know,
+[00:10:46] they get more than about 200 lines long,
+[00:10:49] it's unlikely you're going to read it,
+[00:10:50] and certainly unlikely that your
+[00:10:51] colleagues are going to read them.
+[00:10:53] Before we started here, I had Claude
+[00:10:56] with Opus 4.7 generate a few examples
+[00:10:58] for me of what this could look like with
+[00:11:00] my bill splitting app, and we'll look at
+[00:11:02] those now.
+[00:11:04] We have them here.
+[00:11:07] The prompt I used is in the repo that
+[00:11:08] you'll have access to. I asked Claude,
+[00:11:11] "Give me a few different directions,
+[00:11:12] four different design directions,
+[00:11:13] explore them, generate them as HTML, and
+[00:11:15] let me explain it explore them across
+[00:11:17] each other." And they came up with these
+[00:11:19] different ones. So, one sort of
+[00:11:21] brutalist, one Tokyo fintech.
+[00:11:24] We'll we'll click them all one by one.
+[00:11:26] So, this is what this one would look
+[00:11:27] like.
+[00:11:29] Uh and then this one this one might look
+[00:11:31] like this.
+[00:11:32] Completely different aesthetic, right?
+[00:11:34] And I click around and
+[00:11:37] And this is much better for me to give
+[00:11:38] feedback to Claude on than it would be
+[00:11:40] to just try to infer from a markdown
+[00:11:42] file what the thing is going to look
+[00:11:43] like. I could go in and like I said,
+[00:11:45] take screenshots, feed them back into
+[00:11:46] Claude. Who here
+[00:11:48] regularly takes screenshots to give
+[00:11:50] information to Claude? Very good. You
+[00:11:51] should be doing that. That's very good.
+[00:11:53] Um especially when you're when you're
+[00:11:55] doing front end, it's really hard to
+[00:11:56] articulate like
+[00:11:58] the thing is slightly off or there's a
+[00:12:00] misalignment here and it's like you'll
+[00:12:02] find that you run into the limits of
+[00:12:04] what you can express and it's actually
+[00:12:05] easier for especially Opus 4.7, which
+[00:12:07] has a much better vision model than
+[00:12:09] before, um to extract from you what the
+[00:12:12] problem is and proactively.
+[00:12:16] Great.
+[00:12:18] So, a few examples. Tariq has a lot more
+[00:12:20] in his repo, which you'll find in the
+[00:12:22] repo as well online. So,
+[00:12:25] so far,
+[00:12:27] we've covered
+[00:12:29] letting Claude extract information from
+[00:12:31] you interactively
+[00:12:33] as an interviewer because
+[00:12:37] the longer you let a run an agent run,
+[00:12:39] the more important it is that the spec
+[00:12:40] is comprehensive, the less likely it is
+[00:12:42] that
+[00:12:44] you will be able to upfront define
+[00:12:46] everything and it's better for you to
+[00:12:48] iterate with Claude
+[00:12:50] in that manner.
+[00:12:52] Then, what's a better and more efficient
+[00:12:54] and ergonomic form factor?
+[00:12:56] Um
+[00:12:58] it would be the HTML file.
+[00:13:01] And now,
+[00:13:03] the more important part from all of this
+[00:13:05] is how to verify what Claude has done
+[00:13:07] and how to make it agent native. And
+[00:13:09] that's what we're going to cover with
+[00:13:10] the repo.
+[00:13:14] I think we have uh
+[00:13:18] I think there'll be one slide where
+[00:13:19] you'll get to see the actual slides to
+[00:13:21] to engage with uh the actual URL to
+[00:13:23] engage with. So, what you want to do is
+[00:13:27] make it part of the artifact. And that's
+[00:13:30] what we're going to cover today. In
+[00:13:31] fact, there's part of what we're doing
+[00:13:32] today is we're going to we're going to
+[00:13:34] use
+[00:13:35] Storybook fixtures, a testing library,
+[00:13:38] sort of data emissions,
+[00:13:40] and attributes,
+[00:13:42] and Playwright MCP for a React
+[00:13:45] uh for a React app um
+[00:13:48] with with components that you will have
+[00:13:49] seen before,
+[00:13:52] but remixed in a way to make it easy for
+[00:13:55] Claude as an agent to
+[00:13:58] extract the data contracts in the DOM,
+[00:14:01] and then run verification, and then even
+[00:14:03] record the verification, which is how
+[00:14:05] the Claude code team that Tariq is on
+[00:14:08] runs this, and that's what the demo that
+[00:14:10] he built refers to, right? Like it'll be
+[00:14:12] a generation of verification steps that
+[00:14:15] get run through, they get a recording,
+[00:14:17] and that's then put on S3 or uh shared
+[00:14:19] somewhere else with colleagues, and
+[00:14:20] that's how you turn these verification
+[00:14:23] steps
+[00:14:25] into something that is generated by the
+[00:14:26] agents, and then that you
+[00:14:29] have fewer and fewer touchpoints with.
+[00:14:31] That's something that you can replicate
+[00:14:32] especially from that repo.
+[00:14:35] The way to do that is to sort of
+[00:14:37] sensibly modularize, uh but that becomes
+[00:14:39] really clear when we look at the actual
+[00:14:42] the actual thing.
+[00:14:43] So, I encourage you
+[00:14:46] to
+[00:14:47] go to that link.
+[00:14:50] There'll be a repo.
+[00:14:51] This is the repo
+[00:14:54] under CW you see workshops, Claude with
+[00:14:56] Code workshops.
+[00:14:58] And there's the one for today's session,
+[00:14:59] which is how we Claude Code.
+[00:15:02] What's covered in there is phase one,
+[00:15:04] which we just covered, right? The simple
+[00:15:06] prompt to say, "Hey, I'm writing a bill
+[00:15:08] splitting app. Interrogate me on the
+[00:15:10] requirements so that I don't have to
+[00:15:13] miss any in my upfront description to
+[00:15:16] Claude." The second one is
+[00:15:18] generating four different HTML design
+[00:15:20] directions that we could explore
+[00:15:22] uh for me to then feedback on and for
+[00:15:24] for me to decide. And then thirdly, we
+[00:15:26] have a verification framework here.
+[00:15:28] Uh
+[00:15:30] and it's in a different context. It's
+[00:15:31] not to do with the
+[00:15:33] bill-splitting app. It's regarding a
+[00:15:36] to-do app, a small to-do app uh
+[00:15:38] uh written in React. And
+[00:15:42] we're going to show how we built
+[00:15:44] verification entirely into that
+[00:15:47] along the way. That's described in
+[00:15:49] detail
+[00:15:51] in the readme for phase three and then
+[00:15:52] also in the verification detail as well,
+[00:15:54] which is here. So, if you want a deep
+[00:15:57] dive
+[00:15:58] on how this is set up,
+[00:16:00] you can read this.
+[00:16:03] And it's all provided in the repo. It's
+[00:16:05] pretty cool. What is it focused on?
+[00:16:08] We've written a
+[00:16:10] a small to-do list uh
+[00:16:12] app here.
+[00:16:16] I can add an item.
+[00:16:18] test
+[00:16:21] It's hard to see. There we go. Very
+[00:16:22] good. And then I could tick it off and
+[00:16:24] drop it as well.
+[00:16:27] And I could clear the finished items.
+[00:16:29] And so, many things are happening here
+[00:16:31] in terms of the state. And we'd like to
+[00:16:33] verify that it's all working alongside
+[00:16:35] the tests that are already defined.
+[00:16:37] Uh but these verification steps, we'd
+[00:16:39] like them to be driven by an agent. And
+[00:16:41] there are three ways that we're going to
+[00:16:42] do this. So, we're going to do this in a
+[00:16:43] human-readable way.
+[00:16:44] Um but then that same way of doing it in
+[00:16:46] a human-readable dashboard, we're going
+[00:16:48] to verify uh
+[00:16:50] in an agent-first way um and let Paul do
+[00:16:52] that separately. And then there's a
+[00:16:54] separate way in the in the repo as well.
+[00:16:56] You can just run um
+[00:16:58] run run verify and then it'll just run
+[00:17:00] the test matrix there. You'll get a
+[00:17:01] slightly different result if you do it
+[00:17:03] from the repo versus here, but
+[00:17:05] the the principle is the same. So,
+[00:17:07] human-readable,
+[00:17:09] agent-driven if you're doing it from
+[00:17:11] from cloud code or somewhere else, and
+[00:17:12] then also just generally headless like
+[00:17:14] you might do it in in CI.
+[00:17:17] We'll have a look at it in a bit more
+[00:17:18] depth. We'll go here into the app
+[00:17:21] and we'll actually look at
+[00:17:27] There we go.
+[00:17:28] We'll look at elements.
+[00:17:31] We have here
+[00:17:32] the actual emitting so the the emitting
+[00:17:35] different data data aspects, the data
+[00:17:37] verify unit, the total done and active.
+[00:17:40] Um the component itself here is
+[00:17:42] publishing its state to the DOM.
+[00:17:45] Uh
+[00:17:46] and so if I change my if I change my
+[00:17:47] state here, if I make I might add
+[00:17:49] test again.
+[00:17:51] See that updates. And then I drop it, it
+[00:17:53] updates again.
+[00:17:56] So, this is what
+[00:17:58] the agent can read later as opposed to
+[00:18:01] having to scrape the DOM. You can just
+[00:18:02] if you publish the state here separately
+[00:18:04] from the React internals,
+[00:18:06] you'd be able to
+[00:18:08] run the verification independently of
+[00:18:09] what whatever the state of the app is.
+[00:18:11] Um and that's how this is set up to
+[00:18:13] work. Uh
+[00:18:14] and then you can run this
+[00:18:15] further down the line as well.
+[00:18:20] Each one of them gets this, right? If
+[00:18:21] you look at um if I if I pull up the
+[00:18:27] That's a bit hard to read. Let's do that
+[00:18:29] here. Um ev- every every component gets
+[00:18:32] one of these, right? There'll be
+[00:18:33] schemas, there'll be fixtures, um the
+[00:18:35] known states, and then there's the
+[00:18:36] invariants. Uh
+[00:18:38] There are particular ones here that that
+[00:18:40] always have to hold have always have to
+[00:18:42] hold. You'll test them with probes. And
+[00:18:47] we'll do one example which we've
+[00:18:48] hardcoded but we've hardcoded an example
+[00:18:50] that will fail the verification and
+[00:18:52] we'll let
+[00:18:53] the human verified dashboard catch up
+[00:18:56] and then we'll also let the agentic way
+[00:18:58] of doing it catch up as well and we can
+[00:19:00] let Cloud Code find it and diagnose it
+[00:19:02] for us.
+[00:19:03] So, that same approach also works here.
+[00:19:07] So, I've got the dashboard
+[00:19:09] defined here.
+[00:19:11] And what we see here is, there you go.
+[00:19:13] Um
+[00:19:14] like I said, we've got the different
+[00:19:15] schemas, the the invariants that we've
+[00:19:17] defined.
+[00:19:18] And we can run these, right?
+[00:19:19] Individually, we can see
+[00:19:21] how they would execute here.
+[00:19:23] Got an example here.
+[00:19:26] Or also
+[00:19:28] I could run all of them. In fact, I'm
+[00:19:29] going to do that now.
+[00:19:31] I run them all. One of them triggers
+[00:19:33] artificially
+[00:19:34] because we planted it before.
+[00:19:37] Going to scroll down and find out what
+[00:19:38] that is.
+[00:19:40] And it's here.
+[00:19:41] Uh
+[00:19:42] we will actually look at how
+[00:19:46] we can replicate this for an agent as
+[00:19:48] well.
+[00:19:50] And we would do that like this.
+[00:19:51] Go here.
+[00:19:56] Inspect.
+[00:20:01] And we could run
+[00:20:05] basically the manifest of all the
+[00:20:07] different verification steps that are
+[00:20:08] defined here as state in the DOM.
+[00:20:11] We can get them in the same way that we
+[00:20:12] have them here.
+[00:20:14] We expand that. It's getting a little
+[00:20:15] bit small.
+[00:20:22] As an example like that.
+[00:20:26] And then like that as well.
+[00:20:31] Great.
+[00:20:37] If we do that,
+[00:20:38] then we can also actually run them uh I
+[00:20:42] just specifically here.
+[00:20:45] I'll do it manually first.
+[00:20:47] Let me reply.
+[00:20:48] Uh we play them all.
+[00:20:51] Close that.
+[00:21:03] In this case, we're running this
+[00:21:05] not to perform the verification, but but
+[00:21:06] to provide the evidence of the
+[00:21:08] verification. We can later on record
+[00:21:10] this. We can record these as clips which
+[00:21:12] will just be videos we capture. And then
+[00:21:16] we would
+[00:21:17] uh store them, share them with
+[00:21:19] colleague, put them on S3 or whatever it
+[00:21:20] might be.
+[00:21:26] Let me pause that here.
+[00:21:30] There we go. So, here's our summary.
+[00:21:32] We have one that's deliberately failed.
+[00:21:34] I'll explain that in a second.
+[00:21:36] But in each case
+[00:21:39] you can also see
+[00:21:41] the details of how this was done.
+[00:21:44] The key thing here is that we want to um
+[00:21:48] it's important to include the probes to
+[00:21:50] to push off the happy path. And then
+[00:21:54] a lot of this will be generated by
+[00:21:55] Claude for Claude, right? So, there's
+[00:21:58] there's a way of scaling this further.
+[00:22:00] Um in the end, we'll go to the one that
+[00:22:01] didn't work.
+[00:22:03] So, the one where we hard-coded that the
+[00:22:06] sums do not match. In this case, the the
+[00:22:09] state doesn't match. Uh 3 +
+[00:22:13] uh uh
+[00:22:14] 3 + 4 does not equal 10
+[00:22:17] in this case.
+[00:22:19] And
+[00:22:20] we'll get the same result if we
+[00:22:23] run
+[00:22:28] verify all from from the Claude here as
+[00:22:30] well.
+[00:22:31] And we'll let Claude do that in a moment
+[00:22:32] as well.
+[00:22:35] There we go.
+[00:22:49] Then it's a little bit hard to see what
+[00:22:50] there's
+[00:22:51] pass pass pass pass pass and fail.
+[00:22:54] So,
+[00:22:56] there we go. Okay, good.
+[00:23:03] We can change this, right? I can
+[00:23:05] the point here is that I'm I'm trying to
+[00:23:07] show that the
+[00:23:09] the idea is to let
+[00:23:12] something agent native be read as the
+[00:23:14] DOM contract here.
+[00:23:15] Um that's what we established earlier
+[00:23:17] that the state is managed here or well
+[00:23:19] not managed but at least um
+[00:23:20] viewable to an agent that it can then
+[00:23:22] run the verification end-to-end itself.
+[00:23:25] And we can let Claude do that afterwards
+[00:23:27] as well.
+[00:23:29] In this case, we can also make a change
+[00:23:32] that will break more. Let me see if I
+[00:23:34] can break
+[00:23:35] the chain. I'll break the contract but
+[00:23:36] not the app.
+[00:23:38] And I'll do that here.
+[00:23:43] So I could change for example here.
+[00:23:50] Under
+[00:23:51] Exactly. Under to-do app, total stats,
+[00:23:53] I'll delete that.
+[00:23:54] I'll do undo that afterwards as well.
+[00:23:59] And
+[00:24:02] if we now we run
+[00:24:19] then all of these ones at the bottom
+[00:24:20] here
+[00:24:22] will fail.
+[00:24:23] And we'll get the same
+[00:24:25] when we run this again from here as
+[00:24:27] well.
+[00:24:28] Oops.
+[00:24:42] There we go. All of these are failing.
+[00:24:44] Not because we broke the app but because
+[00:24:46] we broke the contract.
+[00:24:48] That Claude can then
+[00:24:50] natively verify.
+[00:24:54] Excellent. Great.
+[00:25:08] I want Claude to tell me what's going on
+[00:25:10] with these ones. List the Well, not the
+[00:25:13] ones that I broke, but I'll undo the
+[00:25:14] ones that I broke. But, I'd like it to
+[00:25:16] tell me what's going on with this one.
+[00:25:17] And so, let me correct
+[00:25:20] the change that I made before.
+[00:25:23] Control Z.
+[00:25:26] Auto save.
+[00:25:27] Rerun.
+[00:25:30] And there we go.
+[00:25:42] So, we've done it manually and we've
+[00:25:43] shown how we can match what the agent
+[00:25:45] would see versus what we would do. But,
+[00:25:47] we can let Claude run this headlessly
+[00:25:48] itself as well. So, I'll do that and
+[00:25:50] I'll pull that open.
+[00:25:52] So, let it run.
+[00:25:54] This one's broken deliberately.
+[00:25:57] And the rest works.
+[00:26:09] Great.
+[00:26:10] So, we have Claude running here.
+[00:26:13] Uh I mentioned fast mode before. I
+[00:26:14] mentioned auto mode, which is great. I
+[00:26:16] mentioned forward slash goal.
+[00:26:19] In this case, what we're going to do
+[00:26:21] is let Opus 4.7
+[00:26:24] help us find out
+[00:26:25] why that particular verification failed.
+[00:26:32] I've already connected the Playwright
+[00:26:33] MCP for this.
+[00:26:35] Uh oh,
+[00:26:36] um it's going to use that.
+[00:26:38] And it's going to run. Schema got
+[00:26:40] rejected. 4 + 3 does not equal 10. Uh
+[00:26:44] yes. If you were to run bun verify,
+[00:26:47] uh
+[00:26:48] run bun verify, then you would actually
+[00:26:50] pass the tests in this case,
+[00:26:53] uh because we deliberately put the
+[00:26:55] verification in wrong just to
+[00:26:57] demonstrate, but then the test metric
+[00:26:59] itself will actually pass.
+[00:27:01] Um
+[00:27:02] But the idea here is to separate out
+[00:27:04] what you could do as a human versus then
+[00:27:05] what you could do
+[00:27:07] the end agent directly from the browser
+[00:27:09] using
+[00:27:10] basically these
+[00:27:12] the commands that you saw. And then also
+[00:27:14] what you could run headlessly directly
+[00:27:15] from the CLI.
+[00:27:19] If you wanted to do it
+[00:27:21] like this as well,
+[00:27:24] then you could record the outcome that
+[00:27:26] we talked about.
+[00:27:29] Yes. So here,
+[00:27:32] I in this particular setup, you've
+[00:27:34] actually got the ability to to show how
+[00:27:35] you would record these. Um the same
+[00:27:38] delayed running that we've shown, you
+[00:27:41] could run and record
+[00:27:43] as evidence. Basically to show that it
+[00:27:45] would work,
+[00:27:46] and then you could store that.
+[00:27:48] Uh
+[00:27:49] and then you could run
+[00:27:50] like that.
+[00:28:00] This is very common right now.
+[00:28:02] Um
+[00:28:03] the
+[00:28:04] the cloud code team
+[00:28:05] uh records basically all the code
+[00:28:07] changes that they do like this. Um all
+[00:28:08] the front end changes at least.
+[00:28:10] Uh
+[00:28:11] especially on the run there
+[00:28:13] at the pace of the shipping that we have
+[00:28:14] at the moment.
+[00:28:16] Are people able to pull up the the repo
+[00:28:18] and get the verification set up working?
+[00:28:20] Yeah, very good. Very good.
+[00:28:29] Hm?
+[00:28:31] Yes, you can store them. I mean, like
+[00:28:32] you can just put them in S3 or whatever,
+[00:28:33] or short share them with colleagues, or
+[00:28:35] um in our case we have a version we have
+[00:28:37] a we have a internal This is more of an
+[00:28:39] automated than what I'm showing here. Uh
+[00:28:41] in our case we do record them. Um not
+[00:28:43] certain for how long or in what context,
+[00:28:46] but uh it's part of a regular cadence.
+[00:28:50] And then you get the
+[00:28:51] In fact, you get the
+[00:28:54] I should have triggered that.
+[00:28:56] Did you all see that?
+[00:28:58] There we go. So, you can you have each
+[00:28:59] clip.
+[00:29:00] You could download all of them or
+[00:29:02] download them individually and then
+[00:29:03] that's basically the bundle that that
+[00:29:06] that proves the verification worked.
+[00:29:09] Um
+[00:29:10] So, I guess
+[00:29:12] to
+[00:29:16] bring it around to what we've covered so
+[00:29:17] far and then where it's going.
+[00:29:22] Three different surfaces, the the human
+[00:29:24] surface, right the
+[00:29:26] um
+[00:29:27] and then the the agent first from the
+[00:29:29] browser
+[00:29:30] um mapping on the same way.
+[00:29:32] And then you can also run it in CI with
+[00:29:35] just run bun verify.
+[00:29:37] The
+[00:29:38] objective here at the end is to figure
+[00:29:40] out how do you embed
+[00:29:44] the
+[00:29:46] verification into the artifact itself.
+[00:29:48] There's more detail. I encourage you to
+[00:29:49] check out the repo itself.
+[00:29:51] Um and actually run a few examples
+[00:29:54] yourself and run a few tests. Right, you
+[00:29:55] can change the code, see what breaks,
+[00:29:58] rerun it yourselves. Um
+[00:30:01] it's quite detailed and it's what Tariq
+[00:30:03] and and team use in the Cloud Code team
+[00:30:06] uh for their work already. This is a
+[00:30:08] this is this came
+[00:30:10] uh pretty quickly um just a week and a
+[00:30:13] half ago into this demo. Um
+[00:30:15] So, I encourage you to check this out.
+[00:30:17] What's new really is the remixing
+[00:30:20] and the the new arrangement of of
+[00:30:22] of of
+[00:30:24] of primitives that you're already
+[00:30:25] familiar with that you're already using
+[00:30:27] just to make it available to the agent
+[00:30:28] first.
+[00:30:30] That concludes really what I wanted to
+[00:30:31] cover.
+[00:30:32] Um
+[00:30:33] I encourage you to spend more time on
+[00:30:34] the repo.
+[00:30:36] There's great documentation there and
+[00:30:38] you can actually
+[00:30:41] um
+[00:30:44] get a lot out of it with Opus 4.7. Opus
+[00:30:47] 4.7 works really well because it has a
+[00:30:49] better vision model. That's where this
+[00:30:50] really excels.
+[00:30:52] If you use Sonnet, I I wouldn't
+[00:30:54] recommend that. I'd say try using Opus
+[00:30:56] 4.7 for it.
+[00:30:58] Try using fast mode for it. Fast mode is
+[00:31:00] great, costs more, but it's great for
+[00:31:03] iterating quickly on specs.
+[00:31:05] People will sometimes ask, "Well, isn't
+[00:31:07] a HTML spec
+[00:31:11] more token inefficient?"
+[00:31:13] And the answer tends to be no.
+[00:31:16] And the reason is that in the long term
+[00:31:18] you iterate less if you have a good and
+[00:31:20] rich
+[00:31:21] HTML spec, even if and one-off instances
+[00:31:25] you spend more tokens to generate it.
+[00:31:26] So,
+[00:31:28] you can even try it with fast mode. So,
+[00:31:30] that would be it. That's my
+[00:31:31] recommendation to you.
+[00:31:33] I enjoyed speaking to you and thank you
+[00:31:35] for your attention.
