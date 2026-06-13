@@ -6,3 +6,7 @@ _subtest/
 # Secrets — never commit
 cookies.txt
 *.cookies
+
+# Internal state markers
+*.nocaptions
+*.unavailable

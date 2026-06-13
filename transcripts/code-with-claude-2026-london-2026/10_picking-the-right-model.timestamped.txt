@@ -1,0 +1,855 @@
+Title: Picking the right model
+Video: https://www.youtube.com/watch?v=P0uMXS6emHA
+Caption: auto (en) via tv
+================================================================================
+
+[00:00:01] [music]
+[00:00:10] [music]
+[00:00:15] [music]
+[00:00:16] >> My name's Lucas. I'm in our applied AI
+[00:00:18] team. And today we're going to be
+[00:00:20] talking about picking the right model.
+[00:00:22] So,
+[00:00:24] what we're going to talk about today is
+[00:00:26] picking the right model.
+[00:00:28] And this is something I think
+[00:00:29] conceptually seems very easy, right?
+[00:00:32] But the more we dig into it, the sort of
+[00:00:34] more difficult the problem
+[00:00:36] tends to be.
+[00:00:38] And let's consider the following
+[00:00:39] scenario.
+[00:00:41] And we at Anthropic have just launched a
+[00:00:44] new model.
+[00:00:45] And as usual, there's a lot of noise.
+[00:00:48] Alongside the model launch, we will
+[00:00:50] release a model card.
+[00:00:52] We will give prompting guides. We will
+[00:00:54] give benchmark results.
+[00:00:56] Um
+[00:00:57] you'll also see a lot of hot takes on X
+[00:01:00] or Twitter from, you know, AGI is here
+[00:01:02] all the way to Anthropic is cooked. And
+[00:01:05] there's, you know, various posts across
+[00:01:07] the internet again giving kind of hot
+[00:01:09] takes on the quality of our on new
+[00:01:11] model.
+[00:01:12] But the key question often for you guys
+[00:01:15] is, what does that mean for your use
+[00:01:17] case? What does that mean for your
+[00:01:18] business? And should you effectively
+[00:01:21] drop in this new model to your product?
+[00:01:23] Will it be an uplift?
+[00:01:25] Or if you're building greenfield, which
+[00:01:27] model should you select to to even start
+[00:01:29] with?
+[00:01:30] And to address that, what we basically
+[00:01:33] want to build is a repeatable process.
+[00:01:35] Something you can come back to time and
+[00:01:37] time again that gives you a clear yes,
+[00:01:39] no decision on when to select this new
+[00:01:42] model.
+[00:01:44] In other words, we want to build an
+[00:01:45] eval.
+[00:01:47] So, coming back to the original problem,
+[00:01:50] conceptually very simple, right? When
+[00:01:52] you need more intelligence, you reach
+[00:01:53] for Opus. When you need lower latency or
+[00:01:56] lower cost, you reach for Haiku. And
+[00:01:58] when you want some balance of the two,
+[00:02:00] you can use Sonnet.
+[00:02:02] But what about effort levels? While this
+[00:02:04] introduces a little bit more depth to
+[00:02:06] the problem, should we reach for Sonnet
+[00:02:09] with max thinking? Should we reach for
+[00:02:10] Opus with low thinking? Maybe comparing
+[00:02:14] Haiku versus Sonnet with no thinking.
+[00:02:18] And this is just Anthropic. A lot of you
+[00:02:20] will be comparing models, not just the
+[00:02:22] core models, but across other providers
+[00:02:24] as well.
+[00:02:26] So, how do we frame this? How do we
+[00:02:28] frame this decision?
+[00:02:30] And I think there's really three pillars
+[00:02:33] that most folks tend to think through
+[00:02:36] when choosing which model to use.
+[00:02:38] The first one is the model quality.
+[00:02:40] Effectively, how well does it actually
+[00:02:42] perform on your task? What is the task
+[00:02:44] completion rate? What is the accuracy of
+[00:02:47] the model? Um and various other metrics
+[00:02:49] you might track.
+[00:02:51] Number two is latency. Especially for
+[00:02:54] customer-facing use cases, latency
+[00:02:56] becomes very, very important.
+[00:02:58] And number three is cost, which is
+[00:03:00] obviously a big consideration for a lot
+[00:03:02] of different customers as well.
+[00:03:04] So, I think through the lens of
+[00:03:06] basically these three pillars of
+[00:03:08] quality, cost, and latency, we can start
+[00:03:11] to build an eval around them to help us
+[00:03:13] make an informed decision on which model
+[00:03:15] we should actually use.
+[00:03:19] So, the three things we're going to try
+[00:03:20] and take away from today.
+[00:03:22] Number one is a small, it can be a very
+[00:03:24] small, well-designed eval
+[00:03:27] will be much more important for you guys
+[00:03:29] to assess which model to use than any
+[00:03:31] public benchmark out there.
+[00:03:34] Number two is the model that's right for
+[00:03:37] your use case is not necessarily the one
+[00:03:39] that's cheapest or fastest per token,
+[00:03:42] but the one that is cheapest per
+[00:03:44] successful outcome. And we'll deep dive
+[00:03:47] a little bit more into that later on in
+[00:03:48] the talk.
+[00:03:50] And number three is we have actually
+[00:03:52] quite a lot of knobs and dials that we
+[00:03:55] can twist and turn to kind of move up
+[00:03:57] and down the cost accuracy
+[00:04:00] frontier with a little bit more fine
+[00:04:03] grain control. Or if you think about
+[00:04:05] that Pareto curve of the performance of
+[00:04:08] the model versus the cost, we can
+[00:04:10] actually shift that curve entirely and
+[00:04:13] there's a number of strategies we have
+[00:04:14] to do that.
+[00:04:16] But I just want to reflect a little bit
+[00:04:17] on what the public benchmarks at least
+[00:04:20] do and don't tell us.
+[00:04:21] And
+[00:04:24] I think directionally these benchmarks
+[00:04:26] provide us with some insight as to
+[00:04:28] generally whether a model has improved
+[00:04:30] at coding or various other tasks. So, in
+[00:04:33] our model releases will often include
+[00:04:35] benchmark results on things like
+[00:04:37] SWE-bench verified or browse com
+[00:04:40] which are basically what they what they
+[00:04:41] say on the tin. How good is the model at
+[00:04:43] generally at coding? How good is the
+[00:04:45] model generally at research research
+[00:04:46] type tasks?
+[00:04:48] However, none of these really tend tend
+[00:04:51] to match your use case. If you think
+[00:04:52] about a coding agent in production,
+[00:04:55] often it will need to go and research
+[00:04:57] and find some niche specific part about
+[00:04:59] an SDK on the web and then go and
+[00:05:01] implement that in code. So, already
+[00:05:04] we're crossing over two benchmarks and
+[00:05:06] your workloads often look much more
+[00:05:08] heterogeneous than that.
+[00:05:10] And so, you know, you might have a
+[00:05:13] coding task, but your coding task can
+[00:05:16] still look a lot different than
+[00:05:17] SWE-bench. Maybe you're using languages
+[00:05:19] that don't even show up in SWE-bench.
+[00:05:21] So, the point being here is these public
+[00:05:23] benchmarks are like somewhat directional
+[00:05:25] and give you a bit of a take on
+[00:05:27] you know, some of the best models out
+[00:05:29] there. However, for your specific
+[00:05:31] workload, it's incredibly important to
+[00:05:33] build your own evals.
+[00:05:35] So, how do we do that? I think you will
+[00:05:37] hear us at Anthropic talk a lot about
+[00:05:40] evals and we have some other workshops
+[00:05:41] on this. So, we're going to do a bit of
+[00:05:43] an express tour.
+[00:05:45] But effectively, what we want to do is
+[00:05:48] build up an eval which is composed of a
+[00:05:50] set of tasks, and we can consider a task
+[00:05:54] to be the kind of atomic unit of our
+[00:05:56] eval.
+[00:05:57] A task being
+[00:05:59] a kind of test with a set of inputs,
+[00:06:01] some success criteria,
+[00:06:05] and we want to basically build up a data
+[00:06:07] set of these tests.
+[00:06:10] Now,
+[00:06:11] the kind of heuristic I've been using
+[00:06:12] for evals over the course of the last
+[00:06:14] few months is thinking about them much
+[00:06:17] like a maths exam when you're at school.
+[00:06:19] So, you have your question,
+[00:06:22] you have your answer that you need to
+[00:06:23] get right,
+[00:06:24] but it's also very important to show the
+[00:06:26] working in between.
+[00:06:28] And I think this is, especially for
+[00:06:29] agentic type tasks, exactly the sort of
+[00:06:31] thing we should think about when
+[00:06:33] evaluating the performance of a model.
+[00:06:36] So, we will ultimately compose a data
+[00:06:39] set with a set of questions or inputs to
+[00:06:41] our system.
+[00:06:43] We want to of course check that our
+[00:06:45] agent reaches the final outcome
+[00:06:47] correctly, but we also want to make sure
+[00:06:49] it took the right steps to get that.
+[00:06:52] So, the point being is the kind of
+[00:06:55] working is as important as the outcome.
+[00:06:58] So, I think it's helpful to kind of
+[00:06:59] consider a real-life example.
+[00:07:02] If you consider a customer service
+[00:07:03] agent,
+[00:07:04] we might want to build an eval where we
+[00:07:06] use an LLM as a judge to check the final
+[00:07:10] response matches what our expected
+[00:07:12] response should be,
+[00:07:13] but we might also want to use some kind
+[00:07:16] of LLM as a judge to make sure the agent
+[00:07:19] queried your database in the right way
+[00:07:20] to find the customer's details.
+[00:07:23] And I think LLM as a judge can be pretty
+[00:07:24] helpful because, let's say your agent is
+[00:07:28] writing SQL, it can be like
+[00:07:30] syntactically a little bit different,
+[00:07:32] and the LLM as a judge can kind of
+[00:07:34] notice that, and as long as the same
+[00:07:36] data is being pulled, it's kind of
+[00:07:38] robust to to that.
+[00:07:40] And you can also use deterministic, like
+[00:07:42] code-based evals to make sure, "Hey, I
+[00:07:44] always want my agent to call this tool
+[00:07:47] to search our internal routines." Or
+[00:07:49] when it's searching the routines, "I
+[00:07:51] always want my agent to add an argument
+[00:07:54] to localize the search to whatever
+[00:07:56] country the customer is in."
+[00:07:58] So effectively, you want to build up
+[00:07:59] this set of graders
+[00:08:02] um per task where you all ultimately
+[00:08:04] will have to do a lot of hard yards
+[00:08:07] of creating these data sets, defining
+[00:08:10] yourself to begin with what is the right
+[00:08:12] solutions and what is the right outcomes
+[00:08:14] and what is the right steps to to get
+[00:08:16] there.
+[00:08:17] But ultimately, I think it's one of the
+[00:08:18] highest leverage things you will do.
+[00:08:20] And in a world where we're automating a
+[00:08:23] lot of stuff with AI, taking the time to
+[00:08:25] actually build that eval data set, I
+[00:08:27] think it's like one of the best uses of
+[00:08:29] your human time that there is.
+[00:08:33] So the TLDR here is we want to create
+[00:08:35] this reference set of evals that will
+[00:08:38] effectively form the basis of making a
+[00:08:41] much more data-driven decision on
+[00:08:44] picking the right model.
+[00:08:46] Now, we within Anthropic have been
+[00:08:49] building evals for quite a bit of time
+[00:08:51] now, and I think it's worth touching on
+[00:08:53] a few kind of common gotchas that we've
+[00:08:56] seen, a few common errors that we've
+[00:08:58] seen or failure modes when when building
+[00:09:00] evals.
+[00:09:01] So on this slide, there's three main
+[00:09:04] things that I kind of want to call out.
+[00:09:07] Number one is kind of this process of
+[00:09:09] mistake in noise for signal.
+[00:09:12] So the simple thing to do here is once
+[00:09:14] you've defined your eval and you're
+[00:09:15] running it, to make sure you run it a
+[00:09:17] number of times on every task and make
+[00:09:19] sure that the result holds. And if
+[00:09:21] you're seeing a lot of variance in the
+[00:09:23] metrics and results that you're getting,
+[00:09:26] it's maybe a signal to you guys that the
+[00:09:28] task is not super well defined or that
+[00:09:30] your evals are kind of not fully
+[00:09:32] aligned.
+[00:09:34] Number two is infra failures. So, you
+[00:09:38] might see your eval results and see the
+[00:09:41] numbers coming out the other side and
+[00:09:44] something looks a little bit off. Maybe
+[00:09:45] the numbers are really down for Opus.
+[00:09:48] And when you dig into the actual
+[00:09:50] transcripts, you might notice that
+[00:09:52] there's a lot of API failures or a lot
+[00:09:54] of tool call failures. And I want to be
+[00:09:56] very clear, we should separate those
+[00:09:59] from our actual evaluation of the model
+[00:10:01] itself. These are infra issues and not
+[00:10:03] model issues.
+[00:10:04] So, I think
+[00:10:06] really like digging into the transcripts
+[00:10:07] and figuring out where a failure
+[00:10:09] happened and figuring out like did
+[00:10:12] something score low on a benchmark
+[00:10:14] because the model actually didn't
+[00:10:15] perform very well itself
+[00:10:17] or was there some kind of infra failure?
+[00:10:20] And again, this is the kind of
+[00:10:22] work that um is easy to overlook. It's
+[00:10:25] very easy to like run your eval's, get a
+[00:10:27] result on the other side,
+[00:10:29] and make a decision based on that. But
+[00:10:31] like actually getting into the
+[00:10:32] transcripts again is like a very good
+[00:10:35] use of your time.
+[00:10:37] And then number three is this point on
+[00:10:38] silent saturation.
+[00:10:40] So, I think the most salient point here
+[00:10:43] is having a data set that is actually
+[00:10:44] representative of the data that you'll
+[00:10:46] see in production, actually
+[00:10:48] representative of the types of questions
+[00:10:50] a human might ask your system. And I
+[00:10:53] think generating this feedback loop,
+[00:10:55] especially once you've launched a
+[00:10:56] product, to
+[00:10:59] collect traces, see what people are
+[00:11:01] asking your system, see the failure
+[00:11:03] modes of where your agent or LM use case
+[00:11:05] is failing, and put those back into your
+[00:11:07] eval set. So, you really get this
+[00:11:09] representative diverse sample of the
+[00:11:11] sorts of inputs that your system needs
+[00:11:14] to take.
+[00:11:16] And then finally, I think it's worth
+[00:11:17] calling out that every model is a little
+[00:11:19] bit nuanced and has its own kind of
+[00:11:22] quirky behavioral changes. So, we will
+[00:11:25] release a prompting guide when we
+[00:11:27] release any new model. And like we do
+[00:11:30] really put a lot of time into that and I
+[00:11:31] think it's worth reading through.
+[00:11:33] Or even just feeding that prompting
+[00:11:35] guide to Claude and asking it to update
+[00:11:37] your prompts accordingly.
+[00:11:39] So, I'll give you an example. I was
+[00:11:40] working on a tool
+[00:11:42] within Claude AI.
+[00:11:44] And with Opus 4.5, that tool was like
+[00:11:48] drastically under-triggered. And with
+[00:11:50] Opus 4.6, the tool was drastically
+[00:11:52] over-triggered with the exact same
+[00:11:54] prompt.
+[00:11:55] And so, the takeaway here is you will
+[00:11:58] also need to do a little bit of like
+[00:12:00] fine-tuning and adjusting your prompts
+[00:12:02] based on the model that you're using.
+[00:12:04] Claude will ultimately perform a little
+[00:12:06] bit differently between the model
+[00:12:07] variants, and Claude will obviously
+[00:12:09] perform a little bit differently than
+[00:12:10] GPT. So, there's some kind of like hand
+[00:12:12] tweaking to be done there as well.
+[00:12:17] And the other big thing I really want
+[00:12:19] you to take away from today's session.
+[00:12:21] I've said it before, and I'll say it
+[00:12:22] again. You like really need to read your
+[00:12:24] transcripts of what the agent or model
+[00:12:27] is doing at different points in your
+[00:12:29] system.
+[00:12:30] So, I would try and make this as
+[00:12:31] stupidly easy as possible.
+[00:12:34] So, setting up good observability,
+[00:12:36] whether it be LangSmith, BrainTrust, or
+[00:12:38] some of the various other platforms out
+[00:12:40] there, making sure if you're building an
+[00:12:42] agent, everything is traced in there
+[00:12:44] from the system prompts, the tool call
+[00:12:46] that the agent made, the tool result the
+[00:12:48] agent gets back.
+[00:12:50] Um what you basically want to be able to
+[00:12:52] do is dig in and at any point see
+[00:12:54] exactly what the model saw,
+[00:12:56] and then how it behaved, because that is
+[00:12:58] ultimately your way to debugging any
+[00:13:01] issues that you have.
+[00:13:03] So, I'll give you an example.
+[00:13:05] We ran an eval on Claude code, and we
+[00:13:08] saw Claude was performing like very,
+[00:13:10] very well on this coding benchmark.
+[00:13:12] When we actually dug into the
+[00:13:13] transcripts, what we found was that
+[00:13:16] Claude was going into the get history
+[00:13:18] and seeing what it did in previous
+[00:13:21] trials and extracting the answer from
+[00:13:22] there.
+[00:13:23] So, if we would have just looked at the
+[00:13:25] headline metrics from the eval, we would
+[00:13:27] have thought like great, we've made a
+[00:13:28] huge improvement, but it's only by
+[00:13:30] digging into the transcripts that you
+[00:13:32] start to see some of the actually
+[00:13:34] underlying patterns that are emerging,
+[00:13:36] some of the real things that need to be
+[00:13:38] fixed and um so the closer you can get
+[00:13:40] to the raw data, very much the better.
+[00:13:44] So to kind of recap at this point, we've
+[00:13:47] talked a little bit about how building a
+[00:13:50] private eval is extremely important for
+[00:13:53] making a data-informed decision on
+[00:13:55] picking the right model.
+[00:13:57] We've talked a little bit or done an
+[00:13:58] express loop of actually building an
+[00:14:01] eval and some of the common failure
+[00:14:02] modes in doing so.
+[00:14:04] Now what I want to talk a little bit
+[00:14:06] more about is what are the tools and
+[00:14:09] dials available to us to kind of move up
+[00:14:12] and down that frontier and trade-off
+[00:14:14] between cost and quality or latency and
+[00:14:17] quality.
+[00:14:19] And let's start off with a little story.
+[00:14:22] So we had a code fix pipeline internally
+[00:14:25] and it was a pretty simple task. So the
+[00:14:27] team used Haiku 45 with no thinking to
+[00:14:31] begin with and scored 92% as you can see
+[00:14:34] on the screen there.
+[00:14:36] Uh the team ultimately wanted to get
+[00:14:37] 100% so they turned thinking on and
+[00:14:40] actually got there. Again, this was
+[00:14:41] actually a pretty simple uh pipeline.
+[00:14:44] And they actually decided to rerun the
+[00:14:47] eval with Sonnet and Opus as well.
+[00:14:51] And as you can see on the screen, they
+[00:14:53] actually both scored 100% as well, but
+[00:14:56] counterintuitively
+[00:14:58] took way less time in doing so. We
+[00:15:00] weren't super cost constrained on this
+[00:15:01] task, we just wanted it to run as
+[00:15:03] quickly as possible.
+[00:15:04] Now this is very interesting, right?
+[00:15:06] Because on the face of it, you would
+[00:15:08] think that Haiku would be much faster,
+[00:15:11] but actually some of the more
+[00:15:13] intelligent models can be much more
+[00:15:15] efficient from a time perspective
+[00:15:17] because they can do things in fewer
+[00:15:18] turns. They can effectively plan a
+[00:15:20] little bit more strategically. They
+[00:15:22] don't need to spend as much time
+[00:15:23] researching to validate what they're
+[00:15:25] going to do is correct.
+[00:15:28] And so,
+[00:15:29] what I think we can do is start playing
+[00:15:31] around with these configs, thinking, and
+[00:15:33] effort
+[00:15:34] to really like extract the maximum value
+[00:15:37] for for our specific use case. I think
+[00:15:39] it's worth just touching slightly upon
+[00:15:41] what both of these things are, because
+[00:15:43] we've played around with them quite a
+[00:15:45] lot. There's different types of
+[00:15:46] thinking, different types of effort. So,
+[00:15:48] let's just recap slightly.
+[00:15:50] Uh from Sonnet 4 6 or our 4 6 class of
+[00:15:53] models onwards, we have adaptive
+[00:15:55] thinking.
+[00:15:56] So, the model itself will decide how
+[00:15:58] much it needs to think for a given task.
+[00:16:02] And this is effectively called
+[00:16:04] scratchpad
+[00:16:05] to
+[00:16:06] think before it acts think before it
+[00:16:08] works, in fact. So, this is system two
+[00:16:11] type thinking.
+[00:16:12] And then we have effort.
+[00:16:14] And this will tell Claude how much to
+[00:16:16] write across both thinking, tool calls,
+[00:16:20] and responses.
+[00:16:22] So, you can have low thinking with high
+[00:16:24] effort, for example,
+[00:16:27] or you can have no thinking, but still
+[00:16:29] use effort parameters. Effort is
+[00:16:31] basically telling Claude how much effort
+[00:16:34] or work it should put into this task.
+[00:16:36] Thinking is giving Claude a scratchpad
+[00:16:38] to think before it acts.
+[00:16:40] And we can effectively use both of these
+[00:16:43] configs and dials to have quite a lot of
+[00:16:45] fine-grained control of
+[00:16:47] uh where we want to be on the this
+[00:16:50] accuracy cost curve.
+[00:16:52] So, another example here
+[00:16:55] is
+[00:16:56] uh again another counterintuitive point.
+[00:16:59] When we released
+[00:17:01] Opus 4 5, what we saw is
+[00:17:05] uh Opus 4 5 on screen is the orange line
+[00:17:07] there,
+[00:17:08] is that it was again able to complete
+[00:17:10] tasks and have a high high or higher
+[00:17:13] level of accuracy than Sonnet and
+[00:17:15] significantly fewer number of output
+[00:17:17] tokens.
+[00:17:18] And again, like if you were just going
+[00:17:22] off the vibes of smaller model runs
+[00:17:25] faster, you probably would have chosen
+[00:17:27] Sonnet not knowing that Opus can
+[00:17:31] actually complete things faster and with
+[00:17:32] a lower number of tokens. I think the
+[00:17:34] other thing to call out on this slide is
+[00:17:37] you can see this Opus spread between the
+[00:17:39] different levels of effort.
+[00:17:42] And what you can see there is you can
+[00:17:44] then make some nice trade-offs between
+[00:17:47] am I optimizing for a lower number of
+[00:17:49] output tokens or am I optimizing for
+[00:17:51] accuracy? And if you want higher
+[00:17:53] accuracy, you can choose higher levels
+[00:17:55] of effort.
+[00:17:56] Or if you want lower latency, you can
+[00:17:58] probably choose lower lower levels of
+[00:18:00] effort. So you can use this effort
+[00:18:02] parameter to really have like much more
+[00:18:04] control over just selecting a model
+[00:18:06] alone.
+[00:18:11] The other thing that at least makes me
+[00:18:13] very excited is like actually shifting
+[00:18:15] that frontier entirely. And I think
+[00:18:18] there's a couple of hacks here that we
+[00:18:19] can use in order to not just like move
+[00:18:22] along that curve, but shift the curve
+[00:18:24] entirely.
+[00:18:25] And the first one is prompt caching.
+[00:18:28] So
+[00:18:30] with prompt caching, uh we have a bunch
+[00:18:32] of guides online and I would really
+[00:18:33] encourage you to to read into it more.
+[00:18:36] But effectively, you when you're using
+[00:18:38] prompt caching and you're basically
+[00:18:40] using a prefix of a prompt that's saved,
+[00:18:42] precomputed, and precached, you pay 1/10
+[00:18:46] the num the price of the list price of
+[00:18:49] input tokens. So effectively, what this
+[00:18:51] means is you can get Opus quality at
+[00:18:54] Sonnet cost, or you can get Sonnet
+[00:18:56] quality at Haiku cost. This is one of
+[00:18:59] the most effective strategies we use in
+[00:19:01] a lot of our products. Like we use
+[00:19:03] extensively in Claude Code, we use
+[00:19:05] extensively in Cohere.
+[00:19:07] And to kind of benchmark for yourselves
+[00:19:09] a little bit,
+[00:19:11] uh a lot of the best AI systems and
+[00:19:13] applications we see have prompt cash hit
+[00:19:15] rates of around 80% or 90%. So, that's
+[00:19:18] kind of your goal to aim for.
+[00:19:20] But, this unlocks whole new use cases,
+[00:19:21] right? If we can use prompt caching
+[00:19:23] effectively, we're paying 1/10 of the
+[00:19:25] list price of input tokens, then
+[00:19:28] suddenly like we couldn't afford Opus
+[00:19:30] and now we can. Or maybe there's whole
+[00:19:32] new use cases and budgets that are
+[00:19:34] opened up because we're able to save so
+[00:19:35] much money.
+[00:19:37] And the other thing to to call out here
+[00:19:42] is in our APIs and our and our SDKs, we
+[00:19:45] return you the token metrics
+[00:19:48] and not only the raw tokens consumed,
+[00:19:50] but the prompt cash
+[00:19:52] uh tokens on the input. So, we make it
+[00:19:55] very very easy for you guys to measure
+[00:19:57] your prompt cash hit rates, as well.
+[00:19:59] So, I'd really encourage you to
+[00:20:01] effectively measure it, hill climb it,
+[00:20:04] and try and get your prompt cash hit
+[00:20:05] rate as high as possible.
+[00:20:08] Um the other kind of main thing I would
+[00:20:10] mention when it comes to prompt caching,
+[00:20:13] the simple thing that works, especially
+[00:20:15] if you're building an agent, is use this
+[00:20:17] strategy of append only.
+[00:20:20] So, if you have a system prompt, don't
+[00:20:22] have too many dynamic variables in that.
+[00:20:25] The common failure mode I see here is
+[00:20:27] somebody putting a date time variable in
+[00:20:28] that system prompt.
+[00:20:30] So, with every turn, the time ticks up
+[00:20:33] and you break the cash.
+[00:20:35] Effectively, I would treat everything in
+[00:20:37] your messages array that you're sending
+[00:20:38] to the API as immutable. Once it's done
+[00:20:41] and you're going and adding only, I
+[00:20:43] would append only to your messages
+[00:20:45] array, and this is like the easiest sure
+[00:20:47] fire way to make sure you don't break
+[00:20:48] the cash.
+[00:20:50] Tarik from our Claude code team, one of
+[00:20:52] the main engineers on the Claude code
+[00:20:53] team, has written and talked about this
+[00:20:55] extensively. So, I would like go and
+[00:20:57] look at some of the stuff he's written
+[00:20:59] about how he implemented this in Claude
+[00:21:01] code, as well.
+[00:21:03] And the second thing I want to talk
+[00:21:05] about is context hygiene and context
+[00:21:07] engineering.
+[00:21:09] Um
+[00:21:11] My kind of hot take here is people spend
+[00:21:13] too much time thinking about these like
+[00:21:15] super complex multi-agent orchestration
+[00:21:18] systems and not enough time doing the
+[00:21:20] simple thing that works, which is just
+[00:21:22] like good context hygiene and good
+[00:21:24] context engineering.
+[00:21:26] So, effectively, if we can improve the
+[00:21:28] token efficiency of our tool responses,
+[00:21:31] we can save
+[00:21:33] a lot of tokens that we're putting into
+[00:21:35] the model, saving cost and improving
+[00:21:36] latency.
+[00:21:38] And we also have this kind of
+[00:21:40] secondary effect of because we provided
+[00:21:43] Claude with cleaner, more efficient
+[00:21:45] data, Claude's responses tend to be
+[00:21:47] better and more accurate, as well.
+[00:21:50] So, if we look at the example of the
+[00:21:51] screen,
+[00:21:53] let's pretend we have a tool which
+[00:21:55] returns sports data. In this case, uh
+[00:21:58] Premier League scores.
+[00:21:59] And there's a few changes we made to
+[00:22:02] Firstly, we use markdown instead of
+[00:22:04] JSON.
+[00:22:05] Secondly, instead of these full,
+[00:22:07] inefficient date time stamps, we just
+[00:22:10] put a very simple date time stamp.
+[00:22:13] And then we also added a day of the
+[00:22:15] week, so Claude much more easily
+[00:22:17] understands, rather than having to think
+[00:22:19] too much about what day of the week
+[00:22:20] every game is happening.
+[00:22:23] And in just cleaning up this response,
+[00:22:25] we see a 66.4%
+[00:22:27] reduction in tokens from this tool
+[00:22:30] response.
+[00:22:31] And that compounds every time, right? If
+[00:22:33] you're having an agent that is running
+[00:22:35] multiple turns, your tool response
+[00:22:38] doesn't just show up once, but in every
+[00:22:40] single turn in the conversation.
+[00:22:43] So, these small hygiene things really
+[00:22:46] make a a huge impact, and I can't
+[00:22:48] emphasize this enough.
+[00:22:52] A couple more examples of this that I've
+[00:22:53] worked on. I was working on a web search
+[00:22:56] use case with a customer,
+[00:22:59] and we effectively deduplicated articles
+[00:23:03] that were returned from the same search
+[00:23:05] or from different searches in fact.
+[00:23:08] And this one this one trick effectively
+[00:23:11] of multiple searches running, taking the
+[00:23:14] articles and deduplicating them before
+[00:23:16] they're returned to Claude, led to a 77%
+[00:23:19] reduction in the number of input tokens
+[00:23:21] that Claude was receiving. A 65%
+[00:23:24] reduction in cost and Claude's accuracy
+[00:23:26] actually went up 9% because again, it's
+[00:23:29] having to reason over less data.
+[00:23:32] And these metrics sound kind of like
+[00:23:34] plucked out of thin air, but these are
+[00:23:36] run and we can actually measure them
+[00:23:38] because we built evals to begin with.
+[00:23:40] And this is like huge amounts, right? If
+[00:23:43] you can save 65%
+[00:23:45] cost just by doing good context
+[00:23:48] engineering, you can think again, this
+[00:23:50] opens up the ability to use a more
+[00:23:52] intelligent model or this opens up the
+[00:23:54] ability to go and run whole new use
+[00:23:56] cases for the given budget that you
+[00:23:58] have.
+[00:24:00] So again, I would encourage you not to
+[00:24:02] just take an API response and pipe it
+[00:24:04] back through your tool,
+[00:24:06] but to actually have your tool,
+[00:24:08] especially a lot of tools wrap APIs,
+[00:24:11] and be a little bit more thoughtful.
+[00:24:12] Clean up that JSON response you get back
+[00:24:14] from the API before passing it back to
+[00:24:16] Claude.
+[00:24:17] Much like a human, make it as simple and
+[00:24:20] easy to read as possible. In doing so,
+[00:24:23] you'll reduce the number of tokens
+[00:24:24] provided to Claude.
+[00:24:26] And you'll have this again secondary
+[00:24:28] effect of improving accuracy across a
+[00:24:30] lot of use cases that you have.
+[00:24:34] So three main things to take away before
+[00:24:36] we get into the workshop. Number one,
+[00:24:39] a small well-designed eval is going to
+[00:24:42] teach you so much more about which model
+[00:24:44] you should use than any public benchmark
+[00:24:47] out there ever could. So spend time
+[00:24:49] investing in building that eval.
+[00:24:52] Number two, the right model is not the
+[00:24:55] model that is cheapest per token.
+[00:24:58] The right model is the one that is
+[00:25:00] cheapest per successful outcome.
+[00:25:03] And once you've built that eval, you can
+[00:25:05] effectively run Claude with multiple
+[00:25:08] different models, multiple different
+[00:25:10] configurations, see that Pareto
+[00:25:12] frontier, and then you have the choice
+[00:25:14] of where you want to select along it.
+[00:25:16] And then number three, use these
+[00:25:19] different dials that we have, effort,
+[00:25:21] thinking, prompt caching, and context
+[00:25:23] engineering to have much more
+[00:25:25] fine-grained control on where you want
+[00:25:27] to end up on that frontier or shifting
+[00:25:29] the frontier entirely.
+[00:25:32] And I think if you can do those three
+[00:25:33] things, you'll end up in a pretty good
+[00:25:35] place when it comes to choosing the
+[00:25:37] right model for your use case, even
+[00:25:40] unlocking new use cases, being able to
+[00:25:42] access higher intelligence at a lower
+[00:25:44] cost.
+[00:25:46] So now I want to move into a workshop
+[00:25:49] that you can follow along with yourself.
+[00:25:52] And you can go to this link here. So
+[00:25:55] it's CWC26.short.gy/workshops.
+[00:26:02] And I'll just give you a minute to get
+[00:26:03] there.
+[00:26:10] Cool. I think we're slightly strapped
+[00:26:12] for time,
+[00:26:13] but we're going to run 5 minutes over. I
+[00:26:15] think it's all good.
+[00:26:16] Cool.
+[00:26:17] Um hopefully you're now all at that
+[00:26:19] link, and we can switch over to the
+[00:26:21] screen.
+[00:26:22] So effectively, what we're going to do
+[00:26:25] in this workshop, and you can go and do
+[00:26:27] this on your in your own time as well,
+[00:26:29] is we've built a skill that we've
+[00:26:31] provided up there in the top left that
+[00:26:33] you can see,
+[00:26:34] which will audit your existing evals,
+[00:26:37] but can also do a sweep of the eval that
+[00:26:41] you've set up, and basically instrument
+[00:26:43] it so that it runs across multiple
+[00:26:46] models,
+[00:26:47] multiple thinking level like thinking
+[00:26:50] off and on, and multiple effort levels.
+[00:26:53] It will then take those results, plot
+[00:26:55] them, save them, and format them nicely
+[00:26:57] so you can basically see your eval
+[00:27:00] performance across different models,
+[00:27:02] across different thinking levels, and
+[00:27:04] across different effort levels.
+[00:27:07] So, in this case we're doing it with Tal
+[00:27:09] bench, which is basically a benchmark of
+[00:27:12] customer service agent use cases. And in
+[00:27:16] this case we're focusing on the airline
+[00:27:18] side of Tal bench.
+[00:27:20] Uh in the read me for the workshop, you
+[00:27:23] will see instructions on firstly, how to
+[00:27:27] download and set up Tal bench yourself.
+[00:27:31] And again, you can give this prompt here
+[00:27:33] to Claude. Claude will go and set it up
+[00:27:35] for you.
+[00:27:37] Then the next part, I've already
+[00:27:39] downloaded Tal bench for the sake of
+[00:27:40] time.
+[00:27:41] The next part is to basically run the
+[00:27:43] skill,
+[00:27:44] instrument the code so that we run the
+[00:27:48] eval across different models, different
+[00:27:50] thinking, and different effort levels.
+[00:27:52] And then,
+[00:27:53] run the eval itself.
+[00:27:56] So, let's ask Claude to do this.
+[00:27:59] Uh
+[00:28:01] Can you see okay, or should I zoom in?
+[00:28:04] Yeah, we can see okay. Thank you.
+[00:28:08] Okay, so we can see Claude has
+[00:28:09] successfully loaded the skill.
+[00:28:13] And
+[00:28:15] in the meantime, I'm going to kind of
+[00:28:17] skip directly to the results in the
+[00:28:18] interest of time and the Blue Peter,
+[00:28:21] here's one I ran earlier way.
+[00:28:24] So,
+[00:28:25] this was effectively the results from
+[00:28:28] running this sweep. And you can see uh
+[00:28:31] we've been very easily able to run the
+[00:28:33] benchmark across
+[00:28:36] all three models, HiQ, Opus 4 7, Sonic 4
+[00:28:39] 6.
+[00:28:41] With thinking off and on, and across
+[00:28:42] different effort levels. And the results
+[00:28:45] to me at least were pretty surprising.
+[00:28:46] So, if we take a look at this first
+[00:28:48] chart,
+[00:28:49] we see the pass rate per task plotted
+[00:28:52] against average output tokens per task.
+[00:28:55] And what we can see is maybe as we would
+[00:28:57] expect, Opus 4 7 with thinking on with
+[00:29:01] high effort has the highest pass rate.
+[00:29:04] But it actually is able to do so with a
+[00:29:07] lower number of tokens than Sonnet
+[00:29:10] consumes for the same use case.
+[00:29:15] If we go to the next chart, it's pretty
+[00:29:17] interesting as well. So, we can see even
+[00:29:20] though Opus was the best performing on
+[00:29:22] high effort, it's also clearly the most
+[00:29:24] expensive.
+[00:29:26] So, if we're optimizing in this case for
+[00:29:29] just pure pass rate, then we would pick
+[00:29:32] Opus with high thinking, right? Whereas
+[00:29:34] if we have to optimize for cost, well,
+[00:29:37] then it becomes a little bit different
+[00:29:38] because we see that Haiku with thinking
+[00:29:41] on actually was able to perform
+[00:29:43] similarly to Sonnet uh with thinking on
+[00:29:47] and a high level of effort.
+[00:29:50] And then if we go down to the final uh
+[00:29:53] chart, we will see something uh somewhat
+[00:29:56] similar,
+[00:29:57] but again, very interesting. So, Opus
+[00:29:59] with high effort and thinking on was
+[00:30:02] actually able to perform
+[00:30:05] faster with lower latency than Sonnet
+[00:30:08] was with a similar level of thinking.
+[00:30:11] But what these charts, I think, more
+[00:30:12] interestingly tell us is it gives us the
+[00:30:16] data to make an informed decision on
+[00:30:18] which model and config to choose.
+[00:30:21] We can now identify some of these more
+[00:30:23] non-intuitive properties of the models
+[00:30:26] at different thinking levels,
+[00:30:28] and we can make a decision trading off
+[00:30:30] our
+[00:30:32] criteria of what is important, whether
+[00:30:34] that be latency, whether that be cost,
+[00:30:36] or whether that be model quality.
+[00:30:39] Um so, I think we are definitely over
+[00:30:42] time. So I'm going to end there for now,
+[00:30:45] but just to leave you again with the
+[00:30:46] core takeaways.
+[00:30:48] If you want to pick the right model, you
+[00:30:50] really should build an eval for your use
+[00:30:52] case.
+[00:30:54] For those of you folks who who work with
+[00:30:56] us in Anthropic and the applied AI team,
+[00:30:58] like we're very much here to help you
+[00:30:59] build those.
+[00:31:01] Number two
+[00:31:02] is
+[00:31:04] really try and optimize for the things
+[00:31:05] you care about in your use case. So once
+[00:31:07] you've built your eval and you're making
+[00:31:09] these data-driven decisions, you can
+[00:31:11] then pick, am I optimizing for
+[00:31:12] intelligence? Am I optimizing for
+[00:31:14] latency? Am I optimizing for cost?
+[00:31:17] And then number three is you can shift
+[00:31:20] that curve entirely by actually doing
+[00:31:22] good context engineering, by using these
+[00:31:24] strategies like prompt caching to get
+[00:31:27] more out of the model itself.
+[00:31:29] Thank you very much.
+[00:31:32] >> [music]

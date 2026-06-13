@@ -1,0 +1,275 @@
+[
+  {
+    "playlist": "day2",
+    "n": 1,
+    "id": "19HDQ9HppOA",
+    "title": "Ship your first Managed Agent",
+    "status": "ok"
+  },
+  {
+    "playlist": "day2",
+    "n": 2,
+    "id": "mWvtOHlZM-I",
+    "title": "Tool, skill, or subagent? Decomposing an agent that outgrew its prompt",
+    "status": "ok"
+  },
+  {
+    "playlist": "day2",
+    "n": 3,
+    "id": "dxqX_6ciVQA",
+    "title": "Agent Battle: Mine the most diamonds in 45 minutes",
+    "status": "ok"
+  },
+  {
+    "playlist": "day2",
+    "n": 4,
+    "id": "v9FTCvkV_a0",
+    "title": "Evals for taste: Hill-climbing a slide-generation agent",
+    "status": "ok"
+  },
+  {
+    "playlist": "day2",
+    "n": 5,
+    "id": "geUv4CjPpxI",
+    "title": "Agents that remember",
+    "status": "ok"
+  },
+  {
+    "playlist": "day2",
+    "n": 6,
+    "id": "IlqJqcl8ONE",
+    "title": "How we Claude Code",
+    "status": "ok"
+  },
+  {
+    "playlist": "day2",
+    "n": 7,
+    "id": "qOjleN2-50c",
+    "title": "Making agentic workflows trustworthy and verifiable with a custom DSL",
+    "status": "ok"
+  },
+  {
+    "playlist": "day2",
+    "n": 8,
+    "id": "tUoO4ucrNc0",
+    "title": "Fighting financial crime with Claude Cowork",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "day2",
+    "n": 9,
+    "id": "T8N0MED3IJo",
+    "title": "Where code meets court: AI at the legal-technical frontier",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "day2",
+    "n": 10,
+    "id": "M5uwBawBDpw",
+    "title": "How AirOps chases friction to build AI products with Claude",
+    "status": "ok"
+  },
+  {
+    "playlist": "day2",
+    "n": 11,
+    "id": "A3rmSUp6Dxg",
+    "title": "How Metaview built self-improving prompts for application review",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "day2",
+    "n": 12,
+    "id": "uGroRwlC9y4",
+    "title": "Teaching agents to learn from your team",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "day2",
+    "n": 13,
+    "id": "K4-flzsPraE",
+    "title": "Building the best agentic analytics harness: Powered by Claude, built with Claude Code",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "day2",
+    "n": 14,
+    "id": "iLtmWCjuGIQ",
+    "title": null,
+    "status": "unavailable"
+  },
+  {
+    "playlist": "day2",
+    "n": 15,
+    "id": "RQcrm2CK-iQ",
+    "title": null,
+    "status": "unavailable"
+  },
+  {
+    "playlist": "p2",
+    "n": 1,
+    "id": "6amLO7I9xdg",
+    "title": "Code with Claude London 2026: Opening Keynote",
+    "status": "ok"
+  },
+  {
+    "playlist": "p2",
+    "n": 2,
+    "id": "tuY2ChJIx48",
+    "title": "Beyond the basics with Claude Code",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "p2",
+    "n": 3,
+    "id": "IA5LWIGqnyM",
+    "title": "Running an AI-native engineering org",
+    "status": "ok"
+  },
+  {
+    "playlist": "p2",
+    "n": 4,
+    "id": "QIriO1-vHYw",
+    "title": "Getting more out of the Claude Platform",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "p2",
+    "n": 5,
+    "id": "G2B0YWuJUgI",
+    "title": "The prompting playbook",
+    "status": "ok"
+  },
+  {
+    "playlist": "p2",
+    "n": 6,
+    "id": "DNRddIEoH3c",
+    "title": "The capability curve",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "p2",
+    "n": 7,
+    "id": "Uvl-tRga98g",
+    "title": "Designing with Claude: From prompt to production",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "p2",
+    "n": 8,
+    "id": "l8fxVYIP4HQ",
+    "title": "Building with Claude on Google Cloud",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "p2",
+    "n": 9,
+    "id": "EOg4gY0Yln0",
+    "title": "Building signals that trade themselves",
+    "status": "ok"
+  },
+  {
+    "playlist": "p2",
+    "n": 10,
+    "id": "P0uMXS6emHA",
+    "title": "Picking the right model",
+    "status": "ok"
+  },
+  {
+    "playlist": "p2",
+    "n": 11,
+    "id": "IGo225tfF2I",
+    "title": "Memory and dreaming for self learning agents",
+    "status": "ok"
+  },
+  {
+    "playlist": "p2",
+    "n": 12,
+    "id": "nho1YAEPuwA",
+    "title": "What legal agents inherit from coding agents: Lessons from Legora",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "p2",
+    "n": 13,
+    "id": "zenIB7XLZxQ",
+    "title": "How to get to production faster with Claude Managed Agents",
+    "status": "ok"
+  },
+  {
+    "playlist": "p2",
+    "n": 14,
+    "id": "jWWsLe4Gh5Y",
+    "title": "Build a production-ready agent with Claude Managed Agents",
+    "status": "ok"
+  },
+  {
+    "playlist": "p2",
+    "n": 15,
+    "id": "T7KqH7kYnE4",
+    "title": "The thinking lever",
+    "status": "ok"
+  },
+  {
+    "playlist": "p2",
+    "n": 16,
+    "id": "mhW-XXnDFSU",
+    "title": "How Lovable vibecodes production software at scale",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "p2",
+    "n": 17,
+    "id": "XFaeIbL-lvE",
+    "title": "Building AI-native at enterprise scale: monday.com, Doctolib, and Delivery Hero",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "p2",
+    "n": 18,
+    "id": "VueeyKcquoA",
+    "title": "From one person to 80: Scaling a hypergrowth engineering org with Claude Code",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "p2",
+    "n": 19,
+    "id": "eSP7PLTXNy8",
+    "title": "Build a proactive agent workflow with Claude Code",
+    "status": "ok"
+  },
+  {
+    "playlist": "p2",
+    "n": 20,
+    "id": "TQd_YQvydVg",
+    "title": "Build AI agents using Claude in Microsoft Foundry",
+    "status": "ok"
+  },
+  {
+    "playlist": "p2",
+    "n": 21,
+    "id": "zFslvuvYifQ",
+    "title": "Coding is no longer the constraint: Scaling devex to teams and agents at Spotify",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "p2",
+    "n": 22,
+    "id": "5YHIrTYxM3w",
+    "title": "AI with Claude on AWS: From code to orchestration",
+    "status": "ok"
+  },
+  {
+    "playlist": "p2",
+    "n": 23,
+    "id": "wI0ptqCSL0I",
+    "title": "Stop babysitting your agents",
+    "status": "no_captions"
+  },
+  {
+    "playlist": "p2",
+    "n": 24,
+    "id": "sRvUXLquiRg",
+    "title": "What's new in Claude Code",
+    "status": "no_captions"
+  }
+]

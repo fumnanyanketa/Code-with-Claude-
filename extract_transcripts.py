@@ -21,11 +21,18 @@ OUT_ROOT = "transcripts"
 # flagged; the node JS runtime solves YouTube's bot-detection JS challenge.
 CLIENTS = ["tv", "tv_embedded", "mweb", "web_safari"]
 NODE = "/opt/node22/bin/node"
+COOKIES = "cookies.txt"  # authenticated session -> bypasses cloud-IP bot detection
 YDL_BASE = {
     "quiet": True, "skip_download": True, "no_warnings": True,
-    "js_runtimes": {"node": {"path": NODE}},
-    "remote_components": ["ejs:github"],
 }
+if os.path.exists(COOKIES):
+    # Cookies alone defeat the bot check and are ~15x faster than running the
+    # JS-challenge solver on every request.
+    YDL_BASE["cookiefile"] = COOKIES
+else:
+    # No cookies: fall back to yt-dlp's EJS solver via Node to beat bot detection.
+    YDL_BASE["js_runtimes"] = {"node": {"path": NODE}}
+    YDL_BASE["remote_components"] = ["ejs:github"]
 
 def slugify(title, vid):
     if not title:
@@ -34,11 +41,17 @@ def slugify(title, vid):
     s = re.sub(r"[\s_-]+", "-", s)
     return (s[:70].strip("-")) or vid
 
+class NoCaptions(Exception):
+    """Video extracted fine but YouTube has no English caption track for it.
+    (Permanent — only audio transcription via Whisper could produce a transcript.)"""
+
 def get_transcript(vid):
     """Rotate clients. For each client that returns a caption track, actually
     download+parse it; only accept a client whose caption URL yields real text.
     Returns (real_title, lang, kind, client, plain, lines)."""
     last_err = "no working client"
+    got_response = False  # at least one client returned a player response
+    real_title = vid
     for client in CLIENTS:
         opts = dict(YDL_BASE)
         opts["extractor_args"] = {"youtube": {"player_client": [client]}}
@@ -49,21 +62,27 @@ def get_transcript(vid):
                     download=False, process=False)
         except Exception as e:
             last_err = str(e).splitlines()[0]
-            time.sleep(random.uniform(4, 9))
+            time.sleep(random.uniform(2, 4))
             continue
+        got_response = True
+        real_title = info.get("title") or real_title
         track, lang, kind = pick_track(info)
         if not track:
             last_err = "no english caption track"
-            time.sleep(random.uniform(4, 9))
+            time.sleep(random.uniform(2, 4))
             continue
         try:
             plain, lines = fetch_caption_text(track)
             if plain:
-                return info.get("title") or vid, lang, kind, client, plain, lines
+                return real_title, lang, kind, client, plain, lines
             last_err = "empty transcript body"
         except Exception as e:
             last_err = str(e).splitlines()[0]
-        time.sleep(random.uniform(4, 9))
+        time.sleep(random.uniform(2, 4))
+    # Distinguish "no captions exist" (don't bother cooling down / retrying) from
+    # an actual block where every client request errored out.
+    if got_response and last_err == "no english caption track":
+        raise NoCaptions(real_title)
     raise RuntimeError(last_err)
 
 def pick_track(info):
@@ -179,8 +198,13 @@ def process_one(pkey, pl, pdir, idx, v):
     base = f"{idx:02d}_{slugify(title, vid)}"
     txt_path = os.path.join(pdir, base + ".txt")
     ts_path = os.path.join(pdir, base + ".timestamped.txt")
+    nocap_path = os.path.join(pdir, base + ".nocaptions")
     if os.path.exists(txt_path) and os.path.getsize(txt_path) > 0:
         return "done"
+    if os.path.exists(nocap_path):
+        return "nocaps"  # known: no captions on YouTube, needs Whisper
+    if os.path.exists(os.path.join(pdir, base + ".unavailable")):
+        return "gone"  # known: removed/private on YouTube
     try:
         real_title, lang, kind, client, plain, lines = get_transcript(vid)
         real_title = real_title or title or vid
@@ -193,8 +217,18 @@ def process_one(pkey, pl, pdir, idx, v):
             f.write(header + "\n".join(lines) + "\n")
         print(f"[ OK ] {pkey} {idx:02d} {vid} {len(plain):>7d} chars  {kind}/{lang}  {real_title[:50]}", flush=True)
         return "ok"
+    except NoCaptions as e:
+        with open(nocap_path, "w") as f:
+            f.write(f"{e}\nhttps://www.youtube.com/watch?v={vid}\n")
+        print(f"[NOCAP] {pkey} {idx:02d} {vid}  no YouTube captions (needs Whisper)", flush=True)
+        return "nocaps"
     except Exception as e:
         msg = str(e).splitlines()[0][:120]
+        if re.search(r"unavailable|removed by the uploader|private video|been terminated", msg, re.I):
+            with open(os.path.join(pdir, base + ".unavailable"), "w") as f:
+                f.write(f"{msg}\nhttps://www.youtube.com/watch?v={vid}\n")
+            print(f"[GONE ] {pkey} {idx:02d} {vid}  video unavailable/removed", flush=True)
+            return "gone"
         print(f"[FAIL] {pkey} {idx:02d} {vid}  {msg}", flush=True)
         return "fail"
 
@@ -211,20 +245,28 @@ def main():
             os.makedirs(pdir, exist_ok=True)
             for idx, v in enumerate(pl["videos"], 1):
                 r = process_one(pkey, pl, pdir, idx, v)
-                if r == "done":
+                if r in ("done", "nocaps", "gone"):
+                    # Already have it, or it permanently can't be fetched (no captions
+                    # / removed): no retry, no cooldown (not rate-limit failures).
+                    if r in ("nocaps", "gone"):
+                        streak = 0
+                        time.sleep(random.uniform(1, 3))
                     continue
-                # Low, steady request rate keeps the IP unflagged: a long gap after
-                # every video, with an extra cooldown only when failures streak.
+                # With cookies the IP is rarely blocked, so keep pacing light; only
+                # back off if real failures actually streak (transient rate-limit).
                 if r == "ok":
                     progressed += 1
                     streak = 0
-                    time.sleep(random.uniform(25, 45))
+                    time.sleep(random.uniform(2, 5))
                 else:  # fail
                     remaining += 1
                     streak += 1
-                    cool = min(60 + 60 * streak, 300)
-                    print(f"   ...cooldown {cool:.0f}s after {streak} fail(s)", flush=True)
-                    time.sleep(cool + random.uniform(0, 30))
+                    if streak >= 3:
+                        cool = min(60 + 30 * (streak - 2), 240)
+                        print(f"   ...cooldown {cool:.0f}s after {streak} fail(s)", flush=True)
+                        time.sleep(cool + random.uniform(0, 15))
+                    else:
+                        time.sleep(random.uniform(3, 7))
         print(f"----- PASS {p} done: {progressed} new, {remaining} still failing -----", flush=True)
         if remaining == 0:
             break
@@ -238,15 +280,26 @@ def main():
         for idx, v in enumerate(pl["videos"], 1):
             base = f"{idx:02d}_{slugify(v.get('title'), v['id'])}"
             txt_path = os.path.join(pdir, base + ".txt")
-            ok = os.path.exists(txt_path) and os.path.getsize(txt_path) > 0
+            nocap_path = os.path.join(pdir, base + ".nocaptions")
+            if os.path.exists(txt_path) and os.path.getsize(txt_path) > 0:
+                status = "ok"
+            elif os.path.exists(nocap_path):
+                status = "no_captions"
+            elif os.path.exists(os.path.join(pdir, base + ".unavailable")):
+                status = "unavailable"
+            else:
+                status = "missing"
             summary.append({"playlist": pkey, "n": idx, "id": v["id"],
-                            "title": v.get("title"), "status": "ok" if ok else "missing"})
+                            "title": v.get("title"), "status": status})
     json.dump(summary, open("extract_summary.json", "w"), indent=2)
     ok = sum(1 for s in summary if s["status"] == "ok")
-    print(f"\nDONE: {ok}/{len(summary)} transcripts available", flush=True)
+    nocap = sum(1 for s in summary if s["status"] == "no_captions")
+    gone = sum(1 for s in summary if s["status"] == "unavailable")
+    print(f"\nDONE: {ok}/{len(summary)} transcripts available "
+          f"({nocap} have no YouTube captions / need Whisper, {gone} removed from YouTube)", flush=True)
     for s in summary:
         if s["status"] != "ok":
-            print(f"  MISSING: {s['playlist']} {s['n']:02d} {s['id']} {s['title']}", flush=True)
+            print(f"  {s['status'].upper()}: {s['playlist']} {s['n']:02d} {s['id']} {s['title']}", flush=True)
 
 if __name__ == "__main__":
     main()

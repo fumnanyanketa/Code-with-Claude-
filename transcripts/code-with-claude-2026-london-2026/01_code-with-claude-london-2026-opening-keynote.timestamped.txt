@@ -1,0 +1,1063 @@
+Title: Code with Claude London 2026: Opening Keynote
+Video: https://www.youtube.com/watch?v=6amLO7I9xdg
+Caption: auto (en) via tv
+================================================================================
+
+[00:00:11] Heat.
+[00:00:15] Heat.
+[00:00:22] Heat.
+[00:00:42] Heat.
+[00:00:47] Morning
+[00:00:58] London.
+[00:01:00] >> Hello.
+[00:01:02] >> This is uh this is the first time that
+[00:01:04] we've taken Claude uh Code with Claude
+[00:01:06] outside of San Francisco and uh I'm very
+[00:01:09] excited to be here with everyone. Um
+[00:01:12] before we jump in, can I take a quick
+[00:01:15] selfie?
+[00:01:16] >> Is that okay?
+[00:01:17] All right.
+[00:01:19] Ready?
+[00:01:26] All right. I think we got it.
+[00:01:30] I um I want to start today by telling
+[00:01:33] you how I originally got into coding.
+[00:01:39] I actually learned on a scientific
+[00:01:41] calculator
+[00:01:43] and uh I found out that I could program
+[00:01:46] my calculator to help me pass math tests
+[00:01:50] and do well on homework.
+[00:01:53] I was using a TI 83 calculator. I think
+[00:01:56] in the UK use Casios uh Casios for this.
+[00:02:00] And I found out that you could write
+[00:02:02] little programs in TI basic. This is
+[00:02:04] like the basic dialect for for TI
+[00:02:06] calculators.
+[00:02:09] And um I could reference the little
+[00:02:11] programs when I couldn't remember what
+[00:02:13] to do.
+[00:02:15] It worked beautifully.
+[00:02:17] I got great scores on my math tests and
+[00:02:19] my homework.
+[00:02:21] And then I taught my classmates how to
+[00:02:23] program their calculators
+[00:02:26] and they also got great scores on their
+[00:02:29] math tests and their homework.
+[00:02:34] At some point I even published a guide
+[00:02:36] on the internet for how to program
+[00:02:38] scientific calculators.
+[00:02:40] I was uh I was 13 when I wrote this.
+[00:02:46] That was my introduction to software. It
+[00:02:48] was very practical and um as as a kid it
+[00:02:53] just it felt like magic.
+[00:02:58] Around the same age, I figured out HTML,
+[00:03:02] not to build a startup, but to make my
+[00:03:05] eBay listings look better than everyone
+[00:03:06] else's so I could sell Pokémon cards.
+[00:03:10] There were tables, blinking text, the
+[00:03:13] whole thing. And uh and it worked.
+[00:03:18] I sold three legendary birds for 99
+[00:03:22] cents each.
+[00:03:26] They were all holographic
+[00:03:29] and uh in hindsight I wish I would have
+[00:03:31] held on to those.
+[00:03:36] There was a whole generation of us like
+[00:03:38] that, right? We didn't learn to program
+[00:03:41] from a textbook. We learned from
+[00:03:43] tinkering.
+[00:03:44] And I still remember the giddy feeling
+[00:03:47] that I got when one of my calculator
+[00:03:49] programs ran. You made the thing and it
+[00:03:53] did what you wanted.
+[00:03:57] And then somewhere along the way,
+[00:04:00] programming got complicated. Uh,
+[00:04:03] compilers, type checkers, build systems,
+[00:04:07] package managers,
+[00:04:09] 12 config files before you could write a
+[00:04:12] single line of code. The distance
+[00:04:14] between I have an idea and it runs just
+[00:04:18] kept getting longer.
+[00:04:22] What's happening now is that distance is
+[00:04:27] collapsing again.
+[00:04:29] You describe a problem
+[00:04:32] and the program shows up.
+[00:04:35] It's the calculator feeling except the
+[00:04:38] calculator can write a distributed
+[00:04:40] system.
+[00:04:42] Now I get to watch people experience the
+[00:04:45] same feeling of bringing ideas to life
+[00:04:48] and it's happening on a scale none of us
+[00:04:51] imagined even a year ago.
+[00:04:54] It's so gratifying to talk to people
+[00:04:57] experiencing this every day from
+[00:05:00] individual indie devs to our biggest
+[00:05:03] customers that are taking on significant
+[00:05:06] challenges. For instance, Spotify uses
+[00:05:10] cloud code to migrate thousands of
+[00:05:12] repos. The team led by Nicholas
+[00:05:15] Gustiffson built a background agent on
+[00:05:17] cloud. It reads a migration that's
+[00:05:20] described in plain English and it runs
+[00:05:23] it across a fleet of agents opening PRs.
+[00:05:28] It's now merging over a thousand PRs a
+[00:05:30] month into production and it's cutting
+[00:05:33] migration time by over 90%.
+[00:05:36] That's real engineering hours back.
+[00:05:41] And sometimes speed isn't just about
+[00:05:44] efficiency.
+[00:05:45] It's about delivering on a mission.
+[00:05:50] Felicia Coruru is the co-founder and CEO
+[00:05:53] of Binty. Her software runs the systems
+[00:05:56] that case workers use to place kids in
+[00:05:59] foster care.
+[00:06:01] the paperwork, the home visits, the
+[00:06:03] licensing process. And this year, her
+[00:06:06] team used the Quad API to give case
+[00:06:09] workers back hours that they used to
+[00:06:12] spend on paperwork.
+[00:06:16] And they took 20 days off the process of
+[00:06:19] licensing a foster family.
+[00:06:22] 20 days.
+[00:06:24] It's not just an efficiency metric.
+[00:06:26] That's a kid connecting with a family.
+[00:06:33] That excitement of solving problems is
+[00:06:37] something I hear from people all the
+[00:06:39] time. And I'm going to guess that
+[00:06:42] everyone here experiences this
+[00:06:44] differently.
+[00:06:46] Some of you are living on the frontier.
+[00:06:51] Some of you are bringing along the
+[00:06:53] people around you.
+[00:06:57] Many of you can feel the ground shifting
+[00:06:59] under us and you want a view of maybe
+[00:07:03] what's coming next
+[00:07:05] and all of us at Anthropic can feel that
+[00:07:07] shifting happening too. The industry is
+[00:07:10] moving at incredible speed
+[00:07:16] and that makes sense when you look at
+[00:07:18] the exponential and how fast these
+[00:07:20] models are getting better.
+[00:07:23] Remember a couple years ago, the
+[00:07:26] frontier of model development was so
+[00:07:28] good that Quad could draft a pretty good
+[00:07:31] git commit.
+[00:07:35] A year ago, we were sitting on stage at
+[00:07:37] our first ever code with quad event in
+[00:07:39] San Francisco. Opus 4 was the headline.
+[00:07:43] And the idea that Cloud could run for a
+[00:07:45] few minutes and build an entire feature
+[00:07:48] without a human checking in, that was
+[00:07:51] crazy.
+[00:07:55] Six months ago, agents started running
+[00:07:57] end to end overnight and I started being
+[00:08:01] able to wake up to finished work.
+[00:08:09] Then uh last month, Mythos read the
+[00:08:13] entire open BSD source tree and it found
+[00:08:16] a 27y old vulnerability that survived
+[00:08:20] every human reviewer, every fuzzer,
+[00:08:23] every static analyzer that was thrown at
+[00:08:25] it for almost three decades.
+[00:08:30] The jumps keep getting bigger and the
+[00:08:33] intervals keep getting shorter.
+[00:08:40] But even though model capabilities are
+[00:08:43] improving on an exponential,
+[00:08:45] most organizations are still adopting AI
+[00:08:49] on a linear path.
+[00:08:52] That means there's a growing gap between
+[00:08:55] what AI can do and what it's actually
+[00:09:00] doing for people.
+[00:09:02] Closing
+[00:09:04] that gap and translating model
+[00:09:07] capability into something that people
+[00:09:08] can actually use is what you all as
+[00:09:12] developers do. And you're doing it
+[00:09:15] year-over-year. API volume is up nearly
+[00:09:18] 17x on the cloud platform. And on cloud
+[00:09:22] code, the average developer is now
+[00:09:23] spending over 20 hours a week running
+[00:09:26] cloud.
+[00:09:30] Like you, we've been shipping a lot
+[00:09:32] lately
+[00:09:34] and we want you to walk away today with
+[00:09:36] a clear picture of where we're headed.
+[00:09:40] So you can plan for it and you can ride
+[00:09:42] the exponential with us.
+[00:09:45] This event is how is about how we're
+[00:09:48] making our products work better for all
+[00:09:50] of you.
+[00:09:54] And this morning we're going to show you
+[00:09:57] what that looks like.
+[00:10:00] First, Lisa is going to talk about our
+[00:10:02] foundation. That's the model layer. And
+[00:10:05] she'll explore more about what what
+[00:10:09] going on with our frontier models and
+[00:10:11] what's coming next. On the cloud
+[00:10:13] platform, we're shifting updates to
+[00:10:16] cloud managed agents. And Angela and
+[00:10:18] Caitlyn are going to walk you through
+[00:10:20] how you can securely build and deploy
+[00:10:22] agents at scale. And then finally on
+[00:10:24] cloud code, CAD and I will walk you
+[00:10:26] through the latest features like uh the
+[00:10:28] new agent view and then important new
+[00:10:30] primitives like routines to let flood
+[00:10:33] prompt itself even when you're away from
+[00:10:36] your computer.
+[00:10:41] All of it comes back to you
+[00:10:44] and what you're going to build
+[00:10:47] because most people are never going to
+[00:10:49] call the cloud API. Most people are
+[00:10:52] never going to run Claude in a terminal.
+[00:10:55] They're gonna experience AI through
+[00:10:57] something one of you built on the cloud
+[00:11:00] platform.
+[00:11:03] A designer exploring new directions with
+[00:11:06] Canva.
+[00:11:09] A lawyer getting a brief out the door
+[00:11:11] faster with Lora.
+[00:11:14] Or a developer using any one of the
+[00:11:16] world's best coding agents.
+[00:11:19] You all shape what AI feels like for
+[00:11:22] everyone else.
+[00:11:24] We'd never be able to build something
+[00:11:27] build everything that people need to
+[00:11:29] solve their problems. This is only
+[00:11:32] something that you all can do.
+[00:11:36] So, uh, thanks for being here today.
+[00:11:40] Thanks for partnering with us to shape
+[00:11:42] what AI looks like for the world and for
+[00:11:45] joining us as we all reexperience those
+[00:11:48] feelings of learning to code and solve
+[00:11:51] problems again. Up next, Lisa from the
+[00:11:54] research PM team.
+[00:12:06] Hi. So I joined Enthropic in 2023 and
+[00:12:10] have been a part of every model launch
+[00:12:13] since Claude 3. That means I've been
+[00:12:15] involved in bringing 17 different
+[00:12:17] versions of Claude to end users and
+[00:12:19] developers.
+[00:12:21] Claude has come a long way. Opus 3
+[00:12:24] launched just over 2 years ago and was
+[00:12:26] our first model that was proficient at
+[00:12:28] writing long form code.
+[00:12:31] Sonnet 3.5 new sonnet 3.6 six really was
+[00:12:35] the first model that could use a
+[00:12:37] computer safely.
+[00:12:39] Sonnet 3.7 was our first model that
+[00:12:41] would think before giving answers. And
+[00:12:44] last year at this event, I introduced
+[00:12:46] developers to Opus 4. Opus 4, we didn't
+[00:12:50] know it really at the time, but it was
+[00:12:52] our first model that could write complex
+[00:12:54] Excel files and PowerPoint documents.
+[00:12:58] And now with our most recent models,
+[00:13:00] Opus 4.7 and Mythos preview, we're
+[00:13:03] seeing Claude is able to own outcomes
+[00:13:05] end to end and apply judgment to
+[00:13:08] complete tasks with high ambiguity.
+[00:13:12] So we haven't slowed down. In fact,
+[00:13:14] we've been accelerating.
+[00:13:16] We shipped eight Frontier models in the
+[00:13:19] past 12 months.
+[00:13:21] Each one builds on the last, helping you
+[00:13:23] write better code and deliver more
+[00:13:26] advanced experiences to your end users.
+[00:13:30] Claude's behaviors and capabilities
+[00:13:32] underpin everything else you're going to
+[00:13:34] hear about today. As Cloud gets
+[00:13:37] stronger, your starting line moves
+[00:13:40] forward.
+[00:13:43] Like Boris mentioned, we talk a lot
+[00:13:45] about the exponential adanthropic.
+[00:13:48] We believe as model intelligence
+[00:13:50] increases the value of use cases
+[00:13:53] increases exponentially.
+[00:13:55] So consider coding agentic coding is far
+[00:13:59] more impactful than code autocomplete.
+[00:14:03] In this way incremental intelligence
+[00:14:05] creates new markets and grows the pie.
+[00:14:10] As we build better versions of cloud we
+[00:14:12] are excited to see benchmarks improve.
+[00:14:15] But what's really exciting is when
+[00:14:17] Claude can do something that it couldn't
+[00:14:19] do before.
+[00:14:21] Tool use, computer use, thinking that
+[00:14:25] adapts to the task at hand, agentic
+[00:14:28] plans that hold agentic loops that hold
+[00:14:31] a plan over hundreds of steps,
+[00:14:34] long context windows.
+[00:14:36] We pioneered these areas. So when you're
+[00:14:39] building on cloud, you're building on
+[00:14:41] the model family that shipped these
+[00:14:42] capabilities first. and has had the
+[00:14:45] longest to make them reliable.
+[00:14:48] These capabilities are essential for
+[00:14:50] code, but the foundations of model
+[00:14:53] intelligence have gotten strong enough
+[00:14:54] to support a diversity of tasks in a
+[00:14:57] range of domain verticals.
+[00:14:59] So Claude can iterate on designs for
+[00:15:02] marketing presentations, can redline
+[00:15:04] legal documents, can build financial
+[00:15:07] forecasts, and even analyze genomic
+[00:15:10] sequencing data.
+[00:15:12] Let me share some examples of how
+[00:15:15] customers are using our latest model,
+[00:15:16] Opus 4.7.
+[00:15:20] AMP, the coding agent, moved their smart
+[00:15:23] mode to Opus 4.7 after it outperformed
+[00:15:26] on their internal benchmarks.
+[00:15:29] They also simplified their tooling since
+[00:15:31] the model no longer needed as much help.
+[00:15:35] Rakutin ran the model on their internal
+[00:15:37] benchmark and found it resolved three
+[00:15:39] times more production engineering tasks
+[00:15:41] than the previous model.
+[00:15:44] In it saw opus 4.7 catching its own
+[00:15:47] logical faults during the planning phase
+[00:15:49] and accelerating execution far beyond
+[00:15:52] previous cloud models. We also recently
+[00:15:54] launched cloud design by anthropics labs
+[00:15:56] powered by Opus 4.7.
+[00:15:59] Customers are using claw design to build
+[00:16:02] production interfaces in a single
+[00:16:03] sitting and we've heard that Opus 4.7
+[00:16:06] has a taste for visual design.
+[00:16:09] Developers building on the model
+[00:16:10] directly are seeing the same. We
+[00:16:12] continue to hear from everyday users
+[00:16:15] that Claude understands the assignment.
+[00:16:19] Users view Claude as a valued thought
+[00:16:21] partner since it's willing to challenge
+[00:16:23] their beliefs and push back when they're
+[00:16:26] wrong.
+[00:16:29] So, we've made tremendous progress, but
+[00:16:32] models are still imperfect.
+[00:16:35] Claude absolutely still has verbal
+[00:16:37] ticks, can be stumped by viral common
+[00:16:40] sense questions, and sometimes does more
+[00:16:42] than you asked for.
+[00:16:45] Watching Claude improve is what makes
+[00:16:47] this industry, this moment, and my job
+[00:16:51] exciting.
+[00:16:52] So, here's what to look forward to from
+[00:16:55] here.
+[00:16:58] Higher judgment and code taste. This
+[00:17:01] means models you can trust with complex
+[00:17:04] autonomous engineering.
+[00:17:07] Context windows that feel effectively
+[00:17:09] infinite as models take on longer
+[00:17:12] continuous work without losing their
+[00:17:15] core intent.
+[00:17:18] and multi-agent coordination, powering
+[00:17:21] teams of agents that can collaborate on
+[00:17:23] goals too big for any one agent or
+[00:17:26] model.
+[00:17:29] One metric I look to to make sense to
+[00:17:32] all of this change is task horizon. So
+[00:17:35] how long can a model work before losing
+[00:17:38] the thread?
+[00:17:40] Last year at this time, models could
+[00:17:42] reliably work for minutes. And today,
+[00:17:45] most users have agents that run for
+[00:17:47] hours.
+[00:17:49] We expect future generations of Claude
+[00:17:51] to run continuously.
+[00:17:53] So, we will have agents that are
+[00:17:55] proactive, that are always on, that know
+[00:17:58] what to do without being told. These
+[00:18:01] agents will be responsible for highle
+[00:18:03] goals that require judgment and
+[00:18:05] collaboration.
+[00:18:06] So, let me give you some examples.
+[00:18:09] Instead of asking Claude to write a
+[00:18:11] project update, you would ask Claude
+[00:18:14] keep the project on track this week.
+[00:18:17] Instead of asking Claude to produce a
+[00:18:19] financial forecast, Claude would own and
+[00:18:22] update the forecast to keep it accurate
+[00:18:24] over time.
+[00:18:27] So what should you as developers do with
+[00:18:30] all of this change?
+[00:18:32] Since the exponential keeps moving,
+[00:18:34] cloud models, future cloud models will
+[00:18:37] be more capable than Opus 4.7 and even
+[00:18:40] Mythos preview.
+[00:18:42] You need to build for emerging
+[00:18:44] capabilities, not just what works today.
+[00:18:48] That means designing for the next
+[00:18:50] version of Cloud, not the current one.
+[00:18:54] We've seen countless times that the
+[00:18:56] developers who win are the ones whose
+[00:18:58] architecture is ready to absorb the next
+[00:19:00] big jump.
+[00:19:02] Scaffolding is what we call the parts of
+[00:19:04] the agent that aren't Claude. So the
+[00:19:06] loops, the instructions, the tools.
+[00:19:09] We're seeing that as models get smarter,
+[00:19:11] the scaffolding that used to help can
+[00:19:13] hold Claude back.
+[00:19:15] Claude is intelligent and resourceful
+[00:19:18] and more intelligent models can al often
+[00:19:20] get further with generalized primitives
+[00:19:23] like a file system and sandbox computing
+[00:19:25] environment.
+[00:19:29] As models get more intelligent, you will
+[00:19:31] also need to keep making harder evals
+[00:19:33] and product prototypes.
+[00:19:35] They were they are how you will notice
+[00:19:37] that the exponential is moving
+[00:19:39] underneath you.
+[00:19:41] When a task that used to fail starts
+[00:19:43] passing, that's your sign to ship
+[00:19:45] something that you couldn't ship before.
+[00:19:50] And finally, as the pace continues to
+[00:19:52] accelerate, the teams who are getting
+[00:19:55] the most out of Claude are the ones who
+[00:19:56] treat model upgrades as a business
+[00:19:58] opportunity.
+[00:20:00] You should make the upgrades easy by
+[00:20:02] testing by automating your evaluations
+[00:20:05] and testing processes. And you should
+[00:20:07] test models hands-on to better touch and
+[00:20:09] feel how the improved intelligence and
+[00:20:12] capabilities will help your end users.
+[00:20:17] We are seeing the exponential continue,
+[00:20:20] which means Claude will keep getting
+[00:20:22] smarter and keep picking up new
+[00:20:23] capabilities.
+[00:20:26] You as developers are the first to feel
+[00:20:28] that you're the first to experiment,
+[00:20:32] the first to build new products, and the
+[00:20:35] first to find markets that nobody else
+[00:20:37] sees yet.
+[00:20:40] Now, Caitlyn and Angela are going to
+[00:20:41] show you how the Claude platform can
+[00:20:43] make this reality come to life.
+[00:20:57] So model capabilities are on this
+[00:20:59] exponential, but most businesses are
+[00:21:01] still on the linear. It's never been
+[00:21:04] more important to take advantage of
+[00:21:06] growing model intelligence to drive true
+[00:21:08] business impact. But what's preventing
+[00:21:10] these businesses from snapping to this
+[00:21:12] exponential themselves?
+[00:21:14] Well, it boils down to two key problems.
+[00:21:17] The first one is just getting the right
+[00:21:18] outcomes can be too difficult to build
+[00:21:21] an agent that does exactly what you need
+[00:21:23] to do. You need to do things like prompt
+[00:21:25] optimization, tool construction,
+[00:21:27] hardness engineering. There's just so
+[00:21:29] much you have to do to get it just
+[00:21:30] right. That's right. And the second
+[00:21:32] problem is you need to ship fast, but
+[00:21:34] you need to ship scalably at the same
+[00:21:36] time. Everybody is moving insanely fast
+[00:21:39] right now, and you've got to keep up.
+[00:21:40] But to win, you need quality, too. It's
+[00:21:43] really easy to build prototypes, but
+[00:21:45] it's hard to scale in production.
+[00:21:48] So, we've built the cloud platform to
+[00:21:50] give you everything you need to ship to
+[00:21:52] get the right outcomes quickly and for
+[00:21:55] scale. The platform gives you API
+[00:21:57] primitives that are tuned to cloud
+[00:21:59] models. It gives you infrastructure to
+[00:22:01] build and scale agentic systems and it
+[00:22:04] gives you controls to operate those
+[00:22:05] systems. That's right. Now, let's go
+[00:22:08] back to one of the most common problems
+[00:22:10] that Caitlyn and I hear all the time
+[00:22:12] from businesses. Businesses need
+[00:22:14] frontier level intelligence, but at
+[00:22:16] lower costs.
+[00:22:19] One of the ways that we're solving this
+[00:22:20] is with the advisor strategy. So, this
+[00:22:22] is really easy to implement. All you
+[00:22:24] have to do is update your tools and your
+[00:22:26] tools array on the messages API. And
+[00:22:29] what we're doing behind the scenes is
+[00:22:30] that we're splitting execution from
+[00:22:32] advising. So, in execution, you can use
+[00:22:35] a smaller model. This will make it a bit
+[00:22:36] cheaper. But when that small model needs
+[00:22:38] help, it can reach out to a larger model
+[00:22:40] for advice. Yeah. So in practice, this
+[00:22:42] means you can have a haiku or sonnet
+[00:22:45] class model do your executing and use
+[00:22:47] opus as an adviser. So we used the
+[00:22:49] adviser strategy. We ran this with
+[00:22:51] sonnet as an executor and opus as an
+[00:22:53] adviser. We found that sonnet performed
+[00:22:56] way better than sonnet alone. And
+[00:22:58] actually we found that sonnet performed
+[00:22:59] even more cheaply than on its own
+[00:23:01] because opus advised it to get its work
+[00:23:03] done better.
+[00:23:06] Eve Legal, for example, used the advisor
+[00:23:08] strategy and they told us they got
+[00:23:10] frontier model quality at five times
+[00:23:12] lower cost. And that's awesome. This is
+[00:23:15] a perfect situation where you can apply
+[00:23:16] it to a premium model. For example,
+[00:23:19] you'd want to put your best foot forward
+[00:23:20] with your product, but you'd have to be
+[00:23:21] conscious of your costs. It's also
+[00:23:23] really great in situations where you
+[00:23:24] have a extremely high volume of agentic
+[00:23:27] workloads. So, you have to keep an eye
+[00:23:28] out on your ROI.
+[00:23:31] All right, now let's talk about speed
+[00:23:33] and scale. those two things that Caitlyn
+[00:23:34] was saying that you have to do at the
+[00:23:35] exact same time. Recently, we introduced
+[00:23:38] Claude Manage agents. Claude manage
+[00:23:40] agents is an agentic harness paired with
+[00:23:42] production grade infrastructure. It
+[00:23:45] allows teams to ship literally 10 times
+[00:23:47] faster. You can now build a production
+[00:23:49] grade agent in days, not months. One of
+[00:23:52] our favorite examples of a customer who
+[00:23:54] built on cloud managed agents was Asana.
+[00:23:57] Asana built AI teammates so that humans
+[00:24:00] can collaborate directly with agents
+[00:24:03] within Asauna projects delegating tasks
+[00:24:05] and things like that. And Asana wanted
+[00:24:07] to build for speed and scale at the same
+[00:24:09] time. So they built on cloud managed
+[00:24:11] agents. And recently we introduced a
+[00:24:13] couple of key features that were
+[00:24:15] upgraded for cloud managed agents.
+[00:24:17] Multi- aent orchestration which allows
+[00:24:19] you to build fleets of agents. outcomes
+[00:24:22] that allow you to specify what success
+[00:24:24] looks like for Claude and Claude just
+[00:24:25] iterates to get it done and dreaming
+[00:24:28] where Claude can basically introspect on
+[00:24:30] its previous transcripts and learn and
+[00:24:32] self-improve. And today we're
+[00:24:35] introducing two more new features. The
+[00:24:37] first one is self-hosted sandboxes. So
+[00:24:40] this means that you can now have Claude
+[00:24:42] execute work on your own server. The
+[00:24:44] other thing is MCP tunnels. And for many
+[00:24:47] people who build internal agents, being
+[00:24:49] able to access your internal MCP servers
+[00:24:51] securely is now possible on Cloud Manage
+[00:24:53] agents through MCP tunnels. Cloud manage
+[00:24:57] agents spawn sandboxes when it's time to
+[00:24:59] execute work like editing files. And you
+[00:25:02] can still choose to use our sandboxes to
+[00:25:04] do that work, but starting today you can
+[00:25:06] also use your own. And we're introducing
+[00:25:08] this with first class support for
+[00:25:10] Daytona, Cloudflare, Verscell, and Modal
+[00:25:13] Sandboxes with super easy integration.
+[00:25:16] So, it's easy to get started with any of
+[00:25:17] these providers. With MCP tunnels, you
+[00:25:20] can have your MCP servers hosted behind
+[00:25:23] your firewall on your private network so
+[00:25:25] that Cloud Manage agents can access them
+[00:25:28] without exposing them over the public
+[00:25:29] internet. Should we check them out?
+[00:25:32] Let's do it.
+[00:25:34] So, Caitlyn and I have been working with
+[00:25:35] a fictional company called Counter.
+[00:25:38] Counter offers software for small
+[00:25:40] businesses to be able to build up a
+[00:25:42] digital storefront. Encounter really
+[00:25:44] wants to become an AI native business
+[00:25:47] and one of its most common workflows is
+[00:25:49] that it's constantly running growth
+[00:25:50] experiments to optimize its merchant
+[00:25:52] onboarding. Kalin has graciously offered
+[00:25:55] to help build a growth agent on cloud
+[00:25:57] manage agents for counter.
+[00:26:00] So here we are in counter slack
+[00:26:02] workspace. I'm in here with my colleague
+[00:26:05] Gabe. We're wearing our super cool
+[00:26:06] counter hats and we're ready to go. So,
+[00:26:08] we're really excited to see how our
+[00:26:10] latest growth experiment on our
+[00:26:11] onboarding flow has performed. And you
+[00:26:14] can see that our new growthbot came into
+[00:26:16] the Slack channel and it told us there's
+[00:26:18] actually a really clear winner in our
+[00:26:19] most recent experiment. The simpler
+[00:26:22] version of the onboarding flow is way
+[00:26:24] outperforming the older, longer version
+[00:26:26] of the flow where merchants were kind of
+[00:26:28] dropping off before they ever finished
+[00:26:29] signing up for counter. The agent is
+[00:26:32] proactively telling us it's calling the
+[00:26:34] experiment and it's going to get started
+[00:26:35] on cleaning up the old variant. which is
+[00:26:38] awesome. So, let's take a look at how
+[00:26:40] this agent actually is set up. And to do
+[00:26:42] that, I'm going to use the cloud API CLI
+[00:26:45] and the cloud developer console.
+[00:26:48] So, first let's check out the agents
+[00:26:49] configuration. You see here we've got
+[00:26:52] our system prompt, our skills, our
+[00:26:54] tools. Well, let's take a look at the
+[00:26:55] MCP servers. First, we've got Slack.
+[00:26:58] Makes sense, right? That bot was talking
+[00:27:00] to us in Slack. Then we've got our data
+[00:27:02] warehouse so that the bot can go and
+[00:27:04] read data about the experiments and be
+[00:27:06] able to determine what might be winning.
+[00:27:08] We've got our feature flags MCP server
+[00:27:10] so that the bot can call experiments or
+[00:27:12] start new ones and and take actions like
+[00:27:14] that. But let's look at these URLs. So
+[00:27:17] for Slack, regular public MCP URL, but
+[00:27:21] for the data warehouse and features flag
+[00:27:22] services, you might notice something
+[00:27:24] different here. We've got these URLs
+[00:27:26] that are behind tunnel.anthropic.com.
+[00:27:28] And what this means is both of these MCP
+[00:27:30] servers are behind counter's firewall
+[00:27:33] and only accessible via the tunnel so
+[00:27:36] that counter can kind of meet those
+[00:27:37] requirements of making sure that its MCP
+[00:27:39] servers stay on its private network. And
+[00:27:42] so let's pop into the cloud developer
+[00:27:44] console and see how this is set up. So
+[00:27:46] for counter, they set up a gateway in
+[00:27:48] their own private network. Then they
+[00:27:51] establish a secure connection to
+[00:27:52] Anthropic. As a result, any agent that
+[00:27:55] Caitlyn builds that uses the MCP tunnel
+[00:27:57] is now able to securely access internal
+[00:27:59] MCP servers.
+[00:28:02] You can go ahead and create these MCP
+[00:28:03] tunnels directly in the cloud developer
+[00:28:05] console. And we give you a couple of
+[00:28:07] different configuration options so you
+[00:28:08] can adjust them accordingly.
+[00:28:10] So counter's next big requirement is
+[00:28:12] that agent when it goes to do things
+[00:28:14] like write code and execute code, it it
+[00:28:17] wants us to do those things on a
+[00:28:19] self-hosted sandbox. it doesn't want to
+[00:28:21] run these things on public
+[00:28:22] infrastructure. So what we do is for our
+[00:28:26] cloud manage agents, we can set up our
+[00:28:28] environment to make sure that we're
+[00:28:29] using a self-hosted sandbox. So with the
+[00:28:32] self-hosted sandbox, now what's going to
+[00:28:35] happen is when the agent actually needs
+[00:28:36] to execute work, it's going to put a
+[00:28:38] work item in a queue. And here counter
+[00:28:40] is actually using Verscell's uh
+[00:28:42] self-hosted sandbox. And so what will
+[00:28:44] happen is that Verscell will actually
+[00:28:46] pick up that work item and then they
+[00:28:48] will actually spin up a sandbox in
+[00:28:50] counter's versell account in order to
+[00:28:51] execute the work. So one of the cool
+[00:28:54] things about cloud manage agents is that
+[00:28:56] we've got a whole bunch of really rich
+[00:28:57] observability within the console
+[00:28:59] experience. And so let's actually go
+[00:29:00] check out the session that ran that
+[00:29:02] resulted in that Slack thread that we
+[00:29:04] saw earlier. And so you can see here
+[00:29:06] that this agent is running a whole bunch
+[00:29:08] of different tools. But we can briefly
+[00:29:10] take a look and make sure that some of
+[00:29:11] the things that we cared about around
+[00:29:12] MCP tunnels and self-hosted sandboxing
+[00:29:15] are working the way we want. So first
+[00:29:16] we've got this set flag winner tool
+[00:29:18] call, which means that the agent was
+[00:29:19] able to work through the MCP tunnel to
+[00:29:21] call that MCP server for the feature
+[00:29:23] flag service. And then you can see here
+[00:29:26] too when the agent decides it's time to
+[00:29:28] write the code to clean up the old
+[00:29:30] variant, it checks out a new git branch
+[00:29:32] and it's doing this work on our Versell
+[00:29:34] self-hosted sandbox. Awesome. Let's head
+[00:29:37] back to Slack and take a look at what
+[00:29:39] this Growthbot agent has been doing. So,
+[00:29:42] first off, Growthbot is very proactive.
+[00:29:44] Not only has it figured out that it
+[00:29:46] should default the uh simplify variant,
+[00:29:48] but it also put together a PR in order
+[00:29:51] to actually do that defaulting and clean
+[00:29:52] it up. And when that work gets executed,
+[00:29:55] it's done on counter servers via the
+[00:29:57] self-hosted sandbox. Another great thing
+[00:29:59] in its productivity, you can see it also
+[00:30:01] gave us a little screenshot. So you can
+[00:30:03] see the old variant, which is a bit
+[00:30:04] messy, and the new one, and that
+[00:30:06] definitely looks cleaner.
+[00:30:08] Not only is this agent proactive, but
+[00:30:10] it's also collaborative. You can see
+[00:30:12] here, Caitlyn asked, "What next?" And
+[00:30:15] Growthbot was actually able to detect
+[00:30:16] that another great opportunity could be
+[00:30:19] to solve this 46% drop off that it found
+[00:30:21] in the onboarding flow. Now, Growthbot
+[00:30:24] was able to calculate that because it
+[00:30:25] was able to query the data warehouse
+[00:30:27] securely through an MCP tunnel. and we
+[00:30:30] love that it ended up by asking us, do
+[00:30:32] you want me to get started on that?
+[00:30:34] Thank you very much, Claude. All right,
+[00:30:36] let's wrap up.
+[00:30:39] So, today we introduced two big upgrades
+[00:30:41] to Cloud Manage agents with self-hosted
+[00:30:43] sandboxes and MCP tunnels. With this
+[00:30:46] collection of feature upgrades, it's now
+[00:30:48] easier than ever to become an AI native
+[00:30:50] business yourself and build agents for
+[00:30:52] all of your workflows and ultimately
+[00:30:54] accelerate whatever you are building.
+[00:30:57] And now Kad and Boris are going to come
+[00:30:59] and talk to you about how Cloud Code is
+[00:31:01] making it even more fun to ship as a
+[00:31:03] developer.
+[00:31:13] Thanks. Angela and Caitlyn just showed
+[00:31:16] you how the Quad platform bridges the
+[00:31:18] gap between what models can do and what
+[00:31:21] agents businesses ship. We see a related
+[00:31:23] challenge on cloud code to bridge the
+[00:31:25] gap between model capabilities and how
+[00:31:28] every developer can benefit from them.
+[00:31:31] First, I want to take some time to just
+[00:31:33] thank all of the builders in the room
+[00:31:35] with us today and watching online. Thank
+[00:31:38] you for trusting us and your production
+[00:31:40] codebase back when Sonnet 37 was our
+[00:31:43] frontier model and back when our product
+[00:31:45] was rough around the edges. Your support
+[00:31:49] is what makes the team so excited to
+[00:31:50] come in every day and make Cloud Code
+[00:31:53] better.
+[00:31:55] Let's back up to why Cloud Code exists.
+[00:31:59] Our mission is to help every builder
+[00:32:01] close the gap between having a great
+[00:32:03] idea and having a shipped product. The
+[00:32:07] way that we enable this is by building
+[00:32:09] tools that elicit the frontier
+[00:32:10] intelligence from our models and making
+[00:32:13] these tools accessible to every builder.
+[00:32:17] And we don't think of ourselves as
+[00:32:18] having a finished road map to hand to
+[00:32:20] you. We think of ourselves more like
+[00:32:23] mountaineers
+[00:32:24] just climbing alongside you in terrain
+[00:32:27] that none of us has mapped before,
+[00:32:29] figuring things out as we go. And we're
+[00:32:32] growing with you with increasing AI
+[00:32:34] capabilities and helping you manage
+[00:32:36] these new challenges as they emerge.
+[00:32:40] I remember looking back to last year
+[00:32:42] when I would give quad code a task and I
+[00:32:44] would read every single edit it tried to
+[00:32:46] make every permission prompt. I would
+[00:32:49] give it superdetailed guidance about
+[00:32:51] what to do and what not to do. Just
+[00:32:53] walking it through the details of the
+[00:32:55] change.
+[00:32:57] Now most of us are running in auto mode
+[00:32:59] to delegate permissions to Claude and
+[00:33:02] we're checking in after Quad has already
+[00:33:04] tested, verified its changes and has a
+[00:33:06] PR ready for us.
+[00:33:10] Looking back, Quad Code started in the
+[00:33:12] CLI and the terminal is still the
+[00:33:15] interface for power users who want a
+[00:33:17] minimal text interface and the most
+[00:33:19] control and customizations.
+[00:33:23] Then we added the IDE. This gives you
+[00:33:25] the same powerful agent, but you also
+[00:33:29] have the ability to follow along with
+[00:33:31] all the code changes as the agent is
+[00:33:33] working.
+[00:33:35] And we heard from you that many of you
+[00:33:37] are now juggling multiple cloud code
+[00:33:40] instances which we've affectionately
+[00:33:42] been calling multi-clotting.
+[00:33:46] We've added two new interfaces to help
+[00:33:48] you manage more agents.
+[00:33:51] One that I use frequently is quad code
+[00:33:53] on desktop.
+[00:33:55] It's a full screen graphical interface.
+[00:33:58] It has built-in previews, a sidebar
+[00:34:00] control plane, and the ability to render
+[00:34:03] images and rich outputs.
+[00:34:06] We've built desktop to be a single view
+[00:34:08] across both local sessions and your
+[00:34:10] cloud sessions with visual indicators of
+[00:34:13] which agents are running, which ones are
+[00:34:15] blocked, and which ones need your input.
+[00:34:19] Next is our newest surface, cloud agents
+[00:34:22] view in the CLI for people who actually
+[00:34:25] just prefer to stay in the terminal.
+[00:34:28] In this view, you can also see what's
+[00:34:30] running, what's waiting for you, and
+[00:34:32] what's done in one glance. You can reply
+[00:34:35] in line to unblock. You can jump in and
+[00:34:38] out of sessions, all without losing your
+[00:34:40] place.
+[00:34:42] The VS Code IDE extension and desktop
+[00:34:44] app are both built on the Cloud Agent
+[00:34:47] SDK, the same one that many of you are
+[00:34:50] building on as well.
+[00:34:53] And many enterprises have now adopted
+[00:34:55] quad code wallto-wall anthropic. We've
+[00:34:59] seen that this has driven a 200%
+[00:35:01] increase in the number of PRs per
+[00:35:03] engineer even as our engineering org has
+[00:35:07] scaled substantially.
+[00:35:10] Together with all of you, we're
+[00:35:12] redefining and discovering what the
+[00:35:15] future of engineering looks like by
+[00:35:17] embracing these new challenges that
+[00:35:18] we're encountering and building
+[00:35:21] automations powered by Quad to tackle
+[00:35:24] each.
+[00:35:26] Here's some of the feedback that we've
+[00:35:27] heard from our users and what we've
+[00:35:29] built with the help of everyone in this
+[00:35:31] community.
+[00:35:33] We heard from you that you want to spend
+[00:35:35] less time on code review. So, we shipped
+[00:35:38] a code review product that deploys a
+[00:35:41] team of agents to traverse all your code
+[00:35:44] changes and auxiliary files to catch
+[00:35:47] critical bugs. Thousands of companies
+[00:35:49] use this every day, including every
+[00:35:52] internal anthropic team.
+[00:35:54] We heard from you that you want to code
+[00:35:57] on the go. So, we launched remote
+[00:36:00] control and quad code in iOS and Android
+[00:36:03] so that you can fire off a task no
+[00:36:05] matter where you are. You're no longer
+[00:36:08] needing to walk around with this open
+[00:36:10] laptop or you're no longer stuck at your
+[00:36:13] desk. You can now go to a park, touch
+[00:36:16] grass, and still get your tasks done.
+[00:36:20] We heard from you that you're also
+[00:36:22] spending a lot of time babysitting your
+[00:36:24] PRs, fixing flaky CI tests, addressing
+[00:36:28] code review comments, and resolving
+[00:36:30] merge conflicts.
+[00:36:32] So, we added autofix. It listens for
+[00:36:36] these events and proactively fixes each
+[00:36:39] one so that your PR is always green.
+[00:36:44] And we heard from you that you want to
+[00:36:46] run cloud code on new tickets and on new
+[00:36:50] customer bug reports that are coming in.
+[00:36:52] So we built routines. Configure once and
+[00:36:56] cloud code can run on a schedule or in
+[00:36:59] response to a web hook or API request.
+[00:37:03] The work that used to require you to
+[00:37:05] manually kick off now just happens on a
+[00:37:08] schedule.
+[00:37:10] And last, we heard from you that you're
+[00:37:12] landing so much code that security teams
+[00:37:16] are struggling to keep up. So, we built
+[00:37:19] Cloud Security. It scans your codebase
+[00:37:21] overnight, flags vulnerabilities ranked
+[00:37:24] by severity, and lets you kick off cloud
+[00:37:26] code to address each one.
+[00:37:30] Each of these primitives that we've
+[00:37:32] built composes together so that we can
+[00:37:35] together
+[00:37:36] easily adapt to the future of
+[00:37:39] engineering.
+[00:37:41] Everything I've covered is something an
+[00:37:43] individual can pick up today, but it's
+[00:37:46] especially exciting to see how a range
+[00:37:48] of companies have adopted cloud code at
+[00:37:50] the scale of their entire engineering
+[00:37:52] orgs.
+[00:37:54] First, Shopify powers e-commerce for
+[00:37:58] millions of merchants worldwide and has
+[00:38:00] built AI use into its entire engineering
+[00:38:03] culture.
+[00:38:05] They use quad code across the entire
+[00:38:07] company, both across the engineering
+[00:38:09] org, but also non-engineers, so product
+[00:38:12] managers, designers, data scientists,
+[00:38:15] and they're bringing it directly into
+[00:38:17] their platform to stand up tools at
+[00:38:19] scale.
+[00:38:21] Andrew McNamera is the director of
+[00:38:23] applied AI at Shopify and in his words,
+[00:38:26] the speed is just crazy and quad code
+[00:38:29] has transformed how they build their
+[00:38:31] internal tools.
+[00:38:33] Another example is Marcato Libre.
+[00:38:36] They're Latin America's most popular
+[00:38:38] e-commerce site with over 100 million
+[00:38:42] buyers.
+[00:38:43] They have a team of 23,000 engineers and
+[00:38:47] their org runs on cloud code. When that
+[00:38:51] happens across an org, the work itself
+[00:38:53] changes. Engineers are pointing agents
+[00:38:55] at debt, tech debt that people haven't
+[00:38:58] had the time to fix themselves. It's
+[00:39:01] reviewed more than 500,000 PRs with
+[00:39:04] human oversight and modernized more than
+[00:39:07] 9,000 of their apps.
+[00:39:10] Oscar Mowen leads technology and is
+[00:39:12] aiming for 90% autonomous coding in a
+[00:39:15] fully agent-driven PR loop by Q3 of this
+[00:39:18] year.
+[00:39:20] But the detail I love the most isn't
+[00:39:22] just the number. It's that managers and
+[00:39:24] VPs who haven't committed code in years
+[00:39:27] are now shipping again.
+[00:39:30] Quad code is putting coding back in the
+[00:39:32] hands of people who've spent the last
+[00:39:34] decade in reviews and roadmap sessions
+[00:39:37] instead of in their codebase.
+[00:39:40] And we see this across the entire
+[00:39:41] industry. Millions of developers are
+[00:39:44] getting more products shipped at higher
+[00:39:47] quality and at faster speeds.
+[00:39:50] Now let's see what this actually looks
+[00:39:52] like in practice. To take you through
+[00:39:54] it, please welcome the creator of Quad
+[00:39:57] Code, Boris Churnney.
+[00:40:08] I just realized we're matching.
+[00:40:12] Thanks, Cat. Um, I'm going to jump into
+[00:40:14] the demo in a sec, but um, first I just
+[00:40:18] want to say everything that we're
+[00:40:20] showing still feels magical to me.
+[00:40:25] using cloud code, I still get those same
+[00:40:27] feelings that I got when I programmed my
+[00:40:29] first calculator. And even inside
+[00:40:32] Anthropic in Slack, all day we're
+[00:40:34] trading screenshots of things that
+[00:40:37] engineers are doing in the wild with
+[00:40:39] Cloud Code. It's it's just so exciting
+[00:40:41] to see.
+[00:40:43] Um, and so today I'm excited to share
+[00:40:45] some examples of Cloud Code's magic with
+[00:40:48] uh with all of you. For this demo, let's
+[00:40:50] imagine that we're an engineer at Acme
+[00:40:52] Pay. It's a payment infrastructure
+[00:40:54] company. We're gonna start in the Cloud
+[00:40:57] Code desktop app. And we're gonna start
+[00:40:58] by working on just one single task. And
+[00:41:02] in this session, Claude is working on
+[00:41:05] adding refunds to Acme's merchant
+[00:41:07] dashboard. It's working on a full
+[00:41:09] implementation. Item potency so a
+[00:41:13] duplicate web hook doesn't double refund
+[00:41:14] a merchant. multicurrency handling
+[00:41:17] across all the regions that Acme serves
+[00:41:20] and uh audit logging for the compliance
+[00:41:22] team.
+[00:41:24] It writes the implementation and it's
+[00:41:26] going to verify its own work. Quad pulls
+[00:41:29] up the merchant dashboard in the
+[00:41:30] browser, triggers a refund,
+[00:41:33] and the modal closes before the success
+[00:41:36] toast appears.
+[00:41:38] It's a real edge case.
+[00:41:41] Claude sees the failure. It traces it
+[00:41:44] back to a race condition in the
+[00:41:46] optimistic update. It fixes it and it
+[00:41:49] verifies it actually works in the
+[00:41:51] browser before calling the task done.
+[00:41:57] Now let's zoom out.
+[00:42:02] Cloud code isn't running just one
+[00:42:04] session here. It's one of many sessions
+[00:42:08] all running and being managed in
+[00:42:11] parallel.
+[00:42:12] In the cloud desktop app, you can now
+[00:42:14] see all your cloud code sessions. Which
+[00:42:17] ones are running, which need your input,
+[00:42:20] which have PRs that have already been
+[00:42:22] merged and closed.
+[00:42:25] Synchronous coding is now just a slice
+[00:42:29] of what's happening at any given moment.
+[00:42:32] And we think that going forward more
+[00:42:34] code is going to be written in an async
+[00:42:36] way. And this is why we keep talking
+[00:42:39] about verification. If cla can check its
+[00:42:42] work, you can just let it run while you
+[00:42:44] work on something else and you can come
+[00:42:46] back to a fully working result.
+[00:42:51] A lot of my code these days is written
+[00:42:53] by routines. I'm not the one doing the
+[00:42:56] prompting. I'm the one that creates a
+[00:42:59] routine that does the prompting.
+[00:43:01] For the engineers in the room, think of
+[00:43:03] it like a higher order function.
+[00:43:05] Routines are a higher order prompt. For
+[00:43:07] example, let's go back to the refund
+[00:43:09] session we just looked at. A teammate
+[00:43:11] found a GitHub issue overnight. A
+[00:43:13] routine watching the repo picked it up
+[00:43:15] async and then it kicked off the working
+[00:43:18] clock.
+[00:43:21] With routines, developers can set up
+[00:43:24] async automations and wake up to PRs
+[00:43:27] that are ready to merge. Here's
+[00:43:31] our routines view.
+[00:43:34] Routines can be run on a schedule. They
+[00:43:36] can get kicked off by web hooks or even
+[00:43:38] kicked off by arbitrary API calls. And
+[00:43:41] you can run them locally on your machine
+[00:43:43] or on remote cloud compute.
+[00:43:50] Let's look at one more feature in
+[00:43:51] desktop.
+[00:43:56] This is CI autofix.
+[00:43:59] What it does is it watches the PR that
+[00:44:01] the last session just opened and its job
+[00:44:05] is to babysit the PR to production. It's
+[00:44:08] going to autofix any comments from code
+[00:44:10] review and security review, autofix CI,
+[00:44:13] auto rebase if there's any merge
+[00:44:15] conflicts.
+[00:44:17] And look at what just happened. CI
+[00:44:19] flicked on a network timeout. The
+[00:44:21] routine woke up, diagnosed it as a known
+[00:44:24] infra issue, and retried the job.
+[00:44:28] And actually in the cloud code code base
+[00:44:30] we we tell it to fix the root cause
+[00:44:32] instead, not just retry.
+[00:44:36] And CI is green. The engineer that owns
+[00:44:39] the PR is never going to see the red X
+[00:44:42] and that work is off their plate.
+[00:44:49] That's the shift. The default isn't I'm
+[00:44:52] going to prompt Claude code. The default
+[00:44:55] is now I'm going to have Claude prompt
+[00:44:58] Cloud Code.
+[00:45:01] Everything you just saw is available
+[00:45:03] today, uh, including routines and all
+[00:45:06] the latest updates to the Cloud Desktop
+[00:45:08] app. We're excited for you to try them
+[00:45:10] out and let us know what you think. We
+[00:45:14] hope these features continue to let you
+[00:45:16] close the gap between your ideas and
+[00:45:20] shipping products.
+[00:45:25] And that's really what every talk today
+[00:45:28] was pointing at. Lisa's capability
+[00:45:31] curve, Angela and Caitlyn's agents that
+[00:45:34] run on infrastructure that you control.
+[00:45:37] What Cat and I just showed you.
+[00:45:40] These are three layers of one story.
+[00:45:44] The capability is already here and the
+[00:45:47] remaining gap is how fast we put it to
+[00:45:49] work.
+[00:45:52] I encourage you to spend the rest of
+[00:45:53] today exploring these layers, research
+[00:45:56] talks if you're evaluating the models,
+[00:45:58] uh cloud platform sessions if you're
+[00:46:01] building for your users,
+[00:46:03] and cloud code workshops if you want to
+[00:46:06] learn more ways to bring cloud into your
+[00:46:08] day-to-day development workflow.
+[00:46:12] Dive in, go deep, and start building
+[00:46:15] with us. Thank you.

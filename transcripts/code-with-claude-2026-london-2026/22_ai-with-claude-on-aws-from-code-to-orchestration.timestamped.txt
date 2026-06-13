@@ -1,0 +1,548 @@
+Title: AI with Claude on AWS: From code to orchestration
+Video: https://www.youtube.com/watch?v=5YHIrTYxM3w
+Caption: auto (en) via tv
+================================================================================
+
+[00:00:01] [music]
+[00:00:10] [music]
+[00:00:13] >> Good afternoon, everybody.
+[00:00:15] Let's continue with the agenda. Thank
+[00:00:16] you for joining this session. My name is
+[00:00:19] Antonio Rodriguez. I work in Amazon Web
+[00:00:21] Services and I'm also a developer as
+[00:00:24] many of you and also a cloud whisperer
+[00:00:27] as I like to say we are really just
+[00:00:29] whispering orders these days not really
+[00:00:31] writing code.
+[00:00:32] And uh in this session we're going to be
+[00:00:34] talking about how to take the
+[00:00:36] applications that you are building in
+[00:00:38] Cloud Code from prototypes that you
+[00:00:40] might have in your computer to fully
+[00:00:43] production ready applications that you
+[00:00:45] can have in the cloud in this case with
+[00:00:47] Amazon Web Services.
+[00:00:49] And uh I think the story that
+[00:00:52] we are telling today is a story about
+[00:00:54] teamwork, a story about better together.
+[00:00:56] Because
+[00:00:57] I remember I joined the team and I
+[00:01:00] started working with Anthropic
+[00:01:03] more than 3 years ago. I remember we
+[00:01:05] were still launching Claude 2 as the big
+[00:01:09] amazing model that was you know changing
+[00:01:11] and shifting the ground uh below us. And
+[00:01:15] uh
+[00:01:15] on since then we have tried to combine
+[00:01:18] the best frontier models that Anthropic
+[00:01:20] has been developing with the best cloud
+[00:01:22] provider
+[00:01:23] that we had in Amazon Web Services.
+[00:01:27] And uh
+[00:01:28] this session by the way is a hands-on
+[00:01:30] session. So what we are going to do is
+[00:01:32] that I'm going to give you a brief
+[00:01:34] introduction into how do we work
+[00:01:36] together Anthropic and AWS and how you
+[00:01:39] can use Claude in AWS in many different
+[00:01:41] ways that we have available today. And
+[00:01:44] then we are going to give you some
+[00:01:45] accounts in AWS so that you can
+[00:01:48] free of charge and with no limitations
+[00:01:51] test Claude in in in Bedrock in this
+[00:01:53] case and also in in general in AWS so
+[00:01:56] that you can see
+[00:01:57] how to use it. You have a guided
+[00:02:00] instructions and a workshop, and again,
+[00:02:02] we are going to give you an environment
+[00:02:03] so that you can play around with it.
+[00:02:06] So, um
+[00:02:07] again, this collaboration uh started and
+[00:02:10] has been continued as a very long-term
+[00:02:12] relationship. And um we have proven this
+[00:02:16] year by year. Amazon has invested
+[00:02:18] has done a multi-billion investment in
+[00:02:21] Anthropic uh because we really believe
+[00:02:23] that we are building the future of AI
+[00:02:25] together.
+[00:02:27] And at the same time, we are the primary
+[00:02:29] cloud provider for Anthropic. And uh
+[00:02:32] Anthropic has committed
+[00:02:34] uh more than 100 billion in usage in AWS
+[00:02:37] as well in the infrastructure that we
+[00:02:39] are offering for powering the models
+[00:02:41] that you are using every day with
+[00:02:42] Claude.
+[00:02:43] And
+[00:02:44] an example of
+[00:02:46] this investment is Project Rainier.
+[00:02:48] Project Rainier is actually uh one of
+[00:02:50] the largest
+[00:02:52] AI computer
+[00:02:54] infrastructure that was built for
+[00:02:56] training and hosting the Claude models
+[00:02:58] that you are using today with Anthropic.
+[00:03:01] We are also using uh custom and
+[00:03:03] purpose-built chip sets that are
+[00:03:05] specifically made for the Claude models
+[00:03:08] in the chip sets that we call Trainium.
+[00:03:10] So, we have our third generation of
+[00:03:12] Trainium chip sets already built by
+[00:03:14] Amazon. So, you can actually get the
+[00:03:17] best speed and also use it in the most
+[00:03:20] cost-effective way
+[00:03:22] when you are expanding
+[00:03:24] tokens with with Claude.
+[00:03:26] And I think that if we start diving into
+[00:03:29] the technical part of this
+[00:03:31] collaboration, there are three angles
+[00:03:33] that we basically offered you when you
+[00:03:35] use Claude through AWS. I think the
+[00:03:38] first one is that you have a very
+[00:03:40] comprehensive list of features that you
+[00:03:42] can use
+[00:03:43] for, let's say, a company the model that
+[00:03:46] you are using. So, in Bedrock, you have
+[00:03:47] a full platform.
+[00:03:49] So, you can combine and fine-tune the
+[00:03:51] models as well. We are the only provider
+[00:03:54] that allows you to fine tune Haiku in
+[00:03:56] example in the cloud.
+[00:03:58] And we have full integrations with the
+[00:04:00] rest of the features that we have
+[00:04:01] available in Bedrock and the AWS
+[00:04:03] ecosystem in general.
+[00:04:05] The second and very important point is
+[00:04:08] the security. So, we can make sure that
+[00:04:11] you keep control of your data at all
+[00:04:13] times. We avoid this hopping of data
+[00:04:16] going to the public internet. You can
+[00:04:18] keep everything private in your AWS
+[00:04:20] boundary. So, we make sure that you
+[00:04:23] always align with the compliance and
+[00:04:25] security
+[00:04:26] best practices that you might have in
+[00:04:27] your companies or or the regulations.
+[00:04:30] If you are working in banking or health
+[00:04:32] care,
+[00:04:33] this kind of industries is highly
+[00:04:35] regulated industries. It's very
+[00:04:37] important
+[00:04:38] that you actually have these options for
+[00:04:40] controlling everything that you're doing
+[00:04:42] in cloud.
+[00:04:43] And obviously the data privacy part, we
+[00:04:46] work nowadays in the latest generation
+[00:04:49] inference engine that we have in
+[00:04:50] Bedrock.
+[00:04:51] We have zero operator access in the
+[00:04:54] platform, which means that no one from
+[00:04:56] Amazon or from Anthropic can actually
+[00:04:59] get access to those instances. So, your
+[00:05:01] data remains fully private. We are not
+[00:05:04] sharing that data with anyone. No one is
+[00:05:06] using that data for training models or
+[00:05:08] anything like that. So, you keep a full
+[00:05:10] restriction and again this is because we
+[00:05:13] need to align with a lot of compliance
+[00:05:15] regulations that our customers need.
+[00:05:18] There are hundreds of thousands of
+[00:05:19] customers who are using these models
+[00:05:21] every day and therefore it's very
+[00:05:23] important for us to align on those.
+[00:05:26] Last but not least the scalability. The
+[00:05:28] using those models cloud models through
+[00:05:30] Bedrock gives you
+[00:05:32] practically infinite scalability in the
+[00:05:35] sense that you can really decide how do
+[00:05:37] you want to do the deployments. You have
+[00:05:39] full flexibility for choosing regions as
+[00:05:41] well. In example, you could decide that
+[00:05:43] you want to deploy cloud only in London
+[00:05:45] region in AWS or only in the European
+[00:05:48] region in example if you have to align
+[00:05:50] with GDPR and and these kind of
+[00:05:53] regulations.
+[00:05:55] Now, if we see the whole ecosystem, who
+[00:05:58] who is familiar with Amazon Bedrock by
+[00:06:00] the way in this room?
+[00:06:02] Okay, so I was expecting less hands to
+[00:06:05] be honest because
+[00:06:06] this is really
+[00:06:07] a cloud
+[00:06:08] event, but it's great to hear that you
+[00:06:11] are using Bedrock or you know about
+[00:06:13] Bedrock and this and Bedrock has been
+[00:06:15] growing a lot since the the beginning
+[00:06:18] since the last three or four years when
+[00:06:20] we released the service. And today,
+[00:06:22] apart from the core which is obviously
+[00:06:24] the foundation models that you have
+[00:06:26] access to and obviously Anthropic cloud
+[00:06:28] models are a very important part part of
+[00:06:30] that. You also have other features that
+[00:06:33] help you in the full journey as a
+[00:06:34] developer. So, you have a feature that
+[00:06:36] help you doing evaluation, that help you
+[00:06:39] doing prompt optimization,
+[00:06:41] that help you fine-tuning the models as
+[00:06:43] we mentioned before or doing model
+[00:06:45] distillation as well if you need it. We
+[00:06:47] also give you some features that help
+[00:06:49] you connecting if you have rack use
+[00:06:51] cases, you can have knowledge bases that
+[00:06:53] are fully managed so that you can attach
+[00:06:55] to it as well.
+[00:06:57] We have guardrails which is a way in
+[00:06:59] which you can apply content filters, you
+[00:07:01] can deny topics, you can
+[00:07:04] protect PII data or sensitive data by
+[00:07:07] doing automatic masking and so on.
+[00:07:10] And you can also control hallucinations
+[00:07:13] from the models by doing
+[00:07:15] proper grounding, automated reasoning
+[00:07:16] checks.
+[00:07:18] And
+[00:07:19] even more important in the last
+[00:07:21] two years I would say
+[00:07:23] tools for building with agentic AI. And
+[00:07:26] this
+[00:07:27] if you are using cloud agents, then
+[00:07:29] awesome. But if you are using the cloud
+[00:07:31] agent SDK and you are looking for an
+[00:07:34] infrastructure for hosting your agents
+[00:07:36] in a secure way in the cloud, then you
+[00:07:39] can also use Amazon Bedrock agent core
+[00:07:41] which is again fully compatible with any
+[00:07:44] open framework that you might be using
+[00:07:45] for agent AI today like LangChain, like
+[00:07:48] Crew AI, and obviously Cloud Agency SDK
+[00:07:51] as well.
+[00:07:54] Now, if I have to summarize in a single
+[00:07:56] slide everything that I'm saying so far
+[00:07:58] on the why the better together story,
+[00:08:01] why is it better to
+[00:08:03] use Cloud in AWS, I would say this is
+[00:08:06] probably the slide, right? So, first of
+[00:08:08] all, as I mentioned, the data
+[00:08:09] sovereignty that you can get when you
+[00:08:11] are using Cloud in AWS, you have a full
+[00:08:14] control of the environment that you are
+[00:08:16] setting up and where you are using it.
+[00:08:18] You also have centralized billing from
+[00:08:21] AWS, so you can actually have a single
+[00:08:23] bill. If your companies are already
+[00:08:25] using AWS or you are using AWS for other
+[00:08:27] things, you can have a a consolidated a
+[00:08:30] single bill that is actually having the
+[00:08:32] usage of Cloud included with everything
+[00:08:34] else that you might be doing today.
+[00:08:37] You have full observability through our
+[00:08:39] services like CloudWatch or CloudTrail
+[00:08:41] as well, in which you can actually see
+[00:08:43] details of metrics, logs.
+[00:08:46] You can see the traces of everything
+[00:08:47] that has happened.
+[00:08:49] And we also offer SLAs, so we make sure
+[00:08:52] that you have guaranteed availability on
+[00:08:55] the services. So, you have an uptime
+[00:08:56] that is
+[00:08:58] secure for your applications and you can
+[00:08:59] go
+[00:09:00] safe to production and make sure that
+[00:09:02] you can scale at the at the cloud scale
+[00:09:06] safely.
+[00:09:07] Um another very important point is that
+[00:09:10] we have built-in auth integration. So,
+[00:09:12] if you're using single sign-on or if
+[00:09:14] you're doing
+[00:09:16] open authorization OAuth, or if you're
+[00:09:18] using IAM roles in AWS in example,
+[00:09:21] um you can directly integrate that with
+[00:09:23] your identity provider. You could be
+[00:09:25] using Microsoft Entra ID, you could be
+[00:09:27] using Okta, you could be using any of
+[00:09:30] those identity providers today. And that
+[00:09:32] is a built-in integration that you can
+[00:09:34] do also for using Cloud in Bedrock.
+[00:09:37] And uh last point, you can use private
+[00:09:39] link, which means that all the
+[00:09:41] communication can remain fully private.
+[00:09:43] So, uh you make sure that no data is
+[00:09:45] being sent to the public internet at any
+[00:09:47] point uh when you are using Cloud in
+[00:09:50] Bedrock again.
+[00:09:52] As I mentioned, I mentioned about
+[00:09:54] compliance before. These are some of the
+[00:09:56] uh compliance regulations that we
+[00:09:58] uh support and we are uh good for you to
+[00:10:01] use as well. Like an example, FedRAMP,
+[00:10:03] HIPAA, and so on and so forth. There is
+[00:10:05] a full list online if you want to check
+[00:10:07] it out. And uh
+[00:10:09] and more information about all of these
+[00:10:10] topics.
+[00:10:13] Now, the good news is that today you
+[00:10:15] have three ways of using Cloud in AWS.
+[00:10:18] And actually, this is uh the the most
+[00:10:21] options that you are going to find in
+[00:10:22] the whole industry right now. First
+[00:10:24] First one is you can use Cloud models
+[00:10:26] directly through Amazon Bedrock, as I
+[00:10:28] mentioned before. So, basically,
+[00:10:30] everything that I was saying so far in
+[00:10:32] which you have the same uh high quality
+[00:10:35] output that you might be getting uh
+[00:10:37] directly, but in this case, uh fully
+[00:10:39] through the Amazon Bedrock uh APIs that
+[00:10:43] are offered to you. We have a recently
+[00:10:45] added Opus 4.7 and included the messages
+[00:10:47] API as well, so that you can directly
+[00:10:49] invoke with the messages API if that's
+[00:10:52] the method that you prefer.
+[00:10:54] Now, we have also recently launched
+[00:10:56] Cloud platform in on AWS. Cloud platform
+[00:10:58] on AWS is actually generally available
+[00:11:01] since a few days ago, and this allows
+[00:11:04] you to have the same exact experience
+[00:11:06] that you might be using today directly
+[00:11:07] with Anthropic, but in this case, with a
+[00:11:10] consolidated billing through AWS and
+[00:11:12] having the access control fully done on
+[00:11:15] AWS as well.
+[00:11:16] We act as a gateway in this case, and we
+[00:11:18] send all the inference requests to
+[00:11:20] Anthropic, so that they can process the
+[00:11:22] request for you. So, it's giving you the
+[00:11:24] best of both worlds. So, you get again
+[00:11:26] the security, the billing, the
+[00:11:28] consolidated access control that we are
+[00:11:30] giving in AWS, and at the same time you
+[00:11:32] have all the feature parity with
+[00:11:34] Anthropic, including everything that we
+[00:11:36] have been hearing in this event, and the
+[00:11:38] latest features that you might be using
+[00:11:40] today, including web search, files,
+[00:11:43] agents, and so on and so forth.
+[00:11:46] Now, the third way in which you can use
+[00:11:48] it is also if you are not using
+[00:11:50] programmatically Cloud, but you are
+[00:11:52] rather using Cloud Desktop. So, you
+[00:11:54] might be using CodeWhisperer, you might
+[00:11:55] be using
+[00:11:57] Cloud Code through the Cloud Desktop
+[00:11:59] application. You can also use it
+[00:12:01] directly from AWS, and again, you can
+[00:12:03] pay in a consolidated bill in AWS.
+[00:12:06] And you have two ways of doing that as
+[00:12:09] well. One is through the Cloud
+[00:12:11] Enterprise in the in the AWS
+[00:12:12] Marketplace, in which you pretty much
+[00:12:14] subscribe to the number of developers
+[00:12:16] that you have using this application as
+[00:12:19] well. But you now also have the option
+[00:12:21] of using it
+[00:12:23] let's say point directly the
+[00:12:25] CodeWhisperer 3P, which is one of the
+[00:12:27] latest additions also that the Anthropic
+[00:12:29] team did for connecting Cloud Desktop to
+[00:12:32] third parties. In this case, you can
+[00:12:34] connect Cloud Desktop to Bedrock, or you
+[00:12:36] can connect even Cloud Desktop to the
+[00:12:38] Cloud platform on AWS if you prefer to
+[00:12:40] do so. So again, you have all sort of
+[00:12:42] combinations to make your life easier,
+[00:12:44] and pretty much meet you where you are
+[00:12:47] on your needs on this.
+[00:12:50] Perfect. Let's dive into the actual
+[00:12:53] workshop that we are going to be
+[00:12:54] building together. I just want to
+[00:12:57] make a recap that first of all, you need
+[00:13:00] two prerequisites for running this
+[00:13:02] workshop. One is you need an AWS
+[00:13:03] account, so that's we got you covered.
+[00:13:06] We are going to give you again a
+[00:13:07] workshop account that has
+[00:13:09] an environment that you can play around
+[00:13:11] with, and you can pretty much be
+[00:13:14] free of charge, free of any concern of
+[00:13:17] using that environment. And then the
+[00:13:19] other thing is that you obviously need
+[00:13:20] to have Cloud Code installed as an
+[00:13:22] application.
+[00:13:24] And we have a few options for you. So,
+[00:13:27] if
+[00:13:28] the folks in the back help me switch
+[00:13:30] into my laptop, I can show you what is
+[00:13:32] exactly what we are doing. Um you are
+[00:13:34] going to find that in the accounts that
+[00:13:36] we are setting up for you, we are having
+[00:13:38] the workshop that is called introduction
+[00:13:40] to cloud code on AWS. And this workshop
+[00:13:43] has some instructions to how to set up
+[00:13:45] everything that we are doing. We are
+[00:13:47] pretty much uh playing around with the
+[00:13:49] Scaled Draw
+[00:13:50] tool with the repository of a Scaled
+[00:13:52] Draw, so that you can see how cloud code
+[00:13:54] can help you playing around with Scaled
+[00:13:57] Draw and drawing architecture diagrams
+[00:13:59] for you in example. Um this is a basic
+[00:14:02] workshop is if you are already an
+[00:14:04] advanced user. So who who is getting
+[00:14:07] started with cloud code in this room?
+[00:14:10] All right, who would say that is a ninja
+[00:14:13] in cloud code? So you are you have all
+[00:14:14] the skills on cloud code.
+[00:14:17] Who is in the middle?
+[00:14:19] All right.
+[00:14:21] Who's not answering? So [snorts]
+[00:14:23] yeah, I guess most of the room is
+[00:14:24] probably in the middle. So you will find
+[00:14:26] that probably module one is basic for
+[00:14:28] you. So it's just using cloud code on
+[00:14:31] AWS and learning how to set it up and
+[00:14:34] point to Scaled Draw and so on.
+[00:14:36] Module two and module three are probably
+[00:14:38] more interesting for you. We are going
+[00:14:40] to start playing with the context. We
+[00:14:42] are going to start using Playwright MCP,
+[00:14:45] so we can actually take a screenshots of
+[00:14:47] the diagram that we are drawing and
+[00:14:49] making modifi- automated modifications
+[00:14:52] through cloud code on it. You are also
+[00:14:54] playing around with the
+[00:14:56] Git
+[00:14:56] Git workflows and on cloud code and so
+[00:14:58] on. And in the module three, we are
+[00:15:00] going to play with sub agents and
+[00:15:02] plugins. And we are also creating custom
+[00:15:04] skills, hooks, and some advanced
+[00:15:07] parameters for configuration.
+[00:15:09] I just want to mention that we have an
+[00:15:11] even more advanced workshop that is also
+[00:15:13] available for you if you look for this
+[00:15:15] URL. And basically there you have other
+[00:15:18] things that are very interesting for
+[00:15:20] teams who wants to move to production in
+[00:15:22] a safe way. So, here you can learn how
+[00:15:25] to set up uh team standards, how to
+[00:15:28] implement and and distribute advanced
+[00:15:30] workflows as well, how to do a
+[00:15:32] scalability, cost control, and so on.
+[00:15:35] So, in example, you could see uh how to
+[00:15:37] set up dashboards like this one for
+[00:15:39] making sure that you can control all the
+[00:15:42] use that you are doing of cloud code
+[00:15:44] tokens
+[00:15:45] uh in your accounts and so on and so
+[00:15:46] forth, developer productivity
+[00:15:48] measurements, measuring return of
+[00:15:50] investment of your applications, and so
+[00:15:52] on.
+[00:15:53] And last, you have also options for
+[00:15:55] using uh the cloud agent SDK on the
+[00:15:58] Amazon uh bedrock agent core, so that
+[00:16:00] you can learn how to build the agents
+[00:16:02] connected to the cloud infrastructure
+[00:16:05] uh that we have uh here in in AWS as
+[00:16:07] well.
+[00:16:09] But coming back to our workshop, again,
+[00:16:11] uh you have uh different ways of doing
+[00:16:13] it. You will see that at the very
+[00:16:14] beginning, you will uh see a screen that
+[00:16:16] looks like this with some terms and
+[00:16:18] conditions. So, I just want to remind
+[00:16:19] everybody that those are workshop
+[00:16:21] accounts is individual for you, but make
+[00:16:24] sure that you don't upload confidential
+[00:16:26] information, personal information, or
+[00:16:28] anything like that. You will have to
+[00:16:30] agree to the terms and conditions, and
+[00:16:32] click on the join event. And from that
+[00:16:34] point on, uh you are going to see pretty
+[00:16:37] much this experience that you have in
+[00:16:38] the instructions here, where you're
+[00:16:40] actually going to have a an environment
+[00:16:42] fully deployed for you. And uh you will
+[00:16:45] see a URL here that will take you to a
+[00:16:48] terminal and a uh pretty much a Visual
+[00:16:51] Studio Code UI where you can actually
+[00:16:54] work on all the instructions that we're
+[00:16:55] doing in the workshop.
+[00:16:57] Let's say that you don't want to follow
+[00:16:59] this path, and you want to do it in your
+[00:17:00] own machine, then you can do it. You can
+[00:17:02] use uh cloud directly in a terminal. If
+[00:17:05] you prefer, you can configure it for
+[00:17:06] pointing to bedrock
+[00:17:08] uh with instructions that we're giving
+[00:17:09] you in the workshop.
+[00:17:11] Let's say that you want to use
+[00:17:12] CodeWhisperer uh or or the cloud desktop
+[00:17:15] app, uh you can do it as well. Again,
+[00:17:17] here I'm pointing to my Bedrock account.
+[00:17:20] So, I have a Cloud Desktop pointing to
+[00:17:22] Bedrock. And uh here I'm doing the
+[00:17:24] Scully draw
+[00:17:25] uh application on the on the workshop
+[00:17:28] that we have for you uh over there as
+[00:17:30] well.
+[00:17:31] And uh there is more information. At the
+[00:17:33] end, we are going to be sharing with you
+[00:17:35] uh more on the a guidance in example for
+[00:17:37] how to use Cloud Code and co-work on
+[00:17:39] Amazon Bedrock. There is a full block
+[00:17:42] from my colleagues uh who is uh covering
+[00:17:44] all of this in detail, and so on and so
+[00:17:46] forth.
+[00:17:49] All right, let's go back to the slides
+[00:17:50] uh please on the back.
+[00:17:52] Thank you.
+[00:17:54] Perfect. So, um the instructions for
+[00:17:56] accessing the accounts are very easy.
+[00:17:58] All you have to do is go to
+[00:17:59] join.thatworkshop.aws,
+[00:18:01] and you have to input that access code
+[00:18:04] that you see on the screen. I think my
+[00:18:05] colleagues uh have been around uh over
+[00:18:08] there. You have the two uh solutions
+[00:18:10] architects from AWS who can help you
+[00:18:12] with questions. If you have any
+[00:18:13] questions, just raise your hand,
+[00:18:15] and we can get uh close, and we can help
+[00:18:17] you out. We also have been handing over
+[00:18:19] some uh pieces of paper that has this
+[00:18:22] information, so uh you can get it uh
+[00:18:24] easier for copy and paste it in in your
+[00:18:27] uh laptops.
+[00:18:28] Um one last comment uh with regards to
+[00:18:31] advanced configurations, if you want to
+[00:18:34] use uh things like in example uh
+[00:18:37] configuring the settings that you're
+[00:18:38] using in Cloud Code manually, um this is
+[00:18:41] the kind of uh parameters that you will
+[00:18:43] need to set up. You might take a picture
+[00:18:45] now uh if you want. So, the here is how
+[00:18:48] to set up uh the region pointed to
+[00:18:50] Bedrock, choose the default model, and
+[00:18:52] so on and so forth. And then on the
+[00:18:53] right-hand side, you also have uh some
+[00:18:56] parameters for reducing the token usage
+[00:18:58] or doing rate limiting, and uh how to
+[00:19:00] enable auto reporting for telemetry, and
+[00:19:03] uh things like that.
+[00:19:05] You also have some information here
+[00:19:06] about uh uh how to configure extensions
+[00:19:10] in the case that you're using Visual
+[00:19:11] Studio. Uh but again, it is all about
+[00:19:14] asking Cloud to configure itself, or you
+[00:19:17] can do it manually if you prefer through
+[00:19:19] the extensions that we have there. It
+[00:19:21] helps you with some things like an
+[00:19:22] example, disable the login prompt that
+[00:19:24] is a bit annoying every time that you
+[00:19:27] start, or things like
+[00:19:29] hiding the onboarding
+[00:19:31] message that you always get in in Cloud
+[00:19:33] Code and and so on and so forth.

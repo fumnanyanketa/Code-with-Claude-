@@ -1,0 +1,799 @@
+Title: Running an AI-native engineering org
+Video: https://www.youtube.com/watch?v=IA5LWIGqnyM
+Caption: auto (en) via tv
+================================================================================
+
+[00:00:09] [music]
+[00:00:17] >> Hey everyone.
+[00:00:19] Aw, thank you. I didn't expect applause.
+[00:00:22] Well, thank you so much for joining me
+[00:00:24] today. I'm excited to speak with all of
+[00:00:25] you about, you know, some lessons I've
+[00:00:27] learned as I've been leading uh
+[00:00:30] Claude Code and Co-work. So, actually
+[00:00:31] first I should do an intro. So, yeah, my
+[00:00:33] name is Fiona Fung and I lead
+[00:00:35] engineering and product for Claude Code
+[00:00:37] and Co-work. And before Anthropic, I had
+[00:00:40] also built and led teams at Meta and
+[00:00:42] Microsoft.
+[00:00:44] So, with that, let's dive into some
+[00:00:46] lessons I'm excited to share with all of
+[00:00:48] you. Hopefully, maybe you'll find a
+[00:00:49] couple of tidbits that may be helpful to
+[00:00:51] you.
+[00:00:52] So, there are five topics I really want
+[00:00:54] to cover today. The first is the
+[00:00:57] bottlenecks have moved. And so, when the
+[00:00:59] bottlenecks have moved and it's shifted,
+[00:01:02] what are all the team norms that we
+[00:01:04] felt, "Oh, yeah, we have to rewrite some
+[00:01:06] of these because it's changed." How we
+[00:01:08] rolled it out, I'll talk about like how
+[00:01:09] we rolled out some of these updated team
+[00:01:11] norms.
+[00:01:12] And in terms of the proof, what were
+[00:01:13] some signals that I feel, "Okay, this is
+[00:01:16] giving me confidence that we're trending
+[00:01:18] in the direction right direction." And
+[00:01:19] maybe I'll help you as well.
+[00:01:21] And lastly, I'll leave you all with
+[00:01:23] maybe a topic for you to all take back
+[00:01:25] to your team to discuss cuz I'd love to
+[00:01:27] hear about um yeah, whether any of this
+[00:01:30] resonated.
+[00:01:31] So, with that,
+[00:01:33] let's touch on this first topic, which
+[00:01:35] is the shift. So, the bottlenecks have
+[00:01:37] moved. And you notice there's that
+[00:01:39] little subtitle there of what served you
+[00:01:41] prior may no longer. This is one of my
+[00:01:43] favorite sayings. Like, actually, I
+[00:01:45] think this is the muscle that has really
+[00:01:47] helped me weather at Anthropic, but also
+[00:01:49] before at the other companies. Always
+[00:01:51] being of that growth mindset. Like, you
+[00:01:53] know, from all the talks this morning,
+[00:01:54] you see our rate of change is just
+[00:01:57] increasing. And so I found it's always
+[00:01:59] helpful to look at what are either team
+[00:02:02] norms that you've set up for your team
+[00:02:03] or team processes and always ask
+[00:02:05] yourself, is it still serving its
+[00:02:07] purpose?
+[00:02:10] So for years, many years, engineering
+[00:02:13] bandwidth was expensive thing. And when
+[00:02:15] you think about how do we all do
+[00:02:16] software engineering, everything was
+[00:02:18] around kind of like protecting this
+[00:02:20] resource, right? Like we want to do a
+[00:02:22] lot of planning cuz we want to make sure
+[00:02:24] when we're building that we have high
+[00:02:25] confidence that we're building the right
+[00:02:26] thing or we want to do reviews. Like
+[00:02:29] there's a lot of action around when
+[00:02:31] engineering bandwidth was a limiting
+[00:02:33] factor.
+[00:02:34] And maybe I'll pause there. Like when
+[00:02:36] you think about our industry, this is
+[00:02:37] not the first time that the bottleneck
+[00:02:39] has shifted. Come I'll I'll take you all
+[00:02:41] back in a time machine with me. We'll go
+[00:02:43] all the way back to the early 2000s.
+[00:02:47] And if you all remember, so back then I
+[00:02:49] had just joined Microsoft. I was working
+[00:02:51] on Visual Studio. There was no such
+[00:02:53] thing as cloud. It sounds crazy now,
+[00:02:55] right? Like now cloud is so ubiquitous.
+[00:02:57] But back then there was no cloud and I
+[00:02:59] remembered how we built Visual Studio
+[00:03:02] was this one server room and everybody
+[00:03:04] had to be on call for a week and then
+[00:03:06] you'd just go into this room and I
+[00:03:08] remember the whole build process. It was
+[00:03:10] a queue. We can only merge six PR's at a
+[00:03:13] time and anytime, you know, one of the
+[00:03:15] tests would fail, you have to debug
+[00:03:16] which of those PR's caused that failure.
+[00:03:19] So back then, that was actually a big
+[00:03:21] bottleneck. And then now with cloud and
+[00:03:23] with continuous build, that bottleneck
+[00:03:25] has also shifted. So this is just
+[00:03:27] another shift for us to think about of
+[00:03:29] when coding is no longer the bottleneck,
+[00:03:31] what changes?
+[00:03:34] And so on the cloud code team, coding is
+[00:03:37] rarely the slow part anymore.
+[00:03:39] And so like that's why all the upstream
+[00:03:41] and all the downstream kind of like
+[00:03:43] processes, we felt like we've had to
+[00:03:45] change a little bit.
+[00:03:47] So as an example, what were some of the
+[00:03:49] old bottlenecks, right? Like writing
+[00:03:52] code, writing tests, refactoring. In
+[00:03:55] fact, I'll share a story with you all.
+[00:03:56] When I first joined Cloud Code, I wanted
+[00:03:58] to onboard and fix some bugs, and I
+[00:04:00] thought, "You know what I'm going to
+[00:04:02] try? Test-driven development." I
+[00:04:05] remember that was a really big thing a
+[00:04:07] while back. You know, the idea is write
+[00:04:08] the test first, make sure it fails, then
+[00:04:11] do the change, then now you already have
+[00:04:13] a test. But, it was kind of like eating
+[00:04:15] broccoli, you know, like even though I
+[00:04:17] actually really do love broccoli, but I
+[00:04:19] use it as an example. Uh but, I remember
+[00:04:22] you It feels like eating broccoli to
+[00:04:23] write the test first cuz it's not always
+[00:04:25] the most enjoyable part of the process.
+[00:04:27] And I remember always itching to build a
+[00:04:29] product and get to, you know, playing
+[00:04:30] around with it. And so, now with Claude,
+[00:04:33] I remember the first bug. I'm like, "You
+[00:04:34] know what? I want to try test-driven
+[00:04:36] development again. Let's write the test,
+[00:04:38] but first it will fail. Let's verify it
+[00:04:40] fails cuz that's how I could verify the
+[00:04:41] test is actually testing something." And
+[00:04:43] then we we, you know, like I remembered
+[00:04:45] like making the bug fix, and then we
+[00:04:47] already had a test. And I remember that
+[00:04:48] first experience, test-driven
+[00:04:50] development was actually so much more
+[00:04:52] fun and so much more pleasurable. It
+[00:04:54] kind of took the tax out of test-driven
+[00:04:56] development. So, that was a big aha for
+[00:04:58] me. Refactoring is another fun topic.
+[00:05:01] Like, I don't know if you all felt this
+[00:05:03] before, but, you know, I've been on a
+[00:05:05] teams before where we have to either do
+[00:05:07] like some big refactoring or some
+[00:05:09] software architecture cleanup. And it's
+[00:05:11] always a debate of when would we find
+[00:05:13] time to do this work, this work that we
+[00:05:15] know is so important, but it always has
+[00:05:17] to come off at the cost of trading, you
+[00:05:19] know, time to build product. So, again,
+[00:05:21] thanks for the models, and with Claude,
+[00:05:22] refactoring is also no longer a
+[00:05:24] bottleneck. So, now when those shifts
+[00:05:26] happen, what am I starting to see that
+[00:05:28] as the new bottlenecks? Uh verification.
+[00:05:32] That's a big one. A lot of it's because
+[00:05:34] the bandwidth has just increased so
+[00:05:35] much. We have to pay even more attention
+[00:05:38] to is it correct? And I'll talk about
+[00:05:40] this in a little bit, but also when
+[00:05:42] roles are blurring and more people are,
+[00:05:44] you know, checking in changes, we also
+[00:05:45] want to make sure everybody feels
+[00:05:47] confident that their changes are
+[00:05:49] correct.
+[00:05:50] Who reviews? That's a really popular
+[00:05:52] topic. And also, how is it maintained?
+[00:05:55] And this one is interesting because
+[00:05:56] again, the throughput is now so much
+[00:05:59] more. Also, have to think about, you
+[00:06:01] know, the cost of maintenance as well.
+[00:06:05] So, these were some of the old processes
+[00:06:07] that we felt quietly stopped working.
+[00:06:10] And I love that phrase quietly stops
+[00:06:12] working cuz actually, if I step back,
+[00:06:14] anytime, you know, hopefully when
+[00:06:15] somebody puts a process in place, it's
+[00:06:17] to solve a problem. But very often, we
+[00:06:20] forget to audit to go, "Wait, are those
+[00:06:22] processes still required?" Or is it
+[00:06:24] still serving its purpose? So, for
+[00:06:26] example, what were some of the things
+[00:06:28] that we had to change? Planning norms.
+[00:06:30] When coding is no longer, you know, the
+[00:06:32] the the bottleneck and and not a like
+[00:06:35] and you have like much more coding
+[00:06:36] bandwidth, how did we rethink through
+[00:06:38] planning? Uh code ownership is also
+[00:06:41] another interesting question. Almost all
+[00:06:43] the cloud code commits now are also, you
+[00:06:45] know, co-authored by Claude. I don't
+[00:06:47] think I've in the last few months ever
+[00:06:49] saw a commit that wasn't. A code review
+[00:06:51] is a good one like that's a lot of
+[00:06:52] questions I get a lot as well.
+[00:06:55] Also, team makeup. Roles are blurring
+[00:06:57] and what are the skill sets that we're
+[00:06:59] thinking, "Hey, you know what? These are
+[00:07:01] actually skill sets we're kind of like
+[00:07:02] doubling down into." And also, knowledge
+[00:07:04] sharing. What happens when maybe
+[00:07:07] documentation is no longer your source
+[00:07:09] of truth?
+[00:07:10] So, given some of those shifts, these
+[00:07:12] are some of the team norms that we had
+[00:07:14] to rewrite.
+[00:07:17] We talked about code review. And
+[00:07:19] actually, Cat this morning in the talk
+[00:07:21] really talked about cloud code review as
+[00:07:22] well. That was a really like that's how
+[00:07:25] an amazing tool for us to make sure
+[00:07:27] we're also doing the right thing.
+[00:07:29] Onboarding has also changed. I'll share
+[00:07:31] with you all my onboarding story.
+[00:07:33] Planning, I've talked about this already
+[00:07:35] of when coding is no longer bottleneck,
+[00:07:37] how does that shift our planning?
+[00:07:39] Hiring and also, org shape. Org shape is
+[00:07:42] a fun one like, you know, we really want
+[00:07:44] to keep everybody more agile and flatter
+[00:07:46] orgs, but every manager on Claude code
+[00:07:48] actually start as an IC first.
+[00:07:52] So, with that, how have our planning and
+[00:07:54] technical debates changed?
+[00:07:57] So, in technical debate code wins. You
+[00:07:59] know, it's like building is cheap,
+[00:08:01] arguing is expensive.
+[00:08:03] I'll actually share with you all like I
+[00:08:04] remembered, you know, as I was
+[00:08:06] onboarding I also wanted to do some code
+[00:08:08] refactoring. I was kind of like, "Hey,
+[00:08:09] what's some refactoring that we think is
+[00:08:11] good to do but we haven't yet done?" And
+[00:08:13] I remembered me and Boris had a couple
+[00:08:15] of debates of approach. And in the old
+[00:08:17] days, I remember and I almost did this.
+[00:08:19] I almost said, "Hey Boris, let's just go
+[00:08:21] to this meeting room and go to
+[00:08:22] whiteboard and whiteboard it out."
+[00:08:23] Almost did it and I'm like, "Wait, if
+[00:08:26] if, you know, with thanks to Claude, I
+[00:08:28] can actually generate." I remember
+[00:08:29] generating three different versions of
+[00:08:30] the PRs. And actually that's what me and
+[00:08:32] Boris used to have a really good
+[00:08:35] technical debate cuz I wanted to not
+[00:08:36] look at how the code was implemented,
+[00:08:38] but also impact to the colleagues. Uh
+[00:08:41] prototyping is another good one. So, now
+[00:08:43] like anytime we're really having idea,
+[00:08:46] go ahead and prototype and let's
+[00:08:47] actually go ahead and dogfood it and
+[00:08:50] then we'll try. I remember many years
+[00:08:52] ago also having this uh prototyping
+[00:08:54] conversation in another team I was at.
+[00:08:57] Um you know, cuz there was a debate.
+[00:08:58] There were kind of two camps. One camp
+[00:09:00] of prototyping is great. It allows you
+[00:09:02] to move quickly, to build, you know,
+[00:09:04] kind of like a wireframe skeleton and
+[00:09:05] get a feel for the product. But on the
+[00:09:07] other camp, I think there was a concern.
+[00:09:10] Well, you know, code prototyping you're
+[00:09:11] kind of doing it with speed, you're
+[00:09:12] cutting corners, and there's concern of
+[00:09:15] what happens when you show a prototype
+[00:09:16] that kind of works and then, you know,
+[00:09:18] maybe you get hung up on it, you don't
+[00:09:20] want to throw the code away, and then
+[00:09:21] you end up trying to ship that thing.
+[00:09:23] It's not built to scale.
+[00:09:25] Again, with Claude, now actually
+[00:09:26] prototyping is a great way to get
+[00:09:28] started cuz we could iterate and learn.
+[00:09:30] And then thanks to, you know, the models
+[00:09:32] help, we can also then actually scale
+[00:09:33] out a prototype to production a lot
+[00:09:36] faster.
+[00:09:39] So, what's one thing we reduced on the
+[00:09:41] Claude Code team? It's you know, I might
+[00:09:43] have been on teams before maybe y'all as
+[00:09:45] well like design docs like really
+[00:09:47] in-depth planning and design docs. Most
+[00:09:50] of our discussions actually happen in
+[00:09:52] PRs or prototypes. And again, that's
+[00:09:54] just because the engineering bandwidth,
+[00:09:56] you know, is is now increased and coding
+[00:09:58] is no longer a bottleneck. Uh what do we
+[00:10:01] really want to double down on?
+[00:10:02] Verification. And this is something that
+[00:10:04] I want to make sure, you know, me and
+[00:10:06] our team keeps keeps doing better as
+[00:10:07] well because now with all the bandwidth
+[00:10:10] is even more important to how do you
+[00:10:12] verify quality? And I call this like,
+[00:10:15] you know, like shift left. So, for
+[00:10:17] example, what's better than you running
+[00:10:18] it really sucks for me when I hear from
+[00:10:20] our customers and developers and you all
+[00:10:22] run into a code. I'm always like, "Ah, I
+[00:10:24] wish we caught it first." But you know
+[00:10:26] what's actually better than me running
+[00:10:27] into the bug first? Us having automation
+[00:10:29] in place actually catch it closer to the
+[00:10:31] source. So, that's like that's something
+[00:10:33] that we're really constantly looking at
+[00:10:34] as well of how to make sure we keep
+[00:10:36] shifting left and automating more.
+[00:10:40] Who made this change? This used to be a
+[00:10:42] question that a lot of folks would ask
+[00:10:44] of, "Hey, who who who was the last
+[00:10:46] person that touched this or who's a code
+[00:10:48] owner?"
+[00:10:49] And now I encourage you all like if you
+[00:10:51] find yourself asking that question to
+[00:10:53] get to the root of the question. Like
+[00:10:55] what are you trying to answer? Is it Are
+[00:10:57] you looking for someone that caused a
+[00:10:58] regression? Are you looking for someone
+[00:11:00] to answer a question? Are you looking to
+[00:11:02] gain context? And is there a way that
+[00:11:05] Claude could actually help you with
+[00:11:06] that? Uh Cat actually talked about
+[00:11:08] routines as well like earlier today.
+[00:11:11] That's one of the routines I have set up
+[00:11:12] like automatically, you know, in the
+[00:11:14] morning I like over my morning cup of
+[00:11:15] coffee I like to review all the feedback
+[00:11:18] in our various feedback channels. So, I
+[00:11:19] have a routine that will go through to
+[00:11:21] kind of amalgamate all the feedback for
+[00:11:23] me and help me to identify themes.
+[00:11:27] How do you keep up with code reviews?
+[00:11:29] Before we actually shipped Claude Code
+[00:11:31] code review, this was a question that I
+[00:11:32] would get all the time and I can share
+[00:11:34] that answer with you all. Like
+[00:11:36] definitely Claude code code review is
+[00:11:38] one one tool that has really helped us
+[00:11:40] to make sure we keep up with the coding
+[00:11:42] bandwidth. And so where Claude is really
+[00:11:44] good, right? Like the style and lint,
+[00:11:46] obvious bugs, um anytime that you
+[00:11:49] actually have like like if if you there
+[00:11:51] is a spec, I encourage you to actually
+[00:11:53] check the spec into your code base cuz
+[00:11:55] Claude is very good about verifying
+[00:11:57] against spec drift. But the still really
+[00:11:59] important to still have a human in the
+[00:12:02] loop. So where do we find even in code
+[00:12:04] reviews is really important for humans
+[00:12:05] still? Legal reviews, anything that is
+[00:12:08] actually about risk tolerance. So
+[00:12:09] especially when you look at trust
+[00:12:11] boundaries, it's all about that trust
+[00:12:13] but verify and where humans bring a lot
+[00:12:15] of the needed expertise.
+[00:12:17] Product sense and taste is another fun
+[00:12:19] one. So last uh December, I wanted to
+[00:12:22] update Claude in our CLI to, you know,
+[00:12:25] give Claude a little holiday theme and I
+[00:12:27] was ambitious. I wanted to turn Claude
+[00:12:29] into a snowman. I you know, like I I
+[00:12:32] coded up an example and I asked her
+[00:12:33] designer, "Hey, can you go ahead and
+[00:12:34] review this for me?" And she gave me
+[00:12:36] such excellent feedback of no, this
+[00:12:39] looks nothing like a snowman. You you
+[00:12:41] you create you turned Claude into Mr.
+[00:12:43] Peanut. I don't know if Mr. Peanut's an
+[00:12:45] American brand and and in the US we have
+[00:12:48] this jar of peanuts and you know, their
+[00:12:50] their mascot is this little peanut
+[00:12:52] character and I was like, "Holy crap,
+[00:12:54] that's totally right. I I thought it was
+[00:12:55] a snowman but you're right, it's a
+[00:12:56] peanut." And so that's where like humans
+[00:12:59] also like with that product sense is
+[00:13:01] really important to keep that expertise
+[00:13:03] in the loop as well.
+[00:13:06] Now, what should my team makeup be cuz
+[00:13:09] roles are blurring and Claude is
+[00:13:11] augmenting.
+[00:13:12] And so when it comes to engineering,
+[00:13:14] these are the two profiles that I now
+[00:13:16] really like focus on. One is creative
+[00:13:19] builders with product sense
+[00:13:21] um and then another is deep system
+[00:13:23] expertise. And so this is definitely
+[00:13:26] like, you know, the hard part. Want to
+[00:13:27] make sure that we can still have that
+[00:13:29] trust but verify. Maybe I'll talk a
+[00:13:31] little bit about product sense. When I
+[00:13:33] gave this talk in San Francisco,
+[00:13:34] afterwards a lot of engineers came up to
+[00:13:36] ask me a question of how do I build this
+[00:13:38] product sense muscle? So, I figure I
+[00:13:40] will share with you all of what I have
+[00:13:42] found helpful and it's helpful for me
+[00:13:43] and maybe it will resonate with you all.
+[00:13:45] Like, for me it's this muscle that you
+[00:13:47] build with it first starts with dog
+[00:13:49] fooding. And especially for managers,
+[00:13:52] actually like making sure you're
+[00:13:53] spending time using the product that
+[00:13:55] you're building and your team is
+[00:13:56] building. In fact, most of the time
+[00:13:58] anytime I join a new team, like that's
+[00:14:00] one of the first things I do. I'm like
+[00:14:01] dog fooding the product to make sure I
+[00:14:03] understand it. Cuz this way you really
+[00:14:04] start feeling your product in your bones
+[00:14:07] and you remember you always ask
+[00:14:08] yourself, "Wait, when I was building
+[00:14:09] this product, what problem were we
+[00:14:11] trying to solve? Like, what experience
+[00:14:13] was I trying to enable for our users?"
+[00:14:16] So, with that in mind, like dog fooding
+[00:14:17] is a really good way, especially for
+[00:14:19] managers who before Cloud, you may not
+[00:14:21] have time to be in the code base
+[00:14:22] anymore. Um but yeah, like actually
+[00:14:25] anytime I join a team and I would dog
+[00:14:26] food, a lot of team members would always
+[00:14:28] come up to me and say, "It's so awesome
+[00:14:30] to see you using our product cuz you
+[00:14:31] really care." Cuz that's a way for you
+[00:14:32] to experience the work as well.
+[00:14:34] So, for me product sense comes from a
+[00:14:36] lot of dog fooding and then also like
+[00:14:38] iterating, shipping and then going out
+[00:14:40] to speak to customers. One of my
+[00:14:42] personal passion projects is working
+[00:14:44] with small businesses. I love small
+[00:14:46] businesses. I feel small businesses are
+[00:14:48] the lifeblood that forms our community.
+[00:14:50] And uh we actually just announced Cloud
+[00:14:52] for small business, which is a product
+[00:14:55] I'm so excited at um but I have a lot of
+[00:14:57] friends that run restaurants. They and
+[00:14:58] they work incredibly hard. And so, I met
+[00:15:01] with a lot of them to onboard them onto
+[00:15:03] Cowork cuz I wanted to see how, you
+[00:15:05] know, like outside of enterprise with
+[00:15:06] small businesses, how do our users
+[00:15:08] actually onboard? And I got such
+[00:15:10] valuable feedback. It's actually really
+[00:15:12] humbling to see where in the onboarding
+[00:15:15] flow we there was so many things that we
+[00:15:16] could have been doing better.
+[00:15:18] So, I really encourage you all to to dog
+[00:15:22] food your product so then you really I
+[00:15:23] call it like feeling it in your bones
+[00:15:25] cuz really get keeps you um giving you a
+[00:15:27] sense of what your product is doing. If
+[00:15:29] not, after a while, you might find
+[00:15:31] yourself making product decisions that's
+[00:15:33] all just based on either metrics or
+[00:15:35] dashboards or PowerPoints. So,
+[00:15:37] definitely dog food, dog food, dog food.
+[00:15:40] Or as we call it in Anthropic, ant food.
+[00:15:44] So, filling cross-functional gaps with
+[00:15:46] Claude. This is interesting cuz I
+[00:15:47] actually see this for all roles. So, for
+[00:15:49] example, designers on Claude code team
+[00:15:52] previously, you know, anytime we wanted
+[00:15:54] to make polish or UX fixes, designers
+[00:15:57] would go ahead and create that red line
+[00:15:59] and then hand it off to engineering. And
+[00:16:01] it's always a wait, you know, for cuz
+[00:16:02] engineering is always about I have to
+[00:16:04] build this product, I have to fix this
+[00:16:06] bug, when will I time to actually do
+[00:16:07] this polish. Designers on Claude code
+[00:16:10] actually, you know, use Claude to make a
+[00:16:12] lot of those polish fixes. So, then it
+[00:16:14] really closes that iterative loop a lot
+[00:16:16] faster. And again, this goes into why
+[00:16:18] it's so important to do the
+[00:16:20] verification.
+[00:16:21] On the flip side, for me, like for
+[00:16:23] example, one time I was fixing a bug and
+[00:16:24] I needed a little bit of content help. I
+[00:16:27] I don't know about you all, but as an
+[00:16:29] engineer, I tend to be very verbose. And
+[00:16:31] when I'm like, you know, if you ask me
+[00:16:32] to write a very short sentence to
+[00:16:34] describe what something's supposed to
+[00:16:35] do, I tend to go too much into the
+[00:16:37] weeds. But Claude was a really great
+[00:16:39] content design partner for me.
+[00:16:42] And so, that's what I found really
+[00:16:43] interesting on Claude code team. For all
+[00:16:45] roles, Claude is actually augmenting uh
+[00:16:48] all the areas where you may not be as
+[00:16:49] strong.
+[00:16:52] So, this was the manager slide that I
+[00:16:54] was like, "Oh, this was, you know, maybe
+[00:16:56] a good spicy topic." But when I first
+[00:16:58] joined Claude code, this was one of the
+[00:16:59] first things I changed. I'm like, "Hey,
+[00:17:01] I I was working with the recruiting team
+[00:17:02] to go because I believe so much in dog
+[00:17:05] fooding. And on Claude code, we're using
+[00:17:07] Claude to build Claude, we're using
+[00:17:08] Claude code to build Claude code. And uh
+[00:17:11] so, every manager started as an IC
+[00:17:12] first. I actually felt this worked
+[00:17:14] really well cuz it enabled managers
+[00:17:16] before you have to worry about the
+[00:17:17] responsibility of supporting people
+[00:17:20] actually having time to, you know, like
+[00:17:22] roll up your sleeves and get into the
+[00:17:23] code base and learn what it's like to be
+[00:17:24] an engineer on the team.
+[00:17:26] Um maybe I'll also, you know, like touch
+[00:17:29] on this is also a great time that if
+[00:17:31] you're a manager to actually get some
+[00:17:33] maker hours back and actually get back
+[00:17:35] into the code base cuz the onboarding is
+[00:17:37] a lot less daunting than it used to be.
+[00:17:40] Um actually even before Anthropic, there
+[00:17:42] were different roles I've had where I've
+[00:17:43] switched between manager and IC. And I
+[00:17:45] think every time I switched to an IC, it
+[00:17:47] really helped me build up the
+[00:17:48] engineering toolbox. But that onboarding
+[00:17:51] was always a little like, you know, that
+[00:17:52] slight hesitation cuz it could be
+[00:17:54] daunting if you haven't done it in a
+[00:17:56] while. But like speaking for myself, I
+[00:17:58] remember when I onboarded to Claude, it
+[00:18:00] was uh it was such a different
+[00:18:02] experience. And actually, that's what
+[00:18:04] I'll go into next.
+[00:18:06] So in terms of knowledge sharing, what
+[00:18:08] becomes a new source of truth? So when I
+[00:18:10] was onboarding to Claude, the code is
+[00:18:12] our source of truth. And so I again,
+[00:18:14] like in the old days, anytime I joined a
+[00:18:16] new team, I'd meet with all the
+[00:18:17] engineers to I still do meet with all
+[00:18:19] the engineers on the team, but now we
+[00:18:21] talk a lot more about what's on top of
+[00:18:23] minds and
+[00:18:24] because before I would always so like do
+[00:18:26] these tech deep dives.
+[00:18:28] And now I actually did my first, you
+[00:18:30] know, like tech deep dive just with
+[00:18:32] Claude like because Claude has is really
+[00:18:34] good at answering all these questions I
+[00:18:35] have. So even when I was doing that
+[00:18:36] first bug fix, I remember asking Claude,
+[00:18:38] "Hey, before I dive into this bug fix,
+[00:18:40] can you actually teach me a little bit
+[00:18:41] about the surface area and also what are
+[00:18:44] what about all the areas around that bug
+[00:18:46] as well?"
+[00:18:49] And so for Claude code and co-work team,
+[00:18:52] our code is a source of truth. I would
+[00:18:54] encourage all of your teams like if
+[00:18:55] whatever is your source of truth, where
+[00:18:57] whether it's a spec, you might actually
+[00:18:59] change that into a skill that you check
+[00:19:01] into the code base. Like whatever you
+[00:19:03] can make sure becomes your source of
+[00:19:04] truth, keep it in the code base cuz this
+[00:19:06] way you can actually keep it up to date.
+[00:19:08] Cuz that's the other thing when coding,
+[00:19:10] you know, bandwidth is so much, you
+[00:19:12] know, like so much more. It also makes
+[00:19:14] it easier for any documentation that
+[00:19:16] also doesn't isn't part of the update
+[00:19:18] loop to get out of date.
+[00:19:21] So, how did we roll out all these
+[00:19:23] changes on the Cloud Code team? There
+[00:19:25] were things that we it was really
+[00:19:26] important that we aligned as a team. And
+[00:19:29] then there's also I want to make sure we
+[00:19:31] also give space for bottoms up because
+[00:19:33] each team is focused on different things
+[00:19:35] and there might be, you know, like
+[00:19:36] different tool chains or anything that
+[00:19:38] resonates more with each team.
+[00:19:40] So, what did we align with kind of like
+[00:19:43] the teams as a must do? These are some
+[00:19:44] of our Cloud Code team principles and
+[00:19:47] what we call forcing function. And this
+[00:19:49] slide is out of date. Like I shouldn't
+[00:19:50] put every engineer, it's every teammate
+[00:19:52] uses Cloud Code. And also co-work,
+[00:19:54] actually. So, like us using our product
+[00:19:56] day and day has been really important.
+[00:19:58] Cloudify everything we can. And so, like
+[00:20:01] anytime we have a question of, you know,
+[00:20:03] what? Yeah, I'm doing this. What's
+[00:20:04] better than me doing it? Can Cloud do it
+[00:20:06] for me? Cuz then it actually frees up
+[00:20:08] more of my bandwidth for other problems
+[00:20:10] to solve.
+[00:20:11] And my last one is a explicit permission
+[00:20:14] to kill old processes. Again, it's the
+[00:20:17] e- even our team principles and even
+[00:20:19] processes as we put on, even after a few
+[00:20:21] months when we notice, "Hey, is this
+[00:20:22] really serving its intended purpose?" We
+[00:20:24] really always give ourselves permission
+[00:20:26] to always critique and make sure to
+[00:20:28] always revisit.
+[00:20:30] And the bottoms up, there's a lot of
+[00:20:32] freedom for, you know, like, you know,
+[00:20:34] team or pods to adapt. So, for example,
+[00:20:36] how Cloud shows up in team triage or any
+[00:20:39] teams like planning rituals or stand-ups
+[00:20:42] or which workflows get cloudified first,
+[00:20:44] that is a a lot of bottoms up. So, I
+[00:20:46] found that this balance of make sure you
+[00:20:48] align with the team of in terms of like
+[00:20:51] what's important in terms of team
+[00:20:52] culture and also update those as you go,
+[00:20:54] but then leave some room for each pod to
+[00:20:56] adapt.
+[00:20:59] So, if I zoom out, what were the three
+[00:21:01] things that I prioritize for Cloud Code
+[00:21:03] and co-work that I think has worked
+[00:21:05] really well? A number one, it was, you
+[00:21:07] know, like keeping the org as agile and
+[00:21:09] as flat as possible, having managers
+[00:21:11] also, you know, like support parts of
+[00:21:13] work, but also really get into the code
+[00:21:15] base and be directly responsible for
+[00:21:17] parts of the product as well.
+[00:21:20] Uh number two, that's our Claude-ify.
+[00:21:22] So, if Claude can do it, Claude should.
+[00:21:24] So, that's always a question we're
+[00:21:25] asking. And And maybe that's the other
+[00:21:27] interesting, too, like um you know, this
+[00:21:29] morning you heard the talks about the
+[00:21:30] models. The models are improving at an
+[00:21:32] amazing pace. So, sometimes we might
+[00:21:35] find even if Claude wasn't good at doing
+[00:21:36] something two or three months ago, now
+[00:21:39] with like a model update, it's actually
+[00:21:40] gone really good. And this is why again,
+[00:21:42] it always goes back to that whole like
+[00:21:45] always revisit and always have the
+[00:21:46] growth mindset cuz the models are also
+[00:21:48] improving really fast.
+[00:21:51] And again, you know, people don't delete
+[00:21:53] processes on their own, they tend to
+[00:21:55] pile up. I remember I was on a team
+[00:21:57] where we had so many different SLAs.
+[00:21:59] There was an SLA for P0 bugs, an SLA for
+[00:22:02] incident response. And after a while,
+[00:22:04] I'm like, with all these SLAs, I need a
+[00:22:05] stacked rank list to actually have cuz
+[00:22:08] even the engineers are coming to me
+[00:22:09] going, "There's only 24 hours in a day,
+[00:22:11] like which SLA am I supposed to do?" And
+[00:22:14] but that's why it's always so important
+[00:22:15] to audit. I remember that time, I'm
+[00:22:16] like, "You know what? We really should
+[00:22:17] be auditing. Are all these SLAs still
+[00:22:20] really necessary?"
+[00:22:24] So, now for the proof. What are some
+[00:22:26] signals that we're seeing of like is it
+[00:22:28] actually working? So, these are some
+[00:22:30] numbers that I find as helpful that I
+[00:22:32] wanted to share with you all.
+[00:22:34] And so, these were some of the shifts
+[00:22:36] we've seen as we've been kind of
+[00:22:38] improving our workflows. Onboarding
+[00:22:40] ramp-up time goes down. Like I think
+[00:22:42] that's actually a really good signal of
+[00:22:45] like we used to have this thing of like
+[00:22:46] what's the span of time it takes for the
+[00:22:48] engineer to land their first PR. The
+[00:22:50] onboarding ramp-up time and also like
+[00:22:52] costs to other team members we noticed
+[00:22:54] keeps going down. Like I I I even like a
+[00:22:56] lot of times sometimes when a person
+[00:22:58] joins a team, they'll ask me a question,
+[00:22:59] I'm like, "That's a great question. We
+[00:23:01] should ask Claude. Like that's how we
+[00:23:03] kind of
+[00:23:04] like Claude has really helped us to
+[00:23:06] onboard and answer a lot of questions.
+[00:23:07] Which is also why for the managers, I
+[00:23:10] it's why it's fun for me to actually get
+[00:23:11] back to the codebase cuz in the old days
+[00:23:13] I would actually feel bad cuz I feel
+[00:23:15] like, oh, I need to learn this area. I'm
+[00:23:17] going to ask an engineer and take time
+[00:23:18] away from their day cuz they're all so
+[00:23:20] busy. But now thanks to Claude, I don't
+[00:23:22] feel like I'm wasting anybody's time.
+[00:23:24] The PR cycle time should also go down,
+[00:23:26] but this one's interesting. I'm going to
+[00:23:28] say it's important for you to not just
+[00:23:30] look at the end-to-end, but actually
+[00:23:31] break it out into like what are all the
+[00:23:33] different funnels in terms of a PR. Cuz
+[00:23:35] if your PR cycle time isn't going down,
+[00:23:37] it might not mean you're not adopting
+[00:23:39] AI. It could be other parts of your
+[00:23:42] queue is actually getting jammed up
+[00:23:44] because of all the throughput. So for
+[00:23:45] example, are your build and CI systems
+[00:23:48] keeping up? So for PR cycle time, I
+[00:23:50] think it's actually really healthy to
+[00:23:52] break it down into all the different
+[00:23:53] chunks and seeing which of those you
+[00:23:55] might be able to improve or automate.
+[00:23:58] And lastly, Claude-assisted commits go
+[00:24:00] up. As I mentioned, I don't think I've
+[00:24:02] ever like in the last few months I've
+[00:24:04] not seen a commit that wasn't you know,
+[00:24:06] like assisted by Claude. But if I step
+[00:24:09] out, like I would say what's even more
+[00:24:11] important than just throughput is
+[00:24:13] whatever, you know, you and your team
+[00:24:14] are trying to solve, whatever the
+[00:24:15] product or problem. Find some way to
+[00:24:18] measure that cuz outside of just
+[00:24:20] throughput, hopefully we're also making
+[00:24:22] meaningful change to make the product
+[00:24:24] better or improve quality.
+[00:24:28] Okay, so now it's time for me to maybe
+[00:24:31] share like a little takeaway home
+[00:24:32] exercise that might be fun for you to
+[00:24:34] take back and go have discussions with
+[00:24:36] your team. But first I want to be really
+[00:24:38] transparent. I still have questions as
+[00:24:40] well. So I'll share with some of those
+[00:24:42] that we're still working out through the
+[00:24:43] Claude code team.
+[00:24:45] So for example, do you still need
+[00:24:47] separate iOS and Android orgs? Like that
+[00:24:49] was kind of like more of the traditional
+[00:24:51] org approach if you would usually have
+[00:24:52] like one for iOS, one for Android. But
+[00:24:55] now with Claude and enabling our
+[00:24:57] engineers to go flex across different
+[00:24:58] mobile platforms, we're thinking, "Hey,
+[00:25:01] do we really still need you know, two
+[00:25:03] separate mobile teams?"
+[00:25:05] Uh how far do you push fully automated
+[00:25:07] reviews? We always want to make sure
+[00:25:08] we're striking that right balance
+[00:25:10] between kind of speed and fast enough
+[00:25:12] and make sure we're not losing something
+[00:25:13] important.
+[00:25:15] And roles are blurring. And how do we
+[00:25:17] make sure everybody is productive? And
+[00:25:19] that's why we're we're right now looking
+[00:25:21] through verification is a big one. So
+[00:25:23] that hey, as we're going through, make
+[00:25:25] sure everybody that makes a change has
+[00:25:26] confidence in their change. But also,
+[00:25:28] what are all the different parts of the
+[00:25:30] workflow too? Like I'm working with my
+[00:25:31] designers. We actually just, you know,
+[00:25:33] announced Claude design. Also thinking
+[00:25:35] through how can we make sure that we're
+[00:25:37] also improving the workflows of all the
+[00:25:39] functions on the team.
+[00:25:42] So with that, this is what I would love
+[00:25:44] to leave you all with. Pick your
+[00:25:46] noisiest workflow. Or it could be just
+[00:25:48] some workflow or team meeting that you
+[00:25:49] don't particularly enjoy or is really
+[00:25:52] high tax on the team. Like I remember it
+[00:25:54] I was on another team where we would
+[00:25:56] have this really expensive weekly
+[00:25:57] meeting and I noticed everybody's on
+[00:25:59] their laptop. And you know, except for
+[00:26:01] when they have to pop their head up to
+[00:26:02] give status and then they go back to
+[00:26:04] their laptop. I'm like, this is when you
+[00:26:06] count, you know, like how many people's
+[00:26:07] in this room, this is a very expensive
+[00:26:09] room. So always like kind of like pick a
+[00:26:11] workflow and always ask yourself, "Is it
+[00:26:13] still serving its purpose?" Or if it's
+[00:26:15] like really expensive, is it something
+[00:26:17] that Claude might be able to help you
+[00:26:19] with? And kind of like do this one step
+[00:26:21] at a time.
+[00:26:25] And with that, thank you so much for
+[00:26:27] listening to my talk.
+[00:26:29] >> [applause]
+[00:26:29] >> It's been a pleasure.

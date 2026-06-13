@@ -1,0 +1,786 @@
+Title: The prompting playbook
+Video: https://www.youtube.com/watch?v=G2B0YWuJUgI
+Caption: auto (en) via tv
+================================================================================
+
+[00:00:20] Hello everyone. Um, thank you so much
+[00:00:23] for joining me this afternoon in the
+[00:00:25] breakout room. The last session today of
+[00:00:28] Code with Claude. I hope you all had a
+[00:00:30] fantastic day so far. My name is Margo
+[00:00:32] van Laar. I am an applied AI engineer at
+[00:00:35] Anthropic here in London. And this
+[00:00:38] afternoon we're going to be talking
+[00:00:40] about the prompting playbook. And
+[00:00:43] prompting is arguably one of the first
+[00:00:45] skills, if not the first skill, that we
+[00:00:48] had to learn as engineers when we first
+[00:00:50] started to work with LLMs. And even now
+[00:00:54] it continues to be one of the most
+[00:00:56] critical, um, skills to building
+[00:00:59] effective AI systems.
+[00:01:01] So, today we're going to discuss some
+[00:01:03] best practices,
+[00:01:05] um, in the context of
+[00:01:08] two practical scenarios that you're
+[00:01:09] probably encountering at work. The first
+[00:01:12] is where you have an existing prompt in
+[00:01:15] production that you've been maintaining
+[00:01:17] for some time. Um,
+[00:01:20] and possibly you're migrating it to a
+[00:01:22] new model or making a change to the
+[00:01:24] architecture. And for some reason it's
+[00:01:26] no longer working as well.
+[00:01:28] The second scenario is where we're
+[00:01:29] building an entirely new agentic use
+[00:01:31] case from the ground up. And we need to
+[00:01:33] build the prompt from zero to one.
+[00:01:36] Now,
+[00:01:38] in order to illustrate these best
+[00:01:40] practices, I don't just want to give you
+[00:01:43] a list of do's and don'ts. I want to
+[00:01:45] walk through a practical example that's
+[00:01:47] been inspired by real prompts that, um,
+[00:01:51] I've seen some of our customers work
+[00:01:53] with who are building on Claude.
+[00:01:56] So,
+[00:01:57] the prompt that we'll look at today is a
+[00:01:59] miniaturized example. The prompts that
+[00:02:02] you're working with are probably a lot
+[00:02:04] longer and more complex than the one
+[00:02:06] we'll see today. Um but it's
+[00:02:08] representative of some common problems
+[00:02:11] that you might encounter when
+[00:02:13] maintaining a prompt.
+[00:02:14] So, imagine that we have a prompt that
+[00:02:18] multiple people have been collaborating
+[00:02:20] on, contributing to. There's no clear
+[00:02:23] owner. It covers a lot of different
+[00:02:25] areas like policy, like tone, processes.
+[00:02:30] Um we have some patches
+[00:02:32] for kind of previous models that we've
+[00:02:34] migrated to all mixed together.
+[00:02:37] Um it's built up and it's complex.
+[00:02:40] And when we're migrating to a new model,
+[00:02:42] we're finding that suddenly a lot of our
+[00:02:45] test cases are no longer working as well
+[00:02:48] as we expected. So, what's actually
+[00:02:50] going on here? Well, in order to start
+[00:02:53] unpacking that question,
+[00:02:55] um we need a starting point, and that
+[00:02:56] starting point is evaluations. We need
+[00:03:00] evaluations to provide that rigor um to
+[00:03:04] understand whether a change to our
+[00:03:06] prompt is actually correlating to an
+[00:03:08] improvement in its performance.
+[00:03:11] And we have different models which have
+[00:03:14] different capabilities and different
+[00:03:16] behaviors. And when you migrate to a
+[00:03:20] different model, it could be that your
+[00:03:22] system is no longer working as well for
+[00:03:24] two reasons. First of all, if uh um
+[00:03:28] the new model might be capable, but it's
+[00:03:30] behaving differently. And therefore, we
+[00:03:32] can tune our prompting to fix that
+[00:03:34] behavior.
+[00:03:36] The second case is where actually the
+[00:03:38] model that we're changing to isn't as
+[00:03:40] capable, and no amount of prompting is
+[00:03:43] going to fix that. So, we need to have
+[00:03:45] an eval suite to act as a way of testing
+[00:03:50] that regression so that we can apply our
+[00:03:52] prompting best practices to that.
+[00:03:56] So, in the example that we're going to
+[00:03:58] be looking at today, as I said, it's
+[00:04:01] going to be a miniaturized example.
+[00:04:02] We'll have five test cases in our eval.
+[00:04:07] In reality, you'll have a lot more test
+[00:04:09] cases in your eval suite, but the key
+[00:04:12] thing here is that it's representative
+[00:04:14] of three key cases that we need to
+[00:04:16] cover.
+[00:04:17] The three key cases include having a
+[00:04:20] control case, which is a case which
+[00:04:22] should always pass. It's something that
+[00:04:25] we know the model handles well. It's
+[00:04:27] unambiguous.
+[00:04:28] The second is
+[00:04:30] edge cases, and these are cases where
+[00:04:33] we've seen the model fail before. And by
+[00:04:36] including instructions into the prompt,
+[00:04:39] we're making sure that same behavior
+[00:04:41] doesn't slip through again in the
+[00:04:43] future.
+[00:04:44] And finally and critically, we need to
+[00:04:46] make sure that the model has a good
+[00:04:48] understanding
+[00:04:50] of the extent of its capabilities, where
+[00:04:53] it should be handing off to a human, or
+[00:04:55] where actually maybe it should be
+[00:04:57] point-blank refusing to answer a
+[00:05:00] request.
+[00:05:02] So, in the example that we're going to
+[00:05:04] be looking at today, um we'll be using a
+[00:05:08] um prompt for a customer support bot for
+[00:05:11] a Telco company called Meridian Mobile.
+[00:05:14] And these are the five test cases that
+[00:05:17] we are going to be looking at today. We
+[00:05:19] have a simple control case looking at
+[00:05:24] you know, what's the data limit in the
+[00:05:25] basic plan.
+[00:05:26] Uh we're also looking at
+[00:05:29] edge cases such as its ability to do
+[00:05:32] calculations, such as calculating
+[00:05:34] proration bills. If I switch my bill
+[00:05:37] halfway through the month, uh or if I
+[00:05:39] switch my plan halfway through the
+[00:05:40] month, what will my bill look like?
+[00:05:43] We want to check that it's accurately
+[00:05:45] addressing key questions which are
+[00:05:47] covered by our policy.
+[00:05:49] Um we need to make sure that it's
+[00:05:51] escalating to a human whenever there is
+[00:05:54] um a billing error.
+[00:05:57] Um and finally, we want to make sure
+[00:05:58] that our model isn't withholding any
+[00:06:01] information that it has access to, which
+[00:06:03] it should be handing over to the
+[00:06:05] customer.
+[00:06:07] So, what we're going to do in this
+[00:06:08] process is we'll take our prompt
+[00:06:11] and we'll run it on our V0
+[00:06:14] um
+[00:06:15] of of the eval. And we'll see what our
+[00:06:18] failure modes are and systematically
+[00:06:20] target those failure modes one at a time
+[00:06:22] to see if we can resolve those failure
+[00:06:24] modes by prompting. And along the way,
+[00:06:26] we'll learn a little bit more about the
+[00:06:27] kind of antipatterns
+[00:06:29] um and traps to avoid.
+[00:06:32] And this is representative of how we
+[00:06:35] would apply these best prompting
+[00:06:37] techniques in practice, right? We are
+[00:06:39] rarely writing a prompt from scratch.
+[00:06:41] We're often debugging an existing
+[00:06:44] prompt.
+[00:06:46] And best practice before we start
+[00:06:48] targeting those failure modes
+[00:06:50] specifically is to kind of apply our
+[00:06:52] general prompting 101 best practices
+[00:06:55] applying general hygiene to clean up
+[00:06:58] before we do the eval run.
+[00:07:01] So, let's have a little look at the
+[00:07:03] example that we're going to be using.
+[00:07:05] So, what we're looking at here, first of
+[00:07:07] all, before we look at the prompt, is
+[00:07:09] just this five-coded web app that I've
+[00:07:11] made for the presentation today so that
+[00:07:13] we can look at how we're iterating on
+[00:07:14] the prompt together um in this page
+[00:07:17] here. I can easily run my evals on all
+[00:07:22] five test cases and inspect the results
+[00:07:25] in a little bit more detail.
+[00:07:27] So, before we have a look at the prompt,
+[00:07:30] I'm just going to run the evals in the
+[00:07:31] background.
+[00:07:34] This is a pretty good first pass at a
+[00:07:37] prompt. When we look at this, we've
+[00:07:40] defined the bot's role at the top.
+[00:07:44] When we scroll down, we've given it some
+[00:07:47] data.
+[00:07:49] We've given it some information on how
+[00:07:51] to reason over
+[00:07:53] the answers that it should be giving to
+[00:07:55] the customer. It's giving some critical
+[00:07:57] instructions around the tone it should
+[00:08:00] use,
+[00:08:01] how to do calculations, etc. And then
+[00:08:04] finally, we're passing in our customer
+[00:08:06] account context and our user message.
+[00:08:10] So, let's have a look at how our first
+[00:08:13] pass at the evals did. So, we can see as
+[00:08:15] we expect, our control case, all of our
+[00:08:18] test cases have passed. This is what we
+[00:08:21] expect for this unambiguous test case.
+[00:08:23] But, it's performing pretty poorly in
+[00:08:27] these other areas.
+[00:08:29] Now, before we zoom in on those specific
+[00:08:32] failure modes here, let's do some
+[00:08:34] general clean up of our prompt.
+[00:08:43] So, as we mentioned, when we look
+[00:08:44] through this prompt, there's a couple
+[00:08:47] oddities here already. So, for example,
+[00:08:50] first one is we're telling the bot that
+[00:08:52] it's
+[00:08:53] a human, which just isn't true, right?
+[00:08:56] We can see as we scroll down, there's
+[00:08:57] clearly some information here that has
+[00:08:59] been copied directly from a website. So,
+[00:09:02] the key giveaway here is a reference to
+[00:09:04] a hero image. There's even some
+[00:09:06] references to cookies
+[00:09:08] at the bottom.
+[00:09:10] So, we need to remove a bit of redundant
+[00:09:12] information.
+[00:09:15] When we look at the instructions here,
+[00:09:17] they're all grouped into one big
+[00:09:19] paragraph. So, we've got some reasoning
+[00:09:21] here, we've got instructions about the
+[00:09:22] role, some critical instructions as
+[00:09:26] well, without a real way of unpacking
+[00:09:30] policy from guidelines, from tone, etc.
+[00:09:34] So,
+[00:09:37] let me just
+[00:09:41] I preempted some changes we want to make
+[00:09:43] to this prompt, and this is just a diff
+[00:09:44] view of some of those changes. So, what
+[00:09:47] we've done is first of all added some
+[00:09:49] structure. So, you can see that we've
+[00:09:51] added XML tags here to define the role,
+[00:09:54] to separate general guidelines,
+[00:09:58] to separate policy,
+[00:10:00] to separate tone of voice,
+[00:10:03] um etc.
+[00:10:08] So, if we run that eval then
+[00:10:11] on this new updated prompt, we should
+[00:10:13] hopefully see an improvement in the
+[00:10:16] output as is.
+[00:10:27] So,
+[00:10:28] we can see just by clearing up the
+[00:10:29] prompt, we've already improved the
+[00:10:31] model's performance on this prepaid
+[00:10:34] scenario.
+[00:10:36] There's an interesting regression there
+[00:10:37] in that fifth hotspot case, and I don't
+[00:10:40] want to worry too much about that now.
+[00:10:42] There's going to be some natural level
+[00:10:44] of variance in the different runs of the
+[00:10:47] eval, and we'll come back to that case
+[00:10:49] specifically to see if we can make the
+[00:10:51] prompt consistently better in that area.
+[00:10:54] So, what did we learn from this then? Um
+[00:10:58] simply clearing up the prompt
+[00:11:00] with a better structure, with a better
+[00:11:02] role description has improved the
+[00:11:04] performance, and this is a best practice
+[00:11:06] that you can return to at any stage of
+[00:11:09] writing and maintaining your prompt,
+[00:11:10] especially as your prompts get more
+[00:11:12] detailed and more complex.
+[00:11:14] A general rule of thumb that I like to
+[00:11:16] follow is if you're reading a prompt and
+[00:11:19] you can't tell guidelines from policy
+[00:11:22] from data, most likely the model isn't
+[00:11:24] able to either.
+[00:11:27] So,
+[00:11:28] before looking at some of those cases in
+[00:11:30] more detail, there's a little bit more
+[00:11:32] general cleanup we can do. Um Um
+[00:11:34] specifically here looking at creating an
+[00:11:37] output contract. This is a key best
+[00:11:40] practice to follow if you're struggling
+[00:11:43] with your output format consistency.
+[00:11:45] Now, in this case we have a customer
+[00:11:47] support bot. We want it to reply in a
+[00:11:49] conversational tone. So, it's unlikely
+[00:11:51] to be a big issue in this case, but it's
+[00:11:54] something to bear in mind if you're
+[00:11:56] you're dealing with more complex output
+[00:11:57] structures like nested JSONs, for
+[00:12:00] example.
+[00:12:04] So, again, if we go back to the prompts
+[00:12:07] and see what fixes we can apply here.
+[00:12:10] First of all,
+[00:12:12] we've added a section
+[00:12:14] um at the end where we've defined an
+[00:12:15] output format for the model telling it
+[00:12:18] to use um XML tags to output the
+[00:12:22] response. But, the prompt is not always
+[00:12:26] the most effective way of handling
+[00:12:29] issues. We can also change things in the
+[00:12:31] harness to ensure consistency to a
+[00:12:34] higher degree.
+[00:12:35] So, what we've added here
+[00:12:37] to the API call is a stop sequence,
+[00:12:40] which is going to detect that closing
+[00:12:43] XML tag and tell the model to stop
+[00:12:46] generating a response at that point.
+[00:12:49] Now, when I run the eval here, I don't
+[00:12:52] necessarily expect to see any clear
+[00:12:55] improvement in performance,
+[00:12:57] um but it's a general best practice that
+[00:12:59] we should be following and as I said, is
+[00:13:00] something that we should remember in
+[00:13:02] particular when we have more complex
+[00:13:04] output schemas.
+[00:13:09] One thing to point out here as well, if
+[00:13:11] you do have a more complex output
+[00:13:13] schema, something like structured
+[00:13:14] outputs can be incredibly helpful to
+[00:13:16] ensure that consistency in a more
+[00:13:18] programmatic way.
+[00:13:21] Okay, so after the cleanup then, we can
+[00:13:24] see that we now have two test cases
+[00:13:27] which are consistently passing, but we
+[00:13:29] have three key failure modes, the
+[00:13:31] proration, the billing error, and the
+[00:13:33] hotspot. So,
+[00:13:35] let's isolate these one by one
+[00:13:38] uh to iterate on the prompt and and see
+[00:13:40] the effect of that.
+[00:13:50] First of all, then, the hotspot
+[00:13:51] question. So, the question is how much
+[00:13:53] hotspot data is on my unlimited plan?
+[00:13:57] What we expect the model to do is state
+[00:13:59] directly the amount of hotspot data that
+[00:14:02] the customer has.
+[00:14:04] And the reason this is a slightly
+[00:14:06] complex case is because the customer
+[00:14:08] test case that we're dealing with is on
+[00:14:10] a legacy plan. So, actually, the current
+[00:14:12] policy doesn't apply to them. So, if we
+[00:14:16] see what's going on in the actual test
+[00:14:18] case here,
+[00:14:20] the customer data which we are feeding
+[00:14:23] uh
+[00:14:23] to the prompt includes the amount of
+[00:14:26] hotspot data that customer has. They
+[00:14:28] have 5 GB, right? But, they also have a
+[00:14:30] grandfathered plan.
+[00:14:32] So, what
+[00:14:34] we're seeing uh the model is actually
+[00:14:37] telling the customer is
+[00:14:40] the general uh
+[00:14:41] the unlimited plan includes 4 GB, um but
+[00:14:45] since you're on a legacy plan, you
+[00:14:46] should go check this out yourself.
+[00:14:55] So, let's have a look at the prompt then
+[00:14:57] to see
+[00:14:58] um why the model
+[00:15:01] is deflecting this question to the
+[00:15:05] customer account URL rather than
+[00:15:06] actually giving the information itself.
+[00:15:10] Now, if we read this prompt, originally,
+[00:15:12] it said, "We changed our plans recently,
+[00:15:14] and the policy doc shows the current
+[00:15:15] plan data, and customers on
+[00:15:17] grandfathered plan have different rates.
+[00:15:19] Never give a customer the wrong plan
+[00:15:22] details. Instead, point them to the URL.
+[00:15:25] So,
+[00:15:27] it's clear that this instruction, this
+[00:15:29] latter one, never give customer the
+[00:15:31] wrong information, is the instruction
+[00:15:33] that the bot has been optimizing for.
+[00:15:36] And
+[00:15:37] you might recognize this as being very
+[00:15:40] similar to a patch that you might have
+[00:15:42] introduced in a previous model that you
+[00:15:45] were using to avoid where the model was
+[00:15:48] giving the customer the wrong
+[00:15:49] information about that plan. Now, as our
+[00:15:52] models have evolved, they've gotten much
+[00:15:55] better at instruction following. So,
+[00:15:56] it's likely that instructions like these
+[00:15:58] have now become redundant and are
+[00:16:00] actually being overfitted to.
+[00:16:06] So, what we're going to tell the model
+[00:16:07] instead is give this balanced view uh um
+[00:16:11] where it says, you know, customers on
+[00:16:13] grandfather's plan have different
+[00:16:14] allowances, but it's captured in the
+[00:16:16] customer information that's given, and
+[00:16:18] that is the accurate source of truth.
+[00:16:26] So, running the eval here, we should
+[00:16:28] hopefully be addressing uh um all of the
+[00:16:31] test cases for the hotspot case. Now, I
+[00:16:34] am running this live, so there could be
+[00:16:36] some variability here, but we see here
+[00:16:38] that now clearly all of our test cases
+[00:16:40] our are passing.
+[00:16:44] So, what did we learn from this? Well,
+[00:16:46] we worry a lot about hallucinations
+[00:16:49] or the invention of facts and numbers,
+[00:16:53] but actually the opposite can also
+[00:16:55] happen.
+[00:16:57] The model can withhold information that
+[00:16:59] it actually has access to.
+[00:17:02] Now, we saw here that this is likely a
+[00:17:03] result of a patch that we introduced for
+[00:17:05] a previous model, and a best practice
+[00:17:08] that we could follow here is actually
+[00:17:10] using version control. Where wherever we
+[00:17:13] are making defensive changes in the
+[00:17:16] prompt,
+[00:17:17] We are tracking the reason why we've
+[00:17:20] introduced these. Sometimes they're
+[00:17:22] necessary, but in the future, these kind
+[00:17:25] of changes can produce unwanted effects,
+[00:17:27] so that we can backtrack on them.
+[00:17:31] So,
+[00:17:32] the next failing test case then is this
+[00:17:34] proration calculation where a customer
+[00:17:38] asks,
+[00:17:39] "What if I upgrade to the 30 GB plan?
+[00:17:42] What will my next bill be?" And what we
+[00:17:44] want the model to do is to perform some
+[00:17:46] calculation and return exactly
+[00:17:50] um what their next bill would be, rather
+[00:17:52] than giving some sort of vague output,
+[00:17:55] which is what we can see it's doing
+[00:17:57] right now.
+[00:17:59] Uh um if we look at what the model is
+[00:18:01] returning,
+[00:18:02] it's clearly reasoning through it. It's
+[00:18:05] doing a little bit of mental math here
+[00:18:07] and there, but it's not really giving
+[00:18:08] the customer a concrete answer, and I
+[00:18:10] wouldn't rely on this as being able to
+[00:18:12] accurately give the customer a response.
+[00:18:20] So,
+[00:18:21] if we look at the prompt then to see how
+[00:18:23] we can fix this.
+[00:18:29] In the original prompt,
+[00:18:33] we can see that all the instructions
+[00:18:35] that were given to it is telling it,
+[00:18:37] "Don't ever give a customer a vague
+[00:18:39] answer.
+[00:18:41] Uh um critical. Always calculate any
+[00:18:44] prorated amounts correctly."
+[00:18:46] Now, telling the model to do a good job
+[00:18:49] isn't particularly helpful when we don't
+[00:18:52] give the model the capability to
+[00:18:54] actually do a good job.
+[00:18:56] We want to avoid the model doing mental
+[00:18:58] math. So, what we're going to introduce
+[00:19:00] is give the model a tool. So, we're
+[00:19:01] saying in the prompt, "Whenever you're
+[00:19:03] doing any calculations, please use the
+[00:19:06] calculate proration tool to do so."
+[00:19:10] In order to introduce that tool, we need
+[00:19:12] to introduce it into the API to tell the
+[00:19:16] model you have access to this tool. We
+[00:19:18] need to define
+[00:19:21] um the tool schema, which tells the
+[00:19:22] model what this tool does and when to
+[00:19:25] use it. And then finally, we need to
+[00:19:27] actually implement the tool, which is
+[00:19:29] the maths behind how it should be doing
+[00:19:32] that calculation.
+[00:19:38] So, running that eval then for another
+[00:19:40] pass,
+[00:19:48] we can see that all the test cases are
+[00:19:50] now passing. It's clearly done
+[00:19:53] uh
+[00:19:53] the maths using the tool in the
+[00:19:55] background and returning the correct
+[00:19:57] response.
+[00:20:00] So, the key lesson to take away here is
+[00:20:03] instructions don't add capability.
+[00:20:06] Telling the model it's critical to do a
+[00:20:08] calculation right doesn't make it better
+[00:20:12] at mental maths. So, the correct
+[00:20:13] approach was to give it a tool. Overall,
+[00:20:16] giving it the ability to reason over
+[00:20:19] harder problems and using tools to
+[00:20:22] actually execute them reliably.
+[00:20:25] So, now we have one final failing test
+[00:20:28] case, which we need to address, which is
+[00:20:30] the billing error here.
+[00:20:34] In this scenario, there is a billing
+[00:20:36] conflict, and what we really want is the
+[00:20:39] agent to escalate this to a human. And
+[00:20:44] what we're seeing it doing instead is
+[00:20:46] it's trying to
+[00:20:48] explain to the customer what the reason
+[00:20:51] behind it might be.
+[00:20:54] And it's trying to kind of diagnose the
+[00:20:56] problem itself.
+[00:21:04] So, in order to
+[00:21:06] fix this behavior, let's again have a
+[00:21:09] look what it was told in the prompt.
+[00:21:15] We see in the initial instructions it
+[00:21:17] was giving it says avoid escalating or
+[00:21:19] transferring to a care specialist unless
+[00:21:22] absolutely necessary as it cost
+[00:21:24] approximately $8 and accounts against
+[00:21:27] our team's fast contract resolution.
+[00:21:29] Now, this is only giving one side of the
+[00:21:32] story, right? We're telling it what the
+[00:21:34] cost is to escalating the benefit which
+[00:21:38] means it's going to overfit again to not
+[00:21:41] escalating the scenario. And second of
+[00:21:44] all, we've got this clear conflict
+[00:21:46] between what we've defined
+[00:21:49] in the eval in terms of what we want the
+[00:21:51] model to do to do this escalation versus
+[00:21:54] what we're actually telling it to do.
+[00:21:56] And the fix that's relevant here is to
+[00:21:58] give it both sides of the story by
+[00:22:00] saying it costs $8
+[00:22:03] uh um
+[00:22:04] to escalate the case, but actually if
+[00:22:07] you get this wrong
+[00:22:10] then
+[00:22:11] it's going to cost you a refund as well
+[00:22:14] as customer trust.
+[00:22:16] Again here we observed how the model
+[00:22:20] optimizes for a goal and this kind of
+[00:22:22] instruction is a common instruction to
+[00:22:24] give. It's quite similar to the one we
+[00:22:27] saw earlier where we didn't want it to
+[00:22:29] overfit to a certain type of behavior,
+[00:22:31] but it's the kind of instruction that
+[00:22:33] can be followed quite differently by
+[00:22:35] different generations of models. And
+[00:22:38] specifically as models become more
+[00:22:40] intelligent, we need to remember to
+[00:22:42] state both sides of the trade-offs
+[00:22:44] because our models are
+[00:22:46] becoming better themselves at making
+[00:22:49] those trade-offs themselves.
+[00:22:57] So,
+[00:22:59] if we just go back to our eval then and
+[00:23:02] uh um
+[00:23:03] run our final test case.
+[00:23:06] We should see that all of our evals are
+[00:23:09] now passing correctly.
+[00:23:12] So, overall, we looked at applying
+[00:23:14] general hygiene principles, how that can
+[00:23:16] provide an initial uplift to the prompt,
+[00:23:18] making sure we're removing any redundant
+[00:23:21] instructions which were initially
+[00:23:23] intended as patches for previous models
+[00:23:26] behavior, making sure we're giving it
+[00:23:28] tools to do certain tasks reliably.
+[00:23:34] Now, there's one other scenario that we
+[00:23:38] uh introduced at the start, which is one
+[00:23:39] that you might also encounter in your
+[00:23:42] work, which is where we're building a
+[00:23:44] new agent from scratch. And the example
+[00:23:47] that we'll look at here is um an agent
+[00:23:51] whose purpose it is to create a
+[00:23:53] week-long retail staff schedule based on
+[00:23:56] employee availability and other
+[00:23:58] constraints.
+[00:24:00] And when we're building
+[00:24:02] a new agent from scratch,
+[00:24:05] we need to consider not just the prompt,
+[00:24:08] but also the model that we're using and
+[00:24:10] the harness that we're using. So,
+[00:24:13] in this next example, we're going to
+[00:24:15] compare a number of approaches to
+[00:24:17] explore the impact of those three
+[00:24:19] different areas.
+[00:24:24] So, again, I've just five coded up this
+[00:24:27] web app so that we can walk through this
+[00:24:28] problem um
+[00:24:31] in this demo. Here, I've just laid out
+[00:24:33] what the problem is that we're
+[00:24:34] addressing. We have our eight employees.
+[00:24:37] Um on the right, we have this schedule
+[00:24:40] that we need to staff with the head
+[00:24:41] count. And we have our constraints that
+[00:24:45] must be satisfied in every scenario.
+[00:24:50] Now, because we have these hard rules,
+[00:24:52] rather than using an LLM judge like we
+[00:24:55] did in the previous case to do the
+[00:24:57] grading, we can actually use a just a
+[00:25:01] Python function which programmatically
+[00:25:03] checks for every schedule that's
+[00:25:05] generated, how many violations were
+[00:25:08] made.
+[00:25:13] So, to begin with,
+[00:25:15] in a
+[00:25:16] we want to start simple. We're going to
+[00:25:18] use a simple prompt. We're going to use
+[00:25:20] the bare bones that we think we'll need
+[00:25:21] with a model Sonnet 4 6 to see how it
+[00:25:24] performs and how we're going to help
+[00:25:26] climb against that.
+[00:25:28] Um so, here is our baseline prompt.
+[00:25:30] We've already applied some of that
+[00:25:32] general hygiene and those best practices
+[00:25:35] that we saw earlier on using XML tags to
+[00:25:37] structure the prompt. We've given it an
+[00:25:39] output format as well now that we're
+[00:25:41] giving a schedule. Uh we're asking it to
+[00:25:45] output a JSON which,
+[00:25:47] if we don't
+[00:25:49] give that output structure, might lead
+[00:25:51] to parsing errors uh downstream.
+[00:25:59] When we run the
+[00:26:02] simple model on a first iteration of the
+[00:26:05] evals, all cases fail. Now, just what
+[00:26:09] we're looking at here is in our test
+[00:26:11] set, we're essentially repeating
+[00:26:14] uh um
+[00:26:15] we're doing five trials here uh and
+[00:26:18] these numbers are showing how many
+[00:26:19] violations were made in each trial.
+[00:26:25] In the output, we can see that it's made
+[00:26:28] a decent attempt at reasoning through
+[00:26:31] the problem,
+[00:26:33] but
+[00:26:34] it's burning a lot of tokens uh and
+[00:26:38] clearly not checking its work uh um as
+[00:26:40] it's not getting to the right impact.
+[00:26:43] So,
+[00:26:44] let's try a larger model, uh a model
+[00:26:47] which we know is better at reasoning.
+[00:26:49] So, we're going to run it through
+[00:26:52] uh Opus 4.7 instead.
+[00:26:57] Keeping everything else the same. Now,
+[00:27:00] interestingly, whilst all test cases are
+[00:27:03] still failing, you can see that the
+[00:27:05] overall number of violations that Opus
+[00:27:08] has made has reduced significantly from
+[00:27:12] Sonnet 4.6. So,
+[00:27:15] we're possibly onto something here,
+[00:27:17] right? This isn't good enough to ship
+[00:27:20] because it's still failing, but clearly
+[00:27:22] giving it more reasoning capability is
+[00:27:24] helping drive it towards a better
+[00:27:26] result.
+[00:27:27] So, what we're going to try next is
+[00:27:30] using Opus with adaptive thinking
+[00:27:33] instead. So, it can decide for itself
+[00:27:38] how much thinking it needs how much
+[00:27:40] reasoning it needs to use to solve this
+[00:27:44] issue. So, no change to the prompt,
+[00:27:46] really just uh a change to the API here.
+[00:27:54] So, this now seems to reliably generate
+[00:27:58] compliance schedules, but it requires a
+[00:28:01] lot more tokens.
+[00:28:04] We're tripling essentially in the number
+[00:28:06] of tokens that we're using here, and
+[00:28:08] we're tripling the latency.
+[00:28:10] So, we want to try and see if we can
+[00:28:12] optimize that cost latency trade-off a
+[00:28:14] little bit more. Um
+[00:28:16] this is latency 100 seconds. Obviously,
+[00:28:19] I'm running this one async uh for the
+[00:28:22] purposes of time. Opus 4.7 hasn't
+[00:28:24] magically gotten much faster since the
+[00:28:26] last time uh you used it. Um
+[00:28:31] So,
+[00:28:33] let's see if we can optimize a little
+[00:28:35] bit more for all the token latency
+[00:28:37] trade-off.
+[00:28:39] What we haven't tried yet is using
+[00:28:41] Sonnet 4.6, so a smaller model, but with
+[00:28:43] a better prompt. We looked a lot at the
+[00:28:45] prompt optimization uh um in that last
+[00:28:48] section. So, I've added a couple details
+[00:28:51] to the prompt here. We're We're
+[00:28:54] in particular how to reason through this
+[00:28:58] problem. And most critically telling it
+[00:29:01] to check its work before outputting it.
+[00:29:10] So, when I ran that eval, we see that it
+[00:29:13] passes in two out of the five cases.
+[00:29:17] Now, the failure modes that we're seeing
+[00:29:20] is actually not violations
+[00:29:23] of
+[00:29:24] the scheduling requirements, but the
+[00:29:27] model hasn't been able to finish the
+[00:29:30] tasks within the output limit that we
+[00:29:34] set. So,
+[00:29:36] whilst we could increase the max tokens
+[00:29:39] that this model is able to use to get
+[00:29:42] all five test cases passing,
+[00:29:45] we see here that we're using even more
+[00:29:47] tokens, and this run has an even higher
+[00:29:49] latency. So, this is probably not the
+[00:29:51] route that we want to go down.
+[00:29:54] Now, as a final pass then, we want to
+[00:29:58] look at doing this a little bit more
+[00:30:01] agentically.
+[00:30:03] So, we're going to use this generate
+[00:30:05] evaluate repair loop, where essentially
+[00:30:09] the generator now creates a first draft
+[00:30:12] of the schedule. And then we have a
+[00:30:14] separate prompt,
+[00:30:16] which reports any specific violations
+[00:30:19] that it made. So, not programmatically
+[00:30:21] checking it, but checking it with an
+[00:30:23] LLM.
+[00:30:24] So, we're checking for every rule, and
+[00:30:27] we're providing evidence of every
+[00:30:28] violation.
+[00:30:30] And we then have a third
+[00:30:33] repair prompt, which
+[00:30:36] receives any violations that were made,
+[00:30:39] and tries to make targeted fixes to it.
+[00:30:43] So,
+[00:30:45] we have three very simple prompts, but
+[00:30:46] they're now running independently rather
+[00:30:49] than trying to do everything in one
+[00:30:51] large prompt.
+[00:30:57] So, we can see in this case our
+[00:31:01] a genetic approach has solved all of our
+[00:31:04] test cases
+[00:31:06] uh with
+[00:31:07] a much lower number of tokens and with a
+[00:31:10] lower latency than trying Sonnet 4 6
+[00:31:14] with a better prompt.
+[00:31:16] So, going forward, it seems like there's
+[00:31:17] two
+[00:31:19] appropriate approaches to take here.
+[00:31:21] Using Opus 4 7 with adaptive thinking or
+[00:31:24] using this a genetic loop. Now, moving
+[00:31:27] forward, we'd probably want to do a
+[00:31:29] little bit more optimization on this
+[00:31:32] loop to try and get it to be more
+[00:31:34] efficient, but there's one key benefit
+[00:31:36] as well from using this generate
+[00:31:38] evaluate repair loop. And that is that
+[00:31:41] you can put in soft requirements at
+[00:31:44] runtime. So, in the evaluation prompt,
+[00:31:47] we can say Harry doesn't like working
+[00:31:49] with Sally. So, as much as possible, try
+[00:31:52] and separate them from working together.
+[00:31:54] Or we need a third shift uh um on
+[00:31:57] Wednesday, for example. So, it means
+[00:31:59] that you're not having to make changes
+[00:32:01] to the um Python function, which is
+[00:32:04] doing the evaluation in the back end
+[00:32:05] every time to satisfy for any soft
+[00:32:08] constraints, which might depend just on
+[00:32:11] a case-by-case basis.
+[00:32:16] So, to wrap up then,
+[00:32:19] pulling all of those learnings together,
+[00:32:21] what did we see? Well, we looked at two
+[00:32:23] scenarios, two scenarios which I as an
+[00:32:25] engineer see
+[00:32:27] most in my day-to-day, which is where
+[00:32:29] we're maintaining a prompt, we're
+[00:32:31] migrating to a new model which has some
+[00:32:33] different behaviors,
+[00:32:35] and we're and building a new use case
+[00:32:37] from scratch.
+[00:32:39] We saw that general hygiene principles,
+[00:32:42] following those can immediately uplift
+[00:32:46] the performance against
+[00:32:48] a set of evals, and that we need those
+[00:32:50] evals to be able to rigorously see any
+[00:32:53] impacts of changing our prompt on the
+[00:32:56] output.
+[00:32:57] Then we saw this process of targeting
+[00:32:59] failure modes one by one,
+[00:33:02] adding structure, avoiding long ban
+[00:33:04] lists, etc. were all things that helped
+[00:33:07] push our model to the correct behavior.
+[00:33:10] And then finally with
+[00:33:13] our new agentic bot that we were
+[00:33:15] building, we saw the impact of splitting
+[00:33:20] into three separate prompt systems. So,
+[00:33:22] rather than using one
+[00:33:25] prompt to address everything, we're
+[00:33:27] actually isolating different tasks where
+[00:33:29] it's easy and repeatable to separate out
+[00:33:32] the steps that it needs to take every
+[00:33:34] time.
+[00:33:36] Thank you so much for attending this
+[00:33:38] afternoon. I hope you have a fantastic
+[00:33:40] rest of your day.

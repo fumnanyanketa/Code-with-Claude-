@@ -1,0 +1,857 @@
+Title: Build a production-ready agent with Claude Managed Agents
+Video: https://www.youtube.com/watch?v=jWWsLe4Gh5Y
+Caption: auto (en) via tv
+================================================================================
+
+[00:00:01] [music]
+[00:00:10] [music]
+[00:00:15] >> Hi everybody. [music]
+[00:00:17] How's everybody doing?
+[00:00:19] Yeah? Okay, cool. Um,
+[00:00:21] raise your hands if you've heard the
+[00:00:24] phrase Cloud Manage Agents get brought
+[00:00:26] up like 50 times today.
+[00:00:28] Okay, and keep your hand raised if you
+[00:00:30] has have any idea what Cloud Manage
+[00:00:32] Agents even is. Okay, not a lot of
+[00:00:34] hands. Cool.
+[00:00:36] Um, and raise your hands if you're
+[00:00:37] excited to learn about Cloud Manage
+[00:00:38] Agents today. Okay, there we go. I like
+[00:00:40] that.
+[00:00:41] Um, hopefully this will be a little bit
+[00:00:43] more of a technical deep dive. Um,
+[00:00:44] myself and a couple of my uh, peers
+[00:00:47] earlier today talked at a very high
+[00:00:48] level. We showed you some slides.
+[00:00:50] Um, we talked about the primitives and
+[00:00:52] whatever. And we'll we'll do a little
+[00:00:53] bit about it here today, but uh, really
+[00:00:55] what I want to make sure that we do is
+[00:00:56] like have our laptops out, start coding.
+[00:00:59] I have a little starter repo for us to
+[00:01:00] kind of go through together. Um, and my
+[00:01:03] hope is that by the end of the session
+[00:01:04] you will be able to go get started with
+[00:01:06] building on Cloud Manage Agents today.
+[00:01:08] Does that sound good to everybody?
+[00:01:10] Cool. Quick agenda. Uh, we'll do a quick
+[00:01:12] overview of what Cloud Manage Agents is.
+[00:01:14] We'll go over a lot of the same kind of
+[00:01:15] um, discussion points from earlier
+[00:01:17] today.
+[00:01:18] Um, and then we'll we'll spend some time
+[00:01:20] actually building something um,
+[00:01:21] relatively from scratch.
+[00:01:23] Um, and we'll actually get something
+[00:01:25] that it you could be deploying to
+[00:01:26] production today if you wanted to.
+[00:01:28] Um, and then we'll wrap up the session
+[00:01:30] with some more advanced topics around
+[00:01:32] Cloud Manage Agents and just the the
+[00:01:33] composable things that you can do with
+[00:01:34] it.
+[00:01:36] So, um,
+[00:01:37] Cloud Manage Agents at a high level is
+[00:01:39] just a set of API endpoints that we've
+[00:01:41] developed and released. Um, you can go
+[00:01:42] use them with any API key today,
+[00:01:45] um, that give you
+[00:01:46] uh, access to uh, like scaled ready,
+[00:01:49] production ready uh, agents uh, and all
+[00:01:52] of the primitives around it that you can
+[00:01:54] just build your own products on top of.
+[00:01:56] You can pick and choose whatever
+[00:01:58] primitives you need
+[00:01:59] Um, and ditch the rest and then build
+[00:02:01] whatever product experience you need on
+[00:02:03] top of. So, we took care of a lot of
+[00:02:04] things like giving Claude access to a
+[00:02:05] computer,
+[00:02:07] giving it access to credential vaults if
+[00:02:09] you want to inject things like MCP
+[00:02:11] authentication for your own end users.
+[00:02:14] If you need to like get access to their
+[00:02:15] linear MCP or Claude more accurately
+[00:02:17] needs access to that.
+[00:02:18] The tool calling harness and everything,
+[00:02:21] retries and error recovery that might
+[00:02:23] happen
+[00:02:24] in production. As well as a bunch of
+[00:02:27] really nice primitives around like
+[00:02:28] memory and context management and
+[00:02:31] multi-agents that make it really really
+[00:02:33] easy to be able to really like escape
+[00:02:35] the exponential and like just benefit
+[00:02:37] from each increased model
+[00:02:39] family as they come out.
+[00:02:41] And then the really nice thing with
+[00:02:43] Claude managed agents which will show a
+[00:02:45] little bit later today is that we built
+[00:02:46] a lot of really nice observability
+[00:02:49] views into our developer console that
+[00:02:52] you can go to today in order to like
+[00:02:53] just live debug what these agents are up
+[00:02:55] to and we'll show a little bit of that
+[00:02:56] as well.
+[00:02:58] Cool. So, the the main kind of like
+[00:03:00] building blocks for Claude managed
+[00:03:01] agents are the agent itself which is
+[00:03:03] really just like think of it as like a
+[00:03:05] template. You want your agent to have a
+[00:03:07] certain system prompt. You want it to
+[00:03:08] have access to certain skills.
+[00:03:10] Maybe you want to define what tools you
+[00:03:12] want that agent to have access to.
+[00:03:14] Some agents you want to have access to
+[00:03:16] the bash tool and web search. Some
+[00:03:18] agents you want to really make sure
+[00:03:19] don't have access to the web because you
+[00:03:20] don't want them to get prompt injected
+[00:03:22] or whatever
+[00:03:23] and you can like really pick and choose
+[00:03:24] which which tools they have access to.
+[00:03:26] And you can also choose which MCP
+[00:03:27] servers they get connected to which is
+[00:03:29] also really really nice.
+[00:03:31] Another really nice added aspect of like
+[00:03:33] setting up all these agents is that you
+[00:03:34] can also define certain permission
+[00:03:36] controls on a per tool basis. So, you
+[00:03:38] can decide that something like the file
+[00:03:40] read tool can just auto execute whereas
+[00:03:43] something like executing bash or
+[00:03:46] calling your databases MCP server
+[00:03:49] requires explicit approval from from
+[00:03:51] your own end users. Um once you
+[00:03:53] configure that agent, you also can
+[00:03:56] configure an environment.
+[00:03:57] Um these environments kind of define the
+[00:03:59] template for how the sandboxes the cloud
+[00:04:01] has access to behave. So, you can define
+[00:04:03] whether or not you want those containers
+[00:04:05] to have network access. Maybe you want
+[00:04:07] to pre-install certain packages from NPM
+[00:04:09] or from uh pip. Um so, you can kind of
+[00:04:12] define that in your environment level.
+[00:04:14] And today, since we announced uh
+[00:04:16] self-hosted environments and sandboxes,
+[00:04:18] you can also bring your own sandboxes uh
+[00:04:21] that don't just run on Anthropic's
+[00:04:22] infrastructure. You can use something
+[00:04:23] like Cloudflare or Modal or Vercel
+[00:04:25] um and use those out of the box or even
+[00:04:27] your own um sandboxing fleet.
+[00:04:29] Um once you configure those two things,
+[00:04:31] you can then just like get started on
+[00:04:33] talking to to that agent, right? You you
+[00:04:35] have an ID for your agent, you have an
+[00:04:37] ID for your environment. That's kind of
+[00:04:38] all you need to get started with a
+[00:04:40] session. Um and a session is just you
+[00:04:42] can think of it as kind of like an
+[00:04:43] ongoing conversation with you and
+[00:04:44] Claude. It's the equivalent of going to
+[00:04:46] claude.ai and clicking new or uh
+[00:04:49] entering Claude code from your terminal.
+[00:04:51] Um once you do that, you can like start
+[00:04:53] submitting events from your own end
+[00:04:55] users, something like them asking for
+[00:04:57] something to happen. Um maybe you that
+[00:05:00] that end user is asking for a PR to get
+[00:05:01] put up. And that that all of that kind
+[00:05:03] of happens on the session layer.
+[00:05:05] And when you create these sessions, you
+[00:05:06] can also include certain GitHub
+[00:05:08] repositories that you want Claude to
+[00:05:10] have access to or
+[00:05:12] um certain files that you might want to
+[00:05:13] be preloaded into the container itself.
+[00:05:16] Um so, all of those will kind of be
+[00:05:17] downloaded and and provisioned on on
+[00:05:18] your behalf.
+[00:05:20] Um and then finally, there's just like
+[00:05:21] the events, right? Like these sessions
+[00:05:22] are just like ongoing event streams uh
+[00:05:24] where you submit messages from your
+[00:05:26] client um and we return responses that
+[00:05:30] Claude is processing them, doing
+[00:05:31] whatever it is that it's it needs to be
+[00:05:32] doing.
+[00:05:33] Um and that's that's effectively like
+[00:05:35] the the four major aspects of Claude
+[00:05:37] managed agents. There's a couple of
+[00:05:39] other things um alongside, but those are
+[00:05:41] like the main primitives that that you
+[00:05:42] kind of have to worry about.
+[00:05:44] So, diving a little bit deeper into the
+[00:05:45] events that we have, um, like I
+[00:05:47] mentioned, there's like user events.
+[00:05:49] These are things that you might want to
+[00:05:50] submit from your own application. Maybe
+[00:05:51] your user said something, or maybe your
+[00:05:53] platform just auto submitted some sort
+[00:05:54] of, um, user event. Um, these can
+[00:05:57] include images, documents, text,
+[00:05:59] whatever it is that you need.
+[00:06:00] Um, you can also send interrupts from
+[00:06:02] your own, uh, product, your your own
+[00:06:05] platform. Um, and you can use those in
+[00:06:08] order to cut off Claude if if it was
+[00:06:09] like going off on a bad tangent, or or
+[00:06:11] doing something wrong, and you wanted to
+[00:06:13] steer it. Um, so you can kind of use
+[00:06:14] that to prevent it from doing any sort
+[00:06:16] of like dangerous action. Um, you can
+[00:06:18] also submit, uh, tool results for custom
+[00:06:20] tools that you define and execute in
+[00:06:22] your own, uh, platform, um, or
+[00:06:25] confirmations for human-in-the-loop
+[00:06:26] controls for any sort of server executed
+[00:06:28] tools. Um, and then you can also define,
+[00:06:30] uh, outcomes, which allow you to like
+[00:06:32] essentially pass us either a file, or
+[00:06:34] like a blob of text that you, um, wrote
+[00:06:37] that, uh, it is almost like a spec that
+[00:06:40] Claude will like try to do a first pass
+[00:06:42] at implementing, or or doing the thing
+[00:06:44] that the spec defines, um, and then it
+[00:06:46] will launch, uh, it will essentially
+[00:06:48] enter a mode where it tries to like
+[00:06:50] iterate and check its work against that
+[00:06:52] rubric over and over again until it
+[00:06:54] finds that it can like it actually
+[00:06:56] satisfy that rubric, um, which we found
+[00:06:58] to be really, really powerful. Um, it is
+[00:07:00] it's a really, really great way to like
+[00:07:01] set up, uh, your agents for success.
+[00:07:04] Um,
+[00:07:05] next we have agent events. Agent events
+[00:07:07] are just anything that Claude is doing.
+[00:07:09] So, these are like messages that Claude
+[00:07:10] is sending back to the user, compaction
+[00:07:12] for if Claude is, uh, needs to like uh,
+[00:07:16] you know, compact its context window
+[00:07:17] because it got too large. Um, the tools
+[00:07:20] that it's kind of executing on your
+[00:07:21] behalf, whether those are MCP tools, or
+[00:07:23] the, uh, default agent tools that we've
+[00:07:25] defined. Um, and then there's also
+[00:07:27] multi-agent coordination events for when
+[00:07:29] Claude decides to spawn other agents to
+[00:07:32] help it in doing its work. And we'll
+[00:07:33] show a little bit of what that looks
+[00:07:34] like, uh, during the live, uh, demo.
+[00:07:37] Um,
+[00:07:39] next we have session events. Session
+[00:07:40] events are just like life cycle events
+[00:07:43] that let you know when the status of the
+[00:07:44] session is changing. Maybe it entered a
+[00:07:46] a retry loop. Uh maybe there's some sort
+[00:07:49] of error. Maybe there the the the
+[00:07:52] session needs to like idle for whatever
+[00:07:53] reason
+[00:07:55] um or if it needed to terminate. So,
+[00:07:56] they're they're just like a a bunch of
+[00:07:57] like state transitions um and error uh
+[00:08:00] events. Um and then there's also like an
+[00:08:02] event for like outcome processing. So,
+[00:08:04] you just know when Claude is entering
+[00:08:05] this mode of like iterating against that
+[00:08:07] outcome rubric. And then finally, we
+[00:08:08] have span events, which are just used to
+[00:08:10] like let you know when certain things
+[00:08:12] are starting and ending that we know are
+[00:08:13] going to be long long-lasting. So, like
+[00:08:16] everybody here has probably experienced
+[00:08:18] uh Opus 4.7 like you know generating an
+[00:08:20] entire document that's really really
+[00:08:22] long. So, we just wanted to make sure
+[00:08:24] that you know when that's kind of
+[00:08:25] starting and ending so that um you don't
+[00:08:27] think things are like just getting stuck
+[00:08:28] on our end.
+[00:08:31] So, um in addition to kind of like those
+[00:08:33] core primitives and the events that I
+[00:08:34] went over, like I mentioned uh earlier
+[00:08:36] today we launched uh self-hosted
+[00:08:38] sandboxes, which allow you to bring your
+[00:08:39] own containers um instead of using the
+[00:08:41] ones that we provide. Um a lot of people
+[00:08:44] already have existing uh like accounts
+[00:08:47] with Cloudflare or Vercel or Modal. Um
+[00:08:50] and uh a lot of the time you have your
+[00:08:52] private data up there and you just don't
+[00:08:54] want that to like exit your own VPC or
+[00:08:56] your own perimeter. So, um to get to get
+[00:08:59] around that, we uh are able to like
+[00:09:01] connect to those sandboxes natively um
+[00:09:03] and use those instead of using the ones
+[00:09:05] that we had on our own end. Um and then
+[00:09:07] you can kind of kind of configure how
+[00:09:08] those sandboxes operate and and, right?
+[00:09:10] Like at that point that that's entirely
+[00:09:11] up to you. We'll just let you know when
+[00:09:13] Claude needs a new sandbox and then
+[00:09:16] that's it. You just spawn one and
+[00:09:17] connect it.
+[00:09:19] Um we also launched MCP tunnels, which
+[00:09:21] very similarly allow you um if you have
+[00:09:24] like a, you know, private MCP servers
+[00:09:26] within your private perimeter, um you
+[00:09:28] might not want those exposed over the
+[00:09:29] internet. So, we set up a way for you to
+[00:09:32] have a secure tunnel
+[00:09:34] um that accesses those MCP tunnels or
+[00:09:37] those MCP uh servers that you have
+[00:09:39] privately in your own network. And then
+[00:09:41] Claude can directly connect to that
+[00:09:42] safely without those MCP servers ever
+[00:09:44] being exposed on the internet. It's a
+[00:09:46] really really nifty way for you to be
+[00:09:48] able to connect more private
+[00:09:50] data sources to to Claude and to Claude
+[00:09:52] manage agents.
+[00:09:54] So,
+[00:09:55] that's pretty much all I have for
+[00:09:57] slides. Maybe we'll get back to them a
+[00:09:58] little bit later, but let's let's
+[00:10:00] actually do some like fun stuff. So,
+[00:10:03] I'm going to be working out of this
+[00:10:04] repository. I want to zoom in on the
+[00:10:06] screen a bunch so you guys can see it.
+[00:10:07] It's a public repo if you guys want to
+[00:10:09] go clone it, get started with it today.
+[00:10:11] There's a bunch of really interesting
+[00:10:14] content in here from some of the other
+[00:10:15] workshop presenters. So, highly
+[00:10:16] recommend going through a lot of this.
+[00:10:18] There's a lot of really interesting
+[00:10:19] patterns here.
+[00:10:20] >> [snorts]
+[00:10:20] >> Today we're going to be focused on on
+[00:10:23] the production-ready agents.
+[00:10:25] And in this directory I included both
+[00:10:28] like a starter version of this web app
+[00:10:30] that I'll be showing you shortly.
+[00:10:32] And then the solution version of it if
+[00:10:34] you want to, you know, cheat skip to the
+[00:10:36] end and just see how things work end to
+[00:10:38] end.
+[00:10:38] >> [snorts]
+[00:10:38] >> So, what what are we actually building
+[00:10:40] here?
+[00:10:41] I built this very contrived deal desk
+[00:10:45] product.
+[00:10:46] You can imagine that we work on some
+[00:10:48] mergers and acquisitions. We have some
+[00:10:50] data available maybe in linear or maybe
+[00:10:52] in our private data sources. And we want
+[00:10:55] to use Claude in order to like help us
+[00:10:57] make decisions on whether or not we
+[00:10:58] should invest or maybe acquire certain
+[00:11:00] companies. I'm going to show you a kind
+[00:11:02] of like a finished version of this demo.
+[00:11:05] There's nothing like particularly fancy
+[00:11:07] here. There's just like a very basic
+[00:11:08] chat UI with all of my sessions on the
+[00:11:10] side
+[00:11:11] and some information about the session
+[00:11:13] itself on the right side.
+[00:11:15] But really the main thing is kind of
+[00:11:17] like this ongoing conversation between
+[00:11:19] me as an end user and Claude. And
+[00:11:22] the way that we set up this deal desk is
+[00:11:24] to actually use the new multi-agent
+[00:11:26] feature that we launched
+[00:11:28] 2 weeks ago and uh that in order to like
+[00:11:32] have various agents with their own kind
+[00:11:34] of personas and their own ways of doing
+[00:11:36] things. So, maybe one agent is like in
+[00:11:38] charge of figuring out macro trends in
+[00:11:40] the overall in the overall industry that
+[00:11:41] you're working with. Whereas, another
+[00:11:43] one is like really good at like
+[00:11:44] financial analysis. Maybe it has access
+[00:11:46] to a bunch of tools that uh make it
+[00:11:47] better at that or a bunch of MCP
+[00:11:49] services it has access to. So, these are
+[00:11:51] all just like individual uh threads that
+[00:11:53] are happening here that like our main
+[00:11:56] agent thread like kind of kicked off um
+[00:11:58] in order to like answer a question that
+[00:12:01] we that we gave it earlier on. Um but
+[00:12:03] this is kind of like the finished
+[00:12:04] version of this demo and and I want us
+[00:12:05] to actually like take the time to learn
+[00:12:08] how to build something like this or
+[00:12:09] build even something more advanced than
+[00:12:11] this if you were to go home and get
+[00:12:12] started with Cloud Manage Agents today.
+[00:12:14] Um all the companies that I've made here
+[00:12:16] are obviously fake and Deal Desk is not
+[00:12:18] a real product, but I'm hoping that you
+[00:12:20] guys build really really interesting
+[00:12:21] things with this. So, um
+[00:12:24] let's get let's get started on doing
+[00:12:25] that. So, we're in the
+[00:12:30] This is too small, isn't it?
+[00:12:31] Okay. I'm going to zoom in a bunch.
+[00:12:34] Um
+[00:12:36] So, we're in this starter, you know,
+[00:12:38] directory of this uh of this code base
+[00:12:41] and I'm just going to start my uh
+[00:12:44] server for it so we can test it locally.
+[00:12:47] Um I'm using Bun because we all love Bun
+[00:12:49] here. Um and because it's the starter
+[00:12:51] version of this code base, immediately
+[00:12:53] we run into some problems. Uh
+[00:12:54] something's not implemented. Um and I
+[00:12:56] did this very intentionally because I
+[00:12:57] wanted to walk us through some of the
+[00:12:59] APIs that we have to use in order to
+[00:13:00] build something like this product. Um
+[00:13:03] so, very very basic at the beginning, we
+[00:13:05] just want to have a sidebar that lists
+[00:13:06] all of the sessions that we have, right?
+[00:13:08] So,
+[00:13:10] What?
+[00:13:11] Yeah, of course.
+[00:13:12] How's that?
+[00:13:14] Of course.
+[00:13:15] Um not really optimized for being super
+[00:13:18] big, but that's okay. We're going to
+[00:13:19] deal with it. Um and here's my code
+[00:13:21] here. Is this big enough?
+[00:13:23] Yes? Okay, great. So, first thing that
+[00:13:26] we ran into is we stubbed out some sort
+[00:13:28] of endpoint for listing all of our
+[00:13:29] sessions. So, obviously that's not going
+[00:13:32] to work.
+[00:13:33] Um and I'm going to try to implement
+[00:13:36] this function. I haven't written code by
+[00:13:37] hand in a little bit of time. I don't
+[00:13:40] know if you guys have, but please
+[00:13:42] forgive me if this is wrong.
+[00:13:43] client beta sessions
+[00:13:46] .list
+[00:13:49] I guess I have a little bit of a hint
+[00:13:51] off top.
+[00:13:53] Okay.
+[00:13:55] Yeah.
+[00:13:57] Let's copy paste this.
+[00:13:59] Um
+[00:14:02] And really what what am I doing here? Um
+[00:14:04] I'm using the Anthropic SDK that I've
+[00:14:06] imported.
+[00:14:08] Uh and all of these endpoints are kind
+[00:14:09] of available in production right now.
+[00:14:10] So, I just set up the SDK
+[00:14:13] um and I'm calling the list sessions
+[00:14:14] endpoint within the the SDK
+[00:14:17] um and just returning that data.
+[00:14:19] Relatively straightforward.
+[00:14:21] And I didn't even have to refresh the
+[00:14:23] page. That's how amazing Bun is. We we
+[00:14:25] now have uh we now have a
+[00:14:27] uh like the sessions listed from my my
+[00:14:29] workspace.
+[00:14:30] Um and we'll go over and talk about what
+[00:14:32] these look like in the developer console
+[00:14:33] shortly.
+[00:14:34] Um next, maybe we want to implement
+[00:14:38] I don't know.
+[00:14:40] I wrote a bunch of to-do's that are
+[00:14:41] numbered, but I don't think we should do
+[00:14:43] these in this order.
+[00:14:44] Um let's retrieve the session. So, to-do
+[00:14:46] number four.
+[00:14:48] Why not?
+[00:14:51] Cool.
+[00:14:57] Cool.
+[00:14:59] Are you going to refresh? There we go.
+[00:15:01] And now we have all of the data
+[00:15:02] available here. Really, this is just the
+[00:15:04] API response from get session. That's
+[00:15:06] that's really all I'm doing here, right?
+[00:15:08] Like you you list the agent here.
+[00:15:10] Uh you can see all the tools that it has
+[00:15:11] available. It's connected to the linear
+[00:15:13] MCP.
+[00:15:14] Um and maybe we would have had some
+[00:15:15] outcomes defined for it, but we didn't
+[00:15:17] in this case.
+[00:15:18] Um now we want to implement the chat
+[00:15:20] view. That this is kind of the more the
+[00:15:22] more interesting aspect out of all of
+[00:15:23] this, right? So, there's two kind of
+[00:15:24] aspects to it. There's one, there's like
+[00:15:26] sending session events,
+[00:15:28] uh which is just like the, you know, a
+[00:15:31] very relatively straightforward endpoint
+[00:15:32] that we have. And then the other one is
+[00:15:34] the the streaming endpoint, which like
+[00:15:35] streams the events that uh Claude is
+[00:15:38] generating or the session is generating
+[00:15:39] from the server to our client. Um this
+[00:15:42] one might be a little bit more
+[00:15:43] complicated. So, instead of actually
+[00:15:46] doing this myself, I'm going to be
+[00:15:48] extremely lazy and I'm just going to use
+[00:15:49] Claude here. Um the really really nice
+[00:15:52] thing
+[00:15:53] is that uh Claude code ships by default
+[00:15:56] with the Claude API skill.
+[00:15:58] Claude API skill, uh which makes Claude
+[00:16:01] really really good at using all of the
+[00:16:03] Anthropic APIs, uh specifically the
+[00:16:05] managed agents APIs that we have. Um and
+[00:16:09] that's really all you have to do to like
+[00:16:10] make Claude really really good at at
+[00:16:12] using this thing. So, um I'm just going
+[00:16:14] to tell it, "Hey, I have a bunch of
+[00:16:17] to-do's in this code base for using
+[00:16:22] Claude managed agents. I think there
+[00:16:26] were some about
+[00:16:29] streaming events and sending events.
+[00:16:34] I don't know. I'm lazy. Look through
+[00:16:37] the to-do's and figure it out. Make no
+[00:16:41] mistakes. We all know that works so
+[00:16:44] well.
+[00:16:45] Okay. So, while while Claude is doing
+[00:16:47] this for us,
+[00:16:48] um it's going to it's going to read
+[00:16:49] through this skill. It's going to kind
+[00:16:50] of like learn, all right, this is how
+[00:16:52] the managed agents endpoints work. Um it
+[00:16:54] might even help me like optimize things
+[00:16:56] and make them a little bit better. We're
+[00:16:57] probably going to see over time this
+[00:16:59] thing kind of build and and become more
+[00:17:01] live as we go through it. Um
+[00:17:04] and yeah, that's pretty much all I had
+[00:17:07] to do to like set up this demo. Like
+[00:17:08] literally when I was setting up this
+[00:17:09] demo, I did a very very like I did a
+[00:17:12] version of what I'm doing right now on
+[00:17:13] this stage, where I just like asked
+[00:17:14] Claude to to me with building this
+[00:17:15] thing, which is really really nice,
+[00:17:16] right? It It It means that like Claude
+[00:17:18] can help you build your own Claude. Um
+[00:17:21] but uh while while this is like really
+[00:17:24] interesting and we can sit here and
+[00:17:26] watch Claude process things all day
+[00:17:28] long, we know Opus is a little bit slow.
+[00:17:30] So, while Claude is doing all of this,
+[00:17:33] um I wanted to quickly go over some of
+[00:17:34] the docs and APIs that we have available
+[00:17:37] today for Claude managed agents. Um so,
+[00:17:39] this is our like official developer
+[00:17:41] documentation. I know nobody really
+[00:17:43] reads docs these days. Everybody just
+[00:17:44] points Claude at them, but um I wanted
+[00:17:46] to make sure that everybody here kind of
+[00:17:47] knows that these are available. We have
+[00:17:49] a a bunch of endpoints for each of the
+[00:17:51] primitives that I defined earlier for
+[00:17:52] like creating an agent and and updating
+[00:17:54] it and fetching it and everything. Um
+[00:17:56] same thing for our environments. Um and
+[00:17:59] same thing for sessions as well. Um
+[00:18:01] including a bunch of like sub endpoints
+[00:18:03] for like listing all the events in an in
+[00:18:05] a session or listing all or streaming
+[00:18:07] those. Um you can also list all of the
+[00:18:10] uploaded resources uh in that session.
+[00:18:12] So, if you included a file in your
+[00:18:13] container or you included a GitHub
+[00:18:15] repository, you can kind of like list
+[00:18:17] those and add those over time to make
+[00:18:18] sure that your um session really stays
+[00:18:20] alive. And then with multi-agent, um
+[00:18:23] Claude can like spin off individual
+[00:18:24] threads of other agents, kind of like
+[00:18:26] what I showed earlier. Um so, there's a
+[00:18:28] bunch of endpoints that are associated
+[00:18:29] with that as well. Um
+[00:18:31] and then finally, there's a bunch of
+[00:18:32] endpoints for uh credential vaults and
+[00:18:34] for memory stores. And credential vaults
+[00:18:36] allow you to um provision a bunch of MCP
+[00:18:39] servers' authentication tokens one time,
+[00:18:42] store them very very securely on uh
+[00:18:45] within Anthropic. Um and we will make
+[00:18:47] sure that whenever Claude wants to use
+[00:18:49] one of the MCP servers, like the linear
+[00:18:51] MCP or the Figma MCP,
+[00:18:53] um we will inject those authentication
+[00:18:56] tokens if you like include that vault in
+[00:18:58] your session without Claude ever seeing
+[00:19:00] what those tokens are. So, we make sure
+[00:19:02] that like Claude it it never enters
+[00:19:04] Claude's context window or anything like
+[00:19:05] that um and makes the whole thing a lot
+[00:19:07] more secure.
+[00:19:08] Um with memory stores, we give Claude
+[00:19:11] access to like one or several memory
+[00:19:13] stores that it can then read and write
+[00:19:16] memories from over time so that every
+[00:19:18] session that it interacts with can like
+[00:19:19] read from those previous memories and
+[00:19:21] get better than the one before. Um and
+[00:19:24] we use all of these things within this
+[00:19:26] this demo that I've been working on.
+[00:19:28] Hm.
+[00:19:29] Let's see how Claude is doing.
+[00:19:32] Why would you not implement the rest of
+[00:19:33] these?
+[00:19:34] Finish the rest.
+[00:19:37] Dude.
+[00:19:39] Hm.
+[00:19:41] Um Claude Claude sometimes gets a little
+[00:19:43] lazy. Anyway,
+[00:19:45] um
+[00:19:45] there's a bunch of APIs here. I highly
+[00:19:47] recommend you read through these. I
+[00:19:48] highly recommend you read through some
+[00:19:49] of our like more long-form docs on
+[00:19:51] Claude manage agents as well. They do a
+[00:19:52] great job of kind of outlining all of
+[00:19:54] this stuff. Um but
+[00:19:57] uh you know, beyond just like reading
+[00:19:58] the static information, you can also
+[00:20:00] like really use the Claude console uh to
+[00:20:03] like monitor uh and get better
+[00:20:05] observability around what each of these
+[00:20:07] sessions is doing um and use a lot of
+[00:20:09] this UI for driving what your manage
+[00:20:11] agents integration looks like. Um
+[00:20:14] if you just want to get started really
+[00:20:15] quickly, you want to have some a more
+[00:20:16] guided experience, um we built this
+[00:20:18] quick start that allows you to actually
+[00:20:20] have a chat with Claude and Claude will
+[00:20:21] like help you build your agents and your
+[00:20:24] sessions uh with you. Um you also have a
+[00:20:27] bunch of like you know, predefined
+[00:20:28] templates that you can use as a as a
+[00:20:30] starting point. Um here you can like go
+[00:20:33] browse to like the actual agents that
+[00:20:34] you have. So, here I have a bunch of
+[00:20:36] test ones. Um clearly I made a bunch of
+[00:20:38] these. Um and like you can actually see
+[00:20:41] what each one like looks like. Agents
+[00:20:44] are versioned, so if you ever feel like
+[00:20:46] you made an update that you're not happy
+[00:20:47] with to like the system prompt or the
+[00:20:49] list of tools that it has access to, you
+[00:20:50] can always go back to use a previous
+[00:20:52] version
+[00:20:53] um and we never like get rid of that. Um
+[00:20:55] and this is kind of like where you see
+[00:20:56] the the certain things that it has
+[00:20:58] configured. So, in this instance, I
+[00:20:59] configured it with a linear MCP. I
+[00:21:01] didn't give it any skills, but I gave it
+[00:21:02] access to a bunch of other agents that
+[00:21:04] it can interact with
+[00:21:05] um and we'll see shortly what that looks
+[00:21:07] like in our sessions.
+[00:21:09] Do we think Claude finished yet? Do we
+[00:21:10] Do we think it's still working?
+[00:21:13] Okay.
+[00:21:15] Claude says it's done. I
+[00:21:17] we'll see we'll see about that.
+[00:21:21] Okay, sweet. Uh, refreshing the page.
+[00:21:24] Looks a little awkward with uh, with the
+[00:21:25] zoomed in screen, but um, generally
+[00:21:27] speaking, it seems like we can like go
+[00:21:29] and create new sessions. Everything here
+[00:21:32] looks good. I'm seeing all of my events.
+[00:21:35] Everything looks pretty good. So, let's
+[00:21:36] let's actually run this thing.
+[00:21:38] So, we're going to create a new session.
+[00:21:40] In this instance, I want to use the
+[00:21:41] linear MCP, and I want to use memory
+[00:21:43] stores for this uh, demo.
+[00:21:45] Um, and this is just calling our create
+[00:21:46] session endpoint. Um, and here I stubbed
+[00:21:49] out a couple of like, you know, uh,
+[00:21:51] like suggestion chips for myself for for
+[00:21:53] this demo. Uh, one is just a regular
+[00:21:56] message, uh, like just give me a quick
+[00:21:58] read on Acme Robotics, in order to get
+[00:22:01] uh, information about their financials,
+[00:22:03] I guess.
+[00:22:04] Um, but that's kind of boring. What I
+[00:22:06] really want to show you is uh, outcomes.
+[00:22:08] So, I have this other suggestion chip
+[00:22:10] that I set up that uh, includes a bunch
+[00:22:13] of information about like, hey, like
+[00:22:15] there's like three companies that we're
+[00:22:16] looking at, Bridgewell Dynamics, Norwood
+[00:22:18] Automation, and Acme Robotics. Uh, we
+[00:22:21] have a bunch of data about them all over
+[00:22:23] Linear and some files that we uploaded.
+[00:22:25] Um, but like we really we we want to
+[00:22:27] make a a good decision here. So, like
+[00:22:29] can you please like iterate on like
+[00:22:32] finding information about it and then
+[00:22:33] like criticize your own work and like
+[00:22:35] let us know whether or not this uh,
+[00:22:38] these these findings that you're saying
+[00:22:39] are like actually like satisfied to to
+[00:22:42] the rubric that we gave you. So, let's
+[00:22:43] use that. So,
+[00:22:45] all I did was just send uh,
+[00:22:47] outcome event or an outcome definition
+[00:22:49] event. And now Claude is just like off
+[00:22:51] to the races. It's going to start using
+[00:22:52] a bunch of tools. Um, I guess it's going
+[00:22:55] to try to delegate to a bunch of other
+[00:22:56] sub agents. Uh, and maybe read some of
+[00:22:59] the files that we have uploaded. Um, but
+[00:23:01] this is nice and dandy, but like
+[00:23:03] I don't know. I feel like I am not
+[00:23:06] understanding what's going on under the
+[00:23:07] hood here. So, maybe we can go and
+[00:23:09] monitor what the session is doing live.
+[00:23:11] Um, and to do that, we can go to the
+[00:23:13] sessions view
+[00:23:14] um, for this uh, agent
+[00:23:17] and actually click into a running
+[00:23:18] session
+[00:23:20] and see the the model kind of like
+[00:23:22] processing things live, right? So, it it
+[00:23:25] looks like it's already spawned the four
+[00:23:27] other agents that we wanted it to work
+[00:23:29] with. And each one of those has their
+[00:23:31] own context windows and they can like
+[00:23:32] chat with their coordinator and like
+[00:23:34] give it updates as as they're coming
+[00:23:35] along. So, they might say like, "Hey, I
+[00:23:37] don't know. I found this in a in the
+[00:23:38] financial or maybe I looked this up on
+[00:23:40] the internet. Um, you should know about
+[00:23:42] this." And maybe give another agent uh,
+[00:23:43] that information. Um, so you're going to
+[00:23:45] see each one of these uh, kind of like
+[00:23:47] horizontal lines is an independent like
+[00:23:49] agent that's running on its own.
+[00:23:51] Um, and then here you can kind of like
+[00:23:54] take a peek at like individual events
+[00:23:56] that are happening. So, I guess this
+[00:23:57] agent is doing some web searches. You
+[00:23:59] can see the actual inputs and and
+[00:24:01] outputs from those web searches. Um,
+[00:24:04] I don't know what it's actually looking
+[00:24:06] for, but it's looking for something. Um,
+[00:24:09] and then yeah, this these things are all
+[00:24:11] like iterating with one another. Um, you
+[00:24:12] can also like monitor how long these
+[00:24:14] things are taking. So, if you find that
+[00:24:15] a tool call of yours is taking a
+[00:24:16] particularly long period of time, you
+[00:24:18] can also just go and debug that and say
+[00:24:20] like, "Okay, maybe maybe there's a file
+[00:24:22] that is like really inefficient."
+[00:24:24] Um, I see you kind of have a question.
+[00:24:26] What's up?
+[00:24:31] So, you uh, the question was uh, can you
+[00:24:32] put plugins into these agents? Uh, we're
+[00:24:35] working on something along the lines of
+[00:24:36] that. We want to make sure that like the
+[00:24:38] Claude ecosystem is kind of like all
+[00:24:40] cohesively make sense. So, uh, we will
+[00:24:42] have started thinking about what these
+[00:24:44] things look like to make things a lot
+[00:24:46] more extensible and like open-ended. Um,
+[00:24:48] we don't have anything quite yet, but
+[00:24:50] the agent definitions themselves kind of
+[00:24:51] operate like these plugins. Um, there's
+[00:24:53] a lot of like similar uh, uh,
+[00:24:55] ideas behind a lot of them. So, we're
+[00:24:57] we're going to have something there
+[00:24:58] soon.
+[00:24:59] Yeah.
+[00:25:00] It's a good question.
+[00:25:01] Um, anyway, that's kind of like the main
+[00:25:03] like console view that we have.
+[00:25:05] Um, you have a bunch of like other tabs
+[00:25:07] for, you know, the environments that you
+[00:25:08] create. If you created a self-hosted
+[00:25:10] environment, you can see those here. Um,
+[00:25:12] or the credential vaults that I
+[00:25:12] mentioned earlier.
+[00:25:14] Um,
+[00:25:14] and then really what I love doing is
+[00:25:16] going and reading through these uh,
+[00:25:17] memory stores because you'll see what
+[00:25:19] Claude is like filling in as information
+[00:25:21] for itself. And sometimes I I want to
+[00:25:22] just edit that information if I feel
+[00:25:24] like it got something wrong. Sometimes
+[00:25:26] Claude messes up. Um, which is really
+[00:25:28] really nice here. Or you can generate
+[00:25:29] and add your own memories uh, by
+[00:25:31] default.
+[00:25:32] Um, so that's kind of like it for this
+[00:25:35] demo. Um,
+[00:25:37] you know, at the end of all of this
+[00:25:38] Claude is probably going to have
+[00:25:39] something like a like an outcome event
+[00:25:42] where it said like, "Okay, yeah, like I
+[00:25:43] feel like I have enough information for
+[00:25:45] you about these um, individual agents."
+[00:25:48] Um,
+[00:25:50] and then it gave me some sort of like
+[00:25:51] uh, like outcome evaluation. It seemed
+[00:25:53] like it it it seemed like it was able to
+[00:25:55] get to a conclusion for its uh, for its
+[00:25:58] uh, things that I asked it to evaluate.
+[00:26:00] So,
+[00:26:01] um, getting back to
+[00:26:04] the slideshow.
+[00:26:06] I probably skipped ahead a little bit,
+[00:26:07] but if we were to do all of this by
+[00:26:09] ourselves, we would have had to build
+[00:26:10] our own agent loop or maybe use the
+[00:26:11] agent SDK, figure out a way to host it
+[00:26:13] somewhere remote, um, figure out things
+[00:26:15] like context management and handling
+[00:26:17] state transitions and recovery from
+[00:26:19] those state transitions or integrating
+[00:26:20] something like skills and MCP servers.
+[00:26:22] We would have had to figure out a
+[00:26:23] durable storage layer,
+[00:26:25] um, where you can store all of the
+[00:26:26] events and all of the data about all of
+[00:26:28] your agents or all of your threads.
+[00:26:30] Um, we would have had to figure out a
+[00:26:31] sandboxing fleet, uh, like using
+[00:26:33] something like Cloudflare, but like
+[00:26:35] figuring out how to make that react to
+[00:26:36] what Claude is doing. Um, and then we
+[00:26:38] would have had to figure out the world
+[00:26:39] of like end-to-end user uh, or end user
+[00:26:42] authentication, which like
+[00:26:44] is not easy to figure out uh, or or do
+[00:26:47] in a secure and reliable way.
+[00:26:48] Um, so all those things are things that
+[00:26:50] we would have had to build by ourselves
+[00:26:52] if we were to get started on it today.
+[00:26:54] With cloud managed agents, we kind of
+[00:26:55] were able to get all of these things out
+[00:26:57] of the box. We didn't use all of these
+[00:26:58] primitives immediately in this demo, but
+[00:27:00] if we wanted to, we could have.
+[00:27:02] It would have been a very complex
+[00:27:03] looking demo, but that would have been
+[00:27:04] it.
+[00:27:05] Anyway, that's all I have. We finished a
+[00:27:08] little bit early, but if anybody has any
+[00:27:10] questions, I'm happy to answer them, or
+[00:27:13] we can leave a little early.
+[00:27:16] >> [music]
+[00:27:20] [music]

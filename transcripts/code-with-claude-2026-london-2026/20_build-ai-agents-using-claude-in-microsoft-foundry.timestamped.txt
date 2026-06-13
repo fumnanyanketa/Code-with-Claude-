@@ -1,0 +1,818 @@
+Title: Build AI agents using Claude in Microsoft Foundry
+Video: https://www.youtube.com/watch?v=TQd_YQvydVg
+Caption: auto (en) via tv
+================================================================================
+
+[00:00:17] Hi everyone. Good afternoon.
+[00:00:21] Um Thank you for joining us in this
+[00:00:24] session today. Um my name is Marlene
+[00:00:27] Mungai me and I am a senior developer
+[00:00:30] advocate at Microsoft and I'm joined
+[00:00:33] today as well by two of my colleagues,
+[00:00:36] uh Liam Hampton, who's also from
+[00:00:37] Microsoft, and Chris Snoring, who I'm
+[00:00:41] not sure where Chris is.
+[00:00:43] He's probably around the room somewhere.
+[00:00:44] And today we are going to be building AI
+[00:00:48] agents using Claude in Microsoft
+[00:00:50] Foundry. And the approach that we're
+[00:00:53] taking today is super practical. So,
+[00:00:56] we're not just going to be talking about
+[00:00:58] what AI agents are, but we're actually
+[00:01:00] going to be building them using Claude
+[00:01:02] models in Foundry. So, we'll take a look
+[00:01:04] at what that looks like in a second.
+[00:01:08] I'm just going to move through my
+[00:01:09] slides. So,
+[00:01:10] one of the things I'm going to point out
+[00:01:12] is that in this session today,
+[00:01:14] by the end of the session, you're going
+[00:01:16] to have deployed Claude models in
+[00:01:19] Microsoft Foundry. You're also going to
+[00:01:21] plug that model into an agent and
+[00:01:24] finally you'll give that agent tools as
+[00:01:26] well.
+[00:01:28] So,
+[00:01:30] just to get started before we start the
+[00:01:33] workshop, some things to point out in
+[00:01:36] terms of some of the changes we're
+[00:01:38] seeing in the industry right now. You
+[00:01:40] probably have noticed that over time or
+[00:01:43] over the past few years, especially,
+[00:01:46] we've really seen the the industry
+[00:01:47] moving away from just single-turn AI
+[00:01:51] conversations where you're just talking
+[00:01:52] to an AI and it's giving you a response.
+[00:01:55] And now we're actually building agentic
+[00:01:57] systems where our agents can plan,
+[00:02:01] they can reason, and they can take
+[00:02:03] action on our behalf over time. And
+[00:02:07] there's three specific things that are
+[00:02:10] new challenges that come with these
+[00:02:12] agentic systems. The first thing is that
+[00:02:15] the models need to be able to handle
+[00:02:18] multi-step reasoning over long context.
+[00:02:21] And the second thing is the systems need
+[00:02:23] to be reliable. Especially when you're
+[00:02:25] working with enterprises, they need to
+[00:02:28] be reliable, they need to have
+[00:02:29] observability built in, and they also
+[00:02:31] need to be secure.
+[00:02:33] And then the third thing is that
+[00:02:35] as developers are building out their
+[00:02:38] agents, they need to be able to connect
+[00:02:40] to different tools and external systems,
+[00:02:43] data sources as well to bring that
+[00:02:45] information in for their agent. And this
+[00:02:48] next wave of AI actually makes it so
+[00:02:51] that even though
+[00:02:53] we love the Claude models, and I think
+[00:02:55] the models are getting better every day,
+[00:02:58] can't just rely on the models getting
+[00:03:00] better, we also need systems to be able
+[00:03:02] to actually have those models with that
+[00:03:04] intelligence executed. So,
+[00:03:08] this is exactly where we believe this
+[00:03:11] partnership between Microsoft and Claude
+[00:03:14] comes into play.
+[00:03:17] So, we What is Microsoft Foundry? How
+[00:03:20] many of you have actually used Foundry
+[00:03:22] before or are Microsoft users? Okay,
+[00:03:26] great. That's a decent amount. That's
+[00:03:27] that's a really good number. And for
+[00:03:30] those of you who are new to Foundry,
+[00:03:31] Microsoft Foundry is our unified
+[00:03:33] platform for building AI applications
+[00:03:36] and agents at scale. So, you can work in
+[00:03:39] the tools that you want with Foundry,
+[00:03:41] whether you're using things like GitHub,
+[00:03:44] Visual Studio Code, Visual Studio
+[00:03:46] itself, or Copilot Studio, you can work
+[00:03:48] wherever you would like. And
+[00:03:51] at the core in Foundry, we have several
+[00:03:53] different products that we offer. The
+[00:03:54] first is Foundry models like Claude. The
+[00:03:58] second is we have something called agent
+[00:04:00] service. We also have tools and
+[00:04:02] integrations, and then we also offer
+[00:04:04] some different machine learning
+[00:04:06] services, things like fine-tuning that
+[00:04:08] you can access through the platform.
+[00:04:10] Now, we support over 1,400 built-in
+[00:04:14] connectors and MCP tools. So, your
+[00:04:18] agents can take real action in the real
+[00:04:20] world. So, you can use things like you
+[00:04:22] can build agents that have access to SAP
+[00:04:25] or ServiceNow and and different things
+[00:04:27] like that. So, you can work on real
+[00:04:29] systems.
+[00:04:31] And our agents, or we believe that
+[00:04:33] agents that are built on Foundry come
+[00:04:36] with some enterprise-ready features. So,
+[00:04:38] you'll have built-in security, you have
+[00:04:41] built-in observability,
+[00:04:43] governance features as well. And then we
+[00:04:46] also have integrations with Microsoft
+[00:04:48] Defender, Microsoft Purview, and Entra
+[00:04:51] ID. So, you're not working with .env
+[00:04:54] files all the time. So, we really focus
+[00:04:56] on security as well.
+[00:04:58] We do believe that actually when you use
+[00:05:01] Microsoft Foundry, this is us moving
+[00:05:03] from just building prototypes or being
+[00:05:06] empowered to build prototypes and
+[00:05:07] actually deploying those agents into
+[00:05:10] production
+[00:05:11] enterprise environments.
+[00:05:14] So, why exactly should developers use
+[00:05:17] Claude in Foundry?
+[00:05:20] There are a couple of different
+[00:05:21] advantages of doing this. There are four
+[00:05:24] things that we think developers love
+[00:05:26] about this combination. The first thing
+[00:05:28] is best in class reasoning for agents.
+[00:05:31] You are here at a Claude code
+[00:05:34] conference. So, I'm assuming you like
+[00:05:35] the Opus or the Claude models. Opus 4.7
+[00:05:39] is my current daily driver. So, I'm a
+[00:05:41] big fan. And we've really seen that a
+[00:05:43] lot of developers love these models.
+[00:05:45] They are excellent at planning and
+[00:05:48] working with long context over time and
+[00:05:50] understanding that context, which is
+[00:05:52] critical for agents. We also see that
+[00:05:55] when you're using Foundry, you're not
+[00:05:57] just getting the model itself.
+[00:05:59] You are also going to have the ability
+[00:06:01] to create agents in the platform,
+[00:06:04] orchestrate those agents, and then um
+[00:06:06] give those agents access to the tools
+[00:06:08] that we saw earlier on. And then like I
+[00:06:10] mentioned, you have enterprise features
+[00:06:12] that come out of the box. So you get to
+[00:06:15] actually get security compliance and so
+[00:06:18] on like we talked about. And then we
+[00:06:19] have this faster development to
+[00:06:21] production cycle. So we have a number of
+[00:06:24] different tools that we offer including
+[00:06:26] built-in evaluation tools,
+[00:06:29] observability, monitoring tools,
+[00:06:31] integrations that can take your agent
+[00:06:33] from that prototype and deploy it into
+[00:06:36] production. So instead of building out
+[00:06:39] your own platform from scratch, with
+[00:06:41] Microsoft Foundry, you get all of these
+[00:06:44] pre-built and you're able to uh scale
+[00:06:46] your applications. Great. So now that we
+[00:06:50] kind of have an idea of what Foundry and
+[00:06:53] Cloud offer together, we are going to go
+[00:06:56] straight into the workshop. So I really
+[00:06:58] encourage you to work alongside with us.
+[00:07:01] So if you have a laptop, go ahead and
+[00:07:03] navigate We're going to switch over to
+[00:07:05] the workshop screen now. So my laptop.
+[00:07:09] And you can go ahead and navigate to
+[00:07:11] this website here. We have cupcakes in
+[00:07:15] the beginning here. And so if you go
+[00:07:18] through the workshop with us, you will
+[00:07:20] get a cupcake. So we are bribing you to
+[00:07:23] also do the workshop with us.
+[00:07:26] Um but don't worry if you if you would
+[00:07:29] prefer just to watch, you can. But if
+[00:07:31] you have your laptop, go ahead and
+[00:07:33] navigate to this page, uh that website,
+[00:07:36] and it will open up the workshop page
+[00:07:38] for you to take a look at us uh at the
+[00:07:40] workshop with us.
+[00:07:42] Um, I will give you just a couple of
+[00:07:45] minutes to do that. It's
+[00:07:46] aka.ms/cloudworkshop
+[00:07:50] for the link we are going to get started
+[00:07:53] on.
+[00:07:54] And once you take this, so we can go
+[00:07:56] ahead and copy this website.
+[00:07:59] I already have it open, but once you
+[00:08:01] copy it, you should see a screen coming
+[00:08:04] up that looks like this. And if you're
+[00:08:07] on that screen, just click the launch
+[00:08:09] button and it will launch this
+[00:08:11] environment for you. So, this
+[00:08:13] environment is going to start preparing
+[00:08:16] um to load our content and it already
+[00:08:18] has loaded. And you should find yourself
+[00:08:21] on this screen.
+[00:08:23] So, we, like I mentioned, are going to
+[00:08:25] be building out an agent with uh AI
+[00:08:28] Foundry with Microsoft Foundry and
+[00:08:30] Cloud. And you can go through I will
+[00:08:33] mention several things. The first thing
+[00:08:35] is that if you feel pretty confident um
+[00:08:38] and you are a self-paced person and you
+[00:08:41] like going ahead, you should be able to
+[00:08:44] just go through the instructions and
+[00:08:45] click next and it will have the
+[00:08:47] instructions as you go along. So, you
+[00:08:49] can actually do this workshop at your
+[00:08:51] own speed and go quickly if you'd prefer
+[00:08:53] going on your own. But I'm also going to
+[00:08:55] walk you through step-by-step each of
+[00:08:56] the steps. And if you got any problems
+[00:08:59] throughout the workshop, uh my
+[00:09:02] colleagues are here and we're here to
+[00:09:04] help you if you have any issues.
+[00:09:07] So, the first thing I will mention
+[00:09:09] before I start reading is you can we're
+[00:09:11] using an environment called Skillable
+[00:09:14] and to you don't have to type things in.
+[00:09:17] If I click on a uh an input uh box and I
+[00:09:21] click on the Skillable part here, it's
+[00:09:24] going to immediately fill out that box
+[00:09:26] for me. So, wherever your you would like
+[00:09:29] something filled in, if you see this
+[00:09:31] green box, you can just click it and it
+[00:09:32] will automatically fill in that box for
+[00:09:35] you. So, you don't have to type things
+[00:09:36] out by hand, um, all the time.
+[00:09:39] So Skillable is going to open this
+[00:09:40] virtual machine for you and we'll be
+[00:09:42] doing the workshop here.
+[00:09:44] And we have an introduction to what
+[00:09:45] we're doing. Welcome to Sparkles, which
+[00:09:47] is the friendliest cupcake shop on the
+[00:09:50] internet. And Sparkles has a big
+[00:09:53] problem. We have the most bakery we have
+[00:09:56] a big problem where most bakeries would
+[00:09:58] love to have this problem where we have
+[00:10:00] too many customers and too many flavors
+[00:10:03] and not enough hands behind the counter.
+[00:10:06] And so we're going to build today an AI
+[00:10:07] agent that's going to help the Sparkles
+[00:10:10] team be able to handle all of the
+[00:10:14] the incoming traffic from people wanting
+[00:10:16] to get cupcakes. So the first thing
+[00:10:18] you're going to do is you're going to
+[00:10:19] start by navigating to the browser.
+[00:10:22] So you can click in,
+[00:10:23] uh, after you've signed in and it's
+[00:10:25] going to launch the browser for you.
+[00:10:27] And when you open click the browser, it
+[00:10:30] is going to open up on the Foundry page.
+[00:10:34] And you can when you get to this page,
+[00:10:36] just click on the sign up button. And if
+[00:10:39] you scroll down,
+[00:10:40] oh, we're going to switch over to the
+[00:10:42] next tab.
+[00:10:44] You can go ahead and where it says sign
+[00:10:47] in with the username details, I'm just
+[00:10:49] going to click on that.
+[00:10:51] And it's going to fill in the username
+[00:10:53] for me.
+[00:10:55] So I'm now on the second page and then I
+[00:10:57] scrolled down it you once you click on
+[00:11:00] the edge,
+[00:11:01] um, icon, it's going to open Foundry
+[00:11:03] immediately. You can navigate there and
+[00:11:05] then I clicked on the username to fill
+[00:11:07] that out and I'm going to press next.
+[00:11:10] I'm going to fill in the password.
+[00:11:13] So I can go ahead and sign in.
+[00:11:15] Uh, all of these instructions again are
+[00:11:17] there so if you want to go
+[00:11:19] quickly, you are welcome to do that.
+[00:11:23] So this is Microsoft Foundry. This is
+[00:11:24] what it looks like. I love purple so I'm
+[00:11:27] a big fan of the design.
+[00:11:31] But once you have Foundry uh, opened up,
+[00:11:35] you can click on the project that comes
+[00:11:39] up. So, this is the project here. We can
+[00:11:41] go ahead and click on that project.
+[00:11:45] And that's going to open us
+[00:11:47] for us
+[00:11:50] um
+[00:11:53] this project space here. And we should
+[00:11:56] be able to click on that, I believe.
+[00:12:00] Oh, wait. Actually, let's go back.
+[00:12:04] And
+[00:12:06] let's click on the start building page
+[00:12:09] instead.
+[00:12:10] So, when we click on the start building
+[00:12:12] page, it should take us here.
+[00:12:15] And then we can click on this toggle
+[00:12:18] that says build.
+[00:12:21] And when we get to that builds toggle
+[00:12:24] we have some boxes here on the side. And
+[00:12:29] those boxes say models. So, we're going
+[00:12:31] to click on that.
+[00:12:33] And so, I clicked on the build button
+[00:12:36] and then I clicked on this models button
+[00:12:39] to the side and it brought up this page
+[00:12:41] for me.
+[00:12:42] Now, when I'm on this page this shows me
+[00:12:45] which models are available for me to
+[00:12:47] use. So, you'll see that you already
+[00:12:49] have Claude Sonnet 4.6. And when I click
+[00:12:53] on this model
+[00:12:55] here
+[00:12:56] it's going to open a playground
+[00:12:58] environment for me in Foundry. And this
+[00:13:01] playground environment allows me to be
+[00:13:03] able to chat with the model. These are
+[00:13:05] some custom instructions. So, the custom
+[00:13:08] instructions on this side are saying you
+[00:13:10] are an AI assistant that helps people
+[00:13:13] find information. And I can chat with
+[00:13:16] the model here. So, once you finish this
+[00:13:19] step, you can switch on
+[00:13:22] you can switch to this page here and
+[00:13:23] it's going to give you some information.
+[00:13:25] So, here in the Foundry environment,
+[00:13:27] this is a great place to experiment with
+[00:13:30] the model and see and compare different
+[00:13:32] models to see which ones you like and
+[00:13:34] how they perform with different system
+[00:13:36] prompts. So in our instructions we so we
+[00:13:40] can just say here
+[00:13:41] hello
+[00:13:43] to the model.
+[00:13:45] Hello, who are you?
+[00:13:50] And
+[00:13:52] it's going to respond and say hello, I'm
+[00:13:55] Claude an AI assistant made by
+[00:13:57] Anthropic. So it's working as expected.
+[00:14:00] But again we can switch out that system
+[00:14:02] prompt if we want to try oh
+[00:14:06] if we want to try different system
+[00:14:07] prompts we have to click here. I'm going
+[00:14:09] to delete the current ones and then I'm
+[00:14:11] going to click this green button for it
+[00:14:13] to fill and our new system prompt is
+[00:14:15] that I'm you are a sentient cupcake.
+[00:14:19] Answer every question with frosting
+[00:14:21] related puns. So we will say what do you
+[00:14:25] think? Let's say what do you think
+[00:14:29] of Claude?
+[00:14:32] And hopefully it's going to give us an
+[00:14:35] answer. It's saying what is it saying
+[00:14:38] here?
+[00:14:39] It's saying I think Claude is simply
+[00:14:42] frosting with potential. You could say
+[00:14:45] they're icing the icing on the cake when
+[00:14:48] it comes to AI assistance. Wow, who
+[00:14:52] would have expected? Maybe we should ask
+[00:14:54] what they think of GPT. I'm joking. I'm
+[00:14:56] joking. Wrong conference.
+[00:14:58] Anyway, yeah. But there's lots of
+[00:15:00] different questions that you can test
+[00:15:02] out and different system prompts and I
+[00:15:04] think the playground is a fantastic way
+[00:15:06] for us to do that. So this is one way
+[00:15:09] or interface that we can use to be able
+[00:15:11] to try out our models and decide you
+[00:15:14] know obviously you can you can test out
+[00:15:16] more serious prompts and different
+[00:15:19] features with it here.
+[00:15:20] So once you are done with this step,
+[00:15:23] with this testing out in the playground,
+[00:15:26] we can move on to part three, where we
+[00:15:29] want to actually take the model that we
+[00:15:31] have in the foundry environment and
+[00:15:32] actually bring it into our development
+[00:15:34] environment, so into our IDE. So, we
+[00:15:37] have VS Code already installed here. And
+[00:15:39] like the instructions say, in foundry we
+[00:15:42] can click on the details tab here. And
+[00:15:46] when we click on the details tab, the
+[00:15:48] main thing we want to grab is this URI,
+[00:15:51] our target URI. And so, once we have
+[00:15:54] this, we want to get the target URI and
+[00:15:56] we want to get the API keys.
+[00:15:58] Um and once we have that, we are going
+[00:16:01] to go ahead and we're going to open up
+[00:16:03] VS Code.
+[00:16:05] And when we open up VS Code, it's going
+[00:16:07] to come with some pre-built files
+[00:16:10] already
+[00:16:11] available for us to use. So, the main
+[00:16:14] thing we're going to start by editing is
+[00:16:16] our .env file. So, here
+[00:16:20] this is a little bit tricky, is that we
+[00:16:22] want to make sure
+[00:16:24] that we update the endpoint. So,
+[00:16:29] if we go here,
+[00:16:32] I'm just making it so that you can see,
+[00:16:35] we want to
+[00:16:38] uh paste in that endpoint that we have
+[00:16:41] and we want to remove at the end it says
+[00:16:43] v1 messages and that's not going to
+[00:16:46] work. We have to remove the v1 messages
+[00:16:48] part and the endpoint should end with
+[00:16:51] Anthropic. So, this is what we want it
+[00:16:53] to look like. There's a note for us as
+[00:16:55] well
+[00:16:56] um
+[00:16:57] in here about what it should look like.
+[00:17:00] So, it should end like that.
+[00:17:02] And I'm going to go back as well and I'm
+[00:17:05] going to grab my API key.
+[00:17:07] Ideally, I would not be pasting it so
+[00:17:09] you can see on stage, but it's okay for
+[00:17:12] today.
+[00:17:13] Uh we paste the API key in here.
+[00:17:17] And it's already seeing that Claude
+[00:17:20] Sonnet 4.6 is our model. So now when we
+[00:17:22] have these three environment variables,
+[00:17:25] we're ready to start testing our agent
+[00:17:27] locally.
+[00:17:29] Um and when we we're here,
+[00:17:32] we will open up the agent.py file, which
+[00:17:35] is where we're going to test. So I'm now
+[00:17:36] going to try to expand
+[00:17:40] my VS Code.
+[00:17:43] And hopefully you will have finished and
+[00:17:46] already completed the .env file.
+[00:17:50] So the next step is that we want to
+[00:17:51] build out our agent for helping with the
+[00:17:54] cupcake store. And we are going to be
+[00:17:57] using Microsoft Agent Framework. And
+[00:18:00] this is a Python It's available in
+[00:18:02] Python and I think it might be available
+[00:18:05] in TypeScript as well. This is a
+[00:18:07] framework that is also built by
+[00:18:09] Microsoft. It's open source
+[00:18:11] for you to use and it's a great way for
+[00:18:13] you to get started with building agents.
+[00:18:16] So the main thing that we want to do is
+[00:18:19] there's a number of different
+[00:18:20] dependencies. If you
+[00:18:21] would like, you can find those There's
+[00:18:23] an SDK to be able to install this. But
+[00:18:26] you can read a little bit more about
+[00:18:29] this.
+[00:18:30] I would say you want to also make sure
+[00:18:32] that the terminal is open. But we're
+[00:18:34] just going to move on to the next step
+[00:18:36] where we
+[00:18:37] copy here this
+[00:18:39] uh block of code.
+[00:18:41] I'm going to paste that block of code
+[00:18:42] in.
+[00:18:44] And this is going to be all of the code
+[00:18:47] that we need to run our Sparkles agent
+[00:18:50] with Agent Framework. So we're importing
+[00:18:53] um our agent.
+[00:18:55] And then we're going to initiate the
+[00:18:57] client here. So this is what the chat
+[00:18:59] client looks like. And it's going to
+[00:19:02] detect which environment variables we
+[00:19:04] put into the .env file so that it can
+[00:19:07] use them. So we have the deployment, the
+[00:19:09] key, and the endpoint that we set as
+[00:19:11] well. And then we're going to
+[00:19:13] uh define the agent here in our Python
+[00:19:16] code, and we're calling the agent a
+[00:19:18] cupcake agent.
+[00:19:20] So, now when we want to run this, there
+[00:19:23] should be a command for us to be able to
+[00:19:26] type. So, we can copy this command here,
+[00:19:28] paste it in our terminal, and when we
+[00:19:30] run it, it should start our agent for
+[00:19:34] us. So, this is just Python code that's
+[00:19:36] going to start a terminal here. So, we
+[00:19:38] can greet our agent and say hello to the
+[00:19:41] agent.
+[00:19:44] And it should be ready to start saying,
+[00:19:47] "Hi, how are you? Is there something I
+[00:19:49] can help you with today?" So, this is
+[00:19:51] just a basic sort of hello world to
+[00:19:53] Microsoft Agent Framework.
+[00:19:55] Now, once you are feeling comfortable
+[00:19:58] with this, again, if you would like to
+[00:20:01] spend more time reading about Microsoft
+[00:20:04] Agent Framework, you can
+[00:20:06] go a little bit slower if you would like
+[00:20:08] as well.
+[00:20:10] But, the next step here is that we want
+[00:20:13] to connect to the cupcake store MCP
+[00:20:17] server. So,
+[00:20:19] for those of you
+[00:20:21] We've probably heard about How many of
+[00:20:22] us have heard about MCP before? It's an
+[00:20:25] anthropic conference. I am assuming most
+[00:20:27] of us have. But, MCP is Model Context
+[00:20:30] Protocol, and this is an open standard
+[00:20:33] for letting AI agents talk to external
+[00:20:36] systems. So, an MCP server is going to
+[00:20:40] uh when we publish this, this is going
+[00:20:41] to allow us to access a different set a
+[00:20:43] number of different set of tools, which
+[00:20:45] can be functions the agent can call.
+[00:20:48] It's also going to allow us to access
+[00:20:50] prompts, which are just going to be
+[00:20:51] reusable instruction snippets that we
+[00:20:54] can plug into the agent as well.
+[00:20:57] And then, it's also going to let us
+[00:20:59] access resources, which are data that
+[00:21:02] can be sent over HTTP in a specific way
+[00:21:05] that your agent will expect. So, with
+[00:21:09] MCP, one of the nice things is that you
+[00:21:11] just need a URL and you can plug it in
+[00:21:14] and you get like a the full API
+[00:21:16] available in a format that's easy for
+[00:21:18] your agent to read. There's obviously
+[00:21:20] some
+[00:21:22] thoughts that people have about how MCP
+[00:21:25] sort of handles context, but there's
+[00:21:27] also a number of ways that you can
+[00:21:29] handle that with context engineering as
+[00:21:31] well. So, here, the first thing that we
+[00:21:34] are going to do is we're going to pull
+[00:21:37] down
+[00:21:38] the terminal and I'm going to
+[00:21:41] delete everything that's currently in
+[00:21:43] the terminal and instead
+[00:21:46] I want to replace it with
+[00:21:49] what's in this new code block.
+[00:21:53] And in this code block, you'll see that
+[00:21:55] we've connected to this MCP server,
+[00:21:59] which is our cupcake store MCP server.
+[00:22:02] And this will have all of the
+[00:22:04] information from our store about, you
+[00:22:06] know, how many cupcakes are available,
+[00:22:08] what flavors are available as well, and
+[00:22:11] all of this you get through this URL
+[00:22:13] that you can connect to.
+[00:22:16] So, once we have the MCP server in the
+[00:22:18] code, we we provide it to the agent as a
+[00:22:22] tool. So, the agent will be able to
+[00:22:23] access the information that's available
+[00:22:26] through that server. So, in our example
+[00:22:28] here,
+[00:22:30] I'm just going to close and restart the
+[00:22:33] agent. I'm just control C or we can just
+[00:22:37] type in exit.
+[00:22:40] Oh, what just happened here?
+[00:22:42] I think I pressed control C uh
+[00:22:45] and okay.
+[00:22:48] And we can run the same command
+[00:22:53] that we did earlier to get our agent
+[00:22:55] going, but this time it will have the
+[00:22:57] information from our cupcake store
+[00:22:59] because of the MCP server that we
+[00:23:02] connected it to earlier. So, here
+[00:23:06] we're asking we want to ask the agent
+[00:23:07] what flavors do you have today?
+[00:23:11] And
+[00:23:13] I'm not sure if it's going to I hope I
+[00:23:15] updated so it has the correct flavors,
+[00:23:17] but I think it says
+[00:23:19] I think there might be some confusion.
+[00:23:21] I'm not an AI assistant.
+[00:23:23] Oh, it's because I did not save the
+[00:23:25] file.
+[00:23:26] You see and this is where this is a good
+[00:23:28] example of why it needs the MCP server
+[00:23:31] because it needs to have that context
+[00:23:34] available for it to be able to know
+[00:23:36] which flavors are available. So, we're
+[00:23:37] going to save the file
+[00:23:39] and we're going to rerun the agent and
+[00:23:42] we're going to ask it that question
+[00:23:43] again to see which cupcake flavors we
+[00:23:45] have available today.
+[00:23:47] We're going to ask the agent what
+[00:23:48] flavors do you have today?
+[00:23:52] And it should let us know
+[00:23:56] what they are.
+[00:23:59] Okay. So, let's us know it has we have
+[00:24:02] classic today actually available in the
+[00:24:04] front. We have classic vanilla, we have
+[00:24:07] lemon sponge, we have red velvet, and we
+[00:24:09] also have chocolate flavor as well for
+[00:24:13] the flavors that are available. So,
+[00:24:15] these are
+[00:24:17] this is just a basic overview of how to
+[00:24:19] connect to an MCP server and in our case
+[00:24:22] the cupcake server as well.
+[00:24:25] So, then the third step here is that we
+[00:24:29] want to load instructions and a welcome
+[00:24:31] banner
+[00:24:33] from MCP. So, the agent is we want it to
+[00:24:37] have a specific persona and we also want
+[00:24:40] the agent to greet us in a specific way
+[00:24:43] and we can do that by making the
+[00:24:47] updating the system prompt to make sure
+[00:24:48] that it
+[00:24:50] works in a specific way. So, again what
+[00:24:52] we can do is just copy this
+[00:24:55] code
+[00:24:57] and
+[00:24:59] I'm going to paste it through.
+[00:25:01] Whoop.
+[00:25:04] And you will see that we have
+[00:25:08] got some instructions that we're pulling
+[00:25:10] in from the AC at the MCP server. So,
+[00:25:13] we're actually getting a prompt which is
+[00:25:15] already available through the MCP
+[00:25:17] server,
+[00:25:18] um which is going to have some agent
+[00:25:20] instructions. And we also have the
+[00:25:21] specific welcome banner that we're
+[00:25:23] getting as well as the prompt. So, this
+[00:25:25] is how Prompts are reusable. So, this is
+[00:25:28] a great way to
+[00:25:30] uh simplify workflows if you're if
+[00:25:32] you're going to have people build with
+[00:25:34] your project, for example.
+[00:25:37] So, again to get this to work, all we
+[00:25:39] need to do
+[00:25:41] Whoop. All we need to do is run the same
+[00:25:44] command.
+[00:25:45] Uh
+[00:25:47] I don't know if I pressed exit.
+[00:25:50] Ah, I did not press exit.
+[00:25:53] Let's clear that.
+[00:25:55] And let's rerun the agent.
+[00:25:58] And when we do, we should now see it
+[00:26:00] have a custom banner
+[00:26:03] because we got that from the MCP server
+[00:26:05] as a prompt. Tell it this is how you
+[00:26:07] should introduce yourself. And then it's
+[00:26:09] also going to know that this is how I
+[00:26:12] should respond to the user or interact
+[00:26:14] with the user. So, it's saying, "Hi
+[00:26:15] there. Happy to help you order a cupcake
+[00:26:18] today. First, do you already have a
+[00:26:19] custom a customer ID or do you want to
+[00:26:22] order a new one? Enter an existing ID."
+[00:26:25] So,
+[00:26:27] if you have gotten to this stage, we are
+[00:26:29] almost at the stage where we can order a
+[00:26:32] cupcake. And we have more instructions
+[00:26:35] here on what to do.
+[00:26:38] So,
+[00:26:39] we can try we can answer the question. I
+[00:26:42] don't actually have a an ID, but I can
+[00:26:45] create Say I want the agent to create a
+[00:26:47] new ID for me. So, I'm saying create
+[00:26:50] one.
+[00:26:53] And these instructions and the agent is
+[00:26:54] saying, "Great, what's your first name?"
+[00:26:58] I'll say Marlene is my first name.
+[00:27:01] Uh the agent is saying, "What's my last
+[00:27:04] name?" I'll say my last name.
+[00:27:07] And then, "What city are we in?" London
+[00:27:11] is the city we are in.
+[00:27:16] Okay.
+[00:27:21] And great, it's saying you're perfect.
+[00:27:25] Let me register you Let me get you
+[00:27:27] registered. Now, you're all set,
+[00:27:28] Marlene. Your customer ID is this number
+[00:27:30] here. Please write that down. I'm just
+[00:27:32] going to copy it. And you'll need it if
+[00:27:36] you want to order again in the future.
+[00:27:38] Let's pick a cupcake. So, whatever
+[00:27:40] flavor you'd like. I like red velvet, so
+[00:27:43] I am going to go with number four.
+[00:27:47] And when I
+[00:27:49] enter that number, then all of this is
+[00:27:50] coming from the MCP server cuz it has
+[00:27:52] those custom instructions and custom
+[00:27:54] prompts. And it says, "Red velvet is a
+[00:27:56] good choice. Could you look at the big
+[00:27:58] dashboard at the front of the room and
+[00:28:00] read the six character voucher." So,
+[00:28:03] once I've gotten to this stage, I've now
+[00:28:06] will be able to see the vouchers
+[00:28:09] available to me or, you know, I can I
+[00:28:11] can see We just have This is going to
+[00:28:15] refresh every few minutes, every minute
+[00:28:17] or so, I think.
+[00:28:19] Um Oh.
+[00:28:20] Yeah.
+[00:28:22] And it's mainly just so we don't get
+[00:28:24] overwhelmed by cupcake orders. But once
+[00:28:27] you do you put in the voucher that you
+[00:28:29] see on the screen,
+[00:28:31] uh oh, I I pasted in a customer ID. Ah.
+[00:28:35] Oh, okay. People have already
+[00:28:38] ordered. I will serve you later. But
+[00:28:40] once you put that in, the agent is going
+[00:28:42] to put your name here.
+[00:28:44] And you can It should first start
+[00:28:49] in this page. Oh wow, so many people.
+[00:28:52] I'm amazed by how many people have
+[00:28:54] already ordered.
+[00:28:55] And so we're preparing your order. Once
+[00:28:58] your order is done, it's going to appear
+[00:29:00] here and then you can come to the front
+[00:29:02] to collect your cupcake. So again, I'm
+[00:29:06] not going to change back to order mine
+[00:29:08] because
+[00:29:09] I want the voucher to be on the screen,
+[00:29:11] but basically you paste in the voucher
+[00:29:14] and then once your name appears,
+[00:29:17] then you are ready to go with the order.
+[00:29:21] I think
+[00:29:23] do we have to
+[00:29:26] Liam?
+[00:29:27] I think do we have to approve the orders
+[00:29:30] that are being prepared from the
+[00:29:31] dashboard?
+[00:29:36] Okay.
+[00:29:37] So then Liam at the front here is going
+[00:29:40] to start to approve some of these
+[00:29:42] orders.
+[00:29:44] Can B is the first order, I think. I'm
+[00:29:48] not sure if Cap was the first order.
+[00:29:54] But these should then
+[00:29:56] show on the ready for pickup
+[00:29:59] part.
+[00:30:03] And
+[00:30:06] this is just an introduction. We wanted
+[00:30:09] to create something that was fun and
+[00:30:12] again an introduction to how to use
+[00:30:14] Foundry again. We're using the cloud
+[00:30:17] models that are available. We're using
+[00:30:18] Sonnets for this workshop and then um
+[00:30:23] we are plugging that into Foundry. I see
+[00:30:25] Nick has gone to the test feed.
+[00:30:28] Um Nick N.
+[00:30:31] But you can you can actually order a
+[00:30:32] real cupcake. You you don't need to
+[00:30:34] test. It's fine to test as well, but uh
+[00:30:37] real cupcake is also allowed as well.
+[00:30:40] Um
+[00:30:42] we should have
+[00:30:44] I'm going to take a second just to
+[00:30:46] double check.
+[00:30:48] I think we have got it working now.
+[00:30:51] And if you see your name on the pickup
+[00:30:53] ready, you can come to chat to Liam and
+[00:30:56] Chris and they will have the cupcake
+[00:30:57] ready for you. Yay!
+[00:31:00] Uh, Renato, Chris K, Simon Y,
+[00:31:05] Yusuke, Terry O, Vicky, and Cat.
+[00:31:10] Your cupcakes are ready at the front.
+[00:31:19] Nick N is still stuck in the test feed.
+[00:31:23] You got to make it over to the main
+[00:31:25] feed.
+[00:31:45] I should have a link just to mention we
+[00:31:48] will have like
+[00:31:49] the full workshop available and the code
+[00:31:52] for this.
+[00:31:53] Um, so afterwards if you wanted to try
+[00:31:55] it out at home or if you had any
+[00:31:57] questions, you can feel free to
+[00:31:59] um, try it out on your own later. And
+[00:32:02] we'll be around
+[00:32:04] uh,
+[00:32:04] the rest of the day and throughout the
+[00:32:06] workshop. So if you wanted to chat to us
+[00:32:08] and ask us questions about Foundry, you
+[00:32:10] can also go ahead and and check.
+[00:32:13] Actually, if anyone has questions now,
+[00:32:15] you can also ask. Let me know.
+[00:32:17] Um,
+[00:32:18] and yeah, other than that, that's pretty
+[00:32:20] much our workshop for today.
+[00:32:23] Um, yeah. Thank you very much.
+[00:32:27] I'll let the names
+[00:32:29] keep going.
+[00:32:31] On screen.
+[00:32:34] I do think we had one more slide at the
+[00:32:37] end to show. If we can switch maybe to
+[00:32:42] Barış, Tom, C and as well can collect
+[00:32:46] Oh, no. Those are preparing, but Damian,
+[00:32:50] James, Tom, Dima, Chris
+[00:32:53] can all come and grab your cupcakes.
+[00:32:56] Ah, perfect. Yes. We have a
+[00:33:00] final slide um just to
+[00:33:03] reiterate
+[00:33:05] some of your points and to also say
+[00:33:09] a couple of things to work on in the
+[00:33:12] future and if you want to keep working
+[00:33:14] with um Microsoft and Foundry,
+[00:33:17] go ahead and
+[00:33:19] uh Bing search Microsoft Foundry and it
+[00:33:22] should come up and you can go ahead and
+[00:33:24] experiment with it. We have free Azure
+[00:33:27] credits you can try.
+[00:33:29] Review the documentation. We have pretty
+[00:33:31] good documentation
+[00:33:33] um on Foundry docs there.
+[00:33:36] And you can also go ahead and take some
+[00:33:37] of our free courses. We have some
+[00:33:39] courses available through Microsoft
+[00:33:40] Learn.
+[00:33:42] Um
+[00:33:42] if you go to this link, those courses
+[00:33:44] will be available for you to try.
+[00:33:47] Um I think there's also some of the code
+[00:33:49] that will be available there, too.
+[00:33:53] All right. I think that is it for
+[00:33:56] the workshop today.
+[00:33:59] I'm going to switch back to my local
+[00:34:01] machine so you can see the orders in
+[00:34:03] case
+[00:34:05] Perfect. Um yeah, thanks for joining us,
+[00:34:08] everyone.

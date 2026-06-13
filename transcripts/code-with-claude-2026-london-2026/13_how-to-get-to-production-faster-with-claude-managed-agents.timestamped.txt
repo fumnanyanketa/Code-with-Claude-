@@ -1,0 +1,923 @@
+Title: How to get to production faster with Claude Managed Agents
+Video: https://www.youtube.com/watch?v=zenIB7XLZxQ
+Caption: auto (en) via tv
+================================================================================
+
+[00:00:00] [music]
+[00:00:10] [music]
+[00:00:18] [music]
+[00:00:19] >> Hi everybody.
+[00:00:21] Um, I hope everybody's having a good
+[00:00:22] time today. I am Michael. I'm a member
+[00:00:25] of technical staff here at Anthropic
+[00:00:26] working on Claude managed agents.
+[00:00:28] >> What's up everybody? My name is Harrison
+[00:00:30] and I'm also a member of technical staff
+[00:00:32] working on Claude managed agents.
+[00:00:34] >> Lot of members of technical staff.
+[00:00:36] >> Yeah. Yeah.
+[00:00:37] >> Um, okay. So, uh, today we want to talk
+[00:00:39] to you about Claude managed agents. Um,
+[00:00:41] but before we do that, we wanted to do a
+[00:00:43] quick recap over the last couple of
+[00:00:44] years and the exponential that we've, I
+[00:00:46] think everybody in this room has been
+[00:00:48] experiencing.
+[00:00:49] After that, we'll, uh, talk a little bit
+[00:00:51] about the motivations behind why we
+[00:00:53] built Claude managed agents,
+[00:00:55] um, followed by a deep dive into some of
+[00:00:57] the primitives that we offer with Claude
+[00:00:58] managed agents.
+[00:00:59] Um, and then afterwards, we will, uh,
+[00:01:01] bring out some of the partners that
+[00:01:02] we've been working with on some of the
+[00:01:04] new features that we announced today.
+[00:01:06] Um, and then we'll wrap it up with a
+[00:01:07] little bit of a getting started.
+[00:01:10] Cool. So,
+[00:01:11] uh,
+[00:01:12] AI capabilities over the last couple of
+[00:01:14] years have been on like an absolute
+[00:01:15] rocket ship of like an exponential. I
+[00:01:17] think, like I said, everybody here has
+[00:01:19] been kind of experiencing that.
+[00:01:20] Um, we started with like the Claude 3
+[00:01:23] kind of family of of uh, of models.
+[00:01:26] Um, and even back then, like you were
+[00:01:28] starting to see the the semblance of of
+[00:01:30] really capable things starting to
+[00:01:31] happen. Um, but really you you could
+[00:01:33] only really get like very simple, short
+[00:01:35] things, uh, going.
+[00:01:37] Uh, then with Opus 4, we went on an
+[00:01:39] absolute tear, um, and things like
+[00:01:41] Claude Code, uh, started like becoming
+[00:01:43] really, really prominent. Um, and then,
+[00:01:45] uh, these days with some of the newer
+[00:01:46] model families that we have, um, we're
+[00:01:48] seeing that like the bottleneck towards
+[00:01:50] increasing capabilities is really the
+[00:01:52] infrastructure around these models and
+[00:01:54] not so much the intelligence for them.
+[00:01:56] So, yeah, like I said with uh, Opus 3,
+[00:01:59] you could maybe have Claude like
+[00:02:01] generate a test function for you. Maybe
+[00:02:03] you you would steer it a lot throughout
+[00:02:04] and you were like approving every single
+[00:02:06] tool that you were doing. And then with
+[00:02:08] Opus 4 and Claude code becoming around,
+[00:02:11] you were able to maybe have it drive an
+[00:02:12] entire feature. It could maybe put up a
+[00:02:14] PR for you, but you were still steering
+[00:02:16] it a lot throughout the way.
+[00:02:17] Um and then with Opus 4 .7, the the the
+[00:02:21] newest model that we have, like Boris
+[00:02:23] mentioned earlier, people are clearing
+[00:02:25] their entire backlogs and are waking up
+[00:02:27] to like a bunch of merge-ready PRs,
+[00:02:29] which is amazing to see. Who doesn't
+[00:02:31] love waking up in the morning to a bunch
+[00:02:32] of PRs that you have to review.
+[00:02:34] Um and what we think we're seeing things
+[00:02:36] going in the future is entire quarters'
+[00:02:38] worth of work being able to be getting
+[00:02:40] accomplished within a couple of hours.
+[00:02:43] So, you can imagine a full M&A pipeline
+[00:02:45] being done end-to-end with like a a
+[00:02:47] swarm of agent teams.
+[00:02:48] And when these agents work for like a
+[00:02:51] couple of hours,
+[00:02:52] things like prompt plus tool use are
+[00:02:54] okay, but really where we start or we
+[00:02:57] need to start getting going is towards
+[00:02:59] like task completion and overall agent
+[00:03:02] infrastructure pipelines.
+[00:03:05] >> But in order for your agents to be able
+[00:03:06] to accomplish more, they need access to
+[00:03:08] more. And that's where Claude Managed
+[00:03:10] Agents is here to help you manage some
+[00:03:11] of the complexity. You can imagine that
+[00:03:13] if you have an entire team running an
+[00:03:15] M&A deal, they need access to secure
+[00:03:17] credentials, internal systems. If you're
+[00:03:19] making code changes, you need access to
+[00:03:21] your private GitHub repositories and the
+[00:03:22] credentials that allow that kind of
+[00:03:24] access. And additionally, you need
+[00:03:26] identity and off for your agents. This
+[00:03:28] is essentially an identifier for who
+[00:03:29] they are. Like you know, I I as an
+[00:03:32] engineer have access to Slack and my
+[00:03:34] email and a bunch of tools internally
+[00:03:35] like that. Our agents are going to need
+[00:03:37] access to those systems as well.
+[00:03:40] But additionally, there we're seeing
+[00:03:41] more and more different conversational
+[00:03:42] methodologies for interacting with our
+[00:03:44] agents. The first is probably the most
+[00:03:46] familiar with a lot of folks, which is
+[00:03:47] you send the agent text and it gives you
+[00:03:49] a response conversationally. But we're
+[00:03:51] seeing more of a transition towards
+[00:03:53] outcome-oriented agentic activity. So,
+[00:03:55] this is again, give the M&A deal that
+[00:03:57] needs to happen to the agent in the
+[00:03:59] agent set, and have them just go off and
+[00:04:01] accomplish the task, coming back to you
+[00:04:02] only when they feel relatively confident
+[00:04:04] that the entire activity is complete.
+[00:04:06] Additionally, as an agent platform, we'd
+[00:04:08] be remiss to not support other
+[00:04:10] methodologies of interacting with your
+[00:04:11] agents, like starting an agent and then
+[00:04:13] picking it up later on, maybe weeks or
+[00:04:15] months in the future when you want the
+[00:04:16] agent to pick back up right where it
+[00:04:18] left off.
+[00:04:19] So, it was very clear that um we're
+[00:04:21] going to start expecting a lot out of
+[00:04:23] these agents, and uh our developers will
+[00:04:25] as well.
+[00:04:26] Um when we were doing a bunch of
+[00:04:28] research as we were starting to develop
+[00:04:29] something like Cloud Managed Agents, um
+[00:04:31] we saw a lot of key sticking points
+[00:04:33] around infrastructure and primitive
+[00:04:35] development that um
+[00:04:36] uh really stood out. So, the first of
+[00:04:38] which was uh figuring out things like
+[00:04:40] context management and memory. Um these
+[00:04:43] things are things that work really,
+[00:04:44] really well if they are working, but if
+[00:04:46] you get it wrong, it can like completely
+[00:04:48] destroy how well your agents are going
+[00:04:49] to work.
+[00:04:50] Um and infrastructure concerns was
+[00:04:53] another kind of like big sticking point.
+[00:04:54] It was actually the number one thing
+[00:04:55] that was cited as preventing people from
+[00:04:57] being able to like skate the exponential
+[00:04:59] and like really benefit from these
+[00:05:01] improved model intelligences. Um you
+[00:05:03] need things like reliability,
+[00:05:04] scalability, security, um even latency
+[00:05:07] starts mattering when you're having
+[00:05:08] these things running prod.
+[00:05:10] Um and then finally, uh
+[00:05:12] none of this really matters if you don't
+[00:05:14] have observability into what these
+[00:05:15] things are doing. Um if you can't tell
+[00:05:17] whether or not your agent is succeeding
+[00:05:19] uh or doing things successfully,
+[00:05:21] uh it doesn't really matter. Like, how
+[00:05:23] do you can how can you even assess that
+[00:05:25] the the thing is good? So, with Cloud
+[00:05:27] Managed Agents, we did all of that
+[00:05:29] platform work um so that you don't have
+[00:05:31] to, so that you can kind of pick and
+[00:05:32] choose the primitives that we have
+[00:05:33] available out of the box uh around
+[00:05:35] infrastructure, agent primitives, and
+[00:05:37] observability, all available on the
+[00:05:39] Cloud platform um where you can kind of
+[00:05:41] pick and choose the the composable
+[00:05:43] primitives that we have um and and kind
+[00:05:45] of like build your product on top of
+[00:05:46] them. Cool, so that's a lot. How do you
+[00:05:48] actually get started building with
+[00:05:49] Claude managed agents? The first step is
+[00:05:52] just to define an agent. This is
+[00:05:53] essentially a bundle of configuration
+[00:05:55] that identifies who your agent is and
+[00:05:56] what it can do. It's a system prompt,
+[00:05:58] model, skills, tools, permissions, and
+[00:06:01] generally just the identity of the thing
+[00:06:03] that's actually taking the action.
+[00:06:05] Second, you need a
+[00:06:06] you need an environment in which the
+[00:06:08] agent will actually run. So, really
+[00:06:10] helps to give Claude access to a
+[00:06:11] computer. In this case, your agent needs
+[00:06:14] a sandboxing environment where you can
+[00:06:15] configure the network allow list and
+[00:06:17] pre-installed packages within that
+[00:06:18] environment.
+[00:06:19] When all that's ready to go, you can
+[00:06:21] actually kick off the session. Ask your
+[00:06:22] agent to go and complete some piece of
+[00:06:24] work and then come back to you when it's
+[00:06:25] ready to rock.
+[00:06:27] And through it all, if you want to
+[00:06:28] observe the agent as it's doing its
+[00:06:30] thing cooking, you can just listen to
+[00:06:32] the event stream and understand what the
+[00:06:34] agent is doing, why it's doing it, and
+[00:06:36] generally interact with it in whatever
+[00:06:37] way you see fit. So, let's demystify
+[00:06:39] what we mean when we're talking about
+[00:06:41] this event stream. Every session that
+[00:06:42] you start in Claude managed agents is
+[00:06:44] effectively a log of events that you
+[00:06:47] have where you or your end users are
+[00:06:49] interacting with Claude and Claude's
+[00:06:50] responding. So, we kind of like split up
+[00:06:53] the domains of events that we have
+[00:06:55] within the platform so that it's easier
+[00:06:56] for you to kind of understand what each
+[00:06:58] event means. Um the first of which is
+[00:07:00] user events. These are things that your
+[00:07:02] own end users or maybe your platform is
+[00:07:04] sending to Claude managed agent
+[00:07:05] sessions.
+[00:07:06] Um these could include text messages, um
+[00:07:09] images, documents. Um you can interrupt
+[00:07:11] your agent if you see that it's going
+[00:07:13] off course and you want to steer it back
+[00:07:14] onto onto its tracks.
+[00:07:16] Um tool results for custom tools that
+[00:07:18] you implement and uh execute on your
+[00:07:20] end. Um and even confirmations for human
+[00:07:23] in the loop controls for any tools that
+[00:07:24] are executed on Anthropic servers. And
+[00:07:26] then finally, we have outcome
+[00:07:27] definitions, which we'll go into a
+[00:07:28] little bit more detail about later.
+[00:07:30] Next, we have agent events. Agent events
+[00:07:32] are uh anything that Claude is really
+[00:07:34] doing um on on its side. So, this could
+[00:07:36] be responding to the user with a
+[00:07:38] message, um executing tools on its end,
+[00:07:41] um or coordinating with other agents,
+[00:07:42] which we'll go into a little bit more
+[00:07:44] detail later.
+[00:07:45] Next we have the session events. These
+[00:07:47] are just like the overall life cycle of
+[00:07:49] the session itself. So any descriptions
+[00:07:51] around the status of the session
+[00:07:53] changing from idle to running,
+[00:07:55] error recovery and information about the
+[00:07:57] sort of sorts of errors that Claude is
+[00:07:58] running into and outcome processing. And
+[00:08:01] then finally we have span events which
+[00:08:03] make it really really easy to understand
+[00:08:05] when certain things are starting and
+[00:08:06] ending like Claude starting to write
+[00:08:08] together really really long response.
+[00:08:11] >> So we know that's a ton of information.
+[00:08:12] So let's make it concrete by doing a
+[00:08:14] quick demo of Pascal, a fictitious agent
+[00:08:16] that's responsible for understanding a
+[00:08:17] little bit more about grocery shopping
+[00:08:19] habits of our users. So if we jump into
+[00:08:22] the demo, we're going to we're going to
+[00:08:24] start by showing our dashboard that's
+[00:08:25] integrated with manage agents. And we're
+[00:08:27] kicking off an analysis run where we've
+[00:08:29] clicked this analyze button in the top
+[00:08:30] right. Jumping back to the console where
+[00:08:33] we can see everything that the agent is
+[00:08:34] doing in real time. We can see the list
+[00:08:36] of events that are coming through the
+[00:08:37] event stream, tool runs, agent events,
+[00:08:39] generally understanding what's happening
+[00:08:41] in real time. On the right side, you can
+[00:08:43] see our agentic definition. This
+[00:08:45] includes the system prompt, model and
+[00:08:47] all of the MCP tool configuration that I
+[00:08:48] was talking about earlier.
+[00:08:50] And as we click into the environment, we
+[00:08:52] can also see our networking
+[00:08:53] configuration as well as the packages
+[00:08:54] that we've installed into our
+[00:08:56] container. Jumping back to our
+[00:08:58] application, we can see all of this
+[00:08:59] shown on our surface because all of this
+[00:09:01] is exposed via an API. And what's that?
+[00:09:03] Claude came back found some bits for us.
+[00:09:06] Looks like bananas are super popular I
+[00:09:08] guess.
+[00:09:09] >> I like bananas.
+[00:09:10] >> Uh and also jumping forward, if you want
+[00:09:12] to avoid the crowds, it turns out that
+[00:09:14] Sunday is not the right time to go
+[00:09:15] shopping for groceries. But then that's
+[00:09:17] not enough for us. We want to understand
+[00:09:19] more about how our shoppers are going to
+[00:09:20] behave in the future. So we had our
+[00:09:22] agent go ahead and kick off a predictive
+[00:09:24] analysis and reorder probabilistic
+[00:09:26] understanding of our users.
+[00:09:28] But again, that's not enough for us. We
+[00:09:30] want our agent to get even better over
+[00:09:31] time and we want to improve the way that
+[00:09:33] it interacts with these sessions. So
+[00:09:35] we've clicked this ask Claude button in
+[00:09:36] the top right, where Claude is actually
+[00:09:38] reading the transcript of our session
+[00:09:40] and is offering inputs for how we can
+[00:09:42] optimize the way that we've configured
+[00:09:43] it. So, in this case, it's a little bit
+[00:09:45] small, but on the right side, we'll see
+[00:09:46] that a Python script ran for over 20
+[00:09:49] seconds. This is a Python script that we
+[00:09:50] uploaded to the session, and maybe
+[00:09:52] there's a chance for us to
+[00:09:53] optimize that run time so things can
+[00:09:55] feel a little bit snappier for our
+[00:09:56] users. So, in a nutshell, that's a a
+[00:09:59] whirlwind tour of the console and many
+[00:10:01] of the features that we support out of
+[00:10:03] the box with managed agents.
+[00:10:05] So, as we jump forward, as developers,
+[00:10:07] you might want to go ahead and figure
+[00:10:08] out how to get started. If you have
+[00:10:10] Claude Code installed, which I I hope
+[00:10:12] many of you do, it's my favorite tool of
+[00:10:14] all. Uh feel free to just jump in and
+[00:10:16] use the skill that we ship with our
+[00:10:19] with Claude Code directly, the Claude
+[00:10:20] API skill. It knows all about managed
+[00:10:22] agents and will make getting integrated
+[00:10:23] an absolute breeze. Second, we also have
+[00:10:26] shipped a CLI that lets you interact
+[00:10:28] with your agents and your sessions
+[00:10:29] extremely seamlessly via a very simple
+[00:10:31] command line interface. And lastly, if
+[00:10:33] you just want to see some examples of
+[00:10:35] real code, copy-paste ready, you can fit
+[00:10:37] for whatever your needs might be, we
+[00:10:39] have a set of cookbooks that'll show off
+[00:10:40] what it looks like to integrate with all
+[00:10:41] of our API services.
+[00:10:43] So, we covered a lot of the basics, but
+[00:10:45] I wanted to go over some of the more
+[00:10:46] advanced features that we've been
+[00:10:47] releasing over the last couple of weeks,
+[00:10:49] just so that you're all kind of aware of
+[00:10:51] them. So, the first is probably my
+[00:10:53] favorite, is multi-agent orchestration.
+[00:10:55] It allows Claude to spawn other agent
+[00:10:58] threads with their own context windows
+[00:11:00] in order to delegate work to them. And
+[00:11:01] the cool aspect of it is that Claude can
+[00:11:03] pass these messages back and forth
+[00:11:05] through other Claudes in order for them
+[00:11:06] to do whatever specialized work they get
+[00:11:08] to do.
+[00:11:08] Um outcomes allows you as an end user to
+[00:11:12] define a rubric or a set of goals for
+[00:11:15] Claude to be able to iterate towards
+[00:11:17] getting towards. Um so, after it does
+[00:11:20] its kind of first pass iteration of
+[00:11:21] something, it'll start triggering its
+[00:11:23] outcome grading and will keep going like
+[00:11:26] that in a loop until it feels like it's
+[00:11:27] satisfied with the outputs it's given
+[00:11:28] you.
+[00:11:29] Memory allows Claude to kind of get
+[00:11:32] better over time by reading and writing
+[00:11:34] from these long-lived memory stores,
+[00:11:36] which makes every session kind of better
+[00:11:39] than the last that it's had.
+[00:11:40] And then finally, we have dreaming,
+[00:11:42] which we announced in research preview,
+[00:11:44] which allows Claude to kind of like
+[00:11:45] reflect and codify over like thousands
+[00:11:48] of sessions all at once in order to
+[00:11:49] produce new memories, edit existing
+[00:11:52] ones, and really make sure that the
+[00:11:53] memories that we're dealing with are are
+[00:11:55] top-notch.
+[00:11:56] >> And earlier this morning, you heard us
+[00:11:57] announce two new features that'll make
+[00:11:59] your agents even more powerful. The
+[00:12:01] first is self-hosted sandboxes,
+[00:12:03] effectively giving you the option to
+[00:12:04] bring your own compute infrastructure to
+[00:12:06] Claude if you want to run tools within
+[00:12:08] your own VPC.
+[00:12:10] Shout out to our partners at Cloudflare,
+[00:12:12] Daytona, Modal, and Vercel, who we've
+[00:12:14] been working with to support support
+[00:12:16] this seamlessly out of the box. And
+[00:12:18] second, we shipped a feature in research
+[00:12:19] preview called MCP tunnels, which is
+[00:12:21] basically a way for you to expose your
+[00:12:23] private MCP servers directly to Claude
+[00:12:25] via managed agents without ever having
+[00:12:27] to expose anything over the public
+[00:12:28] internet directly.
+[00:12:30] >> And just diving a little bit deeper into
+[00:12:32] how self-hosted sandboxes work, you can
+[00:12:34] bring your own kind of sandboxing
+[00:12:36] infrastructure fleet where you can
+[00:12:38] contain your own private files, your own
+[00:12:40] services, packages. You get to kind of
+[00:12:42] kind of control how these sandboxes are
+[00:12:44] provisioned
+[00:12:45] without using our kind of like native
+[00:12:47] Anthropic Cloud sandboxes. Inside your
+[00:12:50] own perimeter, you can control things
+[00:12:52] like network policies, your audit logs,
+[00:12:55] when these sandboxes are spawned and
+[00:12:58] idled.
+[00:13:00] Um and and everything if there is kind
+[00:13:02] of in your control without kind of
+[00:13:03] having to cede that over to Claude
+[00:13:05] managed agents.
+[00:13:06] All we'll do is just send you a signal
+[00:13:08] whenever we need to have a new sandbox
+[00:13:10] be provisioned because Claude needs to
+[00:13:11] do some some work in there.
+[00:13:13] And the nice aspect of it is that you
+[00:13:15] can either use your own sandboxing fleet
+[00:13:17] or use one of the partners that we just
+[00:13:19] mentioned earlier today in order to get
+[00:13:21] started with all of this.
+[00:13:23] >> And let's talk a little bit about MCP
+[00:13:24] tunnels. MCP tunnels again are basically
+[00:13:26] just a way for you to get your private
+[00:13:28] MCPs in your network exposed to Cloud
+[00:13:31] Manager agents without having to do any
+[00:13:33] fancy network configuration on your
+[00:13:34] side. Essentially, all you have to do is
+[00:13:36] expose a fairly basic proxy layer uh to
+[00:13:40] our to our uh MCP tunnels, enabling your
+[00:13:43] network infrastructure to speak directly
+[00:13:44] with Cloud via secure tunnel in the
+[00:13:46] middle. Okay. So, in order to get a
+[00:13:49] little bit deeper about private
+[00:13:50] sandboxes or uh self-hosted sandboxes,
+[00:13:52] um I wanted to welcome to the stage Mike
+[00:13:54] from Cloudflare, Yvon from Daytona,
+[00:13:56] Akshat from Modal, and Luke from Vercel
+[00:13:58] to talk a little bit a little bit more
+[00:14:00] about this. MY HAIR'S ON.
+[00:14:08] >> [music]
+[00:14:11] >> HEY.
+[00:14:12] >> HI.
+[00:14:13] >> GOOD TO SEE [music] YOU.
+[00:14:14] >> HI, FRIENDS.
+[00:14:15] >> AH.
+[00:14:16] >> HOW WE DOING?
+[00:14:17] >> HEY THERE.
+[00:14:18] >> Do you guys mind if we like take a
+[00:14:19] selfie real quick? I think that's like a
+[00:14:20] trend here.
+[00:14:21] >> Are we allowed to?
+[00:14:21] >> I I think it's mandatory, right?
+[00:14:23] >> Okay.
+[00:14:23] Here.
+[00:14:27] >> Nice.
+[00:14:27] >> We look great.
+[00:14:29] >> Okay, cool. Um thanks everybody for
+[00:14:30] joining us. Um you all run uh
+[00:14:34] companies or work at companies that run
+[00:14:36] sandboxing fleets for Agent, but you've
+[00:14:38] all built them slightly differently, and
+[00:14:40] I'm curious what you are each
+[00:14:41] individually kind of betting on here.
+[00:14:43] Luke, do you want to go first?
+[00:14:44] >> Yeah, I think one of the um things
+[00:14:47] that's foundational to us is we build
+[00:14:50] all of our infrastructure on top of like
+[00:14:52] the same foundation, so we kind of
+[00:14:54] talked about this as fluid compute. Um
+[00:14:57] internally, we've kind of called it a
+[00:14:58] system of hive.
+[00:15:00] Um and that allows us to give everyone
+[00:15:03] basically just like the full VM um
+[00:15:06] that's for yeah, whether you're running
+[00:15:07] a build, a sandbox, or a function.
+[00:15:09] Um and for us, that really means that
+[00:15:12] all of these things interoperate well.
+[00:15:15] We can reuse like the same features
+[00:15:16] between them. Um so, stuff like we've uh
+[00:15:20] just made public our like firewall for
+[00:15:22] sandboxes where you can filter traffic
+[00:15:25] and um, inject secrets and stuff like
+[00:15:27] that. Well, we can build that for one
+[00:15:29] thing and and reuse it across it all.
+[00:15:31] So, the same primitive is really
+[00:15:34] flexible from that way.
+[00:15:35] Um,
+[00:15:36] and I think that's really powerful for
+[00:15:38] when you're building something like
+[00:15:40] cloud managed agents and you can call it
+[00:15:42] from a function into a sandbox and vice
+[00:15:44] and verse.
+[00:15:44] >> Yeah. Nice. Um, Akshay?
+[00:15:47] >> Yeah. So, Modal is a compute platform
+[00:15:51] that we've built for today's use cases.
+[00:15:55] Uh, and one of the things we are really
+[00:15:56] good at is um,
+[00:15:58] we run a lot of compute across the
+[00:16:00] world. Uh, so we can uh, since we have
+[00:16:03] our own scheduler, we can spin up uh,
+[00:16:05] hundreds of thousands sandboxes in uh,
+[00:16:07] in order of minutes, which uh, we're
+[00:16:09] betting on the fact that people need a
+[00:16:11] lot of scale and they want to get to
+[00:16:13] that scale really quickly for use cases
+[00:16:14] like RL.
+[00:16:16] Uh, we also run in every region uh, that
+[00:16:18] you can imagine, so you can get low
+[00:16:19] latency if you care about low latency
+[00:16:21] from US West or US.
+[00:16:23] Um, and [clears throat] uh, we were
+[00:16:25] really designed around flexibility. Uh,
+[00:16:28] so one of the things we have is uh, we
+[00:16:30] we think a lot about persistent volumes.
+[00:16:32] Like, how can you customize that? How
+[00:16:34] can you customize your images? Um, and
+[00:16:37] also we have GPUs. Uh, and GPU sandboxes
+[00:16:39] are are actually a pretty big growing
+[00:16:41] use case for us.
+[00:16:43] >> Nice. Um, Yvan?
+[00:16:44] >> Yeah, so for us, so Deta Una, we are
+[00:16:49] a company that started out building
+[00:16:51] sandboxes from scratch and so we had one
+[00:16:54] definite principle that we were thinking
+[00:16:55] about when we were building this or
+[00:16:57] inside, it was that agents will need
+[00:17:00] what humans need. And so, when we think
+[00:17:03] about when we started this, at that
+[00:17:05] time, a lot of people were just doing
+[00:17:06] code execution boxes for for for the
+[00:17:08] most part, but what we sort of
+[00:17:10] understood was that agents like humans
+[00:17:12] will need like different sort of size
+[00:17:14] and specs, CPU, RAM, memory, different
+[00:17:16] operating systems, CPUs, GPUs, like
+[00:17:19] everything that a human needs for
+[00:17:20] agents.
+[00:17:21] They the humans need to get their job
+[00:17:23] done, agents will need as well.
+[00:17:25] But the difference is you have to have
+[00:17:26] that at insane amount of speed and scale
+[00:17:29] and things like, you know, pausing,
+[00:17:31] resuming, forking so that agents can try
+[00:17:33] multiple outcomes. And so when we were
+[00:17:35] building out Daytona, we're like, oh,
+[00:17:37] nothing that exists
+[00:17:38] in the market today can offer that from
+[00:17:40] an infrastructure perspective. And
+[00:17:41] similarly to you guys, we built our own
+[00:17:43] schedulers to basically enable this.
+[00:17:45] >> So, yeah.
+[00:17:45] >> Nice.
+[00:17:46] It's amazing. Um Mike.
+[00:17:48] >> Yeah. Um so Cloudflare, we're kind of uh
+[00:17:51] one of our big bets is actually on like
+[00:17:52] two different sandboxing primitives. So,
+[00:17:54] we have the the micro VM
+[00:17:56] which is, you know, if if your agent is
+[00:17:58] acting like a developer, you give it
+[00:17:59] everything a developer has. You can run
+[00:18:01] CLI tools, compile Rust, or whatever. Um
+[00:18:04] but we also have this different isolate
+[00:18:05] which is a or different sandboxing
+[00:18:06] technology called isolates,
+[00:18:08] which we think in the long term, like as
+[00:18:11] the price of intelligence drops and, you
+[00:18:13] know, 2 years from now the Sanitas the
+[00:18:15] world are running at Opus scale, we're
+[00:18:16] just going to get a massive, massive
+[00:18:18] amount of agents, and we're we're just
+[00:18:19] going to run out of compute, right? And
+[00:18:22] like we need something that can scale
+[00:18:23] even more aggressively than a micro VM.
+[00:18:26] And so we have this other technology
+[00:18:27] that can still do sandboxing, it can
+[00:18:29] still isolate your processes, but it
+[00:18:31] spins up in in, you know, milliseconds,
+[00:18:33] you can still write files, you can still
+[00:18:35] execute arbitrary code, um but it's
+[00:18:38] actually like much more lightweight.
+[00:18:40] You're actually like, you know, running
+[00:18:41] multiple tenants in a single process.
+[00:18:43] So, the ability to kind of flex between
+[00:18:45] these two different uh sandboxing
+[00:18:47] technologies is, you know, a big part of
+[00:18:49] what we're focusing on at Cloudflare in
+[00:18:51] the future.
+[00:18:52] >> Oh, that's that's awesome. Wide variety
+[00:18:54] of answers, too. Um I'm curious now that
+[00:18:57] uh self-hosted sandboxes are kind of out
+[00:18:59] and we partnered with all of you, um is
+[00:19:02] there anything that you're like really
+[00:19:02] excited to see people starting to build
+[00:19:05] on your platforms with managed agents?
+[00:19:09] >> Um I think for me
+[00:19:11] the like I'm in the management chain and
+[00:19:14] so one of the things I've been thinking
+[00:19:16] about is this idea of
+[00:19:18] everything that was asynchronous is now
+[00:19:20] synchronous and vice versa, right? And
+[00:19:22] that vice versa is like really
+[00:19:23] important. So
+[00:19:25] all of the synchronization that you used
+[00:19:27] to have to do that you would spend time
+[00:19:29] coding and then you'd have to find time
+[00:19:31] to like take a meeting to get the
+[00:19:33] product alignment or something like
+[00:19:35] that.
+[00:19:36] Now that's kind of where I spend the
+[00:19:38] majority of my time and agents allow me
+[00:19:41] to delegate all of that kind of
+[00:19:43] asynchronous work into the background
+[00:19:44] like much more effectively.
+[00:19:46] The way I've kind of been thinking about
+[00:19:48] this is like everyone now has a chief of
+[00:19:50] staff
+[00:19:51] where you that used to be like an
+[00:19:52] executive role. Every engineer can have
+[00:19:55] a chief of chief of staff like doing
+[00:19:56] market research trying to understand the
+[00:19:58] product that they're working on more how
+[00:20:00] customers are using it and stuff like
+[00:20:01] that. And so I think that that for me is
+[00:20:05] where I'm like super excited to see
+[00:20:07] essentially people have talked about
+[00:20:08] this as like personal software or
+[00:20:09] something thing but I really kind of
+[00:20:11] think about it as like that everyone's
+[00:20:13] now got a personal assistant
+[00:20:16] and I think that that's just going to be
+[00:20:17] super powerful for everyone in the
+[00:20:19] future. Yeah.
+[00:20:21] >> Yeah, there's so many use cases. Like
+[00:20:24] for example, we have DoorDash as a
+[00:20:26] customer.
+[00:20:27] They're automating account management
+[00:20:29] with agents.
+[00:20:30] But one thing that I am personally very
+[00:20:33] excited about is um
+[00:20:35] I don't know if you guys have heard of
+[00:20:37] Karpathy's auto resource thing.
+[00:20:39] But it's
+[00:20:40] basically Claude can optimize training
+[00:20:42] loops and um
+[00:20:44] what we found success with on our
+[00:20:46] inference team actually is they can have
+[00:20:48] Claude
+[00:20:49] optimize inference. So you can give it a
+[00:20:52] a workload and a benchmark and it'll
+[00:20:54] basically hill climb it and and make it
+[00:20:56] better.
+[00:20:57] It'll run like the Nvidia profiler.
+[00:20:59] It'll read the profiles and it'll just
+[00:21:02] go ham and and make things better.
+[00:21:04] And it all runs on modal because we have
+[00:21:06] GP sandboxes. So this is something that
+[00:21:08] people are running right now manually,
+[00:21:09] but with CMA I'm excited to actually
+[00:21:11] make this uh
+[00:21:13] a background agent that that just works
+[00:21:14] in Slack.
+[00:21:15] >> Yeah, you can give it something like
+[00:21:16] outcomes and it can it can go ahead and
+[00:21:18] iterate on it.
+[00:21:20] Um Yvan?
+[00:21:21] >> Yeah, so um there's so many things being
+[00:21:23] built that we're excited about and so I
+[00:21:24] don't know if I have enough time to talk
+[00:21:26] about that. Um
+[00:21:28] I can tell you the most exciting and
+[00:21:29] then we can loop back on on on the less
+[00:21:30] so, which is for me
+[00:21:32] uh which is essentially
+[00:21:34] that right now we I feel that the things
+[00:21:37] that are stopping the progression of
+[00:21:39] agents getting tasks done is essentially
+[00:21:41] infrastructure now, not the models
+[00:21:42] itself. Whereas we can now and I've seen
+[00:21:45] this people have maybe heard of it, not
+[00:21:46] heard of it. The the term is like the
+[00:21:48] human emulator. Essentially anything
+[00:21:50] that a human can do digitally or digital
+[00:21:52] knowledge knowledge worker, you can now
+[00:21:54] have an agent do if you give it a
+[00:21:56] sandbox. So for example, um
+[00:21:58] you have agents that can do, you know,
+[00:22:00] reporting or whatnot, but they can't
+[00:22:03] give you an actual end-to-end report
+[00:22:05] because some of the data might be locked
+[00:22:06] in a legacy application inside of a
+[00:22:07] Windows machine or Windows desktop
+[00:22:09] application. Um and so having an agent
+[00:22:12] spin up a sandbox that it can access the
+[00:22:13] things through an API for the most part,
+[00:22:15] but if it doesn't it can actually
+[00:22:16] install the application or log into the
+[00:22:18] system and then give you an end-to-end
+[00:22:20] result is something that I think is
+[00:22:22] insanely fascinating right now and I
+[00:22:24] think that is a big unlock going
+[00:22:25] forward.
+[00:22:26] >> Yeah.
+[00:22:27] >> Mike.
+[00:22:28] >> Cool. Um yeah, so when we launched the
+[00:22:30] advantage agents integration, we we
+[00:22:32] really like it leaned into
+[00:22:34] programmability and customization. So
+[00:22:36] you can like reach like very easily
+[00:22:38] write tools that now reach into like the
+[00:22:39] rest of Cloudflare. And I'm really
+[00:22:41] excited to like have all of that just
+[00:22:43] very readily available and programmable.
+[00:22:46] So um I don't know, I'm just thinking
+[00:22:49] personally like we have our new email
+[00:22:50] service and so we wrote something that
+[00:22:52] gives every agent an email address and
+[00:22:54] it can send email and you can customize
+[00:22:56] this. Or we also have our browser
+[00:22:57] rendering service. So you can uh you
+[00:22:59] know, run a browser and run like
+[00:23:01] arbitrary control and have audit logs
+[00:23:03] and whatnot. And so, I'm excited for
+[00:23:04] just like the toolbox of all these other
+[00:23:06] things being very readily available and,
+[00:23:09] you know, just write a little bit of
+[00:23:10] JavaScript and and customize it for your
+[00:23:12] needs.
+[00:23:12] >> Yeah. Um very exciting.
+[00:23:14] Um so, we Yvon, you know, we I I just
+[00:23:17] felt like 2 minutes earlier talking
+[00:23:19] about the exponential and how
+[00:23:21] uh it it's just wild these model
+[00:23:23] intelligences uh increasing that this
+[00:23:25] this quickly. Is there anything that
+[00:23:26] you've seen your customers building now
+[00:23:29] that they weren't able to build like 6
+[00:23:30] months ago?
+[00:23:31] >> So, the one I mentioned is probably
+[00:23:33] that, but another thing that's
+[00:23:34] interesting for me is essentially the
+[00:23:37] idea of continuous learning, which is um
+[00:23:40] essentially So, Daytona and a few others
+[00:23:42] here, we have two basic use cases. One
+[00:23:45] is background agents and one is
+[00:23:46] reinforcement learning. And we have some
+[00:23:49] customers that are essentially enabling
+[00:23:52] their customers to against the data that
+[00:23:54] they have every day, every week, every
+[00:23:56] month, essentially take that data and do
+[00:23:58] [clears throat] um
+[00:23:59] RL. And then in the morning or the next
+[00:24:01] day, they actually have a more
+[00:24:03] intelligent model, right? And so, I
+[00:24:04] think that is actually quite interesting
+[00:24:06] and we see that being built on the
+[00:24:07] platform today.
+[00:24:07] >> Yeah. Wow, that's that'll be really
+[00:24:09] really cool to see. Um Akshat, I'm
+[00:24:12] curious uh
+[00:24:13] like from your perspective at Modal,
+[00:24:14] like what do you what do you think is
+[00:24:16] the next like infrastructural like thing
+[00:24:19] that we will need for agents um after
+[00:24:21] sandboxes?
+[00:24:23] >> Yeah, I'm sure you guys are thinking
+[00:24:25] about this a bunch as well, but uh we
+[00:24:28] uh we're really interested in figuring
+[00:24:30] out how do we improve uh isolation and
+[00:24:33] permission boundaries for agents. So,
+[00:24:34] for example,
+[00:24:36] uh can you run Claude agent SDK in the
+[00:24:39] same sandbox as code execution, but
+[00:24:40] actually have better isolation between
+[00:24:42] the two?
+[00:24:43] Uh it's more of a short-term thing. I
+[00:24:45] think longer term there's so much stuff
+[00:24:46] to play with with like
+[00:24:48] compute and uh storage in particular.
+[00:24:51] It's like the I think the design space
+[00:24:53] of uh persistent storage is there's a
+[00:24:55] lot more stuff. Like can you spawn sub
+[00:24:57] agents that fork off like where what you
+[00:24:59] have right now? And maybe they can time
+[00:25:01] travel back and visit previous states.
+[00:25:04] Uh another thing we're thinking about is
+[00:25:05] like
+[00:25:07] um people deploy stuff from sandboxes to
+[00:25:10] modal functions. So, once something
+[00:25:12] works, you then make it a
+[00:25:13] deployed endpoint, but then how do we
+[00:25:15] equip the agent to actually sort of
+[00:25:18] reify its own code and like update it in
+[00:25:20] place?
+[00:25:21] Uh there's a lot of cool stuff coming.
+[00:25:22] >> Yeah. Yeah. Um and Mike, I think we were
+[00:25:25] talking about this a little bit
+[00:25:25] backstage. Um but what do you think is
+[00:25:29] like one of the harder problems with uh
+[00:25:31] running agents at scale?
+[00:25:33] >> Yeah, I mean I I think there are some
+[00:25:35] infrastructure challenges with scaling
+[00:25:36] up, but actually when we uh you know,
+[00:25:39] are like talking to companies and like
+[00:25:40] trying to deploy these things and we
+[00:25:42] even feel it internally, like it it's
+[00:25:44] very easy to get some like vibe coded
+[00:25:46] platform where people are spinning up
+[00:25:47] agents internally, but actually like
+[00:25:49] deploying that means that there are all
+[00:25:51] these security challenges that you have
+[00:25:52] to face and there are like so many
+[00:25:54] layers to it. So,
+[00:25:56] uh you know, how do we properly filter
+[00:25:58] egress? How do we properly uh you know,
+[00:26:01] assign identities to agents? And if that
+[00:26:03] agent then go creates another agent that
+[00:26:05] goes and creates a site, like how do we
+[00:26:07] properly assign identity all the way
+[00:26:09] down the chain such that it's only
+[00:26:11] getting access to the right data? And
+[00:26:13] like there are some protocols that that
+[00:26:14] are going around that like I don't think
+[00:26:16] the the industry is unified on that we
+[00:26:18] we should. Uh and then lastly, like how
+[00:26:20] do you get every service behind
+[00:26:22] something that understands that
+[00:26:23] identity, right? Like whether it's a
+[00:26:24] private service, you you all have the
+[00:26:26] MCP tunnels that you just launched.
+[00:26:28] There There's lots of challenges like
+[00:26:29] that where hey, I have to I have to
+[00:26:31] expose all my data across my company
+[00:26:33] across a a bunch of different platforms
+[00:26:36] to all speak the same language off wise.
+[00:26:38] So, I think that's one of the bigger
+[00:26:39] challenges right now.
+[00:26:40] >> Yeah, it's um it's very interesting
+[00:26:42] seeing how like everybody across the
+[00:26:44] entire tech industry is trying to solve
+[00:26:45] a lot of the same problems right now.
+[00:26:47] Um well, with that Luke, um I'm curious
+[00:26:50] what assumptions have been like breaking
+[00:26:51] over at Vercel when like the end user
+[00:26:54] that's like emitting the traffic for you
+[00:26:56] is is not a human but is instead like an
+[00:26:58] agent.
+[00:26:59] >> Yeah, I think there's
+[00:27:01] like so many different avenues that you
+[00:27:03] really have to like rethink when agents
+[00:27:05] are doing the majority of like your
+[00:27:07] compute your requests.
+[00:27:09] Um to kind of like touch on what Mike
+[00:27:11] was just saying is like
+[00:27:13] authentication is like one of these
+[00:27:14] things which is like if I have
+[00:27:16] permission to do something like should
+[00:27:18] an agent have permission to do on behalf
+[00:27:21] Should we distinguish between those two
+[00:27:22] things? Um one of the things I was just
+[00:27:25] like thinking about as well was um
+[00:27:28] this idea of we kind of mentioned like
+[00:27:30] storage and stuff like that of well when
+[00:27:33] I pause a task I can kind of like keep
+[00:27:35] where I am in memory
+[00:27:36] um and so that like resume-ability of
+[00:27:38] tasks is just like something that
+[00:27:40] everyone is still like really
+[00:27:42] um working to solve. And I think one of
+[00:27:44] the things that um
+[00:27:47] stuff like managed agents does really
+[00:27:48] well and a lot of these um kind of
+[00:27:51] harnesses that we have already for doing
+[00:27:52] work um they're still that like very
+[00:27:55] synchronous single player activity and
+[00:27:57] so what I expect to see is kind of the
+[00:28:00] multiplayer game completely change um
+[00:28:03] and that will also be something that
+[00:28:05] again like [clears throat] we haven't
+[00:28:07] really understood how to do like we
+[00:28:09] can't all get around a program a a
+[00:28:11] laptop like we used to and mob program
+[00:28:14] um
+[00:28:15] kind of as we did 10 years ago. Uh and
+[00:28:17] agents kind of once they're on a track
+[00:28:19] they're like oh got a plan I'm just
+[00:28:20] going to like execute like I just want
+[00:28:22] to um
+[00:28:23] kind of hit that function of achieving
+[00:28:26] what I've what I've set out to do.
+[00:28:27] Whereas humans have the ability to kind
+[00:28:29] of
+[00:28:30] uh go off of each other and say oh I
+[00:28:31] think the plan has changed and we should
+[00:28:34] we should diverge.
+[00:28:35] >> Yeah.
+[00:28:35] >> Um so I think there's there's a lot that
+[00:28:37] we still have to to answer and the
+[00:28:39] harnesses are still very powerful in
+[00:28:41] that regard. Um but yeah we're
+[00:28:43] definitely not completely solved yet.
+[00:28:46] >> Yeah. Totally. Um okay. thank you
+[00:28:48] everybody for joining me. Uh And thank
+[00:28:50] you everybody for joining me. I hope you
+[00:28:52] learned some stuff and had some fun.
+[00:28:54] Go try cloud manage agents.
+[00:28:57] >> [applause and music]

@@ -1,0 +1,456 @@
+Title: Building signals that trade themselves
+Video: https://www.youtube.com/watch?v=EOg4gY0Yln0
+Caption: auto (en) via tv
+================================================================================
+
+[00:00:18] I'm Tashara Fernando. I'm head of data
+[00:00:21] and AI at Mang Group.
+[00:00:24] Mangroup are an alternative investment
+[00:00:26] manager. We manage over $200 billion of
+[00:00:30] assets.
+[00:00:32] Our clients are pension funds, sovereign
+[00:00:35] wealth funds, and large institutions.
+[00:00:38] We manage real people's money, thousands
+[00:00:41] of people's pensions and investment
+[00:00:43] capital.
+[00:00:45] So when we think about AI, the stakes
+[00:00:47] are high for us. Our clients are real
+[00:00:50] people from their teachers in Canada,
+[00:00:54] their metal workers in Japan.
+[00:00:57] So, we really need to get AI right. If
+[00:01:00] we get this wrong, we could lose real
+[00:01:01] money.
+[00:01:04] One of the really large parts of our
+[00:01:06] business is systematic trading. And that
+[00:01:09] represents a huge opportunity to be
+[00:01:11] aided by AI.
+[00:01:13] By systematic trading, I mean
+[00:01:16] algorithmic trading capabilities
+[00:01:18] that look across thousands of securities
+[00:01:21] and hundreds of markets to make
+[00:01:24] investment decisions.
+[00:01:29] So systematic trading is really about
+[00:01:32] trading signals.
+[00:01:34] And you can think of a signal like a
+[00:01:37] fantasy football team. You can think
+[00:01:39] that we want to pick the best players
+[00:01:42] for our squad based on some intuitive
+[00:01:45] strategy.
+[00:01:46] So the green bars here would be a
+[00:01:49] starting lineup. The red bars would be
+[00:01:52] the reserve squad, the people that you
+[00:01:54] don't want in the team. And the people
+[00:01:56] in the middle, they might come in, you
+[00:01:59] might kind of transfer them in, but
+[00:02:00] they're they're not the star players at
+[00:02:02] the moment. Maybe a subs bench.
+[00:02:06] So, a signal is really about thinking
+[00:02:10] about a striker maybe hitting form, but
+[00:02:13] you need to transfer them in before the
+[00:02:15] Friday deadline when the price might go
+[00:02:17] up.
+[00:02:19] And then you have savvy managers who are
+[00:02:21] really thinking about form fixtures
+[00:02:25] and what might happen to get the most
+[00:02:27] points in the season.
+[00:02:29] And they want to transfer the right
+[00:02:31] players in at the right time and at the
+[00:02:34] right cost. So this is quite similar to
+[00:02:37] systematic trading. A trading signal is
+[00:02:41] really just this with stocks. So the
+[00:02:43] bars here would represent company
+[00:02:45] stocks. We want to back the ones that
+[00:02:48] would make money and we want to short
+[00:02:51] the ones that won't.
+[00:02:53] So in this example, we've ranked the
+[00:02:57] stocks by the past 3 month returns and
+[00:03:00] we run that through history to see if it
+[00:03:02] would have made money.
+[00:03:04] The interesting question is always what
+[00:03:06] is that factor that you want to rank
+[00:03:08] things by? What's the strategy to get
+[00:03:10] the right stocks in your team? And does
+[00:03:13] it work?
+[00:03:17] And how do you know whether it works or
+[00:03:19] not? Well, the truth is you never really
+[00:03:22] know. I'd love to be able to tell the
+[00:03:25] future, but I can't. So, the best thing
+[00:03:29] that we can do is look at what happened
+[00:03:32] historically. We run that strategy, we
+[00:03:36] codify it, and we run it against 15
+[00:03:39] years of history or even longer. And
+[00:03:43] what that does is it runs that strategy
+[00:03:44] through lots of macroeconomic
+[00:03:46] environments, through lots of stresses.
+[00:03:49] And we can see how it performed.
+[00:03:52] And that back test produces lots of
+[00:03:53] statistical factors. Some examples might
+[00:03:56] be how much money did it make? So what's
+[00:03:59] the annualized return? When it lost
+[00:04:01] money, and they always do at some point,
+[00:04:04] how much did it lose? And we call that a
+[00:04:07] draw down. And we look at some even more
+[00:04:10] complex statistical factors. One's
+[00:04:12] called a sharp ratio which compares the
+[00:04:15] volatility of that strategy versus how
+[00:04:18] much it returned.
+[00:04:20] And it's this process, this systematic
+[00:04:23] trading workflow that we think that we
+[00:04:26] can use AI to really enhance to come up
+[00:04:29] with those ideas to run the back tests
+[00:04:33] and that has been our focus.
+[00:04:38] So there are trading signals running
+[00:04:40] right now in production at Mang Group, a
+[00:04:44] regulated investment firm running real
+[00:04:48] capital that were researched, back
+[00:04:51] tested and proposed by AI.
+[00:04:55] By that I mean humans came up with the
+[00:04:58] sorry AI came up with the idea. AI got
+[00:05:02] the data. AI ran the back test. AI then
+[00:05:06] wrote up the strategy proposal and AI
+[00:05:10] productionized the signal.
+[00:05:13] Humans of course reviewed all of the
+[00:05:15] output to make sure that it was
+[00:05:17] sensible. But a AI was at the center of
+[00:05:20] that process.
+[00:05:25] And I'm sure you want to know what was
+[00:05:27] that signal? What was that investment
+[00:05:29] idea?
+[00:05:31] How much money did it make? How can I
+[00:05:34] use it?
+[00:05:37] Sorry, I'm not going to tell you that
+[00:05:39] today. That's our IP. What I'm here to
+[00:05:41] tell you about today is our journey.
+[00:05:43] What was the foundation that allowed us
+[00:05:46] to do that? And how can you apply those
+[00:05:48] learnings in your company?
+[00:05:52] And it really starts with AI
+[00:05:55] understanding our workflows.
+[00:05:58] And to do that, we use skills.
+[00:06:01] Can I have a show of hands in the
+[00:06:02] audience as to who's written a skill?
+[00:06:05] Okay, that's great. Most of you.
+[00:06:10] So, coming up with the signal is the
+[00:06:13] quick bit. The hard part is everything
+[00:06:16] that you need, everything that's
+[00:06:18] underneath it, all of the workflows that
+[00:06:21] make it happen, that allow you to act on
+[00:06:24] it. Think of it like an iceberg. The
+[00:06:27] signal is the tip. Underneath it are all
+[00:06:31] of the workflows that make it possible.
+[00:06:33] How do you clean the data? How do you
+[00:06:36] stitch prices? How do you detect
+[00:06:38] outliers?
+[00:06:40] How does it run? What's the
+[00:06:41] infrastructure it runs on? How do you
+[00:06:44] run those back tests?
+[00:06:47] And this is where it can quickly go
+[00:06:49] wrong. If different teams are running
+[00:06:52] different versions of those workflows,
+[00:06:54] you get different answers.
+[00:06:56] One team's back test looks amazing. and
+[00:06:59] other teams looks average. And because
+[00:07:02] they're using different workflows, you
+[00:07:04] don't really know whether it was the
+[00:07:06] idea that was better in one team than
+[00:07:08] the other or whether they're just
+[00:07:11] measuring things differently.
+[00:07:14] Shared workflows fix that. One common
+[00:07:18] foundation means that effort isn't
+[00:07:20] duplicated and you have consistency. The
+[00:07:23] outputs are comparable. And that's
+[00:07:25] extremely important in systematic
+[00:07:27] trading when we're comparing signals.
+[00:07:35] Out of the box, Claude is an amazing
+[00:07:38] general purpose tool. It does a lot, but
+[00:07:42] it doesn't know us. It doesn't know our
+[00:07:44] data. It doesn't know our systems. It
+[00:07:48] doesn't know how we work. And it's the
+[00:07:50] same for everybody in this room. So the
+[00:07:53] first thing that we had to do was teach
+[00:07:56] it. Not by retraining it, not by doing
+[00:08:01] fine-tuning, but by giving it access to
+[00:08:04] our data, our capabilities, and our
+[00:08:07] workflows.
+[00:08:10] That's our superpower.
+[00:08:12] We have decades of institutional
+[00:08:14] knowledge in systematic research and
+[00:08:16] some of the best technical capabilities
+[00:08:18] on the street.
+[00:08:22] And if we can connect that with AI, then
+[00:08:26] AI can leverage that superpower.
+[00:08:29] Skills are the connective layer that
+[00:08:32] allow AI to leverage that superpower. So
+[00:08:35] getting them right is paramount
+[00:08:38] and that was our focus.
+[00:08:43] But we got it wrong before we got it
+[00:08:45] right. And I want to tell you about our
+[00:08:47] story today.
+[00:08:49] We really focused on adoption. We went
+[00:08:51] all in. We were doing skills workshops.
+[00:08:55] Anthropic helped us with that. We were
+[00:08:57] doing hackathons. We wrote a blog. We
+[00:09:01] were doing showand tell sessions.
+[00:09:03] Everybody was writing skills. The
+[00:09:05] adoption was really out of this world.
+[00:09:09] But we started to see some cracks in our
+[00:09:10] approach.
+[00:09:12] It was really the power users that were
+[00:09:15] building the skills. It wasn't the
+[00:09:17] process owners.
+[00:09:20] And what that meant is that all of the
+[00:09:23] skills really represented a local
+[00:09:25] optimization for one user. They weren't
+[00:09:28] common organizational solves.
+[00:09:32] And nothing was really more symptomatic
+[00:09:35] of this than when we ran one of the
+[00:09:38] showand tell sessions one day and there
+[00:09:41] was a guy who used to travel a lot at
+[00:09:42] Mang Group and he had loads of expenses
+[00:09:45] to do and he spent loads of time doing
+[00:09:47] this. So he wrote a skill for it. He
+[00:09:49] gave lots of pictures of receipts to
+[00:09:51] Claude and it would do the expense
+[00:09:53] report for him and he brought this to
+[00:09:55] the show and tell session and he even
+[00:09:58] shared it with a few people in his team
+[00:10:00] and it was working really well. And then
+[00:10:02] a few days later, the expense approver
+[00:10:04] came to us and was like, "Why is Claude
+[00:10:07] creating so many expense reports for my
+[00:10:09] cost center? People from technology,
+[00:10:11] people from the people team. Why do I
+[00:10:13] have to approve all of them? I'm in
+[00:10:15] sales. I I don't want to approve
+[00:10:16] everybody else's expense reports." And
+[00:10:18] we dug into it and it was just because
+[00:10:20] the the cost center code was hardcoded.
+[00:10:23] And it was really just that that was
+[00:10:25] this um this local optimization.
+[00:10:28] Nobody had reviewed that skill. It
+[00:10:29] worked for him. it worked for his team,
+[00:10:31] so it was going to work for everybody.
+[00:10:33] But that's not the case.
+[00:10:35] And he wasn't accountable for that. He
+[00:10:38] kind of thought it was quite funny. And
+[00:10:39] I mean, so did I, to be honest.
+[00:10:42] Um, but it was really symptomatic of a
+[00:10:44] broader problem.
+[00:10:46] People were just codifying their ways of
+[00:10:49] doing things. They weren't the
+[00:10:50] organizational ways of doing things. And
+[00:10:52] in many cases, they weren't actually the
+[00:10:54] workflow owner.
+[00:10:57] And this is a huge problem when it comes
+[00:10:58] to things like back testing and
+[00:11:00] systematic trading.
+[00:11:03] It starts to become a blocker to scaling
+[00:11:06] to enterprises.
+[00:11:08] Agents can't leverage those. There's no
+[00:11:10] commonality.
+[00:11:13] And we saw that something had to change.
+[00:11:16] Has anyone else faced this problem when
+[00:11:18] they've been writing skills? That it was
+[00:11:20] actually the process. It was the people
+[00:11:22] who were the power users of a process
+[00:11:23] rather than the owners of it that were
+[00:11:25] writing the skills. Can I have a show of
+[00:11:27] hands for that?
+[00:11:30] Good.
+[00:11:32] Yeah, we really saw that across the
+[00:11:34] board.
+[00:11:36] But we saw that skills governance
+[00:11:38] started to be the secret source that
+[00:11:40] unlocked these enterprise use cases.
+[00:11:44] If you could connect your common
+[00:11:46] workflows
+[00:11:48] to AI, give it access to your data and
+[00:11:52] your capabilities, you could really
+[00:11:54] allow agents to act on those skills.
+[00:11:57] And if you can do that, you can allow
+[00:12:00] Claude code to do problems as complex as
+[00:12:04] systematic trading.
+[00:12:11] So our solve for this was to have a
+[00:12:12] common marketplace. Every skill was
+[00:12:15] visible, tagged and tested with evals.
+[00:12:20] We wanted to ensure consistency.
+[00:12:24] Imagine a library.
+[00:12:27] It captures decades of institutional
+[00:12:29] knowledge.
+[00:12:31] There are sections for the finance
+[00:12:33] department, the people department, the
+[00:12:36] research department.
+[00:12:39] We care for every item. We care for
+[00:12:42] every skill in those departments.
+[00:12:45] The skill is owned by the workflow
+[00:12:48] owner. They're all tested. Usage is
+[00:12:52] tracked. They're all reviewed. They have
+[00:12:54] a life cycle. And they're all visible to
+[00:12:57] everybody to install.
+[00:12:59] It's really that care that makes this
+[00:13:02] work. And it's the foundation that moves
+[00:13:05] skills from individual productivity
+[00:13:08] solves to a foundation that can set you
+[00:13:11] up for the agenda cage.
+[00:13:14] And it's through that that we were able
+[00:13:16] to apply skills to systematic trading.
+[00:13:20] So now I will give you a bit of a flavor
+[00:13:22] for what it's like to build a systematic
+[00:13:24] signal. We've got a demo and a video on
+[00:13:26] that.
+[00:13:28] This is my knowledge. It's where you'll
+[00:13:30] find our collection of skills and
+[00:13:32] manroup's context store. The skill
+[00:13:35] suggestions are tailored to each
+[00:13:37] business unit. They have clear ownership
+[00:13:39] and are organized into managed and
+[00:13:41] community skills.
+[00:13:43] Skills and plugins can easily be
+[00:13:45] installed in Claude. Plugins are useful
+[00:13:48] groups of skills. For example, here we
+[00:13:50] have a data plugin which gives us access
+[00:13:52] to mangroups data sets.
+[00:13:55] We can also install skills individually.
+[00:13:58] For example, this is the data set skill
+[00:14:01] which allows me to search man groups
+[00:14:03] alternative data sets.
+[00:14:06] Now those foundational skills are
+[00:14:08] installed, we can start to get a flavor
+[00:14:09] of what it's like to build a systematic
+[00:14:11] trading signal. We can use the
+[00:14:13] alternative data set skill to search for
+[00:14:16] research such as credit card data.
+[00:14:19] We ask Claude what credit card data sets
+[00:14:22] are available and it identifies a data
+[00:14:24] set of US consumer transactions.
+[00:14:28] We can plot Amazon's monthly credit card
+[00:14:30] spend against its stock price returns.
+[00:14:39] These are the results of the credit card
+[00:14:41] data compared to the stock price for the
+[00:14:43] same period.
+[00:14:44] The blue bars are credit card spend and
+[00:14:47] the line is the stock price.
+[00:14:49] Interestingly, in the graph, you can see
+[00:14:51] spikes for seasonal spend, such as Black
+[00:14:54] Friday and Christmas.
+[00:14:57] Next, we run a back test to see if
+[00:14:59] credit card spend is predictive of the
+[00:15:01] stock price by comparing the peaks in
+[00:15:03] credit card spending with the profits
+[00:15:05] and losses of the stock.
+[00:15:08] In the results, the signal shows better
+[00:15:10] performance than a buy and hold
+[00:15:11] strategy. We can see that investing
+[00:15:14] $1,000 in 2021 using this signal would
+[00:15:18] now be worth around $2,500.
+[00:15:21] This could be a fluke for Amazon. So,
+[00:15:23] let's run it on a broader universe of
+[00:15:25] retail companies. As there are multiple
+[00:15:27] companies, we'll run it using our
+[00:15:29] distributed compute infrastructure.
+[00:15:32] Each company is running an individual
+[00:15:35] worker and then the findings are
+[00:15:36] collected.
+[00:15:39] In this case study, we leveraged four
+[00:15:41] skills to create a systematic trading
+[00:15:43] signal. In reality, our signal research
+[00:15:46] is much more nuanced, accounting for
+[00:15:48] things like seasonality, inflation, and
+[00:15:50] broader sets of securities. We do this
+[00:15:53] with agents as well as humans exploring
+[00:15:56] these ideas. The key takeaway is that
+[00:15:58] the governance of these skills is key.
+[00:16:01] It ensures that everyone has access to
+[00:16:03] the same data and everyone uses the same
+[00:16:05] workflows.
+[00:16:10] Okay, so hopefully what you can see is
+[00:16:12] that if you get that foundation right
+[00:16:14] across the board, if you've got access
+[00:16:18] to all of the data, you can start to
+[00:16:20] leverage more capabilities. Everything
+[00:16:22] from scaling your compute to getting
+[00:16:25] alternative credit card data sets. And
+[00:16:28] these are often owned by different
+[00:16:29] teams. And it's really that that allows
+[00:16:32] you to scale to the Agentic platform.
+[00:16:36] So what did we learn along the way?
+[00:16:40] These are the things that I would tell
+[00:16:42] past me and that you can take away.
+[00:16:47] Firstly, focus on that organizational
+[00:16:50] context. That is your IP. It's your
+[00:16:53] moat. It's one of the few safe spaces
+[00:16:56] left in AI. The frontier labs are not
+[00:16:59] going to solve context for you. It's not
+[00:17:01] on the internet. They don't know your
+[00:17:03] workflows. And you already have that
+[00:17:06] context.
+[00:17:08] You have decades of it. The work is on
+[00:17:11] exposing it, not reinventing it.
+[00:17:15] And skills are how that those decades of
+[00:17:17] institutional knowledge become leverage.
+[00:17:21] Treat those skills like production code
+[00:17:24] because that's what they will become.
+[00:17:27] Plan your approach before you plan the
+[00:17:30] roll out. Who's going to own the skill?
+[00:17:33] Who's going to review it? How does it
+[00:17:35] get retired? How does it get tested?
+[00:17:39] Decide this be before shipping the first
+[00:17:42] skill, not after the hundth like us.
+[00:17:46] Adoption is not a licensing problem.
+[00:17:48] It's a people problem. Once you've got
+[00:17:50] that platform in place, you need to
+[00:17:53] encourage people to engage with it.
+[00:17:58] We need to really think about how we
+[00:18:00] capture that organizational context and
+[00:18:03] rethink our workflows rather than just
+[00:18:06] augmenting them.
+[00:18:08] And that's a training problem. It's an
+[00:18:10] engagement problem. So you really need
+[00:18:12] to outreach to people who are using this
+[00:18:14] platform.
+[00:18:20] And it's through this it's through these
+[00:18:22] ideas that we've been able to scale. man
+[00:18:25] groups about 17 800 people 1,700 people
+[00:18:29] something like that and we now have 750
+[00:18:33] of them using claude code across
+[00:18:35] developers quants the people team the
+[00:18:38] finance team everybody across all of the
+[00:18:40] departments is using claude code we're
+[00:18:43] seeing a lot of engagement because
+[00:18:45] they're able to use those capabilities
+[00:18:47] in a simple way they don't need to know
+[00:18:49] about everything they have this skills
+[00:18:51] platform
+[00:18:53] that understands our workflows
+[00:18:56] We now have over 100 governed skills and
+[00:19:00] at least as many community skills that
+[00:19:03] are looked after in a library and
+[00:19:06] they're well governed. And what this has
+[00:19:08] done is it has allowed us to unlock the
+[00:19:11] capability to use AI in systematic
+[00:19:15] trading.
+[00:19:21] So skills governance really unlocks AI
+[00:19:24] at that enterprise scale. The thing that
+[00:19:26] I'm most proud of is that I feel that
+[00:19:29] we've got our eyes on the prize. We have
+[00:19:32] a solid bedrock built on decades of
+[00:19:35] institutional knowledge.
+[00:19:38] And in the not too distant future, I can
+[00:19:40] see us having swarms of agents
+[00:19:43] leveraging those skills to look for new
+[00:19:45] investment opportunities.
+[00:19:53] So what's the takeaway for you?
+[00:19:57] Really think about how you're going to
+[00:19:58] capture that context. Which department
+[00:20:01] owns it?
+[00:20:04] What's the process for governing them?
+[00:20:08] Where will they live? How will you test
+[00:20:10] them? How will you retire them?
+[00:20:13] connect a golden path from your AI
+[00:20:16] platform to your capabilities and your
+[00:20:19] context.
+[00:20:21] Once you have that basis of knowledge,
+[00:20:23] if you care for it and AI can leverage
+[00:20:26] it, that will really set you up for the
+[00:20:29] agenda age.
+[00:20:34] Thank you very much everyone.
