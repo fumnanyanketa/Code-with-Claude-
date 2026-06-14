@@ -10,3 +10,6 @@ cookies.txt
 # Internal state markers
 *.nocaptions
 *.unavailable
+
+# Secrets
+.env
