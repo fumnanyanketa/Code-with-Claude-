@@ -106,6 +106,8 @@ nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
 .layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
 aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
 .toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
 .toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
 .toc ul{list-style:none;margin:0;padding:0}
 .toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
@@ -192,6 +194,7 @@ footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
   aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
   aside.open{transform:none}
   #menuBtn{display:inline-flex}
+  .toc-close{display:block}
   .navlinks{display:none}
   main{padding:34px 0 80px}
   body{font-size:16px}
@@ -260,13 +263,13 @@ footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
         </ul>
         <a class="btn btn-coral" href="#capstone-project-build-promptlab" style="width:100%;justify-content:center">Jump to the project</a>
       </div>
-      <div class="float-badge"><span class="n">&#10003;</span> Self-paced<br>learn anytime</div>
     </div>
   </div>
 </header>
 
 <div class="layout">
   <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
     <p class="toc-title">On this page</p>
     {{TOC}}
   </div></aside>
@@ -287,6 +290,7 @@ footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
 // mobile menu
 const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
 if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
 // progress
 const prog=document.getElementById('progress');
 addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
