@@ -337,9 +337,58 @@ def schedule_agent(problem, max_rounds=3):
 
 ---
 
-## Exercises
+## 🛠️ Practice project — build **PromptLab**
 
-> Work these against a tiny eval harness — even a notebook with 5 test cases and a pass/fail print is enough. Reuse the Meridian scenario or invent your own.
+> This is the main event: the best way to make this lesson stick is to **build the very tool Margo used in the talk** — a small eval workbench — and then use it to harden a real agent end-to-end. *"I five-coded this web app so that we can iterate on the prompt together... I can run my evals on all five test cases and inspect the results."* You're going to build your own. **We'll build this out together** — start as small as a CLI, grow it as far as you like.
+
+### What you'll build
+
+**PromptLab** — an eval-driven prompt workbench, plus the support agent you develop inside it. It has two halves that map exactly to the two halves of this lesson:
+
+1. **The harness** — define test cases, run a prompt against all of them, and see a green/red results grid (like Margo's web app).
+2. **The agent** — a support assistant for a fictional company that you take from a broken v0 to all-green by applying every technique in this lesson.
+
+> 🎯 **Pick your domain.** Reuse **Meridian Mobile** (telco) for continuity, or swap in something you find fun — a **gym chain**, a **streaming service**, a **co-working space**. The shape you need: tiered *plans*, a *mid-cycle upgrade* (→ proration math), a *grandfathered/legacy* edge case, and a *dispute* that must be escalated to a human. That single domain naturally exercises every skill below.
+
+### Why this is the perfect practice
+
+| Lesson skill | Where you'll use it in PromptLab |
+|---|---|
+| Eval suite (control / edge / capability) | Milestone 1 — you can't proceed without it |
+| Prompt hygiene (XML, output contract) | Milestone 3 — measure the free uplift |
+| Fix overfitted patches | Milestone 4a — the "withheld info" bug |
+| Tools > instructions | Milestone 4b — the proration tool |
+| State both sides of a trade-off | Milestone 4c — the escalation bug |
+| Model / effort selection | Milestone 5 — the from-scratch capability |
+| generate → evaluate → repair loop | Milestone 5 — constraint solving |
+
+### Milestones (build incrementally — each one is shippable)
+
+- **M0 · Scaffold.** Project + Anthropic SDK + a `cases.json` (or `.yaml`) with 5 test cases: 1 control, 2 edge, 1 capability/handoff, 1 of your choice. *(Smallest version: a Python script. Bigger: a tiny web UI with a results grid.)*
+- **M1 · Eval runner.** A function that runs the current prompt against every case and prints a **pass/fail grid**. This is your instrument panel for everything that follows.
+- **M2 · The broken v0.** Write a deliberately messy prompt (one big paragraph, copied-in cruft, an old "never give wrong info → send them to the URL" patch). Run evals → establish a red baseline.
+- **M3 · Hygiene pass.** Restructure with `<role>/<guidelines>/<policy>/<tone>`, delete cruft, add an output contract + `stop_sequences`. Re-run → record the uplift.
+- **M4 · Target failures one at a time.**
+  - **(a)** Fix the withheld-info bug by removing the overfitted patch and trusting the account data.
+  - **(b)** Add a `calculate_proration` tool (schema + implementation) so the model stops doing mental math.
+  - **(c)** Fix the escalation bug by stating **both sides** of the cost/benefit trade-off.
+- **M5 · A from-scratch capability.** Add a second skill to the agent — a **weekly staff scheduler** under hard constraints. Write a deterministic `count_violations` grader, then hill-climb: simple prompt → bigger model → adaptive thinking → **generate→evaluate→repair loop**. Plot violations vs. tokens vs. latency.
+- **M6 · Stretch.** Version every prompt and show a **leaderboard** of versions; add an **LLM-judge** grader for tone; allow **soft constraints at runtime** ("keep Harry and Sally on different shifts") without touching the deterministic grader.
+
+### Definition of done
+
+- ✅ All eval cases pass **consistently** (run each a few times — beware variance).
+- ✅ You can point to **each change** and show, from the grid, the failure it fixed.
+- ✅ At least one case is fixed by a **tool**, and one by **stating both sides of a trade-off** — proving you didn't just "add more instructions."
+- ✅ The scheduler passes via the **loop** at lower cost/latency than brute-forcing one mega-prompt.
+
+> 💡 **Keep it honest:** change **one thing at a time** and re-run. If you can't attribute an improvement to a specific change, you've changed too much at once.
+
+---
+
+## Exercises (warm-up drills)
+
+> Smaller drills to do before or alongside the capstone. Work these against a tiny eval harness — even a notebook with 5 test cases and a pass/fail print is enough. Reuse the Meridian scenario or invent your own.
 
 ### Exercise 1 — Build the eval first (Foundational)
 Write a 5-case eval for a support bot in a domain you know (e.g. a SaaS billing assistant). Make sure you include **one control case, two edge cases, and one capability/handoff case** (where the bot must escalate or refuse). Write down the *expected* answer for each before you write any prompt.
