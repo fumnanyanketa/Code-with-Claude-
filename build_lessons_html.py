@@ -39,7 +39,7 @@ TEMPLATE = r'''<!doctype html>
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 #progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
 a{color:var(--teal-d);text-decoration:none}
 a:hover{color:var(--coral)}
@@ -99,7 +99,7 @@ nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
 .hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
 .hero-card li:last-child{border-bottom:none}
 .hero-card li .ic{font-size:17px;line-height:1.4}
-.float-badge{position:absolute;left:-22px;bottom:26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
 .float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
 
 /* ---------- Content layout ---------- */
@@ -177,15 +177,31 @@ footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
 
 #menuBtn{display:none}
 @media(max-width:920px){
-  .hero .wrap{grid-template-columns:1fr;gap:34px;padding:48px 28px 64px}
-  .hero h1{font-size:38px}
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
   .layout{grid-template-columns:1fr;gap:0}
-  aside{position:fixed;top:0;left:0;width:280px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
   aside.open{transform:none}
   #menuBtn{display:inline-flex}
   .navlinks{display:none}
   main{padding:34px 0 80px}
   body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
 }
 </style>
 </head>
