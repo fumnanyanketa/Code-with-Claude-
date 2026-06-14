@@ -1,0 +1,453 @@
+Title: Getting more out of the Claude Platform
+Video: https://www.youtube.com/watch?v=QIriO1-vHYw
+Caption: whisper (whisper-large-v3-turbo, audio transcription)
+================================================================================
+
+[00:00:00] Please welcome to the stage member of technical staff at Anthropic, Puneet Shah.
+[00:00:30] Welcome to the last session of Code with Claude here in London.
+[00:00:37] Yeah, let's give it up for everyone who's come before.
+[00:00:42] So I'm a product manager on our team, on the platform team at Anthropic,
+[00:00:46] and I've shipped some of the features like our 1 million context window,
+[00:00:50] fast mode, and a number of our improvements on prompt caching amongst others.
+[00:00:54] And that's what makes me especially excited about this session.
+[00:00:57] you guys have made a very good decision to come here because this is about the cloud platform. And
+[00:01:02] if you think about what we have, we have these great models, but there's this whole layer on top
+[00:01:07] of it, the platform, that's not about just getting you the intelligence, but helping you build a real
+[00:01:12] business, a real product that really deliver for your users on top of those models. And so in the
+[00:01:19] spirit of this being the last session, I want to like, let's get a little movement. So if you have
+[00:01:24] built an agent of any sort, big, small, I don't care what, go ahead and stand up.
+[00:01:32] Okay, good. Nice. A lot of agent builders here. This is nice. Now, if you have put one into
+[00:01:38] production, go ahead and stay standing and everyone else just take a seat. Okay. If you're
+[00:01:46] really happy about the quality, about the cost, about the speed of those agents, stay standing
+[00:01:52] Everyone else, take a seat.
+[00:01:55] Okay, nice, nice.
+[00:01:57] Okay, look around.
+[00:01:58] Remember these folks.
+[00:01:59] These are our true experts.
+[00:02:00] Go find them at happy hour afterwards.
+[00:02:03] You can all have a seat now.
+[00:02:05] Thank you.
+[00:02:05] Thank you for humoring me.
+[00:02:08] What I want to do in this session is share some of what we've learned about what helps
+[00:02:12] you get the most out of that cloud platform.
+[00:02:16] And one of the first things that we have on the platform that I want to talk through is
+[00:02:20] prompt caching.
+[00:02:21] If you remember nothing else from this session, think about prompt caching.
+[00:02:26] And what caching is, is it's a way that we, if you're not familiar, where we take your input tokens, we process them, and then we cache that before we generate the output tokens.
+[00:02:36] And that cache we then continue to reuse as the conversation moves on.
+[00:02:40] And so when you have a new message in the conversation, we just process those additional new tokens, but the rest we just pull from the cache.
+[00:02:49] And, okay, why is this useful for you?
+[00:02:52] Why should you care?
+[00:02:54] Well, the first reason is you get a 90% discount
+[00:02:57] because we're not reprocessing them.
+[00:02:58] We pass those savings on to you.
+[00:03:00] You get a 90% discount, so a huge cost savings
+[00:03:02] to actually build your agent.
+[00:03:06] The second is that you also get a rate limit boost effectively.
+[00:03:11] Our rate limits are not, they don't count your cashed tokens.
+[00:03:16] And so if you have an 80% cash hit rate,
+[00:03:18] meaning 80% of your tokens are cached,
+[00:03:21] then you effectively have a five times larger
+[00:03:25] rate limit in practice.
+[00:03:26] So that's great.
+[00:03:28] And then the last benefit is latency.
+[00:03:30] If you are starting to cache a lot
+[00:03:31] and that conversation's getting a lot longer,
+[00:03:33] because we're no longer processing all those tokens,
+[00:03:36] what ends up happening is your time to first token goes down.
+[00:03:40] And so these are great benefits.
+[00:03:43] And if you're kind of looking for a target
+[00:03:45] and you're building agentic applications,
+[00:03:46] Something in the kind of 80% above range is a good place to try to target.
+[00:03:51] But if you look at some of these customers here, we have Replit, Cursor, Perplexity, Cloud Code.
+[00:03:56] They're hitting 90 plus percent.
+[00:03:58] These people have really, I've talked to all these customers,
+[00:04:00] they've put a ton of effort into making their prompt caching work
+[00:04:04] because of all of those benefits I've described.
+[00:04:08] And one of the things that they all start with is just understanding
+[00:04:12] what is your prompt cache hit rate?
+[00:04:14] What is the prompt cache hit rate you get?
+[00:04:15] That's the first question you should understand.
+[00:04:17] And thankfully, because we've learned how much work these people are putting in, we said,
+[00:04:21] why don't we build it for you guys?
+[00:04:23] And so now today, if you go to the console on the cloud platform, console.anthropic.com,
+[00:04:29] you can actually see analytics right next to your cost and usage pages.
+[00:04:33] You can actually see analytics on prompt caching.
+[00:04:35] And even just yesterday, we continued to improve this.
+[00:04:37] Yesterday, we just launched ways to actually figure out why has your cache broken.
+[00:04:41] Turns out the ordering of how you make those prompts matters a lot.
+[00:04:44] matters a lot. A common error I see is that people put a timestamp into the system prompt.
+[00:04:50] What day is it Okay that useful but then it breaks the system prompt because it changes as you go and that then breaks your cache The tokens need to be exactly the same And so you can actually see how did it break and you see that on the analytics page
+[00:05:06] And that's a great place to get started.
+[00:05:08] If you're seeing it at 0%, it's okay.
+[00:05:09] That's why you're here.
+[00:05:11] You can start with a one-line code change with autocaching.
+[00:05:14] Implements kind of a basic prompt caching.
+[00:05:17] Or better yet, go to the Cloud API skill.
+[00:05:19] Go to Cloud Code or many other coding agents,
+[00:05:22] and we have a skill built in, prepackaged,
+[00:05:25] that lets you ask it to improve your cache hit rate
+[00:05:28] and it will help with how you manage and order that prompt
+[00:05:31] to get the best performance.
+[00:05:34] So prompt caching, super important.
+[00:05:36] We're going to talk a little bit more about it,
+[00:05:38] but I want to talk about something I've been working on.
+[00:05:42] I've been really excited about it.
+[00:05:43] You guys are here for my startup pitch.
+[00:05:44] Thank you so much.
+[00:05:46] I'm also in my free time the CEO of HeroCorp
+[00:05:50] and I have my CTO actually here.
+[00:05:52] Ben, do you want to come out here?
+[00:05:53] He runs our technology team.
+[00:05:55] Let's give it up for Ben.
+[00:05:59] And can we switch over to the demo laptop?
+[00:06:02] So we're, wait, Ben, what is, Ben, this is Claude with Code.
+[00:06:07] This is 2026.
+[00:06:09] This looks like it's from the 90s.
+[00:06:10] What's going on here?
+[00:06:12] Guys, who wants a better theme?
+[00:06:13] What's something a little bit more of the times?
+[00:06:15] Yeah, we got a few thumbs up.
+[00:06:16] Okay, Ben, let's improve the theme.
+[00:06:18] let's make it let's make it ready for for code of Clyde
+[00:06:22] let's let that cook
+[00:06:27] nice so we are hero corp um we are a superheroes for hire company um you know we help fight crime
+[00:06:38] in the city keep the tube running on time uh you know staff your three-year-old's birthday party
+[00:06:44] and make sure there's sufficient number of balloons.
+[00:06:46] We do it all.
+[00:06:48] And some people have misconceptions, I think,
+[00:06:50] about the superhero world.
+[00:06:52] They think that we're like fly by your seat of your pants.
+[00:06:55] We're analytical.
+[00:06:56] We use OKRs.
+[00:06:58] We plan.
+[00:06:58] And that's why we have a dashboard.
+[00:07:00] And this dashboard is how we track our performance.
+[00:07:03] You can see 90-day retention, 94%.
+[00:07:06] We could do better.
+[00:07:07] We got one flight risk there,
+[00:07:09] probably because our compensation is a little bit low.
+[00:07:13] Oh, okay, yeah, I probably should be paying the superheroes more.
+[00:07:16] You can see some of our different superheroes in the anthropic cinematic universe.
+[00:07:21] Our lawyers required us to use these names instead of others
+[00:07:24] are listed here with their quotes about how things are going.
+[00:07:28] So do you mind pulling open our, we built a little developer console.
+[00:07:33] You'll hear me repeat this a number of times.
+[00:07:35] You should always look at the transcript of your agents
+[00:07:38] to really understand what's going on.
+[00:07:40] And so right here you can see we're pulling in a bunch of data,
+[00:07:42] and if maybe you want to pop open one of those,
+[00:07:45] you'll see here there's a bunch of data we're pulling in
+[00:07:47] from web, from Slack, from Gong, from Jira,
+[00:07:50] all the different sources to aggregate it
+[00:07:52] to take a big holistic view on what's going on at the company.
+[00:07:56] And, you know, right, what's our prompt cache hit rate?
+[00:08:01] Do you want to take a look?
+[00:08:03] Zero? Ben, come on, come on.
+[00:08:06] Okay, let's implement prompt caching.
+[00:08:09] So that's the starting point.
+[00:08:11] We know what our prompt cache rate is.
+[00:08:13] It's okay, it's at zero.
+[00:08:14] We can do better.
+[00:08:14] We're gonna get there.
+[00:08:16] And so we're right now at about 31 pounds.
+[00:08:18] You saw it before it flashed away.
+[00:08:21] And we've just implemented prompt caching.
+[00:08:22] And what's happening on the right is the exact same output.
+[00:08:26] Remember, prompt caching has no impact on intelligence.
+[00:08:28] It is the exact same thing,
+[00:08:30] just pre-processed and saving you money.
+[00:08:33] And now, instead of that long block
+[00:08:34] that he showed you earlier,
+[00:08:36] we're just saving that in cache and then reusing that.
+[00:08:39] And if you look there, if you kind of zoom in a bit,
+[00:08:41] You'll see that it says cash write 172 tokens right up there.
+[00:08:45] And then cash hit 172 tokens.
+[00:08:48] And what's going on there is that we are writing that to the cash.
+[00:08:52] And then as the conversation continues with the agent, great.
+[00:08:55] We're just able to reuse those tokens and get that 90% savings.
+[00:08:59] And so we've already kind of about halved the cost of our agent
+[00:09:03] because we've gotten that kind of about 58% cash hit rate.
+[00:09:06] So nice.
+[00:09:08] Okay, this is a good first step to start out with.
+[00:09:10] Let's take a look at maybe the rest of this dashboard.
+[00:09:15] Wait.
+[00:09:17] Ben, there's five OKRs.
+[00:09:20] I give you a million tokens of context, and this is where we get...
+[00:09:23] Okay.
+[00:09:24] Okay, so it turns out we've filled up the context window,
+[00:09:27] and now we've got a little bit more work to do.
+[00:09:29] So let's switch back to slides.
+[00:09:35] What we need is context engineering.
+[00:09:36] and what context engineering is is the art and science of figuring out what context you expose
+[00:09:43] to Claude to give your agent the best performance and again I said this earlier I'm going to repeat
+[00:09:49] it many times look at your transcript to see it to see what the Claude the models are actually seeing and that will I think be incredibly illustrative to see is there a lot of stuff that you really don need to be passing to Claude Or is there a lot of relevant stuff that keeping it on track And we go through today there many techniques we go through
+[00:10:07] three primary ones about how you can implement better context engineering on your models.
+[00:10:13] And so to start, the first is around figuring out what tools we pass to the model and kind of
+[00:10:19] narrowing that down. The second is about narrowing down what results from those tools we share to
+[00:10:25] the model. And finally, as that conversation continues in the history, it's about keeping
+[00:10:30] that conversation going for kind of almost unlimited feeling context. So let's go through
+[00:10:34] these one by one. The first is tool search. Agents use a ton of tools. It's one of the
+[00:10:43] magic of making great agents is tool calls. And cloud models are especially capable of
+[00:10:50] leveraging those tools. We see tens, even hundreds of tools used in agents today. Now, one of the
+[00:10:57] problems, though, is when you define all those tools and you pass them to the model, what ends
+[00:11:02] up happening is they fill up a lot of your context, and that leaves a lot less room for the actual
+[00:11:07] work that needs to happen in the model. And so what you're looking at here is that, you know,
+[00:11:12] that context fills up after just a couple turns. So instead, we have Tool Search Tool, and what
+[00:11:18] What a tool search tool does is it figures out, you define all your tools up front, but
+[00:11:22] we only pass the model a tool that tells it, okay, when you think you might need a tool,
+[00:11:26] call this, and it gives them a list of the tools, and then only then does it put into
+[00:11:31] context the actual definition of the tool.
+[00:11:34] And you can see here on the bottom row, on the middle row rather, we're just passing in
+[00:11:38] those orange tools right when needed, leaving a lot more space for the actual stuff you need.
+[00:11:43] And Lovable tried this.
+[00:11:45] You heard from Fabian earlier on this stage, and he was talking about how he's told us
+[00:11:49] and with Tool Search that they actually reduced their overall token conception by 10% with
+[00:11:56] just this solution.
+[00:11:58] And importantly, it actually improved the performance of their model as well.
+[00:12:02] That they saw that because you're putting less gunk into context, you're putting more
+[00:12:07] relevant stuff there only, it turns out the models actually perform better.
+[00:12:12] So they've rolled this out to all their users.
+[00:12:13] Okay, so that's tool search.
+[00:12:16] What happens about what you do with those results from the tools?
+[00:12:20] That's the next one is programmatic tool calling.
+[00:12:23] For programmatic tool calling, the idea here is how do we curate that content that's coming
+[00:12:29] back from tools just to what's most relevant?
+[00:12:31] And the insight here is it turns out Cloud's really good at writing code.
+[00:12:37] If you've used Cloud Code or any other coding tool that leverages the models, you have been
+[00:12:42] able to experience this, and we use that to your advantage here as well. We have Claude
+[00:12:48] just write a simple Python script that can actually call those same tools, get the same
+[00:12:53] results, but instead do a little bit of work to curate that content and then send it to
+[00:13:00] the model, just what's most relevant. And folks like Quora have used it. They've used
+[00:13:05] it with HTML content where they've been able to strip away all the stuff that's just irrelevant,
+[00:13:10] keep the part that's relevant, and seeing the performance of their models improve.
+[00:13:14] Okay, so the conversation continues.
+[00:13:17] You've probably heard from folks on this stage before about how, from like Lisa and Jeremy,
+[00:13:21] about how we're seeing the models able to do even hours of autonomous work today.
+[00:13:27] And so inevitably you're going to hit that million context threshold.
+[00:13:30] And with compaction is a way to allow you to continue that conversation
+[00:13:35] instead of getting halted to a screeching stop when you hit that full context.
+[00:13:42] What happens is it summarizes the context with your prompt,
+[00:13:46] shifts it down to lower context, removes the turns that are no longer relevant,
+[00:13:50] and then the conversation continues.
+[00:13:52] Rinse, repeat.
+[00:13:54] And from there, you get this almost feeling of unlimited context,
+[00:13:57] keeping the models on track through compaction.
+[00:14:00] And hexes use this.
+[00:14:02] Since using this, they've been able to simplify down their code
+[00:14:05] and seeing that their model is able to continue to perform nicely.
+[00:14:12] Nice.
+[00:14:12] So let's go back to the demo.
+[00:14:15] I think, Ben, we've got a couple solutions of context engineering.
+[00:14:19] Take us forward.
+[00:14:21] Let's see what we can do.
+[00:14:24] So right here, you're seeing immediately that we've now seen that context window bar
+[00:14:30] kind of in the left-hand panel.
+[00:14:32] You see that it's going up a lot slower
+[00:14:33] because we're putting in less-indic context in each turn.
+[00:14:38] And what you'll notice is that when it hits around 400K,
+[00:14:40] just right there, you notice how it went back down?
+[00:14:42] What happened was that we hit a threshold.
+[00:14:44] We've set it to 400K.
+[00:14:46] I'll get into that in a bit.
+[00:14:47] And then it compressed it down with compaction.
+[00:14:51] So, hey, this is great.
+[00:14:54] Let take a look and see what we can do with like how is this working Let take a look at tool search maybe Can we find one in there Yeah there we go So we wanna get our hero retention metrics
+[00:15:06] Remember, this is an analytical business.
+[00:15:08] We need to understand retention.
+[00:15:11] And so it calls the models and it asks them,
+[00:15:13] okay, what are the tools that can help me
+[00:15:17] get my hero retention metrics?
+[00:15:18] Turns out there's a hero retention metrics tool.
+[00:15:21] And now note in each of these,
+[00:15:23] You can notice that that one is 14,000 tokens in the schema.
+[00:15:27] The hero list is 6,100.
+[00:15:30] The next one's 9,300.
+[00:15:32] These are large tools, and that's totally normal for a lot of agents.
+[00:15:36] Because we haven't put them into context, there's a lot less room that's been taken
+[00:15:40] up by these tools that we won't need.
+[00:15:42] Instead we call, okay, here are retention metrics, that's the correct one.
+[00:15:45] If we go down to the transcript to find that, here we go, great.
+[00:15:49] What you see here now is these are the exact definition of that tool.
+[00:15:53] Just that tool, none of the rest.
+[00:15:55] And great, now the model can use the tool it needs and it leaves room for everything
+[00:15:59] else.
+[00:16:00] So hey, we've got the tool we need.
+[00:16:02] Now what happens next when we get the results?
+[00:16:05] Let's take a look at, yeah, right here.
+[00:16:09] So Gong is, if you're not familiar, it's a tool that kind of records your sales team's
+[00:16:13] conversations so you can look at the data, analyze it, see how the field is reacting
+[00:16:18] to maybe the product you've launched.
+[00:16:20] And these three-year-olds, I love them,
+[00:16:23] but they really care about their green balloons a lot
+[00:16:25] when we send superheroes to them.
+[00:16:27] They go on and on for 30 minutes, even 60 minutes sometimes,
+[00:16:30] and it's just not that relevant, frankly,
+[00:16:32] for when we're putting this dashboard together.
+[00:16:34] I don't need all that data.
+[00:16:35] I just kind of need the general sentiment, the vibes,
+[00:16:37] of how they feel about the conversation.
+[00:16:40] So with programmatic tool calling,
+[00:16:44] the model has created a nice little script here,
+[00:16:47] and it first looks at the first 2,500 tokens, characters.
+[00:16:52] It's there, just understands what's the structure,
+[00:16:54] and then it realizes all we want is the aggregate sentiment.
+[00:16:57] And so it then writes a simple way to loop through,
+[00:16:59] get the aggregate sentiment from the variety of calls,
+[00:17:02] and stream that into the dashboard.
+[00:17:04] And great, what previously was this massive result block
+[00:17:08] that you just saw actually is now down to just the parts of it
+[00:17:11] that we really need for what we need to do right now.
+[00:17:14] Again, keeping that context narrow.
+[00:17:16] And remember, this session's not about a cool demo.
+[00:17:19] There's lots of cool demos in AI.
+[00:17:21] Love them, too.
+[00:17:22] But the kind of core thing here is about actually putting it into production.
+[00:17:27] And in that case, you need to really make sure that the context really matches what's actually needed to make your product successful.
+[00:17:34] So, okay, that's the second one.
+[00:17:36] Let's talk about the third one, which is compaction.
+[00:17:40] So we hit that 400K threshold, and now we need to take it down.
+[00:17:44] We have chosen 400K.
+[00:17:46] Now, I launched a million context.
+[00:17:48] I'm a big fan of a million context.
+[00:17:49] We know lots of scenarios where a million context is great.
+[00:17:52] It might be for your scenario that the right combination of intelligence, cost, latency is not a million.
+[00:17:58] Start with 500K, 400K is often a good starting point, but it changes by model.
+[00:18:03] And what we've done is we set that threshold, and then we create the summary.
+[00:18:07] And you've got to create your own prompt to help guide it.
+[00:18:11] And then it just puts together the key facts that's needed to summarize where things are,
+[00:18:17] keep the conversation on track without losing the wrong context, and adds that in here.
+[00:18:22] And then, great, moves on to the conversation.
+[00:18:26] So, super, we've implemented context engineering.
+[00:18:29] For those of you with your accounting eyes, you can see the cost is down to about 11 pounds.
+[00:18:34] We've reduced it down about a third from where we were earlier.
+[00:18:37] but I have to confess one thing.
+[00:18:43] This has been a tough business.
+[00:18:46] This one superhero you'll hear about, Cryothane,
+[00:18:49] he does a lot of stuff that just increases my insurance premiums
+[00:18:53] and it is a tough business. Margins are really, really thin.
+[00:18:58] We need to get the cost down. Every time I'm loading this right now, it's costing
+[00:19:00] 11 pounds. That's pretty high. What model are we using
+[00:19:04] on this. Okay, we're using
+[00:19:06] Opus 4.7. Good model,
+[00:19:08] but it's high intelligence
+[00:19:10] and therefore also higher cost.
+[00:19:12] I wonder, could we maybe figure out
+[00:19:14] how to do this with Sonnet and
+[00:19:16] Haiku, but do it with
+[00:19:18] closer to Opus intelligence?
+[00:19:21] Let's switch back to slides and see
+[00:19:22] what we got.
+[00:19:26] Okay, so we've got advisor
+[00:19:28] strategy. Of course I had
+[00:19:30] a solution to that problem.
+[00:19:33] So the idea behind
+[00:19:34] advisor strategy is that you have the model, the agent is run with an executor that's sonnet
+[00:19:40] or haiku.
+[00:19:41] And the kind of insight here is that it can kind of figure out what to do with all these
+[00:19:46] different shapes, except when it kind of, you'll see in a second, it encounters this
+[00:19:50] sort of weird oddball shape.
+[00:19:53] And it doesn't know what to do with this, and it just calls the advisor, asks what to
+[00:19:57] do, and then it gives the advice on what to do.
+[00:20:00] The insight here is if you've ever worked with development teams, you've probably noticed
+[00:20:03] there are senior engineers paired with junior engineers that make that junior engineer
+[00:20:06] so much more powerful. That junior engineer is still the person hands on keyboard getting work
+[00:20:12] done, but with the coaching, the mentorship, the code reviews, the help on architecture from the
+[00:20:19] senior engineer, they're able to actually achieve so much more than they otherwise would have,
+[00:20:23] sometimes even approaching what someone with that senior engineer skills could have done solo.
+[00:20:28] And that's the kind of same idea here.
+[00:20:31] It turns out that same logic works with models.
+[00:20:33] The pairing, the kind of sonnet haiku,
+[00:20:36] gets you kind of the prices of those models
+[00:20:38] approaching even sometimes opus intelligence,
+[00:20:40] a big intelligence boost.
+[00:20:44] And folks like Bolt have used this.
+[00:20:46] They've kind of gotten better architectural decisions
+[00:20:49] where they can see on complex tasks,
+[00:20:51] it improves performance,
+[00:20:53] while on less complex tasks,
+[00:20:55] it has no extra overhead.
+[00:20:58] It just doesn't call the tool.
+[00:20:59] And so it's a pretty nice trade-off.
+[00:21:01] It's like a Pareto optimal way to improve your cost and intelligence performance.
+[00:21:08] So let's go back to the demo machine and let's take a look.
+[00:21:12] Let's see.
+[00:21:13] Let's go ahead and implement it.
+[00:21:18] Okay, so we're starting at just about 11 pounds.
+[00:21:20] and you'll see, yeah, that bar is going up a lot less fast.
+[00:21:27] Of course, we are using Sonnet now.
+[00:21:29] As you can see, there's Sonnet 4.6 with Opus 4.7 Advisor.
+[00:21:33] Okay so it kind of seems obvious Of course the cost is going to be lower We just switch to a more inexpensive I guess a higher value model and the question is not is it better quality it not is it lower cost it is
+[00:21:51] it also better quality is it is it is it also losing intelligence on this dashboard and so if
+[00:21:57] we want to scroll through I think that there was a so that we have this this one contract that we've
+[00:22:03] struggling with we really need to land it i i don't know if we're going to raise our next round
+[00:22:07] if we don't get this um it's the metropolis renewal metropolis uh uh has been our big
+[00:22:13] customer from the start they've been big supporters of hero corp i need to keep them on board um and
+[00:22:20] so sonnet looked through the transcripts was like i think the renewal is on track we're doing well
+[00:22:25] but this is important so let's ask opus and this is one of those ways that the advisor tool can be
+[00:22:30] used you can pass it a transcript it'll take a look anything wrong and it'll report back of hey
+[00:22:37] you might have missed a thing or looks good in this case sonnet said it was green but opus looks
+[00:22:42] through and it looks to it deeply more fine-eyed and is able to say actually um the mayor specifically
+[00:22:48] wants cryothene that guy was increasing my insurance premiums yeah he specifically wants
+[00:22:52] him he's too good to lose i know it um it's it's anyway um he's great so but uh he specifically
+[00:22:59] wants him, but he's just unavailable that day.
+[00:23:02] And so actually this is red.
+[00:23:06] The renewal will not go through if he's not available
+[00:23:09] on the day of the big event that they want at City Hall.
+[00:23:12] And so this is a watermelon, if you've heard that term.
+[00:23:14] It green on the outside but deep deep red on the inside And so what happens is Opus overrides Sonnet and lets us know and catches this spark
+[00:23:26] So that's good.
+[00:23:26] Okay, this is great.
+[00:23:27] We were able to kind of recover that intelligence
+[00:23:30] and have good performance.
+[00:23:32] So, okay, to backtrack here,
+[00:23:34] what happened in this dashboard?
+[00:23:36] We started at over 10 times the cost,
+[00:23:39] and we brought that down through one prompt caching.
+[00:23:42] We figured out what our prompt cache hit rate was, zero.
+[00:23:44] We implemented it.
+[00:23:46] And by the way, one great way to implement it again is the Cloud API skill within Cloud
+[00:23:51] Code.
+[00:23:52] It helps figure out a lot of that logic for you.
+[00:23:54] We looked at the transcript then to see exactly what's going on.
+[00:23:57] And we then implemented context engineering.
+[00:23:59] First, reducing what tools are sent to the model.
+[00:24:03] Two is then curating what data from those results gets sent back to the model.
+[00:24:09] And then finally, helping create almost unlimited context with compaction.
+[00:24:12] And then the last part was then helping reduce that cost further while preserving intelligence through Advisor Tool.
+[00:24:21] So we've done all this.
+[00:24:24] The opus has given us a nice little button here in the era of AI agents, the CEO.
+[00:24:30] I just click buttons nowadays.
+[00:24:31] So should we save the Metropolis contract?
+[00:24:35] Yeah, let's do it.
+[00:24:36] Let's do it.
+[00:24:37] Go ahead and click the button, and Metropolis is saved.
+[00:24:41] We're going to get our next round, I think, I hope.
+[00:24:44] Let's see.
+[00:24:45] If the VC's in the house, we can talk afterwards.
+[00:24:48] So let's switch back to slides.
+[00:24:51] Okay, so key takeaways.
+[00:24:53] Again to review what did we cover here today First thing prompt caching If you do nothing else prompt caching figure out what your prompt cache hit rate is and implement it Cloud API skill is a great way to get started Then we did the context engineering pieces We curated what getting sent to the model both from tools from
+[00:25:11] results of those tools, and then compacting it as the conversation grows. And finally, advisor
+[00:25:17] strategy. A Pareto optimal way, in many cases, to get better cost and intelligence. A great trade-off.
+[00:25:25] Now, I've talked about things that have launched literally in the last 24 hours here.
+[00:25:31] So the cloud platform is evolving fast.
+[00:25:33] I'm excited you've been here for this talk, but your learning journey is not over.
+[00:25:38] We're going to continue to try to do our best to make sure you can build not just great
+[00:25:43] demos, but real production agents that work for you and your customers, that let you build
+[00:25:47] a business on this platform.
+[00:25:50] And we're going to do that continuously.
+[00:25:51] That's our commitment to you.
+[00:25:53] And that means keeping abreast of all the things that we're launching.
+[00:25:56] Frankly, I didn't even have enough room on this slide to put everything that's launched
+[00:25:59] in 2026.
+[00:26:00] This is just a subset of what we've already launched this year.
+[00:26:05] I'm particularly excited about automatic prompt caching, a one-line way to implement prompt
+[00:26:11] caching if you've never implemented it, or the cloud platform on AWS.
+[00:26:16] This one's very cool.
+[00:26:17] It's this whole platform that we've talked about, available where I know a lot of folks
+[00:26:21] in this room use our models on AWS.
+[00:26:23] It's all right there.
+[00:26:25] So, yeah, this is a great way to get started.
+[00:26:28] I'm excited to see what you guys build
+[00:26:30] and thank you for coming.

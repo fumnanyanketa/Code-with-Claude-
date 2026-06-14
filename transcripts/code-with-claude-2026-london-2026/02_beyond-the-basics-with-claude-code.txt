@@ -1,0 +1,424 @@
+Title: Beyond the basics with Claude Code
+Video: https://www.youtube.com/watch?v=tuY2ChJIx48
+Caption: whisper (whisper-large-v3, audio transcription)
+================================================================================
+
+Hey, everyone. Super excited to hang out with you for the next 45 minutes. My name is Daisy Holman.
+I'm an engineer on the Cloud Code team. And I'm going to talk about beyond the basics with Cloud
+Code. This is really a kind of next step. I really want to talk more about agentic software
+engineering than agentic programming, if that makes any sense. This is more a talk targeted at
+software engineering environments and the kind of constraints that we run into in terms of
+customizing agents in those environments. So yeah, like I said, I work on Cloud Code. I got the
+super awesome opportunity to get involved pretty early and have gotten to be involved in some
+really, really cool efforts, including plug-ins and agent teams. And yeah, I come from a background
+in programming languages. I was once a chair on the C++ committee. And I think a lot of the things
+that I was very interested in about programming languages really apply to agentic harness design. I
+think I'm very interested in making it easy for people to make their ideas into production,
+regardless of how technical they are. And I want software engineers to be a part of that, too.
+Software engineering to be a part of the thing about ideas. And I think that I think that Cloud Code
+is one of the first times we've really been able to start doing that at scale. All right. So where
+we're headed. We're mostly going to be talking about ways to customize quad code. I think quad code
+itself works pretty well out of the box for very simple what I would call programming tasks. But as
+you ratchet up the complexity and as you approach things that I would call software engineering
+tasks, you need to give it some knobs and whistles and some customization to make it work the way
+you want to. We talk about how to think about the context window and how there this analogy to
+software packaging and where that breaks down and how that works We talk about some of the key
+abstractions in plugins and focus on which ones of them scale up to real large software engineering
+environments Environments where you have hundreds or thousands or tens of thousands of engineers
+working on the same code base and you need to disseminate information efficiently without filling up
+your context too quickly. And finally, I'm going to, if I have time, hopefully I will, run through a
+few of the new things that we're doing with Cloud Code, the ways that we're starting to use it
+internally to develop Cloud Code with Cloud Code, and where we see the next year going or the next
+three months, the next year is, who knows. So first, let's talk about why would you need to
+customize an agentic harness in general? And I do say agentic harness in general, right? I mean,
+obviously, I work on Cloud Code. I hope you use Cloud Code. I hope you like Cloud Code. But I really
+am also interested in this as an academic question as to how do you customize the generic idea of an
+agentic harness with information, with connectivity, et cetera. So there's three categories of
+things you really need. Access, knowledge, and tooling, and I'm going to kind of break down each of
+these. This is, if there's one thesis of this whole talk that I want you to take away here, it's
+that if Claude can't do everything you can do, it can't do your job with you, right? Your job as a
+software engineer at this point is to make little clones of yourself so you can scale up your
+abilities and scale up your work across many agents, right? And if Claude can't get to the things
+that you can get to, and I'm not just talking about source code, I'm talking about Slack messages,
+et cetera. I have another slide about this afterwards. I'm talking about emails. I'm talking about
+understanding the why of your tasks and not just understanding the what. The source code doesn't
+often explain the motivation for why you need to make a change, and typing that out in a prompt is
+not something you always want to do because that information is already somewhere. So out of the box
+Claude just sees a repo and a shell Right This works OK fine for zero to one projects that don have
+any conventions that don have any built up technical debt over time that don't have a wide range of
+stakeholders that Claude needs to understand stakeholder concerns for. And, you know, like when
+Claude can own everything, it's not all that important to customize, to bring in information from
+different sources. But, you know, this kind of vanilla quad code is rarely enough to do high quality
+software engineering at very large scales. I think sometimes you can get away with it if you're
+working on like very leaf software. But especially if anyone depends on you, especially if you have
+external stakeholders of any kind, you need to give quad the tools to understand those concerns.
+Right? They're not always in the source code. They're not always in the documentation, right? And
+most of the work in professional software engineering, especially at very large scales, doesn't live
+in the actual source code. I've said this several times, right? We do design documents, we write
+emails to each other, we talk on Slack, right? This is a very important thing to keep in mind. This
+is why these zero to one projects work fine with no customization, but full-scale software
+engineering needs a lot of information. So let's talk about how this, what you might need to give
+Claude access to. Team chat, very first one, right? Where are your decisions being made? If you can
+see the entire conversation in a Slack thread about why you decided to implement this thing, Claude
+can figure out, you know, why this strategy might not work or why this might be better than that,
+right? I think often when people get frustrated that Claude is taking the wrong direction, there's
+some information in your brain that you got from somewhere that Claude can't access. And if Claude
+can access that, it's much, much more likely to jive with your brain, right? CI and CD, absolutely
+critical. You should not be fixing CI failures yourself at this point in time. are very, very good
+at that and will very likely continue to be in the future. Dashboards When something goes down in
+production you need to be able to pull in a lot of information very quickly And the reality is that
+you going to be competing with companies who are doing this agentically And so you need to be able
+to do it efficiently agentically with accuracy right And in a way that you can trust. And Claude
+needs to be able to see the why, right? This comes back to Claude being able to see the why.
+Internal documents, design docs, run books, all kinds of other things. We have largely started
+recording our meetings or transcribing our meetings, and I will go right after the meeting and feed
+the meeting notes into Claude and say, is there any low-hanging fruit from this meeting that you can
+address? And I'll get two or three PRs for meeting. I strongly suggest you do that. Claude needs to
+know why you want to do things in order to choose the best pathway, in order to work with you as a
+colleague. week. Here's the tip that I give. If you try doing a full day of work without leaving the
+Cloud code terminal or the desktop or whatever you use, right, every time you have to reach for
+another tool, every time you have to alt tab to something else and copy paste into Cloud, that's
+something Cloud is missing. Write it down on a piece of paper and then at the end of the day try and
+find ways to connect Cloud to all of those things. It will will work a lot, lot better than you
+think. Like, the gap is much bigger than you notice until you make all of the connections. Knowledge
+is another reason why we need to customize Quad. Like, we can't train your code bases conventions
+into the model, right? We can't train institutional memory into the model. Things that changed last
+week, or things that are just yours, your internal vocabulary, your internal APIs. fine-tuning
+doesn't really I always get questions about fine-tuning when it comes to this fine-tuning doesn't
+really work very well for this I can talk a little bit more offline about why that is and what we're
+learning there's some papers on this from late 2025 you might want to look at about how like
+fine-tuning on specialized information can lead to more hallucinations and also it's just not cost
+efficient right frontier models are churning so quickly that by the time your company is done
+fine-tuning for something small even if you're a big company, right, even if you're a very big
+company, fine-tuning on a model, the frontier model just isn't cost-efficient at this point in time.
+So you need to do this all via in-context memory. or in-context learning, sorry. You'll hear the
+term ICL. Who's heard the term ICL before? Okay, yeah, ICL means, ICL is like a fancy word for when
+you want people to think you're smart, but you're actually just talking about text files. I use it
+all the time, it's great. But seriously, right, at scale, because of the bitter lesson, if you're
+familiar with the bitter lesson, right, General AI wins out over specialized AI in the long run. And
+we're really seeing that with frontier models now. And we can't realistically train anything into
+the model that's specific to your job or specific to your code base. So you have skills, you have
+tools, you have quad.md, you have a lot of tools there to get better results, but that's all you
+have. You don't have a way to affect the weights of the model. So, I mean, there's good and bad
+there, right? Like, you don't need to understand anything about the weights of the model in order to
+customize its behavior. And, like, all of the things that you can do with the model are just text
+files. So it's, like, really, really easy to get started. And people kind of leave it there. They're
+like, well, that's probably good enough. But there's a lot of optimization you can do within context
+learning. Yeah. Tooling. Tooling is the other thing I like to think about. What does an IDE for
+Claude look like? For humans, if you remember back two years ago when you used to write code by
+hand, is there anyone here who wants to admit they did not use syntax highlighting? All of us who
+have written code before professionally use syntax highlighting. text highlighting. Most of us
+probably use some sort of LSP, probably use some sort of code completion, all of those kinds of
+things. Cloud has none of those out of the box, right? It has an edit tool, and it literally has to
+write the string it wants to replace verbatim and write the text it wants to replace it with, right?
+This is like, we haven't even invented Vim yet. This is is ED. I hope none of you have ever had to
+use ED except by choice, but if you have, you know how hard it is to do any kind of real text
+editing What you want to be thinking about in these kinds of customizations is what does the agentic
+version of VS Code look like What does the agentic version of code completion look like? What does
+the agentic version of red squigglies, I like to say, the little squiggly red lines when you type a
+variable wrong, right? Or when you give the wrong number of arguments to a function, the red
+squigglies, think about what they do to your brain, right? They kind of, they nudge you in a
+direction without completely stopping you, right? So you're like, wait, should I think about that
+again? Oh, no, I know that that variable is correct. I just haven't defined the function yet. I'm
+going to go up and define it later, right? And you can ignore them, but it reminds you to think
+twice. And we want something similar to that for agents. Post-tool use hooks are perfect for this.
+I'm going to get into hooks a little bit later for those of you not familiar, but this is the red
+squigglies for your agent, right? You can run linters. We support LSPs in quad code, LSP
+connections. All of that kind of feedback, like reminders to quad. Here's a great example, a
+generated file, right? Like you don't want to hard block quad from editing a generated file, right?
+Maybe you do in your code base, but like certainly at the harness level, we can't. You probably want
+to remind it that it's a generated file because maybe it has a good reason for editing the generated
+file just to like try something out and see if it works. And as long as it gets a reminder that this
+is a generated file and you shouldn't commit it to the code base and you shouldn't. It's very likely
+to remember to revert those changes and put them in the right place. Or if it has forgotten, then it
+will stop and undo it usually, right? It's a red squiggly. It's exactly what we want, right? The
+fastest way to make your agent better at your code base isn't a smarter model. It's a tighter
+feedback loop. And the key here is that most of these are scripts you already have. because you had
+to set up environments for developers, right? You had to have a way for humans to edit your code
+base. So you already have all of the things you need. You just need to hook them up the right way.
+You don't need to reinvent the wheel here. You just need to give Claude the tools. I also like to
+think of this in terms of two kinds of tools. There tools that compensate for a lack of intelligence
+and there tools that scale with intelligence right I think of the red squigglies as the second one
+right They a nudge a reminder of something you might have forgotten but they an overridable nudge
+right If you know something special that means that the red squiggly is incorrect, you can keep
+going, right? Whereas if you were to hard block Claude from ever writing a variable that's not, you
+know, ever using a variable that's not defined somewhere else, right, that would, I guess in theory,
+lead to fewer mistakes, but that doesn't really scale up well with intelligence, right? It kind of
+makes Claude write code in a very specific order, and that isn't, you know, isn't going to lead to
+good results. I actually asked Claude for good examples of tools that we shouldn't give it, ones
+that compensate for lack of intelligence, and it said, oh, I don't like it when you take away my
+tools. Which I thought was cute. Yeah, so, I mean, to me, the AGI-pilled approach here, right, is to
+think about tools that scale with intelligence. As the models get better, these tools get more
+useful to the model. So I want to go through a little bit of the mechanics of how these
+customizations work, and I want to ground it in thinking about this context window. This is a kind
+of beyond the basics talk. I assume most of you are familiar with the concept of a context window.
+Yeah, I'm seeing a lot of nods. Good. In Quad Opus 4.7, it's like 1 million tokens usually.
+Interesting thing here is that context windows aren't really growing. Like if you look at the
+leading frontier models from a year ago, they were mostly 1 million token context models. There were
+some 200,000 token context models. and there's a lot fewer of those now and there's a lot more of
+the million token. But otherwise, the frontier of context windows hasn't changed and the models have
+gotten way better, right? The models from now versus the models from a year ago are a lot more there
+a lot more change than just the size of the context windows right And the size of the context
+windows are remaining relatively constant So you kind of have a fixed target for how you need to do
+your context engineering right Like I said earlier, right, your tool that you have to make your
+output better is in context learning, and that means that everything, every customization you put
+into the model has to go into this context window in some form. We're going to talk about more
+scalable ways to do that, right? You can't just dump your whole code base. You can't dump your whole
+wiki in there, right? You can't dump all of your internal docs into the context window. You need to
+figure out better ways to get the right information in at the right time. So, yeah, the other way I
+like to think about this is that, like, we have a really constrained amount of space to put a lot of
+information into. And it's kind of a unique problem. I like to say it's like trying to run NPM on an
+Arduino, right? You've got a tiny bit of memory, and you've got to figure out the very most
+important things to put in there, and you want to put the smallest version of it that you can in
+there in order to leave enough room to do real work, right? If you were to install packages
+willy-nilly on an Arduino, you're not going to leave any room for your own code. It's kind of the
+same idea, right? You have to be very intentional about what you put into your context window. Don't
+pay for what you don't use, which is like, I think, a famous, originally C++ quote, right? It's a
+zero overhead abstraction principle. It's not just a nice to have here, right? It's not like, well,
+we'll throw more compute power at it. Like, we are fundamentally at a limit, or what looks like a
+limit. I mean, I might eat my words, but what looks like a limit of context window size, and it's
+not getting bigger. So the only way to get more efficient at putting information into the model is
+to get better at not paying for what you don't use. There's one more thing I want to talk about that
+kind of makes this even more complicated and kind of makes the analogy fall apart, actually. The
+first thing I thought of when I saw this problem space was like, oh, well, we already know how to
+make caches, right? the L1 cache doesn't hold all of memory because it's very constrained and we
+just evict things we haven't used recently, right? The problem is that there's other constraint that
+we have called a KV cache. And the KV cache pretty heavily determines how expensive it is to
+calculate the next token, right? So if you go and change something really early in the prompt,
+you're going to end up paying for uncached tokens, which cost 10 times as much for all of the rest
+of your context window after that change, right? So if you wanted to like only include a certain
+number of tools and then like evict one that hasn't been used and replace it with one that needs to
+be used sooner you can't do that right you you can't actually take anything out of this tools block
+without invalidating the entire rest of the cache and that's that's actually a really hard
+constraint to work around right i think some of the early approaches to agentic customization did
+take a very like lru cache approach and i think it um i think it made more sense when we had 32 000
+token context windows maybe and and like all of the tokens were expensive no matter what and like kb
+caching wasn't as efficient but like none of that's true anymore right these you should think of
+these tokens as cheap and these tokens as expensive right and you're going to pay a whole lot for a
+lot of expensive tokens uh just to like save some context windows. So you really have to think about
+putting stable shared stuff at the very front and volatile like per task information closer to the
+end, right? So that you can evict it without too much cost. There's a lot of complexity here and I
+don't think we're even close to like solving this problem. But we spend a lot of time thinking about
+it. I mean, these are the kinds of things we think about day to day on the Cloud Code team. So let's
+look at these plugin abstractions. I really want to look at this in the context of large-scale
+software engineering, of monorepos where each one of these, I want you to ask, what happens if I
+have 10,000 of them? What happens if I have 100,000 of them? There are companies out there right now
+with tens of thousands or hundreds of thousands of skills in their monorepo, and they're really
+hitting a scaling boundary because of that, and I'm going to talk about why. But uh is my there we
+go Slides are okay we good So yeah the four plugin primitives that I really want to examine in this
+light are MCP skills hooks and agents If you've ever written a plugin, you may be familiar with some
+of these, not all of them. There are other customization points in the plugin spec that I'm not
+going to talk about. A lot of this carries over. a lot of this thinking carries over between these
+kinds of customizations. But anyway, let's dive into MCP. Probably if you're in an advanced
+workshop, I would guess that you're familiar with MCP. You've heard of it before. It's been around
+for a while. The biggest thing to know about it is that it was designed in an era where agents were
+much simpler, or LLMs were much simpler. It was designed primarily, initially at least, to work with
+chatbots. And your chatbot is usually running serverless or is usually not running in a container.
+It doesn't have access to files on your computer. It can't run commands. It can't use a CLI. And
+it's a way to kind of inject more tools into the context. It has some nice properties, like it's
+transport agnostic. It mostly handles auth for you. It's meant to be the thing that if your company
+wants to ship an integration with Cloud, that integration that's shipped to the public from your
+company should probably be an MCP server, or at least at first should probably be an MCP server.
+There's probably some other things you can add on, but this is like the general public version. But
+we're, in this talk, talking about professional software engineering environments. we're talking
+about large-scale monorepos, we're talking about developers working together on the same piece of
+code and how do we share customizations and share information across agents. And like there's a, oh
+yeah I said this about all the properties, but like it assumes that it doesn't have a shell. Cloud
+Code does have a shell, right? So if you already have a CLI, it doesn't make a whole lot of sense to
+wrap that CLI in MCP unless you're shipping it to non-technical customers. I think that's kind of
+the rule of thumb, right? Usually a skill that just tells quad how to use the CLI is much easier to
+write up And I think often when you talking about developer experience for your developers at a
+large company with lots of code that needs to interact with each other, you're almost always going
+to be shipping skills or customizing with skills and not MCP servers. Now, you still need to use
+other people's MCP servers, right? You still are going to need to use an MCP server to connect to
+Slack at this point. You're still going to need to use MCP servers to connect to email and all of
+those things I talked about at the very beginning. Let's talk about does it scale? What happens if
+you have 10,000 of these and you want to put them all, you know, you want to have them all available
+to your agent? It has to put the name, the description, and the schema in the system prompt. So for
+each tool so that Claude knows how to call the tool, right? But if you have even 20 servers with 15
+tools each, most of your context window starts to be tool definitions. So it doesn't scale without
+help. We have a new kind of approach to this called tool search that mostly works. It does exactly
+what you think. We put just the names in the system prompt, and then we tell Claude that it has a
+tool that it can use to search for tools to use later down in the transcript. And if it finds a
+tool, it will give it the description in the schema at that point. So it's kind of lazy loaded. The
+problem is that unless it's something very specific, like Slack and the user mentions Slack,
+Claude's not necessarily going to know that it needs to search for a tool. So things like edit tool,
+things like bash tool that are very generic, we end up usually having to put those in the system
+prompt with their schema directly. And so it, and the other thing is that like the more of the
+description you put into the system prompt, you can like collapse down this description, right? You
+can do various forms of this description, how much you want to put or how little you want to put.
+And the more of the description you put into the system prompt, the more likely Claude is to search
+for the tool. So it's like, there's not a free lunch here. It is a slightly less expensive lunch It
+also doesn fix the problems with like setting up auth and process lifecycle and all the other things
+that go with MCP If you developing code in your source like if your user is a developer within your
+company, and they already have access to your source code, right, like, you probably can do most of
+the things already. You don't need to set up this whole auth lifecycle to make sure the MCP works
+everywhere and all of the other things that are involved in that. So like using the CLI with a skill
+is a great way to tell Cloud how to do things, especially for scripts that you already have. So
+speaking of skills, who is familiar with skills? Like who says, thinks they could, okay, everyone's
+familiar with it. The term I used to use when describing it when it first came out is that it's like
+a lazy system prompt, right? It is a clod.md file with a miniature version that tells clod when it
+should read that file, right? There's a one-line description that goes in the front matter that ends
+up getting put into the system prompt and Claude has a tool that it can use to load the the full
+skill that MD and Like get to all of the scripts and other resources that are in the directory but
+fundamentally a skill is just a folder. It's a folder with a markdown file in it that happens to
+have some sort of summary associated with it. And so it's really easy to set this kind of thing up
+in your repository. That can be good and it can be bad. You definitely need to be careful about
+figuring out how to control the quality of skills in your monorepo, right? Because it's so easy to
+create a new one. Let's talk about whether it scales, right? the body is pay-per-use, which is a
+good thing, right? But the description is always loaded, so you're always paying some fraction, some
+small fraction of that body in your system prompt. So it's not quite zero overhead in terms of
+abstraction. Reliably triggering skills still sometimes takes up to a paragraph, something like 300,
+400 tokens sometimes. And like, again, the more you cut out of that description, the less likely it
+is to reliably trigger without the user explicitly saying something, right? And, No, skills don't
+have a defined way to do hierarchy yet. You can't lazily expose subskills. We are working on this.
+Stay tuned next couple of weeks. Hopefully, there'll be a really cool announcement about that. Yeah,
+so it kind of scales. I think we had hoped when we started down that trail, that pathway, that it
+would scale better, but we also didn't really think ahead to this time period where monorepos would
+have 100,000 skills. It's just such a massive amount of information, and you really need actual
+zero-overhead abstractions. So speaking of which, hooks. Hooks can't do everything. They're not
+perfect, but they are an actual zero-overhead abstraction here, right? We give you a bunch of
+different event types to trigger on, and then we just call this script. We call a script that you
+give us, In a special way, there's a JSON format that you can pass to it, and there's a JSON format
+that it'll pass back in order to determine whether or not it needs to insert something into the
+context window. You can look up all of that on the website. Also, Quad knows how to use them and
+create them very well. Fundamentally, no, they're not complicated, right? Something happens in the
+agentic loop, and it triggers something on your computer to run. and that thing runs and decides if
+it wants to insert something into the context window or not. So you can have 100,000 of these, and
+if you have a big enough computer and 99,995 of them don't trigger, don't match, or don't return any
+text to put into the context window, your only constraint is your computer, right? You've taken a
+very constrained resource and kind of blown it out into a much less constrained resource. And when
+you think about systems like this, that's really what you want to be looking for, the property you
+want to be looking for, right? It runs outside the context window, so there's zero token cost. I
+mean, again, like if you have a JavaScript script skill and you're writing Rust, you still pay for
+this little description in the front that says, use this skill when you're writing JavaScript. And
+then quad has to ignore that little description But if you have a hook that type checks your
+JavaScript code and you writing Rust the hook runs sees that it not a JavaScript file and then stops
+and doesn return anything You don't pay for what you don't use. It doesn't work for everything. It's
+not the most AGI-filled thing. You end up doing things like parsing individual words or regexes out
+of the commands or out of the tool calls or whatever. And there are some limitations there. You can
+use subagents to decide whether or not you want to inject something, but that starts to get
+expensive from a token perspective. So there's a lot of trade-offs here. Again, no free lunch, but
+maybe a little cheaper. This is where our red squigglies live, like I was talking about earlier,
+right? Subagents, I'm going to breeze through this a little bit because a lot of the concerns are
+pretty similar, but again the thing you want to think about here, subagents are structured as a
+description that goes into the system prompt and then a system prompt for the subagent or a set of
+text in context learning for the subagent so that it can perform a specific task. And you only pay
+for those tokens in a separate context, right? So all you're paying for is the tool call in the main
+context and the result from the subagent. But the system prompt of the subagent goes into a
+different context, right? And by pay, I mean like in terms of cost in your context window, right?
+Like obviously tokens aren't just free because you're using a subagent but i i'm talking much more
+about the challenge of you know splitting up this one context window that an agent can have um right
+so like an agent can read 50 files so the main loop doesn't have to so they're scalable in that way
+but they still have the same problem that each agent's description still sits in the parent prompt
+it still has the same like one-liner tax so if you have a hundred thousand of these in in a
+monorepo, you're still paying for like 100,000 one-liner descriptions. And we can sort of start to
+do better than that, just like with skills, we're kind of experimenting with a number of ways of
+doing this. But it's not perfect, right? What are some things that aren in this list Cloud So one of
+the first and still most frequent requests I get for plugins is why can't I provide a Cloud.md file
+for my plugin? Why can't I provide a system prompt, a piece of the system prompt, that goes
+unconditionally into the user's context when the plugin is enabled? and like after this discussion i
+think you can all see why i pushed back on that so much right it not only is it an extremely
+expensive abstraction but it looks super cheap right like if we allowed plugins to provide a
+cloud.md file every single plugin would provide one like pretty much every single plugin would
+provide one they'd be like hey you're also using this plugin and then like a little bit of text and
+that doesn't scale it really doesn't scale and it looks like it does, right? It looks so cheap
+because it's just a single file. So what we do is that if you really, really want to do this, then
+you can return some text from a session start hook. And in that case, it's very clear that you are
+making the user pay something unconditionally every time. And it's like a super roundabout and kind
+of annoying way of doing this, but I think it's actually the right abstraction for building scalable
+ecosystems of plugins. Memory is a different kind of animal here. I really want you to come away
+thinking about plugins as a context engineering primitive, which is another way of saying text file,
+but with more funding. I don't know. Context engineering primitives are iterated on. They are
+evaluated. They are not things that are made on the fly by an agent in the background. right and
+memory has its place it's kind of low quality low cost short-lived information right whereas these
+plugins we want you to think of as a way to manipulate the context into giving you better results so
+memory doesn't really fit into this this category either okay it was a little bit of a whirlwind but
+I I hope that part was helpful. I'm going to dive into a few more things here about where we see all
+of this going and how do we use Cloud Code on the Cloud Code team and what do we see happening going
+forward The one big theme of all of this is going to be like well I guess two big themes of all of
+this are going to be asynchrony and parallelism right Asynchrony where you can walk away from the
+computer, let it work for a while and come back. And parallelism, where you really want to be doing
+multiple of these things at a time. And the combination of those two things means that you just
+really are going to have to get good at context switching. And I hate it. And I know a lot of
+software engineers hate it. I was the programmer's programmer. I used to give talks on C++
+metaprogramming, right? Template metaprogramming. And I love to get into flow state for eight hours
+and like look up, you know, at the clock later and be like, oh my gosh, it's after midnight. I can't
+believe it. But that's just like, if you want to do high quality, high efficiency engineering these
+days, is your work days are likely not gonna look like that. And so like figuring out ways to get
+yourself to be efficient in your context switching is a really important part of this. Work trees
+are one of the simplest ways, like baseline ways to onboard into this. If you're not familiar with
+Git work trees, which I think a lot more people are at this point because of agentic coding, They're
+basically just different checkouts of the same repo on your machine. There's some special fanciness
+in there where it like Git does some like lazy symlinking and then the symlink gets replaced when
+you edit or something like that so that you don't use up too much disk. But basically they're just
+different checkouts in different folders of the same repository. And this if you put a different
+quad code instance on each work tree, then you get them to not step on each other. This is just like
+the way that you work with colleagues back in the day when you wrote code by hand. You each had a
+different checkout. You were working on different things. Work trees are the same, but you are now
+one level up as a technical lead of multiple clods. One thing that I find that helps me with context
+switching is to rename my sessions and change the color. Color actually does trigger memory pretty
+efficiently. I kind of think of this as the syntax highlighting for humans. and take care of slash
+color is a super efficient way for me to very quickly kind of click my brain into what I was doing
+in that session. Rename also helps with that, especially if you're colorblind. Rename will get you
+some of that too. But it's a really easy way to quickly remember what you were doing as you switch
+between sessions. Like the more you can cut down on that context switching time, the more efficient
+you're going to be. So this is what my actual setup looks like. I usually, I have a whole bunch of
+kind of permanent, long-lived work trees that all track upstream main. And then like, these are the
+two anthropic monorepos, because two monorepos is the way that monorepos work at most companies. And
+then here's the quadcode repos, because quadcode is now not in the monorepos because monorepo
+engineering is hard. Anyway, but I have a whole bunch of checkouts and I have persistent agents.
+I've just recently switched to doing even longer-lived agents that kind of own their own
+directories. The one that made this presentation wanted to identify itself as agent N. But they're
+all checked out as separate work trees. They all track upstream main, right? But because they're
+different work trees, they have to have different names. That's just how get work trees work. I
+don't know why. But they're differently named branches that all track the upstream main. I found
+this workflow to be really efficient. You don have to if these work trees are long you don have to
+run npm init or cargo init or whatever you have to do at the very beginning of checking out the work
+tree You don have to make all the symlinks It just kind of long Yeah and each agent keeping its
+identity is kind of important here. Quads that talk to each other. So this is something we released
+in some form back in January. And we are working on improving it more and more. We're giving, we're
+relaxing the constraints on send message tool, literally, like as we speak. Clods can send messages
+to other clods. Eventually, it should be any other clod, with your permission, any other clod
+running on the same account should be able to talk to each other. And this is really, really helpful
+if you have one that's working on something and you need to get it to explain something to another
+one, right? Remember how I was saying, like, all of the places you work need to be accessible to
+Claude? Like, one of those places that you work now is another Claude. And so the Claude that's over
+here working on something needs to have access to the information from that conversation in some
+form. Again, probably with your permission, there are very many valid reasons to keep these things
+separate if you want to do redundancy, if you want to do testing or all kinds of other things. But
+by default, they should be able to talk to each other. Yeah. So, yeah, the send message tool. Slash
+loop we recently launched is super, super helpful. It literally just runs a prompt every fixed
+interval of time. So every 10 minutes, it'll run this prompt. Yeah Claude has the ability to turn it
+off when it knows the prompt is no longer relevant It literally the internal name for the tool is
+crontool and slash loop is just a text command that tells Cloud to use crontool Babysitting PRs with
+slash loop, super, super useful. Like, really, really helps you pipeline a lot better. It helps you
+parallelize your work a lot better. You kind of, once it gets to CI, even if your CI takes two hours
+to run, You can just leave it for the next day and a half, and it'll fix all of the CI bugs. It's
+really been a game changer for us. Yes, permissions mode. Who uses auto mode? Okay, should all be
+using auto mode. Unless you're using dangerously skipped permissions, which I'm definitely not
+recommending. But this is basically not dangerously skipped permissions. It has a whole bunch of
+other infrastructure around it. I think we put out a blog post about it, but there's basically a
+classifier agent and then another agent that adversarially checks the tool call to make sure that
+there's nothing bad happening. It has a lot of instructions. It's basically no more permission
+prompts. This is what makes Loop usable. This is what makes agent teams usable. This is what makes
+overnight work usable. It's a little expensive. It can be on the order of 30 to 40% more because you
+are like using quite a lot of extra tokens. I don't actually know the number off the top of my head.
+So don't quote me on that. It could be less than that now. We're working on getting it down. Cloud
+Agents, we just launched. I know I'm running out of time, but give me like two more minutes. Cloud
+Agents is one place where you can see all of your agents that are running. It has a little
+classifier that moves them around as they get into different states right And it show which ones are
+working show which ones are blocked You can send prompts directly to it from this one session. You
+can hit enter to jump into the session. You can peek in the session. You can send prompts to start a
+new session, all from this one view. It's actually really, really impressive. It works really well.
+The engineer that put this together went through like a thousand PRs in the past month using this to
+build on itself, basically. So there's some really high quality speed ups here in terms of your
+context switching latency. Remote control, if you're not using remote control, you should absolutely
+use remote control. It's fantastic. It shows things on your phone. It also shows things on Cloud
+Code Desktop. It is a great way to do a 30-second check-in after dinner to make sure that your
+agents are still running overnight and aren't stuck on something dumb. So three take-homes. Give it
+access. Mind the box. I didn't come up with that. Claude did. But, yeah, I mean, think about your
+context window. and pick abstractions that scale. Think about what your plugins are going to look
+like when you have 100,000 lines, 100 million lines in your monorepo, 100,000 skills. And I'll take
+questions. I'm over time, so I'm going to take questions offstage. But I just want to thank everyone
+for coming and everyone for listening. And I hope you enjoyed the rest of your Code with Clutch. you

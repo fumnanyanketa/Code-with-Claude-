@@ -1,0 +1,263 @@
+Title: Getting more out of the Claude Platform
+Video: https://www.youtube.com/watch?v=QIriO1-vHYw
+Caption: whisper (whisper-large-v3-turbo, audio transcription)
+================================================================================
+
+Please welcome to the stage member of technical staff at Anthropic, Puneet Shah. Welcome to the last
+session of Code with Claude here in London. Yeah, let's give it up for everyone who's come before.
+So I'm a product manager on our team, on the platform team at Anthropic, and I've shipped some of
+the features like our 1 million context window, fast mode, and a number of our improvements on
+prompt caching amongst others. And that's what makes me especially excited about this session. you
+guys have made a very good decision to come here because this is about the cloud platform. And if
+you think about what we have, we have these great models, but there's this whole layer on top of it,
+the platform, that's not about just getting you the intelligence, but helping you build a real
+business, a real product that really deliver for your users on top of those models. And so in the
+spirit of this being the last session, I want to like, let's get a little movement. So if you have
+built an agent of any sort, big, small, I don't care what, go ahead and stand up. Okay, good. Nice.
+A lot of agent builders here. This is nice. Now, if you have put one into production, go ahead and
+stay standing and everyone else just take a seat. Okay. If you're really happy about the quality,
+about the cost, about the speed of those agents, stay standing Everyone else, take a seat. Okay,
+nice, nice. Okay, look around. Remember these folks. These are our true experts. Go find them at
+happy hour afterwards. You can all have a seat now. Thank you. Thank you for humoring me. What I
+want to do in this session is share some of what we've learned about what helps you get the most out
+of that cloud platform. And one of the first things that we have on the platform that I want to talk
+through is prompt caching. If you remember nothing else from this session, think about prompt
+caching. And what caching is, is it's a way that we, if you're not familiar, where we take your
+input tokens, we process them, and then we cache that before we generate the output tokens. And that
+cache we then continue to reuse as the conversation moves on. And so when you have a new message in
+the conversation, we just process those additional new tokens, but the rest we just pull from the
+cache. And, okay, why is this useful for you? Why should you care? Well, the first reason is you get
+a 90% discount because we're not reprocessing them. We pass those savings on to you. You get a 90%
+discount, so a huge cost savings to actually build your agent. The second is that you also get a
+rate limit boost effectively. Our rate limits are not, they don't count your cashed tokens. And so
+if you have an 80% cash hit rate, meaning 80% of your tokens are cached, then you effectively have a
+five times larger rate limit in practice. So that's great. And then the last benefit is latency. If
+you are starting to cache a lot and that conversation's getting a lot longer, because we're no
+longer processing all those tokens, what ends up happening is your time to first token goes down.
+And so these are great benefits. And if you're kind of looking for a target and you're building
+agentic applications, Something in the kind of 80% above range is a good place to try to target. But
+if you look at some of these customers here, we have Replit, Cursor, Perplexity, Cloud Code. They're
+hitting 90 plus percent. These people have really, I've talked to all these customers, they've put a
+ton of effort into making their prompt caching work because of all of those benefits I've described.
+And one of the things that they all start with is just understanding what is your prompt cache hit
+rate? What is the prompt cache hit rate you get? That's the first question you should understand.
+And thankfully, because we've learned how much work these people are putting in, we said, why don't
+we build it for you guys? And so now today, if you go to the console on the cloud platform,
+console.anthropic.com, you can actually see analytics right next to your cost and usage pages. You
+can actually see analytics on prompt caching. And even just yesterday, we continued to improve this.
+Yesterday, we just launched ways to actually figure out why has your cache broken. Turns out the
+ordering of how you make those prompts matters a lot. matters a lot. A common error I see is that
+people put a timestamp into the system prompt. What day is it Okay that useful but then it breaks
+the system prompt because it changes as you go and that then breaks your cache The tokens need to be
+exactly the same And so you can actually see how did it break and you see that on the analytics page
+And that's a great place to get started. If you're seeing it at 0%, it's okay. That's why you're
+here. You can start with a one-line code change with autocaching. Implements kind of a basic prompt
+caching. Or better yet, go to the Cloud API skill. Go to Cloud Code or many other coding agents, and
+we have a skill built in, prepackaged, that lets you ask it to improve your cache hit rate and it
+will help with how you manage and order that prompt to get the best performance. So prompt caching,
+super important. We're going to talk a little bit more about it, but I want to talk about something
+I've been working on. I've been really excited about it. You guys are here for my startup pitch.
+Thank you so much. I'm also in my free time the CEO of HeroCorp and I have my CTO actually here.
+Ben, do you want to come out here? He runs our technology team. Let's give it up for Ben. And can we
+switch over to the demo laptop? So we're, wait, Ben, what is, Ben, this is Claude with Code. This is
+2026. This looks like it's from the 90s. What's going on here? Guys, who wants a better theme?
+What's something a little bit more of the times? Yeah, we got a few thumbs up. Okay, Ben, let's
+improve the theme. let's make it let's make it ready for for code of Clyde let's let that cook nice
+so we are hero corp um we are a superheroes for hire company um you know we help fight crime in the
+city keep the tube running on time uh you know staff your three-year-old's birthday party and make
+sure there's sufficient number of balloons. We do it all. And some people have misconceptions, I
+think, about the superhero world. They think that we're like fly by your seat of your pants. We're
+analytical. We use OKRs. We plan. And that's why we have a dashboard. And this dashboard is how we
+track our performance. You can see 90-day retention, 94%. We could do better. We got one flight risk
+there, probably because our compensation is a little bit low. Oh, okay, yeah, I probably should be
+paying the superheroes more. You can see some of our different superheroes in the anthropic
+cinematic universe. Our lawyers required us to use these names instead of others are listed here
+with their quotes about how things are going. So do you mind pulling open our, we built a little
+developer console. You'll hear me repeat this a number of times. You should always look at the
+transcript of your agents to really understand what's going on. And so right here you can see we're
+pulling in a bunch of data, and if maybe you want to pop open one of those, you'll see here there's
+a bunch of data we're pulling in from web, from Slack, from Gong, from Jira, all the different
+sources to aggregate it to take a big holistic view on what's going on at the company. And, you
+know, right, what's our prompt cache hit rate? Do you want to take a look? Zero? Ben, come on, come
+on. Okay, let's implement prompt caching. So that's the starting point. We know what our prompt
+cache rate is. It's okay, it's at zero. We can do better. We're gonna get there. And so we're right
+now at about 31 pounds. You saw it before it flashed away. And we've just implemented prompt
+caching. And what's happening on the right is the exact same output. Remember, prompt caching has no
+impact on intelligence. It is the exact same thing, just pre-processed and saving you money. And
+now, instead of that long block that he showed you earlier, we're just saving that in cache and then
+reusing that. And if you look there, if you kind of zoom in a bit, You'll see that it says cash
+write 172 tokens right up there. And then cash hit 172 tokens. And what's going on there is that we
+are writing that to the cash. And then as the conversation continues with the agent, great. We're
+just able to reuse those tokens and get that 90% savings. And so we've already kind of about halved
+the cost of our agent because we've gotten that kind of about 58% cash hit rate. So nice. Okay, this
+is a good first step to start out with. Let's take a look at maybe the rest of this dashboard. Wait.
+Ben, there's five OKRs. I give you a million tokens of context, and this is where we get... Okay.
+Okay, so it turns out we've filled up the context window, and now we've got a little bit more work
+to do. So let's switch back to slides. What we need is context engineering. and what context
+engineering is is the art and science of figuring out what context you expose to Claude to give your
+agent the best performance and again I said this earlier I'm going to repeat it many times look at
+your transcript to see it to see what the Claude the models are actually seeing and that will I
+think be incredibly illustrative to see is there a lot of stuff that you really don need to be
+passing to Claude Or is there a lot of relevant stuff that keeping it on track And we go through
+today there many techniques we go through three primary ones about how you can implement better
+context engineering on your models. And so to start, the first is around figuring out what tools we
+pass to the model and kind of narrowing that down. The second is about narrowing down what results
+from those tools we share to the model. And finally, as that conversation continues in the history,
+it's about keeping that conversation going for kind of almost unlimited feeling context. So let's go
+through these one by one. The first is tool search. Agents use a ton of tools. It's one of the magic
+of making great agents is tool calls. And cloud models are especially capable of leveraging those
+tools. We see tens, even hundreds of tools used in agents today. Now, one of the problems, though,
+is when you define all those tools and you pass them to the model, what ends up happening is they
+fill up a lot of your context, and that leaves a lot less room for the actual work that needs to
+happen in the model. And so what you're looking at here is that, you know, that context fills up
+after just a couple turns. So instead, we have Tool Search Tool, and what What a tool search tool
+does is it figures out, you define all your tools up front, but we only pass the model a tool that
+tells it, okay, when you think you might need a tool, call this, and it gives them a list of the
+tools, and then only then does it put into context the actual definition of the tool. And you can
+see here on the bottom row, on the middle row rather, we're just passing in those orange tools right
+when needed, leaving a lot more space for the actual stuff you need. And Lovable tried this. You
+heard from Fabian earlier on this stage, and he was talking about how he's told us and with Tool
+Search that they actually reduced their overall token conception by 10% with just this solution. And
+importantly, it actually improved the performance of their model as well. That they saw that because
+you're putting less gunk into context, you're putting more relevant stuff there only, it turns out
+the models actually perform better. So they've rolled this out to all their users. Okay, so that's
+tool search. What happens about what you do with those results from the tools? That's the next one
+is programmatic tool calling. For programmatic tool calling, the idea here is how do we curate that
+content that's coming back from tools just to what's most relevant? And the insight here is it turns
+out Cloud's really good at writing code. If you've used Cloud Code or any other coding tool that
+leverages the models, you have been able to experience this, and we use that to your advantage here
+as well. We have Claude just write a simple Python script that can actually call those same tools,
+get the same results, but instead do a little bit of work to curate that content and then send it to
+the model, just what's most relevant. And folks like Quora have used it. They've used it with HTML
+content where they've been able to strip away all the stuff that's just irrelevant, keep the part
+that's relevant, and seeing the performance of their models improve. Okay, so the conversation
+continues. You've probably heard from folks on this stage before about how, from like Lisa and
+Jeremy, about how we're seeing the models able to do even hours of autonomous work today. And so
+inevitably you're going to hit that million context threshold. And with compaction is a way to allow
+you to continue that conversation instead of getting halted to a screeching stop when you hit that
+full context. What happens is it summarizes the context with your prompt, shifts it down to lower
+context, removes the turns that are no longer relevant, and then the conversation continues. Rinse,
+repeat. And from there, you get this almost feeling of unlimited context, keeping the models on
+track through compaction. And hexes use this. Since using this, they've been able to simplify down
+their code and seeing that their model is able to continue to perform nicely. Nice. So let's go back
+to the demo. I think, Ben, we've got a couple solutions of context engineering. Take us forward.
+Let's see what we can do. So right here, you're seeing immediately that we've now seen that context
+window bar kind of in the left-hand panel. You see that it's going up a lot slower because we're
+putting in less-indic context in each turn. And what you'll notice is that when it hits around 400K,
+just right there, you notice how it went back down? What happened was that we hit a threshold. We've
+set it to 400K. I'll get into that in a bit. And then it compressed it down with compaction. So,
+hey, this is great. Let take a look and see what we can do with like how is this working Let take a
+look at tool search maybe Can we find one in there Yeah there we go So we wanna get our hero
+retention metrics Remember, this is an analytical business. We need to understand retention. And so
+it calls the models and it asks them, okay, what are the tools that can help me get my hero
+retention metrics? Turns out there's a hero retention metrics tool. And now note in each of these,
+You can notice that that one is 14,000 tokens in the schema. The hero list is 6,100. The next one's
+9,300. These are large tools, and that's totally normal for a lot of agents. Because we haven't put
+them into context, there's a lot less room that's been taken up by these tools that we won't need.
+Instead we call, okay, here are retention metrics, that's the correct one. If we go down to the
+transcript to find that, here we go, great. What you see here now is these are the exact definition
+of that tool. Just that tool, none of the rest. And great, now the model can use the tool it needs
+and it leaves room for everything else. So hey, we've got the tool we need. Now what happens next
+when we get the results? Let's take a look at, yeah, right here. So Gong is, if you're not familiar,
+it's a tool that kind of records your sales team's conversations so you can look at the data,
+analyze it, see how the field is reacting to maybe the product you've launched. And these
+three-year-olds, I love them, but they really care about their green balloons a lot when we send
+superheroes to them. They go on and on for 30 minutes, even 60 minutes sometimes, and it's just not
+that relevant, frankly, for when we're putting this dashboard together. I don't need all that data.
+I just kind of need the general sentiment, the vibes, of how they feel about the conversation. So
+with programmatic tool calling, the model has created a nice little script here, and it first looks
+at the first 2,500 tokens, characters. It's there, just understands what's the structure, and then
+it realizes all we want is the aggregate sentiment. And so it then writes a simple way to loop
+through, get the aggregate sentiment from the variety of calls, and stream that into the dashboard.
+And great, what previously was this massive result block that you just saw actually is now down to
+just the parts of it that we really need for what we need to do right now. Again, keeping that
+context narrow. And remember, this session's not about a cool demo. There's lots of cool demos in
+AI. Love them, too. But the kind of core thing here is about actually putting it into production.
+And in that case, you need to really make sure that the context really matches what's actually
+needed to make your product successful. So, okay, that's the second one. Let's talk about the third
+one, which is compaction. So we hit that 400K threshold, and now we need to take it down. We have
+chosen 400K. Now, I launched a million context. I'm a big fan of a million context. We know lots of
+scenarios where a million context is great. It might be for your scenario that the right combination
+of intelligence, cost, latency is not a million. Start with 500K, 400K is often a good starting
+point, but it changes by model. And what we've done is we set that threshold, and then we create the
+summary. And you've got to create your own prompt to help guide it. And then it just puts together
+the key facts that's needed to summarize where things are, keep the conversation on track without
+losing the wrong context, and adds that in here. And then, great, moves on to the conversation. So,
+super, we've implemented context engineering. For those of you with your accounting eyes, you can
+see the cost is down to about 11 pounds. We've reduced it down about a third from where we were
+earlier. but I have to confess one thing. This has been a tough business. This one superhero you'll
+hear about, Cryothane, he does a lot of stuff that just increases my insurance premiums and it is a
+tough business. Margins are really, really thin. We need to get the cost down. Every time I'm
+loading this right now, it's costing 11 pounds. That's pretty high. What model are we using on this.
+Okay, we're using Opus 4.7. Good model, but it's high intelligence and therefore also higher cost. I
+wonder, could we maybe figure out how to do this with Sonnet and Haiku, but do it with closer to
+Opus intelligence? Let's switch back to slides and see what we got. Okay, so we've got advisor
+strategy. Of course I had a solution to that problem. So the idea behind advisor strategy is that
+you have the model, the agent is run with an executor that's sonnet or haiku. And the kind of
+insight here is that it can kind of figure out what to do with all these different shapes, except
+when it kind of, you'll see in a second, it encounters this sort of weird oddball shape. And it
+doesn't know what to do with this, and it just calls the advisor, asks what to do, and then it gives
+the advice on what to do. The insight here is if you've ever worked with development teams, you've
+probably noticed there are senior engineers paired with junior engineers that make that junior
+engineer so much more powerful. That junior engineer is still the person hands on keyboard getting
+work done, but with the coaching, the mentorship, the code reviews, the help on architecture from
+the senior engineer, they're able to actually achieve so much more than they otherwise would have,
+sometimes even approaching what someone with that senior engineer skills could have done solo. And
+that's the kind of same idea here. It turns out that same logic works with models. The pairing, the
+kind of sonnet haiku, gets you kind of the prices of those models approaching even sometimes opus
+intelligence, a big intelligence boost. And folks like Bolt have used this. They've kind of gotten
+better architectural decisions where they can see on complex tasks, it improves performance, while
+on less complex tasks, it has no extra overhead. It just doesn't call the tool. And so it's a pretty
+nice trade-off. It's like a Pareto optimal way to improve your cost and intelligence performance. So
+let's go back to the demo machine and let's take a look. Let's see. Let's go ahead and implement it.
+Okay, so we're starting at just about 11 pounds. and you'll see, yeah, that bar is going up a lot
+less fast. Of course, we are using Sonnet now. As you can see, there's Sonnet 4.6 with Opus 4.7
+Advisor. Okay so it kind of seems obvious Of course the cost is going to be lower We just switch to
+a more inexpensive I guess a higher value model and the question is not is it better quality it not
+is it lower cost it is it also better quality is it is it is it also losing intelligence on this
+dashboard and so if we want to scroll through I think that there was a so that we have this this one
+contract that we've struggling with we really need to land it i i don't know if we're going to raise
+our next round if we don't get this um it's the metropolis renewal metropolis uh uh has been our big
+customer from the start they've been big supporters of hero corp i need to keep them on board um and
+so sonnet looked through the transcripts was like i think the renewal is on track we're doing well
+but this is important so let's ask opus and this is one of those ways that the advisor tool can be
+used you can pass it a transcript it'll take a look anything wrong and it'll report back of hey you
+might have missed a thing or looks good in this case sonnet said it was green but opus looks through
+and it looks to it deeply more fine-eyed and is able to say actually um the mayor specifically wants
+cryothene that guy was increasing my insurance premiums yeah he specifically wants him he's too good
+to lose i know it um it's it's anyway um he's great so but uh he specifically wants him, but he's
+just unavailable that day. And so actually this is red. The renewal will not go through if he's not
+available on the day of the big event that they want at City Hall. And so this is a watermelon, if
+you've heard that term. It green on the outside but deep deep red on the inside And so what happens
+is Opus overrides Sonnet and lets us know and catches this spark So that's good. Okay, this is
+great. We were able to kind of recover that intelligence and have good performance. So, okay, to
+backtrack here, what happened in this dashboard? We started at over 10 times the cost, and we
+brought that down through one prompt caching. We figured out what our prompt cache hit rate was,
+zero. We implemented it. And by the way, one great way to implement it again is the Cloud API skill
+within Cloud Code. It helps figure out a lot of that logic for you. We looked at the transcript then
+to see exactly what's going on. And we then implemented context engineering. First, reducing what
+tools are sent to the model. Two is then curating what data from those results gets sent back to the
+model. And then finally, helping create almost unlimited context with compaction. And then the last
+part was then helping reduce that cost further while preserving intelligence through Advisor Tool.
+So we've done all this. The opus has given us a nice little button here in the era of AI agents, the
+CEO. I just click buttons nowadays. So should we save the Metropolis contract? Yeah, let's do it.
+Let's do it. Go ahead and click the button, and Metropolis is saved. We're going to get our next
+round, I think, I hope. Let's see. If the VC's in the house, we can talk afterwards. So let's switch
+back to slides. Okay, so key takeaways. Again to review what did we cover here today First thing
+prompt caching If you do nothing else prompt caching figure out what your prompt cache hit rate is
+and implement it Cloud API skill is a great way to get started Then we did the context engineering
+pieces We curated what getting sent to the model both from tools from results of those tools, and
+then compacting it as the conversation grows. And finally, advisor strategy. A Pareto optimal way,
+in many cases, to get better cost and intelligence. A great trade-off. Now, I've talked about things
+that have launched literally in the last 24 hours here. So the cloud platform is evolving fast. I'm
+excited you've been here for this talk, but your learning journey is not over. We're going to
+continue to try to do our best to make sure you can build not just great demos, but real production
+agents that work for you and your customers, that let you build a business on this platform. And
+we're going to do that continuously. That's our commitment to you. And that means keeping abreast of
+all the things that we're launching. Frankly, I didn't even have enough room on this slide to put
+everything that's launched in 2026. This is just a subset of what we've already launched this year.
+I'm particularly excited about automatic prompt caching, a one-line way to implement prompt caching
+if you've never implemented it, or the cloud platform on AWS. This one's very cool. It's this whole
+platform that we've talked about, available where I know a lot of folks in this room use our models
+on AWS. It's all right there. So, yeah, this is a great way to get started. I'm excited to see what
+you guys build and thank you for coming.

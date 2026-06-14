@@ -1,0 +1,399 @@
+Title: Building the best agentic analytics harness: Powered by Claude, built with Claude Code
+Video: https://www.youtube.com/watch?v=K4-flzsPraE
+Caption: whisper (whisper-large-v3, audio transcription)
+================================================================================
+
+[00:00:00] Tanya Cushman Reviewer Reviewer
+[00:00:22] Thanks everybody.
+[00:00:23] Great to be here today.
+[00:00:26] Omni is an AI analytics platform,
+[00:00:28] and today I'm going to talk a little bit about how we build with Claude
+[00:00:32] and what we've built with Claude and how Claude powers that.
+[00:00:37] So start just with how Claude has enabled us.
+[00:00:42] I'm the CTO. I run the engineering team at Omni.
+[00:00:45] We have a team of about 25 engineers.
+[00:00:49] This is a slide of our commits to the main branch of our repository over time.
+[00:00:55] I think it kind of speaks for itself.
+[00:00:58] One of the things hidden in here, kind of a very small piece of that line, is my own
+[00:01:04] commits.
+[00:01:05] I think as CTO of a growing company with hundreds of customers, I sort of assumed that at some
+[00:01:10] point I'd have to stop writing code, and I thank Claude very much for making me still
+[00:01:17] able to do some software engineering from time to time.
+[00:01:20] So that's been a really fantastic, sort of unexpected benefit of this rollout.
+[00:01:26] And to speak a little bit about how this went, earlier in 2025, we said to the team, I don't
+[00:01:32] know when and I don't know how, but I know our jobs are changing.
+[00:01:36] So let's just start experimenting, start using these tools, figure out what works.
+[00:01:41] And we did a bunch of it with some sort of fits and starts.
+[00:01:45] And when Cloud Code with the Opus model released, that was when some of our senior engineers
+[00:01:51] said, wait a minute.
+[00:01:53] No.
+[00:01:54] This is real.
+[00:01:55] actually helping consistently. And it's kind of been off to the races since then. And starting
+[00:02:01] around, I sort of felt like everybody went away for the holidays and then came back in January
+[00:02:07] and had sort of skilled up and figured it out and was ready to start hitting the ground running
+[00:02:11] with Cloud Code. And you can see the slope of the line from there. So that velocity is a big
+[00:02:18] part of our culture at Omni. We have a core value called Ship It. We also have a core value around
+[00:02:23] transparency So you can actually see if you go on our website omni there a top navigation page to our demos Every Friday at Omni we have an all meeting
+[00:02:35] It's the most important meeting of the week.
+[00:02:37] We do about 10 minutes of announcements,
+[00:02:40] shout-outs to each other, and then we do 50 minutes
+[00:02:43] or increasingly more than 50 minutes of demos.
+[00:02:47] We record all this, and our CEO's favorite job
+[00:02:51] is Saturday morning, he wakes up,
+[00:02:53] He cuts those demos, posts them on YouTube,
+[00:02:56] and shares them with the world to see.
+[00:02:58] So if you're curious about what we're up to,
+[00:03:00] you can go to Omni.co.
+[00:03:02] This has been a really cool way to show our customers,
+[00:03:04] our prospects, the community around us,
+[00:03:06] sort of how we're thinking and how we're building.
+[00:03:08] And that speed and velocity has been a huge benefit
+[00:03:11] for us as a company.
+[00:03:14] So let's talk a little bit about what we have built with Claude.
+[00:03:18] So Omni's AI analytics, we let you talk to your data, right?
+[00:03:22] So how does that actually work?
+[00:03:25] So a user comes in and asks a question.
+[00:03:28] In Omni, we're using Claude to actually translate that question into a semantic query.
+[00:03:33] I'll explain more what that means later.
+[00:03:35] We have a semantic layer, and that is, think of that as sort of a translation layer
+[00:03:39] that sits on top of your data warehouse, database, or maybe multiple of those
+[00:03:44] to actually provide some additional benefit about how to use the data,
+[00:03:48] and force it, sort of give it a map for how to actually translate that data
+[00:03:52] or excuse me, that query into SQL
+[00:03:54] that then runs against the warehouse.
+[00:03:57] We'll go into more of this later,
+[00:03:58] but that's just a high-level view
+[00:03:59] of kind of how the system works.
+[00:04:03] And this is important because
+[00:04:05] Claude is incredible at answering questions,
+[00:04:08] but you need to tell it more about your business
+[00:04:10] if you want it to answer questions about your business, right?
+[00:04:13] It can tell you incredibly deep insights
+[00:04:14] about how businesses work generally.
+[00:04:17] But if you want it to know about how your business works,
+[00:04:19] you need to tell it not only, you know,
+[00:04:21] how the business works, the terminology you use, and then, of course, if you're asking a data
+[00:04:26] question, you need to tell it how your data looks and how that works. And so that's where
+[00:04:30] we come in. That's the problem we're solving. And it's subtly difficult, right? Like, even last
+[00:04:36] quarter means drastically different things at different companies. Even in our own company,
+[00:04:42] you know, in the product and engineering organization, last quarter refers to the
+[00:04:47] calendar year. In our sales team, it refers to our fiscal quarter. All of that needs to
+[00:04:52] get coded into the context and awareness and even the data layer and definitions of the data so it can be used appropriately to ultimately get you the right answer to your question
+[00:05:07] So this semantic layer, what's it doing?
+[00:05:09] So like I said, it's a translation layer
+[00:05:10] that sits on top of the database.
+[00:05:12] It's doing a few things.
+[00:05:14] One, it's curating the data, right?
+[00:05:18] It's very easy to sort of come up with a toy demonstration
+[00:05:22] of how an LLM or, frankly, a human
+[00:05:25] can get correct answers on top of, you know,
+[00:05:28] 10 data sets in a database.
+[00:05:31] Real company data warehouses and databases are not like that.
+[00:05:35] They have tens of thousands, hundreds of thousands of data sets,
+[00:05:38] sometimes more, and all of them, you know, have...
+[00:05:41] There's 100 revenue tables, right?
+[00:05:43] There's 100 opportunity tables.
+[00:05:45] It's very unclear how to actually stitch those things together
+[00:05:47] and use them in the correct way.
+[00:05:49] So this is one of the benefits that our semantic layer provides.
+[00:05:52] is it allows you to define how to use these things together
+[00:05:56] and also curate it.
+[00:05:57] Say, hey, listen, this is the one that matters.
+[00:05:58] Ignore those other 10.
+[00:06:01] With that, it's a way to encode the context.
+[00:06:04] And I think one of the things that we've learned
+[00:06:06] is that context is great, but context localized
+[00:06:10] to what the actual definition that the context refers to
+[00:06:14] makes it all the better.
+[00:06:16] And so I think about this.
+[00:06:18] We're at code with Claude.
+[00:06:19] If you use Cloud Code, which I assume most of you do,
+[00:06:22] you have your Cloud.md files, right?
+[00:06:24] And so the more you can do to sort of localize
+[00:06:27] that context next to the parts of the code
+[00:06:30] that it applies to, the better results you're gonna get.
+[00:06:33] That's what our semantic layer does as well,
+[00:06:35] is it helps you provide that context
+[00:06:37] next to the field definition that it applies to,
+[00:06:39] rather than in a separate file over somewhere else.
+[00:06:43] And then finally, permissions, right?
+[00:06:44] It's a permissions layer, make sure that people see
+[00:06:46] the data they're supposed to see,
+[00:06:48] and don't see the data they're not supposed to see.
+[00:06:50] And inside of our application, this feedback loop
+[00:06:54] is an important part of how this stays current and accurate.
+[00:06:59] Because guess what?
+[00:07:00] In a real organization, this stuff changes constantly.
+[00:07:02] And so our application provides a feedback loop
+[00:07:05] where the next question that gets asked of the data
+[00:07:08] can then be fed back into the definitions,
+[00:07:10] into the context for a continuous learning loop.
+[00:07:12] So, this is our agent.
+[00:07:19] Name is Blobby.
+[00:07:21] If you look at Blobby you can probably see this is a mature professional refined data analyst And that is what Blobby is today But Blobby hasn always been that refined
+[00:07:35] Started building Blobby, let's say, about 18 months ago.
+[00:07:38] And we've learned a lot along the way.
+[00:07:40] Blobby's grown up quite a bit in the past 18 months.
+[00:07:43] So what I want to talk about is a little bit of
+[00:07:45] how we developed the different phases
+[00:07:47] and also what we learned along the way
+[00:07:49] that kind of helped increase the quality
+[00:07:52] and capabilities of Blobby.
+[00:07:55] So just to ground this conversation, I just want to show you a really quick demo video of what Blobby does in real life.
+[00:08:02] So if we can cut to the video quickly.
+[00:08:10] Right, and so what we're going to see here is, like I said, ask questions of your data.
+[00:08:15] Blobby's sitting there dutifully waiting to answer your question.
+[00:08:18] and as we do this, you'll start to see some of the phases that we go through to actually
+[00:08:25] break down the question and then answer it. So, right, the first thing Blobby is doing
+[00:08:36] is saying, all right, you're asking about PRs. Blobby is very smart because Claude is
+[00:08:41] very smart and knows that PRs refer to GitHub pull requests. Let me go find that in your
+[00:08:46] semantic model and figure out what data you're actually referring to.
+[00:08:51] Then it goes and looks up the values of the data set, because we said we only wanted it
+[00:08:55] from a particular repository, so it has to apply a filter.
+[00:08:58] It needs to know what that filter value is.
+[00:09:00] And guess what?
+[00:09:01] When I type out questions to an LLM, I make typos all the time, so it needs to do a little
+[00:09:05] bit of fuzzy matching to make sure that it's actually finding the right thing.
+[00:09:10] And then, right, it goes through, it generates a query, runs that query against the data
+[00:09:14] warehouse, gets the results, provides a nice visualization, and then does a nice little
+[00:09:19] summary at the end to tell you what you're seeing.
+[00:09:22] Cool.
+[00:09:23] So just grounding you a little bit in what the actual experience is like.
+[00:09:29] So what did we learn along the way?
+[00:09:30] So the very first version of Blobby was basically single question, single answer.
+[00:09:37] And we quickly realized that we needed to give a lot more metadata about how to use
+[00:09:42] the data and how the data is typically used.
+[00:09:47] So we always had these label and description fields in our definitions, but we needed to
+[00:09:53] add some additional context.
+[00:09:55] So we added this AI context concept, which is sort of specifically for an LLM, hey, if
+[00:10:00] How should you use this?
+[00:10:02] When you're asked a question about this,
+[00:10:03] you might want to use this reference or this field
+[00:10:06] just to kind of help the data team
+[00:10:09] and the administrators of this
+[00:10:10] to actually steer in the right direction
+[00:10:12] and ensure that you get a quality answer.
+[00:10:15] And then sample queries.
+[00:10:17] Very self-explanatory.
+[00:10:19] Really helpful to kind of ground it in,
+[00:10:21] hey, this is a typical use case.
+[00:10:22] This is the query you would run
+[00:10:24] to answer a question like X.
+[00:10:28] And then finally, values.
+[00:10:30] This one was kind of subtle.
+[00:10:32] What we realized is, again, back to that example of, you know, I'm asking a question about
+[00:10:36] a certain repository or in this example, you know, asking a question about, like, a region,
+[00:10:42] is really helpful to give the LLM just, like, a taste of what the values of that field are.
+[00:10:48] Because, right, you can see, you know, region, all values are EMEA, NAM, APAC, right?
+[00:10:52] So it can infer the next ten values because it sees, all right, these are abbreviations
+[00:10:58] of regions of the world, right? But it's useful for it to know, like, okay, this is an abbreviation,
+[00:11:03] so if somebody asks for United States, I can just put U.S. in there. So this did a nice
+[00:11:09] job of helping to improve the quality of the question and answers that we were getting.
+[00:11:15] But at this point, Bobby was still really not an agent. So that was the next big leap
+[00:11:21] here, was adding an agentic loop around this. This is a big engineering effort. We built
+[00:11:27] our own agentic harness. And it included this concept of tasks like all good agents have,
+[00:11:34] included a lot of other stuff too. I think one of the biggest things we learned was that
+[00:11:38] the agentic loop was really great at recovering from errors. So one of the earliest massive
+[00:11:45] quality increases we made was to just, A, tell Blobby how to recover from errors and give it
+[00:11:54] some budget to go do that, and B, then go invest in providing great error messages that
+[00:12:00] were descriptive about what was happening and how you might fix it, and that alone allowed
+[00:12:05] the quality score to increase dramatically. We saw our evals, like a lot of our more difficult
+[00:12:10] evals got a lot better once we did that. At this time, though, because we were sort of
+[00:12:17] in this mode of question and answer, we were using the haiku model. And the haiku model
+[00:12:23] is great but once you get into these more elaborate agentic conversations it just not designed for those And so we switched over to Sonnet and we showing a graph here of token consumption
+[00:12:35] And the reason is twofold.
+[00:12:37] One, these are longer conversations.
+[00:12:39] They're more complex.
+[00:12:40] They consume more tokens.
+[00:12:41] That was by design.
+[00:12:42] Two, this was a really big unlock.
+[00:12:44] So we all of a sudden started getting our customers saying,
+[00:12:47] wow, I just asked this question that either I never
+[00:12:50] would have been able to answer myself,
+[00:12:52] or even if I did, it would have taken me hours.
+[00:12:55] and it just nailed it in two minutes.
+[00:12:57] And so the usage of blobby started dramatically taking off at this point.
+[00:13:07] So at this point, our CEO, who is our loudest and most critical user,
+[00:13:15] like all good CEOs are, was telling us,
+[00:13:18] listen, guys, I know this thing's really good,
+[00:13:20] but it screwed up this question.
+[00:13:22] Go fix it.
+[00:13:23] And we all said, you know, Colin, LLMs are a little unpredictable.
+[00:13:31] Like, you're just going to have to accept that it's not always going to be perfect.
+[00:13:35] He said, not good enough, go fix it.
+[00:13:38] I said, okay, fine.
+[00:13:39] And where this led us was, I think one of the big efforts that we undertook at this point was to say,
+[00:13:46] okay, let's really invest in understanding the traces and being able to see the traces of these
+[00:13:52] quote-unquote bad sessions. And this led us to a series of major surgeries that we refer to as the
+[00:14:00] blubotomies. And the blubotomies really were traced back to what we were seeing in these traces.
+[00:14:08] So when you look at the traces, you kind of get to see the inner workings of how the agent is sort
+[00:14:13] talking to itself and reacting and responding in these loops. And that really clarified
+[00:14:20] why some of these seemingly kind of just bad random sessions, you could actually start
+[00:14:25] to see where they were rooted in real problems. So an example of this was the original design
+[00:14:31] of our agent might have been a little too clever, and we had sort of an outer agent
+[00:14:37] that was responsible for producing the task list. It understood where all the data available
+[00:14:43] to it, but it was not in charge of query generation.
+[00:14:47] It had a subagent that was in charge of query generation.
+[00:14:51] And felt like a reasonable design.
+[00:14:53] It was also handy because we could use that query generation subagent in a few other contexts But what we found once we started digging into these traces was that the subagent its job was to generate one query
+[00:15:06] based on whatever it was asked.
+[00:15:09] And the outer agent didn't know
+[00:15:13] what was actually able to be answered in a single query.
+[00:15:17] So it would say, hey, subagent,
+[00:15:20] go answer me a question about GitHub pull requests
+[00:15:24] and support data and summarize these things.
+[00:15:30] And then the sub-agent would say,
+[00:15:33] I can't answer that in a single query.
+[00:15:35] I can only, you know, I would have to run multiple queries.
+[00:15:39] And so it's sort of, the light bulb went off
+[00:15:42] when we started seeing this, that, like,
+[00:15:44] we have to be really careful about how we separate
+[00:15:47] the information and the knowledge of the, you know,
+[00:15:50] outer agent and inner agent.
+[00:15:52] And what we ended up doing was what our engineers
+[00:15:54] Joel referred to as consolidating the brain.
+[00:15:57] You want to be careful not to have a split brain between any sort of subagent system
+[00:16:01] and outer agent system.
+[00:16:03] We just pulled these tools up into the outer agent harness, and this got rid of a lot of
+[00:16:09] this seemingly unpredictable surprising behavior.
+[00:16:14] This is a really big learning, dramatically improved a lot of our more complicated evals.
+[00:16:23] The next phase was we started saying, okay, that's great, but guess what?
+[00:16:28] When I actually go use Claude to generate SQL, it can answer some really impressively
+[00:16:35] hard questions that, candidly, sometimes Blobby doesn't really do very well on.
+[00:16:41] So we started thinking about this, and there's a really interesting back story here.
+[00:16:48] The short version of it is when Omni was first built, we had actually built a full SQL parsing
+[00:16:54] engine into it.
+[00:16:57] And we ended up discarding it because it wasn't reliable enough.
+[00:17:01] People would throw random SQL at it, and it just couldn't handle every possible permutation.
+[00:17:07] And so that had been sitting on the shelf for years.
+[00:17:11] But we sort of got thinking.
+[00:17:12] we said, listen, if Claude can generate this really powerful, expressive sequel, and we
+[00:17:17] can parse this sequel, as long as it sort of fits into a general form that we understand,
+[00:17:24] maybe there an opportunity here And we also kind of said I think it probably a safe bet to assume that the good people at Anthropic are investing heavily in making Claude really good at SQL So that
+[00:17:37] seems like a good bet to put our chips on. So our engineer, Steven, sort of dusted off
+[00:17:44] that old parsing code and really just fundamentally changed the interface of how we were enabling
+[00:17:50] or how we were exposing query generation to Blobby.
+[00:17:55] Initially, it was this sort of JSONified form of a query
+[00:17:58] that was like highly structured.
+[00:18:00] And then we switched it to this SQL parsing mode
+[00:18:02] where we said, listen, you can now produce SQL
+[00:18:05] and we can parse through it.
+[00:18:07] And we were able to sort of give it some of the guidelines
+[00:18:09] that prevented us, our parser, from falling over.
+[00:18:13] And this enabled Blobby to now take a lot of questions
+[00:18:16] that it might have taken three or four attempts
+[00:18:19] to actually answer, or sometimes it would have to chain together three or four queries
+[00:18:23] in sort of awkward ways, and actually write it in a one-shot query.
+[00:18:27] And I think one of the things I noticed is it seems like Claude really likes to write
+[00:18:32] SQL with CTEs, common table expressions, for any of the SQL nerds in the room.
+[00:18:37] And our parser was really good at parsing those, actually.
+[00:18:40] So this turned out to be a really nice sort of marriage where we found the efficiency
+[00:18:45] of the system went way up because we were able to,
+[00:18:48] A, we didn't have to teach Blobby about this
+[00:18:52] proprietary JSON form of a query that we had invented.
+[00:18:55] We were just telling it to write SQL,
+[00:18:56] which it already knew about.
+[00:18:59] And B, it was able to just produce
+[00:19:00] much more efficient queries, so it didn't have to do
+[00:19:02] two or three shots on it.
+[00:19:09] So this is where we are today.
+[00:19:11] We have our agentic system.
+[00:19:14] We have this kind of outer loop that's in charge of checkpointing our executions to
+[00:19:19] make sure that we can recover from any failures.
+[00:19:21] And then we have this inner loop where we have a bunch of tools available.
+[00:19:25] That set is growing dramatically.
+[00:19:28] In addition to the examples I just talked about, we have tools for generating dashboards.
+[00:19:32] We have tools for generating visualizations.
+[00:19:36] We have some validation tools.
+[00:19:38] I'm going to hopefully do a live demo at the end if the gods are with me, and we'll show
+[00:19:41] some of those.
+[00:19:43] And the surface area of those tools is constantly growing.
+[00:19:46] We also have tools that enable Blobby to actually do the data modeling and improve that semantic
+[00:19:52] layer.
+[00:19:54] We also have an eval system.
+[00:19:56] We have an internal eval system, we're also building an eval system for our
+[00:20:00] Because it's really important, and one of the key benefits that we provide is predictability and quality.
+[00:20:06] The CEO asks the question, needs to get the right answer, needs to get the same answer every time.
+[00:20:18] Right, evals.
+[00:20:19] I actually, I love evals.
+[00:20:22] I think I love evals for a different reason than most people love evals.
+[00:20:25] Like I said, my favorite thing about the evals is just having that raw trace data.
+[00:20:29] data. The observability part of eval to me was enlightening. So maybe this is a personality
+[00:20:36] trait of being a brute force type person, but I really like being able to go and say,
+[00:20:41] okay, this was bad, why, and look through that data. And then obviously sort of capturing
+[00:20:45] that into a judge is a nice efficiency gain as well.
+[00:20:52] And this is a big one. So I talked at the beginning about how we build with Claude.
+[00:20:58] When you're building an agentic system, when you're building any system, it's really important
+[00:21:03] for your engineers to have an understanding of what the users of that system actually
+[00:21:09] care about, right?
+[00:21:10] It's really hard for somebody to build a system that they couldn't themselves picture using
+[00:21:15] or can't relate to the users of.
+[00:21:17] So I actually think that beyond just the massive productivity games we got with Cloud Code,
+[00:21:23] being users of Cloud Code helped us understand
+[00:21:26] what a good harness looks like.
+[00:21:28] And then we can take some of those lessons
+[00:21:31] and bake them into our harness.
+[00:21:33] And so hey should we go build a new way for us to go explore the semantic model Well let see what Cloud Code does because guess what Semantic model is not that different from a code base
+[00:21:46] So maybe we should sort of tap into some of the ways
+[00:21:50] that the Cloud Code harness does this.
+[00:21:52] And I feel like that actually helped our engineers
+[00:21:54] really relate to the problem deeply
+[00:21:56] and see kind of what the latest and greatest techniques were
+[00:22:00] for solving it.
+[00:22:01] All right. I'm going to switch to live demo mode. And if all goes well, I'll show you
+[00:22:10] just a quick glimpse at how Blobby actually works live. If all goes well. So first I'm
+[00:22:22] to create a dashboard. So create a dashboard of engineering activity in the Omni repository.
+[00:22:33] So creating a dashboard creates a lot of queries. It also does a lot of thinking about sort
+[00:22:38] of how to lay out the dashboard. It can sometimes take a little while. So while that's running,
+[00:22:43] we'll take a look at sort of the starting point here. But, right, it's going to create
+[00:22:46] a bunch of it's got a plan. It's going to go through and look at the different relevant
+[00:22:51] topics. An Omnia topic is like a domain of data. So think of it as a big, wide data set
+[00:22:57] that combines all the other sub data sets together. And it's found the relevant topics
+[00:23:03] and it's going to go start actually building this dashboard. While it's doing that, I will
+[00:23:08] switch over to just like that demo that I showed earlier. Same exact type of query.
+[00:23:16] I think one of the other things that we tapping into here is our philosophy from a from a product perspective is AI to build UI to sort of validate and troubleshoot and refine
+[00:23:27] And so that's baked into this chat experience in a really deep way.
+[00:23:32] So this is pretty much the same exact session.
+[00:23:34] And let's say I want to actually go sort of touch this data, understand it in a more deep
+[00:23:39] way.
+[00:23:40] Instead of having to kind of squint at a SQL block, I can actually open this in a workbook.
+[00:23:44] and in Omni, a workbook is just a way
+[00:23:48] to actually generate queries and manipulate your data, right?
+[00:23:50] So I can see, okay, so these are the, you know,
+[00:23:55] this is the GitHub pull request data set.
+[00:23:57] It's correctly filtered for the Omni repository.
+[00:24:00] It's correctly looking at the main branch,
+[00:24:03] and it's looking for all of the merged pull requests.
+[00:24:10] And so, you know, I can go manipulate this chart if I want to,
+[00:24:12] and then additionally, I can start actually looking at
+[00:24:16] other aspects of this data.
+[00:24:18] So let's say I actually just want to look at
+[00:24:20] a specific user, or you know what?
+[00:24:24] We'll do a little simpler here.
+[00:24:25] I can just look at a different repository, right?
+[00:24:27] And just very quickly, let's look at our docs repository instead.
+[00:24:32] So it just becomes a much easier way
+[00:24:34] if you want to then go sort of riff on
+[00:24:36] what Blobby has done for you, you can do that.
+[00:24:39] Get back to our dashboard here.
+[00:24:44] And so if you look, let's see how we're doing.
+[00:24:48] Oh great, okay, so it's built a dashboard.
+[00:24:51] Let's see, it's giving us a little summary.
+[00:24:53] Engineering activity, key metrics, cool, okay.
+[00:24:57] Let's go check this out.
+[00:24:59] So I gonna preview this pulls open the dashboard in a split pane And nice it done a very nice job here So past three months top PR authors oh man it going to go to the heads of those engineers
+[00:25:12] PR volume over time, you can see some of this trend, actually if we look at further back,
+[00:25:18] let's look back over the past 12 months, and we should actually see some of that trend that I
+[00:25:23] showed in the original, oh yeah, there you go, in the original slide deck about, or the original
+[00:25:28] slide about our activity. Not surprisingly, AI is a very hot topic at Omni today. Looks
+[00:25:36] like some of the workflow data didn't come through quite correctly here. That happens.
+[00:25:41] So, yeah, and then, you know, as I was saying, right, I can go through and actually just
+[00:25:44] troubleshoot this live. So maybe I just want to go understand, okay, why is this chart
+[00:25:48] blank. There we go. And I'll be honest, I don't know at a glance why it's blank. I actually
+[00:26:00] don't think we have that data populating very well. So, anyway, we'll go back to the slides
+[00:26:05] for now. Thank you for indulging me in the live demo. To wrap up, Omni AI analytics platform
+[00:26:14] powered by Claude. We have specifically designed our harness to be optimized for
+[00:26:19] Claude and the Claude family of models. Have some great customers. Fortunate to be surrounded by
+[00:26:25] phenomenal engineers and other teammates. We're based in San Francisco. If anybody wants a
+[00:26:32] blobby sticker after the talk, I'd love to chat with you and give you one.
+[00:26:44] Thank you.

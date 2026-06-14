@@ -1,0 +1,345 @@
+Title: Teaching agents to learn from your team
+Video: https://www.youtube.com/watch?v=uGroRwlC9y4
+Caption: whisper (whisper-large-v3, audio transcription)
+================================================================================
+
+[00:00:00] Tanya Cushman Reviewer Reviewer's Name
+[00:00:25] Hello, everyone.
+[00:00:27] My name is Petra and today we are going to talk about teaching agents. I'm heading up developer experience at Warp and I'm sure a lot of you know Warp.
+[00:00:37] You're pretty much the best place to run your agents and manage them and work with them. So it's probably the terminal that you know. You should check it out if you want to use Cloud Code in there.
+[00:00:48] My team is responsible for telling the world how great Warp is.
+[00:00:53] And we work a lot with the community, we create content, and so today we are going to talk
+[00:01:00] about how to teach agents through the story of how we built Buzz, our social response
+[00:01:07] helper little agent.
+[00:01:10] So this is Buzz.
+[00:01:13] Before I say a bit more about what Buzz does, a quick lay of the land.
+[00:01:18] I would like to ask all of you guys to put up your hand if you have built an agent before.
+[00:01:23] Right.
+[00:01:24] Obviously, that's a lot of people.
+[00:01:27] Now put up your hand if you have built an agent that is running on a weekly or daily
+[00:01:30] basis and is doing something...
+[00:01:32] Okay.
+[00:01:33] Already hands going up.
+[00:01:34] A lot of you have done that.
+[00:01:36] And now put up your hand if that agent is still daily in production, shipped, and you
+[00:01:42] you're very happy with the result.
+[00:01:45] That's a significantly less hands up.
+[00:01:47] So that gap is what we are going to talk about how to close today and help all of you guys
+[00:01:52] build better agents that actually work for you and do things for you on a daily basis.
+[00:02:01] So while we were building Buzz, we noticed and I've seen from a lot of people that we
+[00:02:07] we build agents and we get to this point where a lot of you have put up your hand that you
+[00:02:12] have something that kind of sort of works and it kind of sort of does what you want
+[00:02:15] to do, but it's just not quite there for you to put it into production and just let it
+[00:02:21] go and let it do its thing.
+[00:02:24] And that sort of 80 there but just not quite is where I think a lot of agents die and it sort of end up almost worse than if you would not have an agent because you end up spending time on tweaking it and prompting it and spending time on trying to get it right because you can kind of feel that it almost there
+[00:02:42] It's not quite good enough to let it run on its own.
+[00:02:46] So that gap is what I would like to close today through telling you about how we taught
+[00:02:54] Buzz to learn on its own, essentially.
+[00:03:00] So Buzz is our agent at Warp to help us respond when users mention us.
+[00:03:06] It basically monitors our social mentions and helps us figure out what to do with them.
+[00:03:12] Warp is a very popular product and we have a ton of people wanting to talk to us.
+[00:03:17] We have a lot of users who love warp and they want to reach out to us.
+[00:03:20] They have questions, they have bug reports, they want to learn about what features are
+[00:03:24] coming up next.
+[00:03:26] We want to talk to all of those people and we want to make sure that we can get back
+[00:03:29] to them and engage with them.
+[00:03:31] And so these replies are very important to us because they set the tone for the product,
+[00:03:36] for the company, for the community, and all of these things are very important for warp
+[00:03:40] as a company.
+[00:03:42] And so we're also a startup and we don't want to hire an army of people to engage with this
+[00:03:47] army of the community that we have.
+[00:03:49] And so we built Buzz and Buzz monitors these mentions for us and helps figure out what
+[00:03:55] to do as an action.
+[00:03:58] So it helps us decide between replying to something because someone had a question or
+[00:04:02] someone had a product feedback item or something along those lines, or it helps us just figure
+[00:04:07] out that we should like something because it shows engagement with the user or we should
+[00:04:11] just skip it because it's not actually about warp or they don't expect a response or they're
+[00:04:15] talking to someone else.
+[00:04:17] And if Buzz decides that we should respond to something, it also helps us draft a message
+[00:04:21] so that we don't start from scratch.
+[00:04:23] And all of this is a massive time-save for us because we are a small team, and it allows
+[00:04:27] us to focus on the high ROI moments of engaging with the community.
+[00:04:33] Buzz was built in a few days.
+[00:04:34] It's composed of about 15 or so skills, which you will also see in a little bit.
+[00:04:41] is essentially zero code written.
+[00:04:43] All of these are skilled files and they build on these agentic primitives that allow us
+[00:04:49] all to build these really cool agents that take things over from our place And it also connects to various services from the X API to Slack and all of these things to be plugged into the rest of the team and the context
+[00:05:05] So the challenge that we faced when building Buzz is that something like figuring out social replies and what to do with them requires judgment and taste.
+[00:05:16] When to say something, what to say, how to say it, when to completely stay out of it,
+[00:05:21] because by inserting yourself, you're not actually achieving the goal that you have.
+[00:05:25] And you probably also know that you see all these replies on Twitter that are completely AI-generated,
+[00:05:31] and you can notice those from a mile away, and you probably don't really want to engage with them
+[00:05:36] because it kind of feels weird, and it's just very obviously AI-generated.
+[00:05:39] And so we wanted something that is better than that, but something that is not just not AI-generated,
+[00:05:47] but that it really helps us engage with the community deeply
+[00:05:51] because we care about our users a lot.
+[00:05:56] And so the question was,
+[00:05:58] how do we build an agent that can do this well?
+[00:06:00] How do we build an agent that has good judgment and good taste
+[00:06:03] to make these decisions, write these replies,
+[00:06:06] make sense of what users are telling us about?
+[00:06:10] And that gap is not just...
+[00:06:13] We wanted it to be not just kind of okay,
+[00:06:15] like you could kind of put this on Twitter,
+[00:06:17] but we wanted it to be really good, like it actually sounds like it's coming from a human,
+[00:06:22] and it actually understands our product context and our company context
+[00:06:25] to make good decisions about which user mentions to engage with in what way
+[00:06:30] and what is valuable for the user as well.
+[00:06:35] And so if we look at some of the approaches of how this is normally solved,
+[00:06:41] we see a lot of these agentic loops.
+[00:06:43] agents are really, really good at figuring things out, basically,
+[00:06:49] and they're really good at going in loops
+[00:06:52] when they can figure out if they're there or not.
+[00:06:55] And so, for example, you probably know the Ralph loop that you can see,
+[00:06:59] and why the Ralph loop works really well
+[00:07:03] is because there is this external track
+[00:07:05] that allows the agent to know if it's there or not.
+[00:07:09] It has a specific goal,
+[00:07:10] and it can evaluate if it has achieved that goal or not.
+[00:07:14] Now, that works really great when it's about coding.
+[00:07:18] It works really great when it can run our unit test suite,
+[00:07:20] and it works really great when it can use computer use
+[00:07:23] and browser use and it can check that hey I made this change I check it in the browser I make an API call I make a curl command is it doing the thing that I want it to do yet Is it doing it Yes Great Then I good
+[00:07:37] Is it not doing it yet? Then, okay, what am I seeing? How can I iterate on it to make that achieve its goal?
+[00:07:44] Now, the problem is that when an agent actually needs judgment and taste and it's not that black and white
+[00:07:48] or you don't have unit tests, it's very difficult to figure out how to do this loop, essentially.
+[00:07:55] Because you have something where with social replies, you would have to, for that external
+[00:08:00] check to work on its own for the agent, you would have to, like, send a lot of replies
+[00:08:05] live and see what users are saying and how they are reacting, what the impact on the
+[00:08:10] brand perception is on the community is, and if it's, like, what other people are thinking
+[00:08:15] when they are reading those threads, and those feedback loops are super complex and long,
+[00:08:21] and you can't just set it up for the agent as an external check like you do with unit
+[00:08:26] tests. And so what the question here is how do we get that knowledge into that agent?
+[00:08:32] How do we give the agent judgment and taste? How do we teach it to do these fuzzy things
+[00:08:37] that we humans really understand? Well, we understand nuance and context. When we look
+[00:08:41] at a Twitter thread, we know that, hey, that was a pretty weird reply, or what should we
+[00:08:44] we say to help the user and how should we say it in a way that makes them feel better
+[00:08:50] about the product and also creates a good engagement.
+[00:08:54] And this applies to a lot of other things from customer replies to helping you with
+[00:08:57] your own Slack messages to code review comments to all of these fuzzy things that we interact
+[00:09:03] with on a daily basis that need judgment and taste and are not as clear cut as something
+[00:09:08] that you can unit test.
+[00:09:13] So when we built Buzz, we tried a few things.
+[00:09:17] We started, as I think a lot of you do, with just trying to nail the prompt.
+[00:09:21] It seems like a pretty reasonable place to start at.
+[00:09:25] And usually you try to craft a prompt that encapsulates everything that you want the
+[00:09:31] agent to do.
+[00:09:32] And then you work with the agent to improve that prompt, and you ask it to identify conflicting
+[00:09:37] information, you ask it to figure out what's ambiguous for it, and you ask it to identify
+[00:09:41] identify gaps that it could fill and then you work with the
+[00:09:44] agent to improve that prompt.
+[00:09:46] I think a lot of us have done that whether for an agent or
+[00:09:49] just to nail out, plan out what a feature implementation should
+[00:09:53] look like.
+[00:09:55] What we saw with Buzzard is that the prompt ended up as a
+[00:10:00] pretty much a checklist. It was just a list of rules of like, if X happens, you should do Y.
+[00:10:07] And the problem with that was that it sounded like a robot because it couldn't really figure
+[00:10:11] out what to say and how to say. And it also broke the moment something new appeared because it just
+[00:10:16] couldn't have that flexibility and it couldn't deal with that. The rules were just too brittle.
+[00:10:22] So we thought about how would we explain this to a new team member? Because working with agents is
+[00:10:27] very similar as to trying to explain to a new team member how and what they should do.
+[00:10:33] And when it comes to that, you would probably explain to them how to do things. You wouldn't
+[00:10:38] just give them rules that if X, Y, Z happens, you should do A, B, C. You would explain to
+[00:10:43] them how to think about things, how to make good decisions, how to reason about these
+[00:10:48] situations, what the purpose of engaging with the community is, and you would give them
+[00:10:53] guidelines like, hey, you shouldn't get defensive when users complain about the product or they
+[00:10:57] have an issue. You should be kind and empathic. You should come across as a product builder
+[00:11:02] versus someone who is processing support requests. And you have all these principles, and we
+[00:11:09] switched our agent to work off of these principles. So we ended up with, instead of these long
+[00:11:16] lists of rules, we ended up with principles that really much better encapsulated what
+[00:11:23] we wanted the agent to do. And so the result was pretty much that the scale file was like
+[00:11:28] a fifth of the original length because you needed much less text, much less lines of
+[00:11:36] code, if I can put it that way, in a scale file, to achieve the same or even better result.
+[00:11:43] And through these principles, because they were so much more flexible for new situations,
+[00:11:48] the agent could reason with them better so the output got better. So you have a smaller
+[00:11:52] scale file, you have better output, just because you switched from these rules that the agent
+[00:11:57] tends to do on its own, you switch from rules to principles. So that was the first thing
+[00:12:02] that worked really well for us. But there was still this gap that it wasn't quite as
+[00:12:07] good as we wanted it to be. It was like getting out of there, but it wasn't like, oh, yeah,
+[00:12:12] this reply is amazing and we're just going to send it live as is. So the next thing we
+[00:12:18] we did as I think any good engineer, you start testing
+[00:12:22] the thing you evaluate the results and then you fix whatever you see I think it a pretty usual loop of things as you build something And what this looked like in practice when we were working with these skill files and these agents
+[00:12:36] is that I collected a bunch of these responses that I wanted the agent to triage and figure out what to do with,
+[00:12:44] and it gave me whatever response it would have done or whatever it suggested that we do,
+[00:12:52] and I gave feedback on it.
+[00:12:55] I get feedback on, hey, this is good because of ABC.
+[00:12:57] This is not really good because of XYZ.
+[00:13:00] This is how I would do this differently.
+[00:13:02] This is how my reply would be.
+[00:13:04] This is why I wouldn't actually reply to this because of XYZ.
+[00:13:09] And so this created this set of human feedback on the agent-generated output,
+[00:13:17] and I wanted the agent to learn from that.
+[00:13:19] Like, here is what you did.
+[00:13:21] Here is a bunch of feedback.
+[00:13:22] Go and figure out how you can do better.
+[00:13:25] Now, what the agent did was go back to these damn rules, and we kind of know that that
+[00:13:31] doesn't work.
+[00:13:32] So it had these principles and it started adding these very specific rules like if a
+[00:13:35] person is talking about, is having some X, Y, Z problem with the product, never mention
+[00:13:44] pricing in the first line.
+[00:13:46] It's like, sure, it worked in that specific case, but it's not something that is applicable
+[00:13:50] to most other use cases or most other situations.
+[00:13:55] A much better learning would be
+[00:13:57] if someone is venting about the product,
+[00:13:59] don't try to pitch them some other part of the product.
+[00:14:02] That is a much more flexible thing.
+[00:14:04] And so what we realized was that
+[00:14:07] we had to teach the agent to learn differently.
+[00:14:10] The agent sort of needed to learn how to learn.
+[00:14:14] And if we think about, again,
+[00:14:15] how would we do this with a new team member?
+[00:14:18] We would explain to them that
+[00:14:19] we would sort of explain why something is better based on our feedback, and we would
+[00:14:30] ask them to like, hey, take a look at what you did, take a look at what I told you, take
+[00:14:35] a look at your instructions, and what is the gap between the two? What would your instructions
+[00:14:40] need to be for you to have the same output that I gave you as an ideal expected output?
+[00:14:47] it And so we encapsulated this in another skill and that worked actually really well I was really happy with how now we had two components Basically we had principles which told the agent what to do and they were very flexible and they applied well to new situations
+[00:15:08] And we also had a way for the agent to learn.
+[00:15:10] And so it could expand its own instructions.
+[00:15:14] Now the next problem was who's going to keep teaching it,
+[00:15:17] because it takes a bunch of time to sit down and do all this back and forth
+[00:15:22] and keep spending time on this, giving it data,
+[00:15:24] giving it feedback. So I don't really want another team meeting, I don't want another
+[00:15:29] task assigned to someone on a rotation. So how can we have the agent just learn from
+[00:15:35] what the team is already doing? And this was the last piece that really clicked everything
+[00:15:43] together for us. How do we have the smallest input from the team for the biggest output
+[00:15:48] for the agent to have a better result.
+[00:15:52] And so we designed a feedback loop that allows us to basically have almost no extra action
+[00:16:01] on our side on a daily basis and allow the agent to still learn from the team.
+[00:16:07] What this looks like in practice is that Buzz monitors these mentions and helps us figure
+[00:16:12] out what to do.
+[00:16:13] In the end, we still do everything manually when we actually interact with a user because
+[00:16:16] it's very important to us to maintain that authenticity and we actually care about the
+[00:16:22] user experience there. But by Buzz triaging these mentions and helping us figure out what
+[00:16:29] to do, helping us figure out what not to care about, we save a lot of time. And what happens
+[00:16:35] in reality is Buzz monitors these mentions and sends us Slack messages. We have a Slack
+[00:16:40] channel, we get a Slack ping, hey, there is this mention, this is what you should do with
+[00:16:45] this is why, so it also explains its thinking, which is really helpful for us to get in context
+[00:16:50] quickly. And then the team just monitors this channel as any other team channel and adds
+[00:16:58] an emoji reaction. So basically, boss says, hey, here's a mention, you should reply to
+[00:17:04] it, you should say something like this, and then the team takes a look at that. It's very
+[00:17:08] easy and quick to skim through it. We also leverage a lot of Slack's structured formatting
+[00:17:14] to make it easy to scheme and make it the least effort
+[00:17:17] on the team.
+[00:17:18] And then the team adds an emoji reaction
+[00:17:20] with what action they actually took.
+[00:17:23] If they actually reply they just add a check mark and through this Buzz can take a look at what it suggested to do versus what the team actually did and draw takeaways on what that gap was
+[00:17:38] The team can also leave notes in Slack threads.
+[00:17:41] I'm going to show all of this in a few minutes on screenshots.
+[00:17:45] I think it's easier to see.
+[00:17:47] And so all of this allows Buzz to have a lot of contextual feedback
+[00:17:52] back with extremely little extra effort from the team, because the team also uses these
+[00:17:58] emoji reactions to not step on each other's toes and keep track of what was already handled
+[00:18:02] and what wasn't. This means that the sort of breadcrumbs that we leave for each other,
+[00:18:09] Buzz just simply learns from those and draws takeaways on how to make its instructions
+[00:18:13] better. And then open-spool requests, all of these skills are in a Git repo so that
+[00:18:19] we can essentially handle them as code, and then we just look at these pull requests on
+[00:18:24] a daily basis. And the insight that really worked for us was just keep it simple. The
+[00:18:32] trickiest part of designing feedback loops is always the humans, because you have to
+[00:18:36] be very intentional about how you create some extra stuff for humans so that they still
+[00:18:42] do it. If it's too complicated or if it takes too much time or too out of the normal process,
+[00:18:47] they're just simply not going to do it.
+[00:18:49] And you want them to do it because the agent learns from it.
+[00:18:52] And so that was the first insight.
+[00:18:54] The other one was to make it feel like a teammate, because you just see humans interact more
+[00:18:59] and more meaningfully with agents that feel like teammates.
+[00:19:03] You can talk to them on Slack, you can leave them notes, you can leave them emoji reactions,
+[00:19:07] and it really helps the team give more valuable feedback to the agent itself by just making
+[00:19:15] it have a name and have a little bit of personality and a little bit of whimsy.
+[00:19:20] And so ultimately what closed the gap for us was this daily loop.
+[00:19:24] It allowed us to consistently make the agent better and allowed us to have consistently
+[00:19:31] better results and more time and effort saved on our side.
+[00:19:36] And all of these pieces need the others.
+[00:19:38] The principles are needed because the agent needs to know what to do.
+[00:19:43] teaching the agent to learn is required because the agent needs to get better over time and then this day-to-day feedback loop is needed so that the agent actually gets the information that it can use to improve itself. So let's take a look at
+[00:20:00] looks like in practice. This is one of Buzz's skill files. You can see this is just a normal
+[00:20:08] GitHub UI. On the left, you can see all the various skills. As I mentioned, we have about
+[00:20:14] 15, but it consistently, it always increases because we keep adding new stuff to Buzz and
+[00:20:20] it keeps doing new things. But here you can see this is the warp reply skill. This is
+[00:20:26] what allows Buzz to draft messages and it's an integral part of it making a decision on
+[00:20:35] what to reply to and what to skip and what to like.
+[00:20:39] And so here you can see the principles.
+[00:20:40] It doesn't say things like if person X mentions whatever feature you should say ABC or you
+[00:20:47] should link to this docs page or something along those lines.
+[00:20:50] It has principles so it can take a look at the Twitter thread, let's say, and just understand
+[00:20:55] what the user needs and what they want and what they want to talk about and figure out
+[00:21:00] what to say. Then, as I mentioned, we have this Slack channel, and this is the channel
+[00:21:10] that the team consistently monitors. You can see here the different actions that Buzz suggests
+[00:21:19] that we do. The top one here is a suggested reply with some reasoning of what the user
+[00:21:27] is looking for and a message that is drafted. We then use this as the basis of what to say,
+[00:21:34] but we usually sort of make it our own, but it's immensely helpful to have the right tone,
+[00:21:40] the right style, the right information, the right content already there for us to start
+[00:21:44] from, it basically removes 90% of the effort and leaves us the 10% that is the most valuable
+[00:21:51] to give that reply, the most helpful for the user as well.
+[00:21:56] And then you see skipped replies here.
+[00:21:59] This is my favorite honestly because it means that we don even have to care about this We don have to look at this We don have to look at the Twitter thread Because we don end up taking an action They talking to someone else they talking about something else and it makes no sense for us to insert ourselves
+[00:22:14] And so we don't have to spend any time on these.
+[00:22:17] Or it just suggests that we like something.
+[00:22:19] If a user says that Warp is cool, we don't necessarily need to say anything.
+[00:22:24] It's just very valuable when we like the tweet and show appreciation towards the user.
+[00:22:32] And then the feedback loop looks like this.
+[00:22:35] So you can add these emoji reactions.
+[00:22:38] And what you can also do is add a note for Buzz that it will pick up in this black thread itself.
+[00:22:45] So here you can see I gave some feedback to Buzz that we shouldn't correct the user in this case.
+[00:22:53] They said something nice or they had a question about the product.
+[00:22:57] We gave them an answer of where they can find that feature.
+[00:23:01] it makes zero sense to correct the user about whatever context they asked this question in.
+[00:23:09] And that feedback then gets picked up by Buzz.
+[00:23:13] It runs daily.
+[00:23:15] It looks at all these emoji reaction differences.
+[00:23:17] It looks at all these threads, and it draws these takeaways,
+[00:23:20] and it opens a pull request, and it sends a suspect message with that pull request.
+[00:23:25] It explains what it changed in a very brief way.
+[00:23:28] It links to the PR.
+[00:23:29] So we get all of this information pushed to us.
+[00:23:32] We don't pull anything.
+[00:23:34] And so because it's also all in Slack, it's the same tool,
+[00:23:39] it's the same processes that the team is already using,
+[00:23:41] so it's extremely low friction.
+[00:23:44] It makes it very easy for the team to interact with it.
+[00:23:47] And so Buzz opens a support request, links to it every morning.
+[00:23:50] We just click the link.
+[00:23:51] It's like a 60-second PR review because it's just a few English line changes
+[00:23:56] and it makes a lot of, we have context about what it has done and we can quickly see if that's a good change to make.
+[00:24:06] And you can see the pull request here and it basically adjusted the instructions in the relevant place So it didn just add a random rule at the end of a list It looked at its own current instructions
+[00:24:20] and it adjusted them in the most appropriate way
+[00:24:23] to not correct users when we shouldn't correct users.
+[00:24:28] And so then we can just take a look at this
+[00:24:29] through this normal pull request review process
+[00:24:32] and merge it in if everything looks good.
+[00:24:36] I also actually personally really like the feature
+[00:24:38] where you can just make quick edits to the instructions so you have a little bit of control
+[00:24:46] over how exactly things are phrased. We also do this because we don't want the agent to
+[00:24:52] just change its instructions willy-nilly. We want to have some control over it not drifting
+[00:24:57] into some weird direction that it keeps doubling down on. We want to know what it's doing because
+[00:25:03] it's important to us. So what this looks like in practice in numbers is we have about a
+[00:25:12] few thousand mentions a month. 50% of those get skipped. So as I mentioned, we save a
+[00:25:17] ton of time by skipping these things, and that's such a perfect task for Buzz or an
+[00:25:22] agent to just take over, because we don't end up spending any time on them. It consists
+[00:25:30] of 15 skills. Some of this is triaging things. Some of this is writing posts. Some of this
+[00:25:37] is about reporting. Some of this is about analytics. For example, on a daily basis,
+[00:25:43] I get a DM from Buzz that shows me a bunch of graphs that it generated about our distribution
+[00:25:52] of the different actions that we take, about who is replying, how much, so that we have
+[00:25:58] some health metrics on this part of what the team is responsible for. And all of this just
+[00:26:05] really allows us to get more done as a small team. We have a few thousand cloud agent runs
+[00:26:12] per month So all of this runs on its own in the background in the cloud We use OZ which is Warp orchestration platform for running cloud agents And it just runs on a schedule runs on various triggers I think yesterday you all have seen routines on the cloud code
+[00:26:30] And it's a very similar concept where API calls, webhooks, cron jobs, things like that,
+[00:26:38] trigger an agent to just run in the cloud and it just takes things off your plate.
+[00:26:41] so it gets triggered on its own and you don't ever have to just talk to it for it to get things done.
+[00:26:50] So all of these things are there to help you build agents that improve on their own.
+[00:26:59] What you basically need for this is to create and design the feedback loop that works for you for your use case
+[00:27:07] versus trying to nail the prompt from the get-go.
+[00:27:10] And each of these pieces needs the others.
+[00:27:14] The principles are there so that the agent knows what it's doing.
+[00:27:17] Teaching it to learn is important so it can get better over time.
+[00:27:21] And then the feedback loop is important so it gets the input
+[00:27:24] to be able to get better over time and improve its instructions.
+[00:27:29] So if you remember one thing from this whole talk,
+[00:27:33] if you recall just one thing that you can take into practice
+[00:27:38] when you go back to your jobs and you build your own things is to focus on designing that
+[00:27:45] feedback loop. Think about how your agent will improve over time and not just how to
+[00:27:50] nail that initial prompt. That initial prompt can be just good. It doesn't need to be perfect.
+[00:27:55] But you should try to figure out how you can create a feedback loop that allows the agent
+[00:28:00] to get better over time as your understanding of the problem evolves, as new situations
+[00:28:06] pop up, allow the agent to improve on its own versus you having to go back and improve
+[00:28:11] it manually. So that's all. Thank you all. Go build great agents.
