@@ -1,0 +1,179 @@
+Title: How Metaview built self-improving prompts for application review
+Video: https://www.youtube.com/watch?v=A3rmSUp6Dxg
+Caption: whisper (whisper-large-v3, audio transcription)
+================================================================================
+
+Please welcome to the stage, Product Engineer at MetaView, Nick Mayhew. Good afternoon. It's a
+pleasure to see you all today. Today I'm going to be talking about how MetaView uses self-improving
+prompts in application review. For those of you who don't know MetaView, we build AI-native
+recruiting software. And application review is the process of looking through candidate CVs and
+cover letters to help determine who you're going to interview. Now, before I go into the why and the
+how of why we did this, it's worth understanding the situation that we're in and where we're at
+nowadays. because since 2023 and the proliferation of large language models to everyday consumers,
+we have seen an explosion in applications to jobs. And the main reason for this is AI has lowered
+the barrier to entry in terms of how we apply and how candidates can apply to jobs. So there are
+some great stats here. We have one of our clients even last week who had 2,740 applications for one
+job in 24 hours. That mostly happens if your jobs are remote and junior, but these volumes are
+incredibly high. And the one stat that's not up here that I always love to talk about is the average
+answer to an application question like why do you want to work at Anthropic or why do you want to
+work at MetaView, that has increased by roughly 50% in the last two years. And none of us have
+retaken GCSEs and learnt verbose writing. What has changed is that we have the ability and we have
+LLMs that help us write these answers. And that has lowered the barrier to entry and massively
+increased the number of applications recruiters have. So what do you do? So recruiters need help,
+and like any good product manager, you first go interview the stakeholders to build a system that
+can help you go through some of the grunt work of these applications. And when you go to a hiring
+manager or a founder, you ask them what they want, and they'll say, oh, five years back-end
+experience, all of these classic requirements that probably everyone in this room has read a hundred
+times over on a job application. And so you go build out a system that can help you evaluate for
+these things, but you come across a problem almost immediately. And that is your hiring manager or
+your founder, they look at the first set of CVs and they go, actually I want startup experience So
+you go back you rewrite the whole thing and you restart your evaluation And then you get to your
+first interview and they go no no no no no This candidate hasn built zero to one That's a
+requirement. Now, that wasn't a requirement two days ago, but now it is. And you keep rewriting your
+evaluation systems. And the key point I want to take away from here is that any user-based decision
+and anywhere where user judgment is at the forefront, your preferences are going to evolve. And so
+any system you built, your prompts must evolve with them. So as we can see here, as we're talking
+about user preferences are always going to evolve, people change their minds, and if you want to
+keep them at the center of the decision-making, any one of your systems have to evolve with that
+too. So make sure your prompts reflect the fact that preferences will evolve. Don't try and add this
+on at the end. Make this a core part of your whole system and a foundation to your system. So let's
+talk a little bit about how we do that at MetaView. There we go. And so when a candidate enters, we
+first redact their information, remove a name, email, phone numbers, personally identifiable
+information, so we're evaluating based on experience, skills, qualifications, and we match that up
+with an ideal candidate profile. Now, this is the part of the prompt that is self-learning and
+self-improving over time. An ideal candidate profile, for those of you who don't know, is a bit like
+an ideal customer profile. It's what you're looking for in a role, who you're looking to hire, and
+what you're looking to fill. So we match the ICP and the redacted candidate to produce an evaluation
+of the candidate. And this is, again, another very core part and a key takeaway of this process.
+We're working in high-risk areas here where human judgment is at the forefront and is not just human
+in the loop, but human in the center. And what we mean by that is that your system acts as an
+apprentice. Your system is trying to learn and help do some of the grunt work of passing through
+thousands and thousands of applications but it is not your job to make a decision. Your job is to,
+as the LLM-based system, to help do some of that work and spot things like, has this person worked
+at companies that we're looking for? Have they got roughly the right experience in the same areas?
+Have they used the right technologies? And so that's where your judgment comes in, and then the
+user's judgment comes in to actually make the decision, right? They are deciding whether you
+progress or reject a candidate, so they stay at the forefront. Now, how do we then learn from that?
+because the user is the one making all the decisions we can have an agent that sits on top and
+observes their patterns right You can see any progression they make any rejection they make and you
+can start picking up patterns and improving your ideal candidate profile from that. So as I say, the
+ideal candidate profile, that's our aspect, our prompt that is self-improving, but let's go into the
+weeds of the ideal candidate agent, the ICP agent, to understand exactly how this works. So there
+are three main parts to this. One is the user messages, and that is all the user decisions that they
+make. So every time they progress a candidate, reject a candidate, any piece of feedback they give,
+any time they make a manual edit to an ideal candidate profile, anything about how they want to
+evaluate a candidate, that gets fed in as a user message. And we built that initially, and it was
+kind of good, and it produced a proposed ideal candidate profile produced a decent one, but one of
+the things we learned very early on is that any feedback given by a user is going to be relative to
+what they've just seen. And as we all know, agents need the right context, and part of the context
+here is the candidate's profiles, those redacted candidate's profiles. So we have a specialized tool
+called query files. Usually, we tried Bash and all this sort of standard grep, but unstructured data
+can be incredibly hard to just grep for in a file system. So we have a specialized tool that can go
+through candidate profiles and make sense of relative feedback. So if you said, as a recruiter, this
+person doesn't have enough Python experience, we can then look at the past resume, the redacted
+resume, to understand what that actually means. What does it mean to have too little Python? What
+does it mean to be too junior? And then we can build that context, and that goes into the ICP
+manager agent, which has one function. Keep that ideal candidate profile, that prompt up to date and
+what they're looking at. And this is the core of the system. Now, actually, we've had some really
+interesting talks over the last couple of days that say that basically this whole thing should just
+be one agent. So I'm going to go back to this slide and explain a little bit why this is a workflow
+and an agent on top. When you're working at volume, we, as we say, process thousands of applications
+in a day. You can't often afford to just chuck everything as an agent. We would love to. It is
+always fun to, as developers, make the maximum agent as possible, but there is a business side to
+this where you cannot spend dollars and dollars or tens of dollars on 3,000 applications for one
+role. If you are anthropic or you are Google or one of these massive companies you are receiving
+hundreds of thousands if not millions of applications a year So you need a system that efficient in
+its token usage which is why we have this workflow underneath and this agent that sits on top to
+evaluate the progressions and the rejections. So what does an ideal candidate profile actually look
+like? Again, this is something that we should all be aware of by now. This is marked down documents.
+We don't suggest and we don't use any things like weightings or any if statements or flowcharts.
+There's been a lot of critique in the past, rightfully so in our opinion, of keyword matching on
+resumes to try and understand what a good resume is. It's not the way to evaluate a person or a
+candidate, and that's not how we suggest these systems work. Lean into what LLMs are good at, which
+is natural language. Allow them to reason in prose, not in flowcharts. And so you can see here, and
+I'll show you an example in our demo of what a ideal candidate profile looks like. It's just a text
+document. It's what you would write about who you're looking for, not, hey, 30% of my weighting
+should be on X keywords or Y keywords or this. Allow users to write in their natural language, and
+you will get a system that reflects their priorities much more, because they don't work like us.
+They don't work in weightings and flowcharts and if statements. They're just used to describing in
+normal language. So lean into what they're good at. And we're at an anthropic talk, so why am I
+talking here? We use anthropic models a lot for this, and one of the reasons we use Claude models is
+we have an interesting dilemma when it comes to candidate review, which is benchmarks on software
+evaluation is cool and all, but what we care about is can you look through a resume and understand
+what is real and what is not, and one of the biggest problems with evaluating CVs is that there is,
+let's be honest, a lot of fluff in people's CVs. There are plenty of CVs out there where people will
+be claiming they've done a lot more than they do, and if you have a SIF-affected model from other
+frontier labs, you're going to struggle there, because it will take them at their word, and they'll
+be like, oh great, you, you know, you created a large-angle model by yourself in your garage. Yeah,
+no, and it will just say you're great. So you need a model that can reason critically, and that's
+why we use Haiku and Sonnet. Hiku for our evaluations. Again, as we were talking about, we're
+running thousands of these a day, and Anthropic actually, we have special input per token limits
+that allow us to process so many of these applications a day. And then Sonnet, because you've got an
+unconstrained task here of trying to find patterns where latency matters less, We use a little bit
+more intelligence there to find those patterns rather than a more constrained task of ideal
+candidate profile, resume, what's the evaluation. So let's dive in to see what this actually looks
+like on a screen. Here we have in front of you is product engineer back-end bias. This is all dummy
+data. This is my job within MetaView. So hopefully, you know, I know what I'm looking for here. And
+we can see we've got some candidates up here. And you can see their ICP fit. So this is, are they a
+good fit? How much do they meet the ideal candidate profile? We've got some candidates here that are
+good fit, Emily, Nina, or are okay fits. And you can see what an ideal candidate profile actually
+looks like. You know, it's a bit of a role summary. Again, provide that right context for the agent
+to understand what it's evaluating for, and then must have nice-to-haves and red flags. Now, the
+reason we phrase it like this is because a lot of recruiters think like this. We're just trying to
+reflect what users do. There's no special source here. Use what they use in their system. And so if
+I actually look at this and go, well, wait a second, Nina looks like a great candidate here. Why is
+she just an okay fit? Let's just say, and we think Airbnb candidates, great experience. So we're
+going to progress this candidate and we're going to provide some feedback. And I'm copying and
+pasting here, but I'm saying Airbnb has great engineering culture, which will happily hire talent
+from strong engineering companies are great fits. So these shouldn't be just an okay fit for us. So
+I submit this feedback and now I switch over and hope the LLM is gonna do what I tell it to do As we
+can see here this is Langchain if any of you know the company This is where we deploy our agent as
+of right now Some debates having with our anthropic representatives on cloud managed agents, but
+they'll convince me eventually. But here you can see that Sonnet 4.6 has been called and let's have
+a look at the input here. Do-do-do-do-do. This will take a second. Here we go. So we can see the
+user messages here. We've got a bit of testing that was happening earlier today, but if I scroll
+down to the bottom, we'll see that Nina Park has progressed and the overall feedback so far and some
+further information on what we're looking for. And hopefully, I may have to refresh because
+Landgraf's streamings is not perfect. We should... Is it going to... do what I want? This is the
+scary part of any agent live demoing, I must say, is that you are sitting here hoping it is going to
+respond in the time window, we say. So this now is running again. And we can see, yeah, user reason.
+So this is where our reason was now submitted. We've got some overall feedback, some other
+information for the agent there. And then our agent will output what tasks it wants to do and which
+tools it wants to call. a little bit of us just waiting on Sonnet here. So what I'm gonna do is come
+back to that in a second and look at another one where we already have a suggestion. So here's our
+sales associate role, again, all dummy data. Based on some feedback we've been given, we updated the
+ICP and we got a new ICP So this is a changed ICP based on feedback that the user has given And we
+can see the sort of green and red diffs here and this shows us that the agent has learned from our
+decisions, and that we can just confirm these or edit these ourselves, but let's just preview and
+confirm these and re-evaluate these candidates. So I'm going to come back to this one here. As we
+can see, Claude has got back to us, and it's saying, oh, now I've got explicit risk and feedback,
+what should I do? It's given its reasoning and it's decided to call the UPSA ICP tool, and that is
+going to update its ICP. So if we come back to here, we're going to see this suggestion and some
+changes here. So it's made quite a big change, but one of the big ones here is it wants strong
+product engineering backgrounds. And so you can see how now as you do this at scale and you do this
+quickly, it will start to learn from those patterns. This is a sort of contrived example because one
+of the interesting things when you run this evaluation at scale is I cannot be updating this ICP
+based on one piece of feedback, you usually start spotting patterns every 100, 200, or things like
+that. And so that allows you to really do this at scale and really refine an ideal candidate profile
+so that when you are reevaluating, you get a really good sense of which candidates are the right fit
+and which ones aren't. So I'm just going to kick this off. I'm not going to make us all sit here and
+watch a reevaluation of candidates by haiku, however much fun it is using LLMs. So I'm going to come
+back to our slides here and talk a little bit about what I think the three main takeaways from this
+talk should be. And the first one is any evaluation system you build in which user judgment is at
+the center you really need to understand that the user preferences are going to evolve It so often
+that we see these systems be like let just write our requirements up front Things aren going to
+change It fine You got to understand that if you working with users and you want your users not just
+to be in the loop, but be at the center of the decision making, that their preferences are going to
+evolve. And building that as like an ad hoc thing after is not going to work. Build it as part of
+the foundation of how you work. And then the second one is use pros, not rules. Again, we've seen
+lots of lectures here today about just leaning into markdown language, allowing the agent to do what
+it does best. Do that. Lean into how users write, how the LLM writes. Don't move down into flow
+charts and if statements, however tempting it is from the history we all were used to in pre-LLM
+worlds. And the last one, which I think is also one of the most important, is building the
+guardrails into the architecture. And whether we like it or not, evaluation systems are becoming
+more and more part of our daily workflows. LLMs are being deployed from anywhere from code reviews
+to financial crime we heard about earlier today to KYC. These systems are being set up and being
+used. And if you try to ad hoc add your guardrails on top of it and at the end, it's not going to
+work. So build your system from the start to be the apprentice, to learn from the user, but never
+overrule the user, right? Make the user the master and make the system the apprentice. Thank you
+very much for listening to me today. I believe, yeah, that's it. Thank you very much. Thank you.

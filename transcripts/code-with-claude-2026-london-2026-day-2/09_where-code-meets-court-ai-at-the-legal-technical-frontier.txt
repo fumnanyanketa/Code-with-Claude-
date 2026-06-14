@@ -1,0 +1,274 @@
+Title: Where code meets court: AI at the legal-technical frontier
+Video: https://www.youtube.com/watch?v=T8N0MED3IJo
+Caption: whisper (whisper-large-v3, audio transcription)
+================================================================================
+
+Tanya Cushman Reviewer Reviewer Tanya Cushman Reviewer Hey everyone, I'm Olly Cobb, and I'm a
+founding AI engineer at Solve Intelligence. To motivate what it is that we do at Solve Intelligence,
+I ask you all to consider which domains you think can most fruitfully leverage the recent progress
+that we've seen in AI. Perhaps the most obvious, and the reason that many of us are here today, is
+software development. Another, which many of us will be less familiar with, but for which I think
+the reasons are fairly obvious, is legal. Now, obviously, both of these are domains for which the
+work product is incredibly high value, and so the motivation for AI-driven efficiencies is fairly
+obvious. But the reasons why AI is so useful for each of these domains is actually quite different.
+For software development, we benefit from the model's ability to perform sophisticated, technical
+and abstract reasoning, whereas for legal work, we benefit from the model's ability to trawl through
+thousands or even millions of potentially relevant documents and pick out the key pieces of
+information that matter. At Sovintelligence, we build for practitioners in a domain that sits at the
+intersection of these two problems, and that's patent law. In patent law, the potential value of AI
+is so high that it provides a very clear signal as to what the most consequential choices are when
+it comes to unlocking that value. How we might think about making and acting on those choices is
+what I'm going to come on to. But first, it's going to be helpful if I set a little bit of context
+as to what patents are and how they work. And at their core, a patent is a social contract between
+an inventor and society. In exchange for publicly disclosing precisely how their invention works the
+state will grant that inventor a 20 monopoly over who can make use or sell their invention And the
+goal here is really to sort of incentivize innovation whilst also ensuring that the knowledge
+eventually enters the public domain. In order for a patent to be granted, the invention must satisfy
+four key criteria. It must be novel, which means it can't previously have been known to the public
+anywhere in the world. It must be non-obvious, which means that it can't have been obvious to what
+patent law calls a person having ordinary skill in the art, which is like a hypothetical
+practitioner who has expertise in the relevant area, they've read the relevant prior art, but
+they're not looking to exercise any sort of inventive imagination of their own. Thirdly, it actually
+has to be useful in order for it to be worth the patent office's time to examine it and grant it.
+And finally, it needs to be sufficiently disclosed, which means that, in theory, a hypothetical
+person having ordinary skill in the art should be able to reproduce the invention based on the
+disclosure in the application, if they wished. The application itself consists of a set of claims, a
+description, some associated line drawings, and an abstract. And it's the claims that define the
+legal scope of protection, and so they're really the heart of the patent. They're written using a
+very particular syntax and various scapes which define fallback positions should a claim in its
+broadest form later be challenged. The relationship between the claims and the rest of the document
+is that every element of every claim must be supported somewhere in the description and the
+associated line drawings. It's also worth mentioning here, given that such a large proportion of
+patents fall into these categories, that chemistry patents additionally require formal structural
+representations, and biotech patents additionally require explicit sequence listings. So once you
+file your application you then enter prosecution which is a multi dialogue with the patent office
+Here, an examiner, who's typically a specialist in the relevant area, will review your patent and
+the claims in particular against the prior art, and they'll issue what are called office actions
+flagging problems. For example, claims that aren't novel, appear obvious, or aren't sufficiently
+disclosed. The drafter can then respond to the examiner, either arguing against their position or by
+amending their claims, which typically means that they narrowed them. This process can go on in
+several rounds, throughout which every argument made by the drafter becomes part of a permanent
+record called the file history, which forms part of how the claims will be later interpreted if the
+patent is granted. Supposing the patent is granted, it can then be enforced against infringers,
+which is another product or process matching every element of at least one of the claims. This is
+why attorneys will typically try to draft claims as broadly as possible, in other words, using as
+few elements as possible, while still avoiding prior art and while still maintaining support in
+their description. Patents can also later be challenged in litigation on the grounds that they
+should never have been granted in the first place. And so all of this is to say that all decisions
+made during that drafting and prosecution process can have consequences which only reveal themselves
+many years into the future. Okay, so just to recap here, we have a process by which the attorney
+needs to first understand a highly technical invention as presented by the inventor. They then need
+to take a step back and identify what, if anything, is actually technically novel about that
+invention relative to the entire body of prior art. And they then need to write a legal document
+that frames that novelty using patent-specific syntax in a manner that anticipates future objections
+and litigation And so hopefully you can see how we have a problem here which sits at that
+intersection that I outlined earlier is one that benefits from LLM capabilities to perform deep
+technical reasoning but also to pick needles out of haystacks. Also to pick needles out of
+haystacks. So perhaps you're already convinced that we have a problem here for which AI is useful.
+But for those of us who aren't training the models but instead building on top of them, we're
+perhaps more interested in whether we have a domain here for which the application layer can add
+meaningful value. In other words, is it actually worth our time to build dedicated software
+specifically for for patent lawyers, or could they alternatively just unleash co-work or some other
+domain agnostic solution perhaps that they're already paying for? I'm going to spend a few minutes
+digging into that question specifically for patent law because it shapes our thinking and
+intelligence about what and how we build, but I'm hoping there's going to be a few lessons in here
+that generalise, such that you can better think about what and how to build for your own domains or
+even identify domains that might be worth serving in the first place. In order to answer the
+question, I'm going to use software development as a reference point because I think most of us here
+will be familiar with how successful Claude Code has become as a means for building software, And I
+think co-work can be thought of as like a generalization of that underlying model, which is really
+one of delegation. You describe what you want and you delegate the implementation to an agent. I'm
+going to run through a few reasons why I think that model of delegation doesn't lend itself to
+patent work. But I want to particularly stress these first two because I think they're sort of the
+most fundamental and most likely to generalize to other domains. The first reason here focuses on
+the fact in patent drafting we can't easily validate outputs like we can in software. In software
+development, much of what we care about can be validated with tests and much often be validated in a
+few minutes of QA. This allows us to specify what we want at a high level, let an agent take a sort
+of long, autonomous run at it, and then we can relatively quickly and cheaply validate the output.
+If it's wrong, then we can first speculate that the model has sort of mysteriously regressed, but
+then we can sort of just retry with an adjusted prompt until we get something that's right. By
+contrast, you can't run a patent, unfortunately, and its correctness is really a function of events
+that haven't happened yet. So what an examiner might object to in two years, what a competitor might
+try to design around in five, or what a litigator might try to invalidate in ten. So really, the
+decisions you're making are like bets against that adversarial future. And it's not like they're
+really right or wrong, but they trade one type of risk for another based on the risk appetites of
+those who bear the consequences. And so whereas that first reason focuses on the degree to which
+decisions can be validated, the second focuses on the degree to which they're entangled. In software
+development, an agent can make hundreds of micro decisions autonomously and most of those we can go
+back to and revisit without unwinding the rest. And those that can't are often those that are really
+foreseeable up front and could have been aligned on during an initial planning phase where the
+engineer imparts their judgment. By contrast, in patents, decisions aren't so loosely coupled and
+don't surface so easily up front. You think about the claim scope, the claim terminology, the spec,
+the drawings, they all sort of depend on each other, and often those dependencies don't reveal
+themselves until the document starts to take shape. So if the attorney decides they want to reframe
+claim one, for example, it'll often send them back through many of the claims below it, back through
+a load of the passages of the spec that support it, and often through a load of the line drawings as
+well. And so I think the delegation model, it kind of struggles with either of these points in
+isolation but together is when it really starts to break down So if you could test the correctness
+then entanglement wouldn be such a problem because you could just keep iterating until the test
+passed And if the decisions were more independent and foreseeable up front, then the attorney could
+better specify what they want at the outset and delegate merely the implementation to an agent. but
+together the attorney's judgment can't be deferred to some final review pass and it can't be sort of
+concentrated up front but instead needs to be sort of imparted sequentially as the patent comes
+together because of each judgment call they make kind of constrains the next and there's nothing
+downstream that's going to catch a bad one And so I think those two reasons alone sort of motivate
+exploring models alternative to that of delegation for patent work. But there's a few more reasons I
+also thought were just worth running through. And the first here is that software development is
+largely a matter of recombining familiar patterns in order to solve problems that are sort of
+amenable to reinforcement learning. And this allows the labs training the models to sort of
+hyper-optimize their models in order to perform software development very well. By contrast, in
+patent work, the invention which the model is tasked with reasoning about is definitionally out of
+distribution. And whilst the models are capable of using their sort of general underlying domain
+knowledge to reason about inventions and systems they've not seen before, this type of reasoning
+just doesn't lend itself to reinforcement learning in quite the same way as software development.
+When you combine that with the fact that hallucinations are both harder to detect and also
+potentially more costly, you start to want to move away from a model whereby you're just sort of
+encouraging the agent to figure everything out. The fourth point I wanted to make was that software
+is natively text-based. So the artifact itself, the editor, the model's representation of it they
+all the same thing By contrast patterns do involve text but they also involve line drawings that are
+crucially important and often also chemical structures and biological sequences At Solve, we found
+that the model's ability to reason about these things depends meaningfully on how they're
+represented. And so I'd suggest that any domain that involves non-textual data that's important, I
+think figuring out how best to represent that data for the model is a way in which the application
+layer can really add value. And then finally, I've got a point that actually kind of cuts both ways,
+but just for balance, I've chalked it up as a win for the delegation model. And this is that in
+software, the outputs are often sort of extremely varied, whereas by contrast, patents share a
+remarkably uniform structure. They all have the same sections subject to the same rules. And this
+uniformity means that the space of implementations is actually narrowed in a way that might actually
+increase comfort with delegation. But even this point isn't really a clear win for the delegation
+model, because that same uniformity is something that the application layer can lean on, in that
+when you actually build dedicated workflows and interfaces, they'll actually be something that makes
+sense across the entire user base. Okay, so I spent a few minutes suggesting why the delegation
+model might not be the the best one for patent work, but what alternative do we want to put forth?
+And ultimately, what we want to enable is the user, so in our case an attorney, to iterate through
+that sequence of dependent and consequential decisions sort of flexibly, quickly, and effectively.
+And So the possible role of AI then is twofold. Firstly, in surfacing the judgment calls to be made
+at the time they need making in a manner that makes it straightforward for the attorney to
+understand the trade-offs involved and to make the best informed decision possible. But secondly, in
+then executing on those judgment calls once made, be that in performing follow analysis or drafting
+some part of the application And so really what we need here is something more akin to a model of
+collaboration rather than merely delegation And the distinction is not entirely binary. I think
+general purpose software like Cowork that follows more of a delegation model still provides means
+for collaboration, obviously. And software like has following more of a collaboration model still
+provides means for delegating arbitrary scopes of work. But I think software centred on a model of
+delegation ends up looking rather different from software centred on a model of collaboration. I
+think many of those differences are in the realm of UI and UX, but it also shapes how we build out
+the underlying AI layer. And I've honed in on three principles that I thought were worth sharing.
+And I'm going to state them in the relative abstract to begin with, but I'm going to follow up with
+a demo which shows exactly what they look like in our product and how they can tie together as well.
+The first principle I'd like to suggest is treating citations as a first-class citizen. I think it's
+probably obvious why citations are helpful for any domain in which you're making high-stakes
+decisions which can't be automatically tested the correctness. I think hallucinations still happen,
+particularly when you're operating at the frontier of model knowledge, and providing reasoning with
+citations allows a human to verify correctness. That in itself isn't a novel idea, but citations can
+be implemented in many different ways, many of which treat them as something more that you bolt on
+at at the end in order to provide some sort of credibility, rather than a genuine audit trail of
+which sources of information actually shaped the final output. And that's because citations are
+actually a massive pain. They often don't play nicely with patterns for tool calling, subagents,
+compaction, et cetera. But when I suggest treating them as a first class citizen, I'm suggesting
+that any information that's shown to an LLM in some agentic system, be that the document that the
+user is editing, like an invention disclosure that they've uploaded as a prior art, or some an
+invention disclosure that they've uploaded as a PDF, or some prior art they've pulled in at runtime,
+that information should be shown to an LLM in a format from which it can cite, and LLMs should
+communicate both with the user and each other in a manner that provides proper attribution. And that
+often will require engineering your own patterns with tool calling, sub-agents, compaction, etc. But
+I think if you really want to understand how and why a decision was made, I think treating citations
+as fundamental in that way is required. The context for the second principle I'd like to suggest is
+that often you do want to surface some sort of general purpose agent with which the user interacts
+in an open-ended manner via natural language. But often there's also specific repeat workflows for
+which it's easier to guide the user and for them to specify what they want via a dedicated
+interface. And this principle suggests that even in those cases, you can often translate what
+they're specifying via those interfaces into an instruction that you can then pass to your general
+purpose agent, perhaps augmented with an additional tool or sub-agent. And the benefit here is that
+the user can then benefit from both the interface and the familiar pattern of the system showing
+it's working using reasoning and citations. Moreover, taking this approach, as you make your general
+purpose agent more capable, you also then improve performance across specific capabilities. The
+final principle I'd like to suggest, I've called parallelizing alignment and sequencing execution.
+And this comes back to the idea that, in general, the work to be performed can't be done in one
+long, autonomous run. This makes it particularly valuable if you can proactively identify a set of
+decisions which, if aligned on with the user, in a sort of concentrated moment of human sign-off and
+judgment, would then enable a long, autonomous run that the user is unlikely to take issue with. And
+often the decisions in that set will have preparatory analysis or research which can be done in
+parallel hence the name of the principle The idea here is that we want to minimize both the number
+of touch points with the user and the amount of time that it takes to navigate between those touch
+points. Okay, so I've stated these relatively abstractly so far. I'm now going to show what they can
+look like via a demonstration of our product. So the Solve platform does have modules for all phases
+of the patent lifecycle. So that's drafting, that's prosecution, that's litigation. For this, we are
+going to focus on the patent drafting module. And yeah, this isn't going to be a tour of our patent
+drafting module. I've picked out some basic interactions which should hopefully allow us to focus on
+those principles I've just introduced. But here what we have is a project where the attorney is
+looking to draft a patent for a particular type of circuit breaker. They've uploaded the original
+disclosure that the inventor sent them. They've also uploaded an invention disclosure form that they
+then got the inventor to fill in. They pulled in some relevant prior art, likely using our search
+capabilities. And then they instantiated a patent application where, in this case, we've used one of
+our sort of default templates. But often our users will have configured their own templates which
+encode how they like the the different sections of their patent application to be written. And I
+think the surrounding interface here is probably a relatively familiar one to people at this point.
+We've got this general purpose agent here on the right-hand side, which the user can use for both
+analysis, also for editing. It can pull in sources of information, some patent literature,
+non-patent literature, technical standards, etc. I'm going to keep it simple here and just ask this
+agent, how does my invention compare to the prior art? Okay It would be nice if this works What we
+see here is that the agent is first reading the invention disclosure as you expect It then reading
+the prior art documents and then it going to start replying to us with its analysis. It first looks
+like it's described the invention. It's got some sort of table where it's comparing the invention
+disclosure to each of those prior art and then it's identified one prior art that's more relevant
+than the others. It's providing these citations, which means that when it tells us something, we can
+actually click through and confirm that it's what it says it is. Here it's citing the invention
+disclosure, which is a document in our space. We get a nice preview like that. Then for these prior
+art PDFs, we can click through. It's going to show us precisely which parts of those documents is
+relied on for its analysis. And so, yeah, that demonstrates principle one. I'm going to go on to
+principle two, where I spoke about how sometimes we do want to surface sort of a dedicated interface
+for specific repeat workflows. And I think one example of that is in actually drafting the claims.
+I'm going to kick that off now. But for drafting claims, users are likely to have a range of
+preferences around how many claims they should draft, how the elements of those claims should be
+indented, how they should refer to element labels, etc., as well as any more general guidance they
+might have in their personal library about how to write claims or what particularly they want to do
+in this particular project. and we can see that although they've used like a sort of interface here
+to define what they want, we've still managed to serve their request using the same sort of general
+purpose agent here that showed it's working with reasoning and citations but has also been able to
+actually, you know, draft that section of their application. And it looks like here, you know, it's
+tried to identify precisely which part of the invention is novel and drafted the claims around that.
+And so, yeah, I think that demonstrates the second principle here, where we've utilised that general
+purpose agent for a specific workflow. So now I rejected that but we could have accepted it So now
+moving on to principle three around parallelising alignment and sequencing execution One example of
+that within our product is in performing application review And for that, I'm going to move to a
+duplicate copy of that project where we've actually already drafted the application. And the idea
+behind review, and I'm going to kick it off here already just to give it a head start, but the idea
+is that the attorney ultimately wants to bring that application into adherence with a bunch of
+criteria they deem important. Here, I've kicked off a review against four of our recommended
+criteria, but in practice, there'll often be many more criteria, and they'll be those that have been
+configured by the user themselves rather than by us. And you can see here that it's actually
+performing separate sub-reviews for each of those criteria in parallel. Note here, though, how if we
+went straight to the sort of edits in each of those sub-reviews, the sort of edits that the attorney
+is ultimately interested in, then we're going to get suggestions which conflict with each other. and
+therefore we've started by generating these comments which the user can sort of click around and
+read and so I guess here it's sort of telling us that the phrase corresponds to maybe ambiguous it
+could mean equal this that and the other and then this gives the chance for an attorney to reply to
+these comments or to dismiss them if they don't agree before then, only then might they kick off an
+agent to resolve those comments that they've actually aligned on. And so the idea here is that in
+creating that point of alignment, we've managed to parallelize the bulk of the analysis, which goes
+into performing this review. And remember that in practice they might have, say, 30 review criteria.
+here, we can parallelize across all of that and then kick off the sort of sequential round of edits
+where it needs to iterate through and make sure that everything is both aligned on and consistent.
+Just whilst that's okay, it's already started, so it's now going through, it's making edits to our
+document in order to address those comments. And that's probably going to take a minute or so
+because there's quite a few comments to go through. In practice, there might be many more comments
+because there's many more criteria. And so that's why the sort of alignment there is important. But
+just to highlight here as well how we're demonstrating principle three sort of layered on top of
+principle one and two, where for the sort of review part, which is sort of another specific
+capability, we again, we managed to sort of service that via the general purpose agent augmented
+with a tool that allowed it to make these comments. And again, we provided citations such that you
+can see what information it's drawing on. Okay, so that's working through. It might take a little
+bit of time, depending on how much stuff it's trying to do here. I'm wondering whether to let it
+finish. Maybe we can sort of just have a look at what it's doing. You know, okay, so it has
+finished. There wasn't that much to do in this particular case. but it's explaining to us the edits
+that it's made and it's citing the relevant parts of the document that it now consistent with et
+cetera Okay So I guess to summarize the arc of the talk we first acknowledged how if we striving to
+build applications that are of genuine value to users, we need a domain for which AI is useful and
+for which the application layer can meaningfully add value. That's kind of obvious, but then we sort
+of noted how there's particular opportunity in domains that aren't suited to the delegation model,
+which can happen for various reasons, of which we considered a few. And then we considered how if
+the user's not merely delegating to AI, but instead collaborating with AI, then we should think
+carefully about how best to provide the legibility and control that requires, both at the level of
+UI, UX, but also at the AI layer beneath. That's all I'm going to share today. If anyone wants to
+chat about this afterwards, we'll be knocking around. Yeah. Thanks.

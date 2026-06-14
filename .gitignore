@@ -13,3 +13,4 @@ cookies.txt
 
 # Secrets
 .env
+transcribe.log

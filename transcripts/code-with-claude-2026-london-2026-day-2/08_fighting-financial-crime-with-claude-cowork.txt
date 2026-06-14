@@ -1,0 +1,219 @@
+Title: Fighting financial crime with Claude Cowork
+Video: https://www.youtube.com/watch?v=tUoO4ucrNc0
+Caption: whisper (whisper-large-v3, audio transcription)
+================================================================================
+
+Please welcome to the stage Senior Staff Software Engineer at Quanto Stefano Amorelli. Thank you
+very much. Thank you very much, guys. I'm very, very happy to be here with you today. I'm Stefano
+Morelli, and I work at Conto. Conto is a fintech based in France, and we provide business banking
+online for SMEs and financial tools. We have more than 600,000 customers, and we operate in more
+than eight markets in Europe. So if you work in finance, you probably know that financial crime is
+the number one priority. Just to give you an idea, between two and five trillion US dollars are
+laundered every year in the world. It's a big business for criminals, and thanks to AI, the bad guys
+are getting better and better. But so are we at preventing financial crime. What I want to show you
+today is what we are cooking at Conto, how we are using AI, how we are using cloud, how we created a
+system around that that puts security and compliance first so that we can apply AI in critical
+environments with very sensitive data. I'm also going to touch very quickly on the topic of evals.
+How do you run evaluations, what you actually evaluate, and why they are important in these use
+cases. And I want to leave you also with some food for thought on how some of the key takeaways and
+lessons learned from this project can also drive AI adoption, especially if you are in a bigger
+organization across different departments. Let get started and see what the lifecycle of a financial
+crime So whenever somebody does a suspicious transaction what we have is an alerting system This is
+fully automated. And once an alert gets created, that's when the manual process begins. So we have a
+human agent that picks up the case, prioritizes it, and gathers data from so many different data
+sources. So imagine going to Google Web Search, to third-party tools, to internal dashboards. So
+what we see is these financial investigators that have three different monitors at least, and dozens
+of browser tabs, more than I have, and gather all this data, all these documents, and compile a big
+document. Some of it is in their brain, some of it they write it down, and then they have to reason
+within that information and make a judgment whether there was indeed a criminal activity or not.
+Very manual process can take a long time. And right now, well, in the past, in the near past, was
+handled by humans, but it's a bit of an inhuman process. We ask a lot from them. So what's the role
+of AI? how we can apply AI to make this process better. So one way, obviously, we can spin up cloud
+and ask questions. So that's the general usage. We can upload documents, ask general questions
+without any plugin or maybe a simple skill. But that's not exciting, right? We want to dive a little
+bit deeper on how we can really leverage AI into this use case. Another phase is the native AI. So
+what we call the first line of defense is the alerting system that I mentioned before. And there,
+generative AI is not really the main character because we use predictive AI, traditional machine
+learning. We really value speed and accuracy and most likely it also combines deterministic rules.
+And most likely, gen AI is not the best fit. But what interesting is how we can apply agentic AI to
+the second line of defense so the manual process that right now takes a long time In the industry
+not many players are adopting AI and agentic AI in that step of the process So we going to focus on
+the phase three agentic AI for the second line of defense The first question that we ask ourselves
+is, all right, which model do we choose for that? And the answer was a bit easy in this case. We
+went with Opus 4.7. I would argue that maybe you do not need Opus 4.7 for everything you do, even if
+you're doing coding. For some cases, you might survive with other models, cheaper models. But in
+this case, if you're handling so much information, you do need a model that is able to reason across
+a very long context window. And really, there is no better frontier model right now in the market
+than Opus 4.7. We also use Cloud Cowork as an entry point, as a user interface for the
+investigators, for the anti-financial crime investigators. First of all, because it's easy to
+onboard them. So, non-technical stakeholders, they can use co-work, but also it's very powerful for
+creating complex plug-ins that contains multiple skills and are packaged with the tools and MCP
+servers that they need, as we will see in a few slides. If we take the numbers, if we bring out the
+numbers of why Opus 4.7 shines in these tasks, there is a benchmark that is very valuable to
+evaluate which model is the best, and it is the GraphWorks benchmark. So what this benchmark
+demonstrates is how well the large language model is able to reason across a document and find the
+facts that are spread across the document. So not necessarily facts that are close to each other in
+the context window, but it's able to find the connections across all the context window. And that's
+exactly the best benchmark you want to have a look at, especially in investigations where
+information is scattered around all the context window effectively. And Opus 4.7 is the leader right
+now in the market. You cannot find a better model than that for now No matter how intelligent the
+model is if it doesn't have access to data, it's not as cool, it's not as useful. So when we're
+talking about data access, what comes to mind? Maybe somebody from the audience wants to say it. you
+want to give access to data to a large language model, what do you think about? MCP. Yes, correct.
+Who is running MCP in production? Raise your hand. Okay. Who had an interesting conversation or
+concerns about security and compliance when it comes to MCP? Okay. I see a lot of hands. Yes. So
+when you mention MCP to risk and compliance, when you mention it to security, you can raise some
+eyebrows, to put it mildly. Some people even say that the S in MCP stands for security. But the
+reality is that you can address these concerns, you can build it security first and compliance first
+in mind so that you can build a case and address these objections. How you do that, you create the
+boundaries and you implement a system, an harness that is compliant and secure. And that's exactly
+the main takeaway of this talk that I want to share with you. Especially in crime investigations,
+the data is scattered across so many different data sources. So the challenge here is that we have
+our knowledge database, we have OSINT, open source intelligence, we have internal databases,
+dashboards, KYC, KYB data, also So multimodality. We also want to take automated actions through our
+internal API endpoints. It's a mess. Every data entry point uses a different programming language.
+It's internal, it's external, and we want to unify the experience so that it's secure and compliant.
+How do we do that? From a technical perspective, let's dig a bit deeper. What we decided to use
+first of all is remote MCP servers. So we want a centralized place where we can manage them, where
+we can monitor them. And that means that we have OAuth by default. So we have strong authentication.
+That's the first technical requirement that you want we want to apply. Second of all, we also want
+to make sure that the session tokens, so that apart from the authentication, the permissioning
+system is cryptographically safe enough. So even if the tokens, a session token gets leaked, it's
+not a security, a big security concern. And for that, we leverage PASETO tokens, so it's a platform
+agnostic security tokens. It's a relatively new technology from 2018 that fits perfectly the case
+for shortly lived security tokens. We also want role-based access control. We want to give access to
+specific data to specific people only. We don't want everybody to access everything inside the
+company. Another important point is that we want audit trail. We want to know exactly who is
+accessing what and when. compliance reasons, we do not want to fully automate the process just yet,
+so we want to keep human judgement, at least on the critical decisions, because these actions, these
+financial crime investigations, have consequences, have legal consequences as well. So, these are a
+few technical requirements, but how the architecture looks like, this is how we implemented these
+technical requirements. This is architecture. The entry point is cloud co-work. So we have a
+plug-in, and that's the entry point for our anti-financial crime analysts. And the co-work plug-in
+is connected to the MCP gateway. So that's the most important building block of our infrastructure.
+What is the role of the MCP gateway? It's to authenticate the user, first of all, is to implement
+role-based access control, so certain users based on identity can access only certain data. It is
+also to implement the audit trail, so everything that is done is logged in an append-only database.
+Another cool thing of the MCP gateway is that it connects to downstream MCP servers, so you have
+multiple data sources, multiple MCP deployed internally, and the cool thing is that any of these MCP
+servers can be implemented in Go Python TypeScript COBOL maybe not COBOL please don do that But it
+cool because it agnostic so it becomes very easy to link a new MCP server a new data source and you
+get audit log, you get identity, management, and role-based access control by default, out of the
+box. And then, obviously, MCP servers connect to the downstream APIs. So, as I mentioned before, the
+entry point is our co-work plug-in. We're going to dig a bit deeper into that later in the
+presentation, but just to give you an overview, what's the idea of the plug-in? We sat together with
+the investigators, we did three investigations together as engineers, and we crafted this plug-in
+based on their domain knowledge and domain expertise. cool because it's centrally, it's an artifact
+that is centrally shipped and it's versioned and can be updated easily. Even by the investigators
+themselves. Very shortly, again, what the MCP gateway does, SSO, so we use single sign-on internally
+at our company, and the MCP gateway is responsible for authenticating the user and minting the
+shortly lived tokens so the MCP servers know which permissions the user have, and we also then have
+the audit pipeline. So if we have a look at the end-to-end flow of an MCP call request, we see the
+user that is using Cowork is initiating a session. That means that if it's not logged in, we have a
+single sign-on page connected to an identity provider, and the identity provider provides the
+identity of the user logged in to the MCP gateway. At this point, we already have everything
+audited, everything logged, and if the user is authenticated, has the right permissions than can
+perform the MCP server tool calls. Effectively, the users, based on their permissions, they are not
+even able to see MCP servers that they are not supposed to have access to So multiple roles the MCP
+gateway has One is to validate the token from the OAuth One is to resolve the identity authorize the
+request and forward that to the downstream MCP servers How we do role-based access control? Well, in
+our case, we have a Terraform file, so it's also version, it's also auditable, and we can see the
+history of the changes where we define which teams means based on the identity, have access to which
+MCP servers. So it looks like this practically is just a Terraform file that we version in a GitHub
+repository. But let's dig a bit deeper into some code snippets. So here is the architecture again, a
+little bit more detailed. Here I split a bit the MCP gateway with the authorization gateway, which
+is responsibility is about identity management. And the MCP gateway is based on an open source
+package. We use context forge and it's connected to downstream MCP servers that are federated so
+they are internally deployed and maintained. How does it look in practice? So this is the
+authorization gateway. We get a token from the auth, from the single sign-on. We verify the
+authenticity of that, and we get the permissions from the identity. Eventually, once we validate the
+permissions, we can mint a bearer token. Why we do that? Because we want a shortly lived token to be
+shared with the downstream MCP servers. We don't want to share the token that comes from the single
+sign-on. So we mint the token, the passetto token. And how it looks like in practice for downstream
+MCP servers, we just have a YAML file that contains the configuration of these servers. They are
+deployed on our Kubernetes cluster. That means they can be reached only by the MCP gateway. They
+cannot be reached directly. And we use streamable HTTP by default. Stateless streamable HTTP. That
+means that we can scale it much easier. the downstream MCP servers, we need to validate the
+authenticity of the bearer token, and that's where we use public tokens and very shortly how they
+work is basically you have a base64 encoded payload that is not encrypted so even if it exposed it
+supposed to be like so but it signed so that we can verify that is that its content has been uh has
+not been tampered so um we also another Another important thing for audit trail is that we
+instrument all the MCP tool calls that we do. And here we use conventional OTEL plus some additional
+fields that are not supported by the standard just yet. Now let's see a very quick video of how it
+looks in practice with a small example. So here I am asking to run analysis. It's very sped up and
+it's a bit masked. I'm sorry, I cannot share exactly the customer data. But what I wanted to show
+you here is that CoWork is not only to gather information from different data sources, but also able
+to render on the fly widgets. So now we are using inline widgets much faster, much quicker, much
+better than the previous artifacts that would take much longer to generate. And they're also
+interactive. in this case you see there are a few actions at the bottom so the investigator can
+trigger actions there are also drop downs they can edit the visualization of the of the charts so
+very quick video but it really changes the life of investigators that before they needed to go
+across so many different tools gather the data find the information reason about it now that it
+would just in one interface that they can have a dashboard created for them and also leverage ai to
+have suggestions and reasoning on the findings so let's go back to the slides and see how does it
+look on the back end so here what you can see is a grafana dashboard it's on production and it uses
+click house as a database that is a perfect fit for the audit trail so here we can see all the tool
+calls ALL THE AUTHORIZATION FLOWS THAT HAPPEN DURING THE DAY. AND WE CAN ALSO SEE WHO IS ACCESSING
+WHAT. SO WE HAVE A USER AND WE HAVE A TOOL NAME, HOW MANY CALLS, HOW MUCH TIME DOES IT TAKE.
+EVERYTHING IS TRACED AND INSTRUMENTED. BUT LET'S HAVE A LOOK AT THE PLUGGING itself, because there
+are some learnings that are worth sharing as well, how we structured such a complex plugin that
+contains so much domain knowledge and expertise. Well, the first thing is good prompting hygiene. So
+instead of creating one huge prompt of 1,000 lines, we split it across different subskills. That's
+the main thing. And the main skill, we call it as our orchestrator, refers to the different
+sub-skills based on the operation that the investigator wants to do at different steps. We also use
+what we call a meta-skill that runs always at the end and verifies the results at the end of the
+call, whenever the investigator runs the plugin. Inside the prompt of each skill, we use XML
+structured prompt. We find it much more efficient than traditional prompting, and we also specify
+which MCP servers and tools are used by the skill itself. So, we save some time for the large
+language model to discover exactly the tools that it needs to use the skill. Okay. But, once we
+build that, then the question was from different stakeholders, that's very cool, but does it work?
+Like, can we trust it? And the answer to this question, a good way to answer this question is evals.
+You want to bring to the table some quantitative facts, some data that demonstrates that the plug-in
+is performing as you would expect. You can evaluate different things. Here I try to outline the
+three things that I believe are the most important in this use case. And one is the ability for the
+plugin to call the right tools but also the ability to call them in the right order for example and
+the ability to not come up with random facts, with hallucinations. All the data that is displayed on
+the dashboard must be grounded into the reference documents. Another thing for when we ask the
+larger language model to reason and suggest conclusions on the investigation is not only about the
+output, the expected output, you also want to evaluate what's the reasoning behind the output that
+the large language model gave. So let's say there is an investigation, the large language model
+said, okay, this is criminal behavior, and maybe it's correct, but we also want to know that the
+reasoning behind that, how it reached the conclusion is also correct. And this is done with the
+large language model as a judge, and it's another good parameter to evaluate. So what's the impact
+of evals? So for engineering, it's great, because then you can iterate on the plugin, you can change
+a model, you can see if you introduce regressions. For compliance, they are much happier, because
+now they can sleep at night. We can prove to them that the data is correct, that the accuracy that
+we expect is compliant with our requirements. But it's also for our end users very important because
+we are introducing a new tool, a new technology, we want to show them that they can trust it and we
+don't want them to second guess every time they use the tool. But that not only about financial
+crime All these learnings about building security compliance having a mindset of creating a system
+around data access that is secure and compliant can also be leveraged in many other use cases What
+we are seeing at Conto now that we have an MCP gateway, we have our first plugins, more and more
+teams are building their own plugin that is very cheap. Everybody can do it with the right prompting
+skills, leveraging the same NCP servers, the same NCP gateway we created. Maybe they need a new NCP
+server, can be deployed also very quickly in just a matter of a few days. And what it becomes is
+basically a flywheel where you drive AI adoption inside your company, especially if you're working
+in a bigger enterprise, with security and compliance in mind, because with NCP gateway, you get
+audit trail, you get role-based access control, strong authentication, identity management out of
+the box. So initially, this project took a few weeks to build, but what we are seeing is that new
+use cases are adopted in just a matter of a few days. This is just the beginning. What we saw today
+is still having human in the loop, but thanks to evals, thanks to our effort to keep improving the
+plugin and measuring its accuracy, our vision is to move more and more forward towards human on the
+loop. That means that they review the decisions that AI can take autonomously. And then there is the
+dream scenario where we have humans completely out of the loop, where AI takes all the decisions,
+possibly much more longer term, but a possibility if we can demonstrate the accuracy through evals
+So some key takeaways evals start with evals I like to compare evals to TDD So if you're a software
+engineer, you're probably familiar with test-driven development. In any case, if you're building
+critical workflows, you most likely will need evals at some point. So why not start with it, invest
+in it as soon as possible so you can leverage and be faster later on. Access to data is king. So you
+want to be able to access the data you need. You want to give the large language model the power
+that it needs. But in a secure and compliant way, we want to make sure that it's especially in these
+sensitive data topics, in these workflows where we need to perform such critical operations, we want
+to keep that in mind from the beginning. In the beginning, I said that financial crime is a huge
+business, from two to five trillion US dollars laundered every year, but what's even more worrying
+is that a very small percentage of that amount currently gets detected and seized by authorities. So
+in my honest opinion, this is a very good use case of AI, where we're using AI that is not only for
+building stuff, cool stuff, but also to have a very big impact on society. And even if you are not
+working in the financial crime, on the financial industry, or some sensitive topics like healthcare,
+sensitive industries like that, I hope you can still apply some of these takeaways in your
+day-to-day job so that we can build together a more trustworthy AI. Thank you.

@@ -19,6 +19,7 @@ from groq import Groq
 
 OUT_ROOT = "transcripts"
 COOKIES = "cookies.txt"
+NODE = "/opt/node22/bin/node"
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 CHUNK_SECONDS = 600           # ~10 min per chunk -> small files, safe under limits
 GROQ_MODEL = "whisper-large-v3"
@@ -43,10 +44,16 @@ def slugify(title, vid):
     return (s[:70].strip("-")) or vid
 
 def download_audio(vid, dest_dir):
-    """Download bestaudio (no ffmpeg post-processing) -> path to the raw file."""
+    """Download audio (no ffmpeg post-processing here) -> path to the raw file.
+
+    These talks expose only the progressive `18` mp4 (video+audio); its URL needs
+    yt-dlp's JS solver (Node) to decipher the signature. ffmpeg later strips audio.
+    """
     opts = {
         "quiet": True, "no_warnings": True,
-        "format": "bestaudio/best",
+        "format": "18/bestaudio/best",
+        "js_runtimes": {"node": {"path": NODE}},
+        "remote_components": ["ejs:github"],
         "outtmpl": os.path.join(dest_dir, "%(id)s.%(ext)s"),
     }
     if os.path.exists(COOKIES):
