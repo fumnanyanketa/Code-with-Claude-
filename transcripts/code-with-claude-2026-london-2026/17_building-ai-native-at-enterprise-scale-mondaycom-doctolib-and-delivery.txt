@@ -1,0 +1,278 @@
+Title: Building AI-native at enterprise scale: monday.com, Doctolib, and Delivery Hero
+Video: https://www.youtube.com/watch?v=XFaeIbL-lvE
+Caption: whisper (whisper-large-v3-turbo, audio transcription)
+================================================================================
+
+Hello everyone, my name is Rebecca and I'm on the Anthropic Go-To-Market team. It's wonderful to see
+so many developers here today at our first Code with Quad in London. We have a really special panel
+here today with tech leaders from Monday.com, Dr. Lib, and Delivery Hero. For those that don't know,
+all three companies were founded between 2011 and 2013, so before the rise of the LLM era. And
+today's conversation is really going to be about their pivot to becoming an AI native enterprise.
+With that, would love to pass it off to the panelists. would love a quick intro, name, role,
+company. And then what's the cloud-powered system that's now critical for your organization? And
+roughly how old is the code base that it lives in? Ruslan, if you want to start. Hi, I'm one of the
+engineering leaders at mandy.com and we are the company which tries to reinvent everything about how
+we do and what we build for our customers. and Claude is actually powering us on this huge new
+mission from reinventing us as a platform to manage work to actually a platform who helps execute
+work for our customers, building teams of agents and tons of native AI capabilities. The company is
+roughly like 14 years old, so the code base of a company that's been all this time in a startup
+mode, you can imagine it's like a monolith journey that takes a long time to break out and a lot of
+imperfections. So, yeah, it's quite a journey we're on. Hi, everyone. So at Dr. Lib, we have two
+missions. First one is to make people healthier, and the second one is to improve the daily life of
+healthcare professionals. So for people, we build a full health companion where you can find and
+book an appointment with a doctor, patient messaging, manage your personal health record, And then
+for healthcare practitioners, it's all the solutions that they need to do their job from clinical,
+kind of financial, care corporations, kind of manage the patients. In terms of usage of Claude, we
+have pretty much now 100% adoption of people kind of building with Claude. And building, it's not
+just about engineers, but it's everybody, kind of product managers, designers. And now with Claude
+Cowork, it's actually like a large proportion of the population outside of kind of tech and product
+that is also now beginning kind of to use Claude to do their daily work. And then in terms of the
+code base, we're about half of it is a monolith, which was created now over a decade ago, kind of
+when we were founded. And then about half is also kind of similar journey as what Ruslan was
+mentioning, being built in the last couple of years in terms of distributed systems and kind of
+services. Yeah. So my name is Ulrich Schäfer. I'm VP for Tech Foundations at Delivery Hero. Delivery
+Hero is the world's leading local delivery network. So we are delivering food, groceries, and other
+things to our customers worldwide in over 60 markets. What we're doing with Cloud is obviously we're
+also rolling out Cloud code to our engineers. We're using Cloud also within our products. But what I
+want to talk about today is mostly how we build our autonomous software delivery system called
+HeroGen. Awesome. Rodrigo, I think with that, my next question is, none of the three of you really
+got to greenfield this. You all had an existing working product, a lot of customers, and a large
+functioning engineering organ, and many years of code base, right? And so we'd love you to walk us
+through what you built with Claude and how it actually plugs into what was already there. Yeah. So
+if we look at this autonomous software delivery agent, what we wanted to achieve there. And this
+morning, we heard already on the keynote that when you look at things like cloud, you need to build
+for the next model, not for the current one. We did exactly that last year, we looked at where the
+trajectory is going. And we decided to try out to build basically an agent that takes a Jira ticket
+or a GitHub issue, and takes it to production readiness in terms of a pull requests that can then be
+merged. And that's what we build on over the last two quarters of last year. And we launched it in
+Q1 and it has gained huge traction across all of our engineers and subsidiaries in the group So to
+just give you some numbers where we are right now so we at around 173 on average merge pull requests
+that go into production per day right now in the last 10 days as an average. And yeah, we have
+around 7,000 merge pull requests in total since the launch in February and the trajectory is really
+exponential. Awesome. Alex would love to hear a little bit about the experience at Dr. Lib as well.
+Sure. So a lot of our focus has been like how to get everybody kind of to start using Claude and but
+also kind of using it effectively. And one of the things that we did kind of very consciously was we
+said, okay, it's not going to be only the teams that are working on the platform that will be
+working on kind of building like everything around Claude and everything around how we build with
+Claude. But we wanted to kind of really leverage kind the expertise, the creativity, the innovation
+of all the engineers, right? Because your best engineers are going to be the ones who are going to
+find the most interesting ways of kind of using it, of applying kind of the new technology. So what
+we said was the job of the platform teams is just as much as just enabling and finding kind of what
+are those kind of best practices that people are using and then helping accelerate those, right? So
+either remove bottlenecks or industrialize them and then scale them across kind of the teams as a
+whole. So what we ended up doing was we said, okay, we want everybody, like, as they're building
+kind of their own skills, make them available to everybody else. We ended up building a skills
+marketplace kind of where everything is kind of discoverable. You can see which skills get the most
+usage, which ones are kind of trending. And then we also have, like, an environment that we provide
+for developers that have, like, all the tools automatically connected as you start kind of working.
+And we packaged many of those skills kind of directly into that environment, right? So immediately,
+as you onboard at Dr. Lib, you get access to all of those skills. They're available to you. And then
+there's also kind of plugins for experimental skills as people are trying out new things. And what
+really has worked for us as well is not just kind of doing this in silos, but the most popular
+channel, I think, of the whole company right now is called Build with AI, where people are kind of
+sharing everything that they're learning, asking questions, promoting kind of the skills that they
+have. like it's it's really kind of the liveliest conversation that we have that's awesome so it's
+not just individual adopter at the engineering level but across the org there's some streamlining
+and broader organizational efforts the goal has been really to try to go down the learning curve
+together rather than everybody kind of doing things and doing amazing things but by themselves
+awesome um i know we were catching up a bit yesterday on monday's agent but would love to hear more
+about the evolution in that journey. Yes. So, Monday, we, of course, do everything, right? We
+reinvent how we work and what we do for our customers at the same time. I want to focus more on
+product implementation and customer-facing products where we use ClaudeInn. Of course, we build
+platform agents on top of Monday that help execute work and also invite external agents to be
+first-class citizens of the platform, which is creating a lot of challenges for identity systems and
+permission models, of course. But at the same time, one of the biggest successful releases Monday
+ever had was Monday Vibe. It's a prompt application tool that we opened to our users and has been
+growing exponentially in a successful adoption with customers. So in short, it's basically turning a
+simple prompt into a detailed PRD for the customer to interpret their intention well and refine it
+well together and then build a working application literally in minutes. There is an interesting
+advantage that we got to boost this effort and literally do a POC for this in a couple of days
+because Monday invested early in open platform for external developers. Despite having an old code
+base that has a lot of things with it coming with it, the open platform approach helped to literally
+contain it and literally let the Vibe coding tool do what external developers are doing, using the
+same APS, using the same SDKs, and also like deployment mechanism and publishing applications in
+exactly the same way. That really massively boosted the initial phase of it. And later stages, of
+course, to unlock full potential, we still deal with, as soon as you touch every feature of the
+platform you want to vibe to interact with it, an application that you built to be integrated and
+build more and more complex applications, you need to make sure that every feature needs to be API
+open, every feature needs to be accessible to it properly, which is, of course, a much longer
+journey we are in but that kind of an interesting factor that we felt the early investment in that
+early open platform really paid out in this case That awesome to hear I also be curious I think as
+everyone in the room is probably aware of the model under all this changes every few months
+especially with the advancements in the industry And so I'm curious to understand across the three
+orgs, when a new Claude model ships, what actually happens inside your organization that week? Maybe
+walk me through Anthropoc release as a new model to we've actually rolled it out into production. So
+with Herogen, our autonomous software delivery agent, I think the key moment in time where a model
+change really introduced a step change was last November with the new Opus models, where our vision
+of this system actually working became a reality. Because before that, it was more of a fancy idea
+that we had, right? we just took a big bet that models are going to improve that much to be able to
+take whole features and just do all the work for the engineers. So this was a step change since
+then. With that particular system, we have stayed with Opus 4.5. We have not yet made bigger model
+changes, mostly because we do not yet have the A-B testing setup and the necessary volume. to make
+good decisions in terms of moving to a different model. I think in our case, when we've seen some of
+the new updates, first of all, it's the excitement that people go in saying, okay, what can I now do
+with these models that I haven't been able to do before? Because many times, maybe if you were
+building your skills or if you were building your workflows, you were potentially trying to
+compensate for some things. And now you can go and say, hey, do I still need to do this? The good
+thing is if you already have an experimentation culture, like it's something that people are very
+much looking forward to and they want to try that instead of having to have somebody go tell them,
+hey, did you see this? Are you going to do something about it? So you get some of the natural
+excitement and say, hey, what can I do now with it? And I think that's what makes it really a
+community that's building for us all of those skills together and sharing those lessons. And do you
+guys have a team internally at Dr. Lib focused on those evals of new models? Yeah. So when it comes
+to the products that are AI, basic products that we offer to our customers, we have teams that have
+very strict evals. and every time there's a new release, we go and check, okay, what's the
+performance of that? What's the trade-off between all the different variables that we look at? I
+think when it comes to more of the development process, it's still a little bit more vibes for me
+than potentially it could be, where I think as the models continue to improve, it would be very
+interesting to see how can we have better verification to give us more confidence and even kind of
+to go faster with some of the existing kind of models as things come out. Awesome. Ruslan, yeah,
+would love to hear from you, especially as you guys think about Monday agents and customer-facing
+agents. Yeah, so again, continuing the story of Monday Vibe as an app-building tool, I think it
+actually works as a multimodal system, right? So there's an orchestrator, for example, that uses
+Hoppus model, and then there is like a workflow underneath, of course, that has deterministic
+actions and simpler models using different things, executing different sub-actions. So I think the
+release of the model impacts usually only one part of it. So it's like actually the end-to-end
+evaluation is the key here. But of course, each of them runs their own evals in specific atomic
+actions. So there was a story, for example, when we migrated from Opus 4.5 to 0.6. I think that was
+quite a change because, yes, it brings all these amazing capabilities, But at the same time, all the
+system prompts we've been optimizing so far just didn't transfer well. It was a completely different
+beast and it requires us to go and rethink and fine-tune prompt techniques for this new orchestrated
+work and maximize its value for us. We actually worked, our team worked heavily with the solution
+engineers from Anthropik that actually really helped to go into depth and really understand the best
+practices there. So I think since then, this is the practice we do in like major model releases, but
+a lot of smaller changes of course go also through still the whole end-to-end testing and then still
+all good A-B testing and production and all these other things that normal products go through. But
+that kind of some of the examples I can show Awesome so it seems like there an internal kind of
+evaluation phase with your own engineers and maybe in tandem with the anthropic folks and then there
+A testing for the customers and end users It's quite a journey, right? So to release such a major
+release for a model change, it's quite a journey. You cannot assume it's just compatible with the
+old one. It's literally treating it as a completely different thing and harnessing it in a way that
+works for it, right? I think that's definitely the approach we take now. Awesome. I'm also curious
+from the three of you, what is the architectural or platform decision you would make differently if
+you were starting this journey today? When it comes to the architecture, what we tried to do with
+the system was that we wanted to integrate it as good as possible into the existing software
+delivery ecosystem that we have in place at delivery here, which is by the way also quite
+fragmented. So we wanted to connect our agent with all the different systems out there like Gyra,
+like GitHub issues, soon also GitLab, as a first touchpoint integration point with the person
+assigning the task to the agent. So we try to not change the whole interface to something else like
+a chat window or something similar. We We try to stay with the current environment that people have
+to drive that kind of adoption, where they just assign these tickets to the agent. That was one
+thing. We also, of course, added integrations into our continuous integration system. So we're
+running these tests with the agent. We're feeding back any problems that are being found during the
+test to the agent to fix them. We also have the issue with flaky CI that the agent is fixing now
+itself. Other integration points that we did with our ecosystem are, for example, with our security
+team. So we want to build a way for security vulnerabilities that are code related to be
+automatically assigned to the agent, automatically fixed so that the repository owners just have to
+look at the pull requests and say, okay, that's fine. I take it, right? Another thing from an
+architectural perspective, and that was a thing that really drove the success rate, and success rate
+is, in our case, we define it as the ratio between the pull requests that are actually accepted into
+code, so merge, and the ones that are actively rejected by a software engineer. So one thing that
+drove that success rate to up to 85% was what we call a council of agents. This is a set of
+different models that is looking at the same code and reviews it. The reason why we choose several
+different models for this is mostly that we want to avoid that a model has some sort of blank spot
+or some sort of of bias and then doesn't detect the issues with the code itself generated, right?
+And so this was a pretty meaningful change and actually did not drive up the cost as much as we saw.
+So it's very, very doable. I can just suggest that to anyone to try that out. Awesome. In our case,
+when it comes to the overall kind of product architecture, I mentioned we're moving from a more
+monolithic system to distribute it. About half of RPRs are still going and the monolith half are
+outside. And you can see a notable difference between how easy it is to adopt all the tooling
+outside of the monolith, where you have smaller code bases or where you have better, well-defined
+patterns versus inside. And I think one of the choices that we made about everything that we've been
+building outside has been to be very opinionated. So it means that there's a very standard way of
+how we build all the services, all the applications that we do outside. That makes it a lot easier.
+And then when we go back inside the monolith, you actually have to be able to provide a lot more
+context about, hey, here's the right way of doing things, or maybe this was the old way, right?
+Because over time, you may have had multiple patterns and the model is very good at figuring out,
+hey, how have things been done before? So you have to spend an extra effort to be able to tell it,
+okay, this is the new way that you want to do it. don't just kind of follow the pattern that you see
+in the code base. So I think that's kind of one big learning that like at least kind of for now,
+having kind of smaller code bases that have kind of more standardization and kind of more
+documentation kind of built into them makes a kind of big difference in the model performance.
+Second one is I think many of the things that you kind of were okay kind of with before when it came
+to automation are now becoming to be much So when the limit is going to be factor was, well, how
+long is it going to take us to write the code? You didn't care if some things had required a little
+bit more human interaction. Now that everything can be done, when it comes to coding, can be done by
+agents, you begin to constantly find all of those new bottlenecks. And I think that's been one of
+our lessons as well, that to be able to now to go faster, you need to go back and rethink the many
+different touch points. Sometimes it's the different kind of processes, not just architecture that
+you've built in and kind of question everything because what has worked for you before with a very
+different kind of distribution of tasks, like what people were working on, like which tasks took the
+longest time, it's not working now. So everything has to be rethought. Awesome. Rosalind, if you
+guys were to start over today at monday.com, what's the architectural or platform decision you would
+rethink? Yeah, I think I would double click on API first approach. As I mentioned before, I think
+this would, if we invested in this earlier more and made it consistent across every service and have
+clean boundaries, I think that would really accelerate us even more on this journey. It's not just
+for Vibe application. As I mentioned, it was using more like publicly exposed GraphQL APIs, but even
+internal APIs and boundaries between services. In a company that was heavily investing in UI as a
+surface from when the users will love our customers, we build the best UI for them, but that moves
+super fast. And of course, it was always the main use case. Now agents interacting, even external
+agents interacting with our systems needs API access that sometimes was just not there by default.
+And I think that definitely would be the number one thing I would invest in earlier. I think, again,
+the other thing to mention is, again, rethinking completely identity systems and authorization
+systems to have an agent as a first-class user in the system and interact with people as a user. I
+think that's, with our granularity of permission models we have in our system, it's been quite a
+challenge. So I think starting this earlier would also definitely help. Assuming agents are here to
+stay, right? So I think that definitely something I would do earlier Awesome I have a quick
+lightning round So a few different questions for the three of you One word one sentence I guess
+Roslyn to start, would you rather have one general's coding agent or many specialists? I think I
+would go with many specialists orchestrated by one generalist. At least for now, different
+specialists are kind of orchestrated by generalists, but who knows? We'll see as the model gets
+better. I'm also definitely in the specialist camp. So I think that's where it's going. Awesome.
+What are your best engineers spending time on now that they weren't 18 months ago? Yeah, so that's
+actually an interesting question because if you think about it, the best engineers are typically the
+principal engineers that you have, right? And principal engineers, what are they doing? Usually
+they're reviewing other people's code. They're part of architectural discussions and so on. they're
+usually not creating new code. And this, I think, is something where we see the script being
+flipped. So all of these people are now producing a lot of code with the help of cloud and similar
+tools, right? So they're actually a lot more hands-on suddenly than they were before. And I think we
+also see that with other people who are even non-engineers, like product managers and similar roles,
+or even engineering managers like this group here, who probably wasn't that hands-on before in the
+last 18 months, and is now again in a situation where we can actually deliver things ourselves or
+build prototypes and similar things. So I would definitely double down on the fact that there is
+more code generation output, but I think what's also interesting is how they're doing it, because
+they're not just sitting down and working in a synchronous manner with one terminal. What they're
+doing is orchestrating the agents to do the work for them. For example, one really good use case
+that we found, we have a data scientist who was doing prompt optimization before, and now he's
+orchestrated multiple agents and created a skill for this to be able to go and apply genetic
+algorithms to try different variations of prompts and then run all the evals on them right So it
+amplifying kind of their own abilities using kind of agents to do this at a much bigger scale than
+what they've been able to do before. I'll try to be even shorter. So I agree with everything said.
+On top of that, of course, best engineers spend time on building context layer, unified shared
+context layer, and what we call AI brains. It's definitely a thing that now, again, exists and
+didn't exist even a year and a half ago. Awesome. What's the metric you actually look at every
+single morning? So for me, it's the merge pull requests and the success ratio to see how well our
+agent is performing. For me, it's still kind of our quality and reliability metrics, because those
+are kind of the control KPIs that tell you that, like, if you're going kind of faster, everything is
+still working well. I'll go in an unusual way. Thinking about customer facing AI experiences, I
+would, yes, we look at success rates first and right, but I think the most interesting part is look
+at failure rates and go deep into those failures and find out why the right tool didn't get called
+or why the user didn't get what they want and actually find the whole sometimes goldmine of new use
+case to build on, right? So I think that's definitely my favorite. Awesome. I have one final
+question before we close out this panel. For the engineers in the room who are maybe six months
+behind the three of you, what's the first thing you'd have an agent do in their code base on Monday
+morning? Yeah, I think it's simple. Start using it, right? So we've seen resistance from engineers
+in the overall group with AI in the last 12 months, let's say. And at the beginning, the models
+weren't that good. So I can see where that's coming from. But right now you can really achieve a lot
+by just trying it out. So what we're doing in our company is actually we have given out kind of a
+mandate for this quarter to have every team develop the feature end to end with AI. Right Just to
+help engineers kind of cross that or overcome that initial resistance and see the result and see how
+well it works So my advice is use it If you can use it in your company use it privately just try it
+out, build something amazing and you will feel the same enthusiasm that we heard this morning from
+Boris, right? And then I'm pretty sure you're convinced. So for sure you have to try it and maybe
+something as simple as ask the agent to examine your code base, maybe tell it even kind of what you
+like, what you don't like about it, and then ask the agent to come up kind of with a plan to improve
+those things, right? And then like work kind of with the agent to create like a full like execution
+kind of flow. And then you'll be very pleasantly surprised about like how effective that's going to
+be. I hope that that will get you to believe more in the capabilities that are there today, and even
+more so what's coming in the future. I would say stop waiting for perfect conditions, perfect use
+cases, also enough AI-ready work. I think as engineers we know how imperfect our systems are, how
+many flaws and things are not right in our code and only if we would complete this big monolith
+split we can then do it full on. Only if we do that big refactoring project that probably will take
+a quarter or two. So I think that's kind of what we want to stop doing. None of it matters that much
+anymore. I think you can pick a thing tomorrow, maybe a piece of work that your team is doing
+repetitively and its toil and kind of like is a burden, right? Just unleash Claude full on and see
+full potential. And I think that's definitely what's here with us today already. And just go and try
+it, not wait for anything. Awesome. It seems like the three of you are very aligned to just try and
+iterate using the agent to help guide you. Well, that's it, folks. Thank you so much for spending
+the time with us today and hope you enjoy the rest of the Code with Claude conference. Thank you.

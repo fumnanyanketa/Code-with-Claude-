@@ -1,0 +1,345 @@
+Title: From one person to 80: Scaling a hypergrowth engineering org with Claude Code
+Video: https://www.youtube.com/watch?v=VueeyKcquoA
+Caption: whisper (whisper-large-v3-turbo, audio transcription)
+================================================================================
+
+[00:00:00] Hello, everyone.
+[00:00:19] My name is Yoav.
+[00:00:21] I lead product at Base44.
+[00:00:23] And going to join me on stage later on is Gabriel, who leads our AI.
+[00:00:27] And we're going to talk about how Base44 is scaled from a solar founder engineer all the way up to 80 engineers,
+[00:00:33] and how Cloud Code helped us facilitate that growth while maintaining our velocity.
+[00:00:39] We split this talk into a short intro and then two phases, going from one engineer to 15 engineers,
+[00:00:46] and then going from 50 engineers to 80 engineers.
+[00:00:49] So let's talk a little bit about the first phase, which is mostly an intro to Base44
+[00:00:56] and our solo founder.
+[00:00:58] So Base44 is a Vibe coding platform, but this is a new term.
+[00:01:02] A year ago, it was more thinking, I want to build a platform that will let anyone build
+[00:01:10] software.
+[00:01:11] Non-technical user, technical user, let's build up the speed.
+[00:01:14] started the platform at the end of 2024 and by 2025 you already had a working
+[00:01:20] product started building in product in sorry building in public on LinkedIn and
+[00:01:26] Twitter gain a lot a lot of traction and by April 2025 the product was already
+[00:01:32] profitable that's the moment I joined because money was starting flowing in and
+[00:01:37] getting a lot of traction and because this was a profitable product AI focused
+[00:01:43] user base and a crazy founder started getting the focus of a lot of companies and acquisition
+[00:01:52] opportunities which leaves us in the next phase which is our post acquisition.
+[00:01:58] So Wix has very similar user base as base and so they saw base 44 as a big bet and they
+[00:02:06] wanted to maintain the velocity of base 44 but it's expanded dramatically.
+[00:02:12] So we basically went from a two-member team into a 15-engineer team, and we needed to
+[00:02:17] scale, and we needed to scale as fast as possible.
+[00:02:21] And we had four major challenges.
+[00:02:24] One is onboarding doesn't scale.
+[00:02:26] We can't have Maor onboard each engineer to the team.
+[00:02:30] Code review doesn't scale.
+[00:02:32] Maor was really, really cautious about what goes inside the back end of base 44, so we
+[00:02:37] wanted to review each PR on his own.
+[00:02:40] We can have each engineer sit with our beta tester to understand whether the product is
+[00:02:44] working as expected, so we need to find a way to automate that as well.
+[00:02:49] And an interesting part about the fact that you have very immediate product market fit
+[00:02:54] is there's a lot of product surface you need to cover, whether it's integration, whether
+[00:02:58] it's the Ejantic Flow, whether it's the visual editor.
+[00:03:02] There's so many areas, and you need the engineer to ramp up really, really quickly.
+[00:03:06] So let's jump in.
+[00:03:07] How do we solve each one of the challenges?
+[00:03:10] And the key takeaway I want everyone to come out of here, especially for those with small
+[00:03:14] teams, is the fact that you need to keep everything very, very simple.
+[00:03:22] The meetings, when we try to tackle those challenges, would start with, hey, let's build
+[00:03:26] this process where we review everything and then build an onboarding dock and we'll do
+[00:03:32] like a nightly that update that.
+[00:03:35] We're thinking, actually, no, let's keep it very simple.
+[00:03:39] Every new engineer that comes into the company will give him a task to basically use two prompts
+[00:03:45] before he starts working on his task.
+[00:03:47] One, go over all the commits and tell me what everyone cares about.
+[00:03:53] So after we were like three, four engineers and people started building their knowledge
+[00:03:57] in each area, the fifth and sixth engineer came, wrote this prompt, and they already
+[00:04:02] get this map of the organization.
+[00:04:05] And you don't need to think about how do I keep these onboarding docs updated as new
+[00:04:09] engineers come up.
+[00:04:10] No, a simple prompt gives you in real time the entire map organization.
+[00:04:16] The second thing is before you dive into each area is basically ask Claude, hey, can you
+[00:04:22] give me a mermaid chart of how this component works?
+[00:04:27] And again, this works in real time because everything keeps evolving.
+[00:04:30] You don't want to try, hey, I need to keep this document up to date.
+[00:04:34] I need to keep this document updated.
+[00:04:35] No.
+[00:04:36] Claude keeps it for you.
+[00:04:38] Very, very simple.
+[00:04:39] One prompt gives you everything an engineer needs to know
+[00:04:42] in order to start working inside of Base44.
+[00:04:46] The second thing is, as I mentioned,
+[00:04:47] Maure was very, very cautious about what code goes inside our agent
+[00:04:51] and what code goes inside the back end of Base44.
+[00:04:55] So we needed a way to amplify Maure PR abilities So after about one or two weeks we already have a big pool of PR comments Maura had inside our repo
+[00:05:07] So again, instead of kind of like sitting down and thinking of brainstorming,
+[00:05:11] okay, what's the instruction that we need?
+[00:05:13] Let's have Claude review the PRs, say what's the most important things
+[00:05:18] and what's the most crucial things we need to keep in mind
+[00:05:21] while engineers are writing their new code.
+[00:05:25] And we put it in destruction, run it every couple of days, and have Maor PR Reviewer inside of Base44 without having us to build a sophisticated and complicated process.
+[00:05:38] The cool thing about it is when we really started to see kind of like velocity picking up.
+[00:05:44] So one of the PR that we kind of like remember and we keep referring to is we wanted to do a WhatsApp integration inside base 44 to kind of like communicate with the agent using WhatsApp.
+[00:05:58] And we've handed this over to a new engineer.
+[00:06:01] We assumed a new engineer working on this kind of feature.
+[00:06:05] It requires an integration.
+[00:06:06] It requires working on the agentic flow.
+[00:06:09] It requires a new meta API.
+[00:06:10] We assumed it's going to be a one to two weeks endeavor.
+[00:06:15] And it was really, really awesome to see that we gave that Thursday night.
+[00:06:20] Sunday morning, everything was ready.
+[00:06:23] He onboarded on Thursday using those simple prompts.
+[00:06:27] He sent it over to PR.
+[00:06:29] The PR mall review had kind of like two, three small comments,
+[00:06:32] and we were ready to move on to production.
+[00:06:36] Okay.
+[00:06:37] Okay, so we managed to resolve most of the issues.
+[00:06:42] Now we have the issue of how do we make sure that what goes into production,
+[00:06:47] especially our agent, works really, really good for our customers.
+[00:06:52] Previously, when we were a tiny team, we would just sit with customers
+[00:06:56] and hear how they interact with Base44, but now we need to find a way to scale.
+[00:07:01] And like almost every naive AI company out there, we would say,
+[00:07:06] hey, let's build an eval suite.
+[00:07:08] We'll make sure that everything that comes out,
+[00:07:11] we'll run it through our evals,
+[00:07:12] it will work perfectly,
+[00:07:13] and we'll understand what's going on.
+[00:07:15] And I don't know if you tried to build eval mechanism before,
+[00:07:19] but usually 15 people's team is not ready for it.
+[00:07:23] It's a much bigger endeavor.
+[00:07:26] So we sat down and we said,
+[00:07:27] okay, we already have a tremendous amount of traffic in production.
+[00:07:31] How do we use that traffic in order to understand whether the model is working for our customers or not?
+[00:07:40] We have conversion rate, which is nice, but we want to understand whether the agent itself,
+[00:07:45] especially for paying customers, is working as expected.
+[00:07:48] So we started looking at the conversation.
+[00:07:51] And a very simple pattern emerged in that if you look at the conversation,
+[00:07:56] when everything works well, well, the user doesn't say anything.
+[00:08:00] It just goes to the next feature, to the next feature, to the next features.
+[00:08:04] But when things start to break, that's when users get really, really loud inside the chat and say,
+[00:08:10] hey, why is this broken? I can't believe it's not working.
+[00:08:14] It's really, really easy to see and manifest the fact that things are broken.
+[00:08:19] So we said, okay, we have a very strong signal when things aren't working.
+[00:08:23] Why don't we use that and leverage that?
+[00:08:25] and ask Claude using a simple model, using an IQ model, to classify each message on whether
+[00:08:31] it's the frustration level of the user is high or low.
+[00:08:35] Once we have that, then every single version of the agent that we want to release, we basically
+[00:08:43] put a small percentage of the customers on that version, and we can track the frustration
+[00:08:50] level.
+[00:08:51] And this works whether we're changing the infrastructure, we're changing the prompt,
+[00:08:54] we're changing the model. And we can understand whether this works as well as expected for
+[00:09:00] after the change for our users. And the key takeaway, again, is just keeping everything
+[00:09:08] super simple without building a sophisticated process around it. Like, we hear a lot about,
+[00:09:13] like, let's build an agent for this and agent orchestration. But when you're a small team,
+[00:09:19] You have a very simple way of getting almost the same amount of value while keeping processes
+[00:09:25] really, really, really lean.
+[00:09:28] But when you scale from 15 to 18, it becomes a little bit of a different challenge, and
+[00:09:32] that's when Gabriel is going to walk you through.
+[00:09:36] Thank you very much.
+[00:09:39] Hello, everyone.
+[00:09:44] My name is Gabriel, and I lead the app builder agent for Base44.
+[00:09:47] I had a lot of time to watch you have behind the scenes, so I get a little bit nervous.
+[00:09:53] So you have just told you about the first two phases of our growth And last couple of months we reached a new point of growth
+[00:10:06] Like, we started hiring more externally.
+[00:10:08] We had more internal movers moving from Wix to Base44.
+[00:10:12] And then we even merged a different product working on Vibe Coding.
+[00:10:17] And in one single night, we doubled our ad count from 40 people to almost 80.
+[00:10:24] And that brought a new set of challenges that we had to solve.
+[00:10:28] So we had many new challenges.
+[00:10:31] I'd like to focus on the three most interesting ones.
+[00:10:33] Like the first one is how do we do experimentation at scale?
+[00:10:37] Now, you have just shared how we did the frustration metric
+[00:10:41] and how we A-B tested in production,
+[00:10:43] but you can't expect any new hire to understand exactly which KPIs to test,
+[00:10:48] how long do we want to test things,
+[00:10:50] whether you can just be brave and ship it,
+[00:10:53] and not everything needs an experiment, right?
+[00:10:55] So we knew we wanted to shift left product management decisions in A-B testing.
+[00:11:02] So we also needed better evals.
+[00:11:06] Now, again, back to what you have just said,
+[00:11:08] we were before in a point where we knew that evals is not the best ROI for us,
+[00:11:15] but now it became something we really need to focus on.
+[00:11:19] And the last thing is how do you do QA properly in a company that's very consumer-oriented
+[00:11:26] without growing your testers in a linear way with the other headcount.
+[00:11:31] Let's start with experimentations.
+[00:11:33] So we started with a general shell of what we wanted to have.
+[00:11:40] We knew we wanted a process that runs when a pull request is ready.
+[00:11:45] We knew that eventually we want a bot commenting on GitHub saying for a developer whether she could or not just ship it.
+[00:11:54] If she needs an A-B test, how long should it run?
+[00:11:57] Which KPIs does the experiment need to monitor?
+[00:12:01] And we also wanted it to open the experiment on PostDog.
+[00:12:05] That was like, the shell was the easy part.
+[00:12:08] But we also needed the guidelines, the actual logic of how do we work?
+[00:12:14] How do we operate?
+[00:12:15] We never sat and articulated that.
+[00:12:18] We didn't have a guideline committee.
+[00:12:20] We just had really good product sense and intuitions.
+[00:12:24] So we had one option, like get a multi-stakeover committee
+[00:12:27] and enter a lot of meetings, but we really hate meetings.
+[00:12:31] So we figured out that our best actions,
+[00:12:34] they could convey our guidelines in the best way possible.
+[00:12:38] So we thought, wait, we can just take the 100 last experiments
+[00:12:43] we had on PostHog, the matching pull request, and distilled our guidelines from that. So
+[00:12:47] we spawned Cloud Code, hooked it up to the PostHog MCP. PostHog is an A-B testing experimentation,
+[00:12:54] pretty great product, by the way. And had Cloud suggest the first iteration of the guidelines.
+[00:13:03] And it did a great job. It wasn't perfect, very rough on the edges, but we had a working
+[00:13:08] document we can just iterate, and a couple of hours later we had something working.
+[00:13:15] Each pull request opened has a clear verdict whether you can just ship it, gradual roll
+[00:13:22] out it, or do an A-B test and how long.
+[00:13:25] Some features deserve seven days of testing for our scale, some need to have a full month
+[00:13:31] because you might affect conversion rate and premium rates in very little percentages.
+[00:13:41] And to wrap all of that up, we needed a center place that everyone could just see what's going on.
+[00:13:46] So it was a great opportunity for us to dogfood our own product, Base44,
+[00:13:51] connect it to BigQuery, our data warehouse, to PostDog, to GitHub, to everything,
+[00:13:55] and have a central place where everyone could see which experiments are running,
+[00:14:00] how they're moving the needle
+[00:14:05] if something's causing more AI costs,
+[00:14:08] if something's reducing rate of published apps,
+[00:14:12] all the things we cared about.
+[00:14:14] And this, for now, kind of solved us the problem
+[00:14:17] and allows us to open up a new paradigm
+[00:14:19] in how we scale our experiments.
+[00:14:23] Okay, so the next part is evals.
+[00:14:26] Like, this could be like easily a full one-hour talk, and maybe next year, depending, the team here will even do that.
+[00:14:35] But our challenge was very short-term.
+[00:14:38] Like, we needed something to give us real value.
+[00:14:42] We didn't want it to be like a three-month project, and we couldn't afford taking our top AI engineers.
+[00:14:50] We need them to work on features and improve the product.
+[00:14:52] So we asked ourselves what do we really need to build Do we want to just evaluate the output of the model or do we want to check correctness of the apps
+[00:15:05] that our users are building?
+[00:15:06] And eventually, we had to build a user simulator.
+[00:15:11] Now, for Base44, when a user types in a request,
+[00:15:15] they want an app, and some small part of it won't work,
+[00:15:19] that doesn't mean that the evil fails.
+[00:15:21] That was a great epiphany moment for us.
+[00:15:24] It means that our evil suite needs to pipe back the rejection
+[00:15:29] and ask our agent to fix the missing parts.
+[00:15:35] And then we ended up looking at latency,
+[00:15:38] how many turns things took, how much it cost to us,
+[00:15:43] how many credits we took for our users.
+[00:15:45] And we got into a working CI-CD pipeline
+[00:15:49] where any change in our AI code spins up a real Base44 app
+[00:15:55] instance, and we use stagehand to simulate real user actions,
+[00:15:59] like if there's an automated QA engineer spun up
+[00:16:03] in a small box.
+[00:16:04] That's how we look at it.
+[00:16:06] And this is how the internal app we built to support that.
+[00:16:11] Looks like, again, a great opportunity for us
+[00:16:13] to dog food our own platform.
+[00:16:16] You can see here the example of the most canonical evil
+[00:16:19] we have is like the Hello World app.
+[00:16:22] It doesn't mean that the app is doing like that Base44
+[00:16:25] is performing the way we want.
+[00:16:27] It's like a smoke test.
+[00:16:28] It's just making sure it didn't break anything.
+[00:16:30] So the way we'll do that, we'll ask Base44
+[00:16:32] to build us a simple Hello World app,
+[00:16:35] assert that the right text is visible, and it looks good,
+[00:16:39] and it's very subjective, but we trust AI on failing.
+[00:16:44] If not, then we ask for a very small text change.
+[00:16:48] And then we ask for a small feature.
+[00:16:50] And as you can see, most of them just pass.
+[00:16:53] And fun fact, these eval will pass on the smallest model
+[00:16:57] you can think of, which is really cool.
+[00:16:59] And of course, we have many more complex evals.
+[00:17:02] For example, we have scenarios where
+[00:17:04] we start with an existing app and do many changes.
+[00:17:07] We have scenarios where we get to check our compaction
+[00:17:10] mechanism, which is very complex and requires
+[00:17:12] a lot of user messages.
+[00:17:16] So this has kind of brought us to a new paradigm in evals.
+[00:17:20] It's not perfect yet.
+[00:17:21] We're constantly working on it, but it was like the right time,
+[00:17:25] the right moment to build such a system.
+[00:17:30] And the third thing I want to share is how did we streamline QA.
+[00:17:36] So we do believe in shifting left quality, of course, like all of us,
+[00:17:42] like unit testing, end-to-end tests, it's obvious.
+[00:17:44] Yes, everyone working at Base44 needs to have complete ownership of what they build.
+[00:17:49] But most of the times you're working on really deep features that have a lot of edge cases.
+[00:17:55] For example, imagine testing a feature that only affects users at a specific subscription
+[00:18:01] tier when they reach a specific point of their credit limits.
+[00:18:05] And imagine your feature has a lot of permutations that affect that.
+[00:18:08] Like, it will be very tedious for everyone to test it manually.
+[00:18:12] And so that's a classic case where we would hand off to a QA engineer, but then we'd have
+[00:18:17] longer feedback loops and you have to wait for someone to be available.
+[00:18:21] And that wasn't ideal.
+[00:18:23] We knew that Cloud Code could operate a browser, right?
+[00:18:28] Playwright, MCP, browser use, like there's a ton of tools out there.
+[00:18:33] But it was missing critical pieces of how to do it well.
+[00:18:36] For example, each time it had to relearn the platform, the selectors, the flows.
+[00:18:42] Each time it had to understand which events to look for in our database and the mix panel.
+[00:18:52] So we started wrapping our common flows in skills.
+[00:18:57] For example, we have one skill that taught cloud code combined with a browser
+[00:19:02] or how to go over all the major user flows
+[00:19:05] that most of features will touch.
+[00:19:08] And of course, for new features,
+[00:19:10] like Cloud Code can just understand what the feature does
+[00:19:13] and how to get along.
+[00:19:14] So we don't need to cover 100% in the skill.
+[00:19:17] You just need to maximize the 80% so you have enough context.
+[00:19:22] It's like a thin trade-off between the right abstraction level
+[00:19:25] and why do you just trust Cloud Code.
+[00:19:27] The second challenge we had is like,
+[00:19:30] how do you do proper setup testing for your test?
+[00:19:35] Let's take the example from before.
+[00:19:38] When you want to test a very specific edge case,
+[00:19:40] now you could just click and do it very manually,
+[00:19:45] like a human person could just do the clicks,
+[00:19:51] but that would be very, very slow, right?
+[00:19:53] So what a good engineer will do, a QA engineer will do,
+[00:19:56] is just go to the database and override the setup so that
+[00:20:00] We can just test that case.
+[00:20:02] We needed Claude to be able to do the same thing.
+[00:20:05] So we created CLI tools that abstract our APIs and databases
+[00:20:10] specifically for the use case of setting up tests.
+[00:20:15] And we built skills that taught Claude
+[00:20:19] how to use those properly.
+[00:20:21] And eventually, we combined all of these efforts and skills
+[00:20:26] into one meta skill of how to do proper QA.
+[00:20:30] And we got into a flow where a pull request opens,
+[00:20:34] the agent triggers, it creates a test plan.
+[00:20:37] Also, great opportunity to dog food their own product,
+[00:20:40] sends it to a Base44 app, starts testing, and reports back.
+[00:20:45] And this is how it looks like for a single test.
+[00:20:49] Like, you get screenshots.
+[00:20:51] You can know what it tested, what it didn't test.
+[00:20:55] Sometimes I will get cases where I know I'm stretching the boundary of what it can do,
+[00:21:01] and then it will just write, like I couldn't test that and surface the missing capabilities.
+[00:21:06] But that works for 80% of the time, and it allows us to shift left,
+[00:21:12] deep and edge case quality assurance and move faster.
+[00:21:16] Okay, so that's all for the challenges,
+[00:21:18] and I'd love to share a little bit about the common thread
+[00:21:24] around all of our challenges and solutions.
+[00:21:28] Just as you have said before, we really value simplicity.
+[00:21:32] We really think about, we try to think about bold and simple
+[00:21:38] and sometimes we'll work very hard not to build complex things
+[00:21:44] when it's not the right time.
+[00:21:47] Evils is a great example.
+[00:21:48] We hold it off until it was the right moment to build it,
+[00:21:52] and then we went all in.
+[00:21:54] The second thing is that taste is a big word right Like recently like everyone talking about taste and like it the last moat of us humans against machines so I believe in that too
+[00:22:06] but I do think that you can encode a big chunk of your team's company's taste by looking
+[00:22:13] at your past actions, like just, and that kind of pipes back to the memory talk from
+[00:22:19] the last session where you can just look at what you actually did in the last week or
+[00:22:24] so and understand what your guidelines are.
+[00:22:27] For code reviews, for A-B testing, you name it.
+[00:22:32] The third thing is if you're lucky enough to work on a product that you yourself can
+[00:22:36] use, that's also a huge win.
+[00:22:39] I think the team at Anthropic constantly speaks about how magical it is to be working on cloud
+[00:22:44] code, co-work, and all the products, and how you get the feedback and insight loop going
+[00:22:50] in a magical way.
+[00:22:52] So if you can do it, sometimes you have to stretch a little bit if you're working on
+[00:22:57] a finance app, but find ways to do it, it will be of value.
+[00:23:03] And the last thing is that the bottleneck will keep moving.
+[00:23:06] For example, for now, our current challenge is first of all, how to continue and scale
+[00:23:12] all of the processes I've just shown, but also how do we do post validation correctly?
+[00:23:16] Like once a pull request reaches production, how do you make sure it's moving the right
+[00:23:21] needle?
+[00:23:22] For example, is a bug really reducing support tickets?
+[00:23:26] You don't want a human to keep it on his head.
+[00:23:29] Is a feature really being used by users?
+[00:23:32] Of course you want it to raise business metrics, but not everything will show that fast.
+[00:23:37] So we want to automate that.
+[00:23:40] And that's it for today.
+[00:23:43] We really appreciate you coming and I really hope you found at least one thing you can take
+[00:23:47] back to your company organization.
+[00:23:50] Thank you.

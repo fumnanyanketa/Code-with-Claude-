@@ -1,0 +1,210 @@
+Title: From one person to 80: Scaling a hypergrowth engineering org with Claude Code
+Video: https://www.youtube.com/watch?v=VueeyKcquoA
+Caption: whisper (whisper-large-v3-turbo, audio transcription)
+================================================================================
+
+Hello, everyone. My name is Yoav. I lead product at Base44. And going to join me on stage later on
+is Gabriel, who leads our AI. And we're going to talk about how Base44 is scaled from a solar
+founder engineer all the way up to 80 engineers, and how Cloud Code helped us facilitate that growth
+while maintaining our velocity. We split this talk into a short intro and then two phases, going
+from one engineer to 15 engineers, and then going from 50 engineers to 80 engineers. So let's talk a
+little bit about the first phase, which is mostly an intro to Base44 and our solo founder. So Base44
+is a Vibe coding platform, but this is a new term. A year ago, it was more thinking, I want to build
+a platform that will let anyone build software. Non-technical user, technical user, let's build up
+the speed. started the platform at the end of 2024 and by 2025 you already had a working product
+started building in product in sorry building in public on LinkedIn and Twitter gain a lot a lot of
+traction and by April 2025 the product was already profitable that's the moment I joined because
+money was starting flowing in and getting a lot of traction and because this was a profitable
+product AI focused user base and a crazy founder started getting the focus of a lot of companies and
+acquisition opportunities which leaves us in the next phase which is our post acquisition. So Wix
+has very similar user base as base and so they saw base 44 as a big bet and they wanted to maintain
+the velocity of base 44 but it's expanded dramatically. So we basically went from a two-member team
+into a 15-engineer team, and we needed to scale, and we needed to scale as fast as possible. And we
+had four major challenges. One is onboarding doesn't scale. We can't have Maor onboard each engineer
+to the team. Code review doesn't scale. Maor was really, really cautious about what goes inside the
+back end of base 44, so we wanted to review each PR on his own. We can have each engineer sit with
+our beta tester to understand whether the product is working as expected, so we need to find a way
+to automate that as well. And an interesting part about the fact that you have very immediate
+product market fit is there's a lot of product surface you need to cover, whether it's integration,
+whether it's the Ejantic Flow, whether it's the visual editor. There's so many areas, and you need
+the engineer to ramp up really, really quickly. So let's jump in. How do we solve each one of the
+challenges? And the key takeaway I want everyone to come out of here, especially for those with
+small teams, is the fact that you need to keep everything very, very simple. The meetings, when we
+try to tackle those challenges, would start with, hey, let's build this process where we review
+everything and then build an onboarding dock and we'll do like a nightly that update that. We're
+thinking, actually, no, let's keep it very simple. Every new engineer that comes into the company
+will give him a task to basically use two prompts before he starts working on his task. One, go over
+all the commits and tell me what everyone cares about. So after we were like three, four engineers
+and people started building their knowledge in each area, the fifth and sixth engineer came, wrote
+this prompt, and they already get this map of the organization. And you don't need to think about
+how do I keep these onboarding docs updated as new engineers come up. No, a simple prompt gives you
+in real time the entire map organization. The second thing is before you dive into each area is
+basically ask Claude, hey, can you give me a mermaid chart of how this component works? And again,
+this works in real time because everything keeps evolving. You don't want to try, hey, I need to
+keep this document up to date. I need to keep this document updated. No. Claude keeps it for you.
+Very, very simple. One prompt gives you everything an engineer needs to know in order to start
+working inside of Base44. The second thing is, as I mentioned, Maure was very, very cautious about
+what code goes inside our agent and what code goes inside the back end of Base44. So we needed a way
+to amplify Maure PR abilities So after about one or two weeks we already have a big pool of PR
+comments Maura had inside our repo So again, instead of kind of like sitting down and thinking of
+brainstorming, okay, what's the instruction that we need? Let's have Claude review the PRs, say
+what's the most important things and what's the most crucial things we need to keep in mind while
+engineers are writing their new code. And we put it in destruction, run it every couple of days, and
+have Maor PR Reviewer inside of Base44 without having us to build a sophisticated and complicated
+process. The cool thing about it is when we really started to see kind of like velocity picking up.
+So one of the PR that we kind of like remember and we keep referring to is we wanted to do a
+WhatsApp integration inside base 44 to kind of like communicate with the agent using WhatsApp. And
+we've handed this over to a new engineer. We assumed a new engineer working on this kind of feature.
+It requires an integration. It requires working on the agentic flow. It requires a new meta API. We
+assumed it's going to be a one to two weeks endeavor. And it was really, really awesome to see that
+we gave that Thursday night. Sunday morning, everything was ready. He onboarded on Thursday using
+those simple prompts. He sent it over to PR. The PR mall review had kind of like two, three small
+comments, and we were ready to move on to production. Okay. Okay, so we managed to resolve most of
+the issues. Now we have the issue of how do we make sure that what goes into production, especially
+our agent, works really, really good for our customers. Previously, when we were a tiny team, we
+would just sit with customers and hear how they interact with Base44, but now we need to find a way
+to scale. And like almost every naive AI company out there, we would say, hey, let's build an eval
+suite. We'll make sure that everything that comes out, we'll run it through our evals, it will work
+perfectly, and we'll understand what's going on. And I don't know if you tried to build eval
+mechanism before, but usually 15 people's team is not ready for it. It's a much bigger endeavor. So
+we sat down and we said, okay, we already have a tremendous amount of traffic in production. How do
+we use that traffic in order to understand whether the model is working for our customers or not? We
+have conversion rate, which is nice, but we want to understand whether the agent itself, especially
+for paying customers, is working as expected. So we started looking at the conversation. And a very
+simple pattern emerged in that if you look at the conversation, when everything works well, well,
+the user doesn't say anything. It just goes to the next feature, to the next feature, to the next
+features. But when things start to break, that's when users get really, really loud inside the chat
+and say, hey, why is this broken? I can't believe it's not working. It's really, really easy to see
+and manifest the fact that things are broken. So we said, okay, we have a very strong signal when
+things aren't working. Why don't we use that and leverage that? and ask Claude using a simple model,
+using an IQ model, to classify each message on whether it's the frustration level of the user is
+high or low. Once we have that, then every single version of the agent that we want to release, we
+basically put a small percentage of the customers on that version, and we can track the frustration
+level. And this works whether we're changing the infrastructure, we're changing the prompt, we're
+changing the model. And we can understand whether this works as well as expected for after the
+change for our users. And the key takeaway, again, is just keeping everything super simple without
+building a sophisticated process around it. Like, we hear a lot about, like, let's build an agent
+for this and agent orchestration. But when you're a small team, You have a very simple way of
+getting almost the same amount of value while keeping processes really, really, really lean. But
+when you scale from 15 to 18, it becomes a little bit of a different challenge, and that's when
+Gabriel is going to walk you through. Thank you very much. Hello, everyone. My name is Gabriel, and
+I lead the app builder agent for Base44. I had a lot of time to watch you have behind the scenes, so
+I get a little bit nervous. So you have just told you about the first two phases of our growth And
+last couple of months we reached a new point of growth Like, we started hiring more externally. We
+had more internal movers moving from Wix to Base44. And then we even merged a different product
+working on Vibe Coding. And in one single night, we doubled our ad count from 40 people to almost
+80. And that brought a new set of challenges that we had to solve. So we had many new challenges.
+I'd like to focus on the three most interesting ones. Like the first one is how do we do
+experimentation at scale? Now, you have just shared how we did the frustration metric and how we A-B
+tested in production, but you can't expect any new hire to understand exactly which KPIs to test,
+how long do we want to test things, whether you can just be brave and ship it, and not everything
+needs an experiment, right? So we knew we wanted to shift left product management decisions in A-B
+testing. So we also needed better evals. Now, again, back to what you have just said, we were before
+in a point where we knew that evals is not the best ROI for us, but now it became something we
+really need to focus on. And the last thing is how do you do QA properly in a company that's very
+consumer-oriented without growing your testers in a linear way with the other headcount. Let's start
+with experimentations. So we started with a general shell of what we wanted to have. We knew we
+wanted a process that runs when a pull request is ready. We knew that eventually we want a bot
+commenting on GitHub saying for a developer whether she could or not just ship it. If she needs an
+A-B test, how long should it run? Which KPIs does the experiment need to monitor? And we also wanted
+it to open the experiment on PostDog. That was like, the shell was the easy part. But we also needed
+the guidelines, the actual logic of how do we work? How do we operate? We never sat and articulated
+that. We didn't have a guideline committee. We just had really good product sense and intuitions. So
+we had one option, like get a multi-stakeover committee and enter a lot of meetings, but we really
+hate meetings. So we figured out that our best actions, they could convey our guidelines in the best
+way possible. So we thought, wait, we can just take the 100 last experiments we had on PostHog, the
+matching pull request, and distilled our guidelines from that. So we spawned Cloud Code, hooked it
+up to the PostHog MCP. PostHog is an A-B testing experimentation, pretty great product, by the way.
+And had Cloud suggest the first iteration of the guidelines. And it did a great job. It wasn't
+perfect, very rough on the edges, but we had a working document we can just iterate, and a couple of
+hours later we had something working. Each pull request opened has a clear verdict whether you can
+just ship it, gradual roll out it, or do an A-B test and how long. Some features deserve seven days
+of testing for our scale, some need to have a full month because you might affect conversion rate
+and premium rates in very little percentages. And to wrap all of that up, we needed a center place
+that everyone could just see what's going on. So it was a great opportunity for us to dogfood our
+own product, Base44, connect it to BigQuery, our data warehouse, to PostDog, to GitHub, to
+everything, and have a central place where everyone could see which experiments are running, how
+they're moving the needle if something's causing more AI costs, if something's reducing rate of
+published apps, all the things we cared about. And this, for now, kind of solved us the problem and
+allows us to open up a new paradigm in how we scale our experiments. Okay, so the next part is
+evals. Like, this could be like easily a full one-hour talk, and maybe next year, depending, the
+team here will even do that. But our challenge was very short-term. Like, we needed something to
+give us real value. We didn't want it to be like a three-month project, and we couldn't afford
+taking our top AI engineers. We need them to work on features and improve the product. So we asked
+ourselves what do we really need to build Do we want to just evaluate the output of the model or do
+we want to check correctness of the apps that our users are building? And eventually, we had to
+build a user simulator. Now, for Base44, when a user types in a request, they want an app, and some
+small part of it won't work, that doesn't mean that the evil fails. That was a great epiphany moment
+for us. It means that our evil suite needs to pipe back the rejection and ask our agent to fix the
+missing parts. And then we ended up looking at latency, how many turns things took, how much it cost
+to us, how many credits we took for our users. And we got into a working CI-CD pipeline where any
+change in our AI code spins up a real Base44 app instance, and we use stagehand to simulate real
+user actions, like if there's an automated QA engineer spun up in a small box. That's how we look at
+it. And this is how the internal app we built to support that. Looks like, again, a great
+opportunity for us to dog food our own platform. You can see here the example of the most canonical
+evil we have is like the Hello World app. It doesn't mean that the app is doing like that Base44 is
+performing the way we want. It's like a smoke test. It's just making sure it didn't break anything.
+So the way we'll do that, we'll ask Base44 to build us a simple Hello World app, assert that the
+right text is visible, and it looks good, and it's very subjective, but we trust AI on failing. If
+not, then we ask for a very small text change. And then we ask for a small feature. And as you can
+see, most of them just pass. And fun fact, these eval will pass on the smallest model you can think
+of, which is really cool. And of course, we have many more complex evals. For example, we have
+scenarios where we start with an existing app and do many changes. We have scenarios where we get to
+check our compaction mechanism, which is very complex and requires a lot of user messages. So this
+has kind of brought us to a new paradigm in evals. It's not perfect yet. We're constantly working on
+it, but it was like the right time, the right moment to build such a system. And the third thing I
+want to share is how did we streamline QA. So we do believe in shifting left quality, of course,
+like all of us, like unit testing, end-to-end tests, it's obvious. Yes, everyone working at Base44
+needs to have complete ownership of what they build. But most of the times you're working on really
+deep features that have a lot of edge cases. For example, imagine testing a feature that only
+affects users at a specific subscription tier when they reach a specific point of their credit
+limits. And imagine your feature has a lot of permutations that affect that. Like, it will be very
+tedious for everyone to test it manually. And so that's a classic case where we would hand off to a
+QA engineer, but then we'd have longer feedback loops and you have to wait for someone to be
+available. And that wasn't ideal. We knew that Cloud Code could operate a browser, right?
+Playwright, MCP, browser use, like there's a ton of tools out there. But it was missing critical
+pieces of how to do it well. For example, each time it had to relearn the platform, the selectors,
+the flows. Each time it had to understand which events to look for in our database and the mix
+panel. So we started wrapping our common flows in skills. For example, we have one skill that taught
+cloud code combined with a browser or how to go over all the major user flows that most of features
+will touch. And of course, for new features, like Cloud Code can just understand what the feature
+does and how to get along. So we don't need to cover 100% in the skill. You just need to maximize
+the 80% so you have enough context. It's like a thin trade-off between the right abstraction level
+and why do you just trust Cloud Code. The second challenge we had is like, how do you do proper
+setup testing for your test? Let's take the example from before. When you want to test a very
+specific edge case, now you could just click and do it very manually, like a human person could just
+do the clicks, but that would be very, very slow, right? So what a good engineer will do, a QA
+engineer will do, is just go to the database and override the setup so that We can just test that
+case. We needed Claude to be able to do the same thing. So we created CLI tools that abstract our
+APIs and databases specifically for the use case of setting up tests. And we built skills that
+taught Claude how to use those properly. And eventually, we combined all of these efforts and skills
+into one meta skill of how to do proper QA. And we got into a flow where a pull request opens, the
+agent triggers, it creates a test plan. Also, great opportunity to dog food their own product, sends
+it to a Base44 app, starts testing, and reports back. And this is how it looks like for a single
+test. Like, you get screenshots. You can know what it tested, what it didn't test. Sometimes I will
+get cases where I know I'm stretching the boundary of what it can do, and then it will just write,
+like I couldn't test that and surface the missing capabilities. But that works for 80% of the time,
+and it allows us to shift left, deep and edge case quality assurance and move faster. Okay, so
+that's all for the challenges, and I'd love to share a little bit about the common thread around all
+of our challenges and solutions. Just as you have said before, we really value simplicity. We really
+think about, we try to think about bold and simple and sometimes we'll work very hard not to build
+complex things when it's not the right time. Evils is a great example. We hold it off until it was
+the right moment to build it, and then we went all in. The second thing is that taste is a big word
+right Like recently like everyone talking about taste and like it the last moat of us humans against
+machines so I believe in that too but I do think that you can encode a big chunk of your team's
+company's taste by looking at your past actions, like just, and that kind of pipes back to the
+memory talk from the last session where you can just look at what you actually did in the last week
+or so and understand what your guidelines are. For code reviews, for A-B testing, you name it. The
+third thing is if you're lucky enough to work on a product that you yourself can use, that's also a
+huge win. I think the team at Anthropic constantly speaks about how magical it is to be working on
+cloud code, co-work, and all the products, and how you get the feedback and insight loop going in a
+magical way. So if you can do it, sometimes you have to stretch a little bit if you're working on a
+finance app, but find ways to do it, it will be of value. And the last thing is that the bottleneck
+will keep moving. For example, for now, our current challenge is first of all, how to continue and
+scale all of the processes I've just shown, but also how do we do post validation correctly? Like
+once a pull request reaches production, how do you make sure it's moving the right needle? For
+example, is a bug really reducing support tickets? You don't want a human to keep it on his head. Is
+a feature really being used by users? Of course you want it to raise business metrics, but not
+everything will show that fast. So we want to automate that. And that's it for today. We really
+appreciate you coming and I really hope you found at least one thing you can take back to your
+company organization. Thank you.
