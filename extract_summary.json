@@ -53,14 +53,14 @@
     "n": 8,
     "id": "tUoO4ucrNc0",
     "title": "Fighting financial crime with Claude Cowork",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "day2",
     "n": 9,
     "id": "T8N0MED3IJo",
     "title": "Where code meets court: AI at the legal-technical frontier",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "day2",
@@ -74,21 +74,21 @@
     "n": 11,
     "id": "A3rmSUp6Dxg",
     "title": "How Metaview built self-improving prompts for application review",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "day2",
     "n": 12,
     "id": "uGroRwlC9y4",
     "title": "Teaching agents to learn from your team",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "day2",
     "n": 13,
     "id": "K4-flzsPraE",
     "title": "Building the best agentic analytics harness: Powered by Claude, built with Claude Code",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "day2",
@@ -116,7 +116,7 @@
     "n": 2,
     "id": "tuY2ChJIx48",
     "title": "Beyond the basics with Claude Code",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "p2",
@@ -130,7 +130,7 @@
     "n": 4,
     "id": "QIriO1-vHYw",
     "title": "Getting more out of the Claude Platform",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "p2",
@@ -144,21 +144,21 @@
     "n": 6,
     "id": "DNRddIEoH3c",
     "title": "The capability curve",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "p2",
     "n": 7,
     "id": "Uvl-tRga98g",
     "title": "Designing with Claude: From prompt to production",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "p2",
     "n": 8,
     "id": "l8fxVYIP4HQ",
     "title": "Building with Claude on Google Cloud",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "p2",
@@ -186,7 +186,7 @@
     "n": 12,
     "id": "nho1YAEPuwA",
     "title": "What legal agents inherit from coding agents: Lessons from Legora",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "p2",
@@ -214,21 +214,21 @@
     "n": 16,
     "id": "mhW-XXnDFSU",
     "title": "How Lovable vibecodes production software at scale",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "p2",
     "n": 17,
     "id": "XFaeIbL-lvE",
     "title": "Building AI-native at enterprise scale: monday.com, Doctolib, and Delivery Hero",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "p2",
     "n": 18,
     "id": "VueeyKcquoA",
     "title": "From one person to 80: Scaling a hypergrowth engineering org with Claude Code",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "p2",
@@ -249,7 +249,7 @@
     "n": 21,
     "id": "zFslvuvYifQ",
     "title": "Coding is no longer the constraint: Scaling devex to teams and agents at Spotify",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "p2",
@@ -263,13 +263,13 @@
     "n": 23,
     "id": "wI0ptqCSL0I",
     "title": "Stop babysitting your agents",
-    "status": "no_captions"
+    "status": "ok"
   },
   {
     "playlist": "p2",
     "n": 24,
     "id": "sRvUXLquiRg",
     "title": "What's new in Claude Code",
-    "status": "no_captions"
+    "status": "ok"
   }
 ]

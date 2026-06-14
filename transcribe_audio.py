@@ -21,8 +21,8 @@ OUT_ROOT = "transcripts"
 COOKIES = "cookies.txt"
 NODE = "/opt/node22/bin/node"
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
-CHUNK_SECONDS = 600           # ~10 min per chunk -> small files, safe under limits
-GROQ_MODEL = "whisper-large-v3"
+CHUNK_SECONDS = 1200          # ~20 min/chunk (~10 MB) -> fewer requests, under limits
+GROQ_MODEL = "whisper-large-v3-turbo"  # faster + higher free-tier throughput
 
 def load_env():
     if os.environ.get("GROQ_API_KEY"):
@@ -54,6 +54,7 @@ def download_audio(vid, dest_dir):
         "format": "18/bestaudio/best",
         "js_runtimes": {"node": {"path": NODE}},
         "remote_components": ["ejs:github"],
+        "socket_timeout": 60,
         "outtmpl": os.path.join(dest_dir, "%(id)s.%(ext)s"),
     }
     if os.path.exists(COOKIES):
@@ -79,7 +80,7 @@ def transcribe_chunks(client, chunks):
     plain_parts, lines = [], []
     for i, chunk in enumerate(chunks):
         offset = i * CHUNK_SECONDS
-        for attempt in range(4):
+        for attempt in range(6):
             try:
                 with open(chunk, "rb") as f:
                     resp = client.audio.transcriptions.create(
@@ -90,9 +91,14 @@ def transcribe_chunks(client, chunks):
                     )
                 break
             except Exception as e:
-                if attempt == 3:
+                if attempt == 5:
                     raise
-                time.sleep(2 ** attempt)
+                # Back off hard on rate limits (free tier caps audio-seconds/hour).
+                msg = str(e).lower()
+                if "rate" in msg or "429" in msg or "limit" in msg:
+                    time.sleep(min(30 * (attempt + 1), 120))
+                else:
+                    time.sleep(2 ** attempt)
         segments = getattr(resp, "segments", None) or []
         if segments:
             for seg in segments:
@@ -125,7 +131,9 @@ def wrap(text, width=100):
     return "\n".join(out)
 
 def main():
-    client = Groq(api_key=load_env())
+    # Per-request timeout so a stalled connection raises instead of hanging forever
+    # (our own retry loop then backs off and retries).
+    client = Groq(api_key=load_env(), timeout=180.0, max_retries=0)
     data = json.load(open("playlists.json"))
     done = fail = 0
     for pkey, pl in data.items():

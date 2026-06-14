@@ -1,0 +1,286 @@
+Title: Coding is no longer the constraint: Scaling devex to teams and agents at Spotify
+Video: https://www.youtube.com/watch?v=zFslvuvYifQ
+Caption: whisper (whisper-large-v3-turbo, audio transcription)
+================================================================================
+
+[00:00:00] Nicklaus Reviewer.com
+[00:00:07] Nicklaus Reviewer.com
+[00:00:09] Nicklaus Reviewer.com
+[00:00:14] Nicklaus Reviewer.com
+[00:00:16] Hey everyone, I'm Nicklaus.
+[00:00:18] I was very surprised to see my face on screen earlier
+[00:00:21] because I had completely forgotten that Boris was going to mention Spotify
+[00:00:24] as part of the keynote.
+[00:00:26] So I'm here to give you a bit of a rundown on how we're approaching the AI transition at Spotify.
+[00:00:35] So let me start with a little bit of an introduction to Spotify.
+[00:00:40] Anyone in here who's a Spotify user?
+[00:00:43] Oh, lots of hands. Good.
+[00:00:46] So we're a fairly sizable engineering org at this point, close to 3,000 engineers.
+[00:00:53] We've spent many years trying to optimize our developer experience and how we build products.
+[00:01:00] We try to make sure that it's as easy as possible to deploy and ship changes to our users.
+[00:01:08] One way to illustrate that is that we do around 4,500 deployments every day to our production environment.
+[00:01:15] We run on a mix of repositories. I'll come back to this later.
+[00:01:21] Here some are very large monorepos, our backend is in a 40 million lines of code monorepo.
+[00:01:28] And then we have lots and lots of smaller polyrepos, thousands of them.
+[00:01:38] The AI transition for us has been a journey of very rapid adoption curves.
+[00:01:43] We roll out tools internally all the time to make our developers more productive.
+[00:01:49] But we have never seen the rate of adoption that we've seen rolling out AI coding tools.
+[00:01:56] And you can see in particular how Claude Code, orange in this diagram, completely exploded.
+[00:02:03] It's a little bit hard to see due to the holiday break, but it really happened around the Opus 4.5 release in November last year.
+[00:02:12] Since then, growth and usage of Cloud in particular, but AI tools in general, has gone completely bananas.
+[00:02:22] Today, more than 99% of our engineers use AI coding tools every week.
+[00:02:30] We do a recurring engineering survey to all our engineers.
+[00:02:34] and in the latest one who just came in last week, 94% of our engineers reports that using AI tooling has helped them become more productive.
+[00:02:45] And that's with a record high self-assessed productivity.
+[00:02:50] We can also look at productivity in other ways.
+[00:02:54] One way is to look at PR frequency as a proxy for how fast and how much we're able to ship.
+[00:03:01] We're seeing today an increase of 76% in PR frequency.
+[00:03:08] As I was working on these slides over the last two weeks, I had to change this number because it keeps growing all the time.
+[00:03:15] And by now, by far, most of the PRs that we ship are authored by an AI agent together with the developer.
+[00:03:25] One thing you can see in this curve, if you look, it's hard to see here, but the number of PRs has been very slowly growing over a longer period of time.
+[00:03:37] But you can see that jump again happening around the Opus 4.5 release. That was when this took off for us.
+[00:03:46] So this of course then means that we also have an explosive growth in our code.
+[00:03:53] Luckily that's something that we came prepared for.
+[00:03:57] We've seen this for a long time, also prior to AI.
+[00:04:01] In fact, a few years ago we noticed that our codebase, our production codebase, was growing seven times faster than the number of engineers.
+[00:04:12] So that meant that engineers would spend more and more of their time maintaining our existing codebase
+[00:04:20] compared to being able to build new features and value for our users.
+[00:04:25] So we realized that we needed to fix this.
+[00:04:28] So we started an effort to automate as much of that maintenance as possible.
+[00:04:33] A lot of that maintenance comes down to pretty dull things that we just need to do,
+[00:04:38] migrate from this version to this version, deprecate this API, fix this security vulnerability, those types of things.
+[00:04:46] But that took a lot of time for our developers.
+[00:04:50] And the way we typically did those migrations back then was to send out some migration path to hundreds of teams saying hey you need to upgrade from this Java version to this Java version for your components
+[00:05:06] The teams would go ahead and do that, and this would typically take us months to complete one of those upgrades across many thousands of components.
+[00:05:14] That was not fun for anyone.
+[00:05:16] In that same engineering survey back then, migrations was the top thing that our developers were frustrated about.
+[00:05:26] So we imagined, instead of doing this component per component and fairly manually,
+[00:05:32] can we imagine a way where we do this as a way to mutate our entire fleet of components?
+[00:05:38] Figure out a way to do that.
+[00:05:40] And we built out the infrastructure for this, something we call fleet management,
+[00:05:45] and the underlying system that we use is called Fleet Shift.
+[00:05:50] And up until today, we've now merged 2.5 million of those automated maintenance PRs,
+[00:05:58] work that our developers did not have to do.
+[00:06:01] The vast majority of those, the green part of this graph, have been auto-merged.
+[00:06:06] So there's no human in the loop.
+[00:06:08] It's automation creating the PR to begin with.
+[00:06:12] Automation validates that PR is safe to merge,
+[00:06:15] and then go ahead and merge it without any developer needing to care about that change.
+[00:06:19] This happens every day. We ship thousands of these every day.
+[00:06:25] So that was all pre-AI. And one thing that we noted pretty quickly was that this works really
+[00:06:33] well for simple changes. That might be changes to configuration, it might be bumping some
+[00:06:41] dependency in your build file, those types of things. Works great. But once you get into a little
+[00:06:46] bit more complex changes, like replacing API calls, those types of things, the scripts that we used to
+[00:06:56] run these shifts across our fleet became incredibly complicated. Code, as it turns out, has a very,
+[00:07:04] very wide API surface. There are many, many ways to achieve the same thing if it's just calling
+[00:07:10] method. And when you write that script and you run that across millions of lines of code and
+[00:07:17] thousands of components, you are going to find every corner case and you need to deal with that
+[00:07:23] in your migration script. There's even a word for a term for this, it's called Hiram's Law,
+[00:07:28] coming from an engineer at Google that discovered this many years before we then ran into it.
+[00:07:33] So, pretty early on as LLMs came about, we figured that, hey, instead of writing these
+[00:07:41] deterministic scripts to do these code modifications, can we use an LLM for this?
+[00:07:46] So very early we started iterating on trying to do this prior to Claude and similar tools.
+[00:07:54] And we noticed it was challenging initially, the models were just too stupid, the way we
+[00:07:59] were trying to do it was just too stupid.
+[00:08:02] But over time, on many iterations, we started figuring out the patterns for it, and the models got better.
+[00:08:07] Out of this came a tool that we now call Honk.
+[00:08:12] Boris mentioned this this morning, has a silly name and a silly icon, but it's a very useful tool as it turns out.
+[00:08:20] And Honk is really the result of all of these iterations, of us trying different ways of solving this problem,
+[00:08:29] like automating these still relatively simple code changes, but again applied over many, many
+[00:08:35] variants of code. It started out very differently, but today Honk has clawed under the hood using
+[00:08:44] the agent SDK. And it wraps up the agent SDK inside our own harness, inside a Kubernetes pod,
+[00:08:56] so we can schedule many of these running in our cloud environment.
+[00:09:00] And we give it access to a set of trusted tools.
+[00:09:05] The chart here just says the verification tools, but there's actually more tools that it has
+[00:09:09] available to it. And for verification, it's able to run builds of the code running in our CI
+[00:09:17] environment. So one thing that is important to us is that we can run our builds across multiple
+[00:09:22] operating systems for example because our clients runs on many different operating systems. So Honk has
+[00:09:29] available tools that it can use to verify that its changes are correct.
+[00:09:35] And again we run many of these every day.
+[00:09:40] And then we integrate this into that fleet management tooling that I mentioned before.
+[00:09:44] So we use FleetShift, our tool that I showed the graph before, to schedule and orchestrate
+[00:09:51] these changes across our thousands of repositories and Hong sits in the middle doing the actual code changes And it might look something like this In this case this is a fairly small migration targeting 39 repositories but for a team
+[00:10:07] that owns this they can go in and see what's the status of this particular shift today,
+[00:10:12] how many PRs has been created, how many has been merged, how many failed in CI, so I need
+[00:10:16] to take a look at them, those types of things.
+[00:10:21] And as Boris mentioned this morning, we're seeing pretty significant time savings from
+[00:10:26] this.
+[00:10:27] What used to be what I described before, hundreds of teams doing migrations for their components,
+[00:10:34] taking weeks and weeks or months, now can be done by a single engineer in a few days.
+[00:10:41] The latest Java migration that we did, we run our backend mostly on Java on the JVM,
+[00:10:46] The latest Java migration we did took three days using these tools.
+[00:10:52] And we're making this now available, so we have a commercial offering for other companies
+[00:10:57] through our Backstage developer portal, and we're making this available as a product in
+[00:11:02] that packaging.
+[00:11:03] So if this is something that is relevant for your company, you can take a look there.
+[00:11:08] But as it turns out, developers are very resourceful and innovative.
+[00:11:14] So pretty quickly folks figured out that this honk thing that we run for all these migrations,
+[00:11:20] how about I figure out how I can call that over Slack and have it do things for me that
+[00:11:24] way.
+[00:11:26] So similar to how you might invoke cloud or other tools over Slack, you can do that with
+[00:11:31] honk at Spotify as well.
+[00:11:33] And it's become a very common way that people will have a Slack conversation for something
+[00:11:37] then just at mention honk, honk goes off and works on that and comes back with a PR.
+[00:11:44] We're seeing more and more of these patterns evolve around Honk.
+[00:11:49] And in fact, yesterday we released Honk V2.
+[00:11:53] The V2 versioning is a little bit off because I think it's actually like the eighth version
+[00:11:59] of Honk.
+[00:12:00] So I don't know what we did with the versioning, but it doesn't matter too much.
+[00:12:04] So this week we have Hack Week at Spotify and we released the alpha of Honk V2, which
+[00:12:10] is a pretty significant additional features for Honk. And it really now builds towards
+[00:12:18] this world where developers are using it more interactively. So we've integrated it with
+[00:12:23] our agent orchestration tool that we call Chirp. This is similar to what you can do with
+[00:12:29] Claude agents or with agent deck or similar tools, but it's a little bit more features
+[00:12:34] and it's integrated into our infrastructure. This is the way that you can run many, many
+[00:12:38] agent sessions at the same time and coordinate those types of things.
+[00:12:41] Honk is built into that so you can use Chirp to schedule Honk jobs, for example.
+[00:12:48] You can also collaborate with other developers on shared sessions.
+[00:12:52] So instead of it's being you in front of your agent, you're now sharing that agent session
+[00:12:58] with more people and you can collaborate on that and give feedback and ideas and whatnot
+[00:13:02] on that.
+[00:13:03] Basically imagine Google Docs or something similar, but for Claude.
+[00:13:09] And that then also groups up into larger efforts.
+[00:13:14] Imagine you're working on a completely new feature or product, you're working with a team on that,
+[00:13:19] you can have a project that you're sharing, and in that you can have many sessions with Honk
+[00:13:25] where you collaborate over working towards whatever that goal is.
+[00:13:30] This is also available on any device and whatnot, so users can use them from wherever they are.
+[00:13:37] And lots more features that we're rolling out going forward.
+[00:13:41] We're very excited about Honk V2, and in particular, I'm going to say personally, I'm very excited about these multi-player features
+[00:13:48] of imagining how agents actually collaborate with multiple developers and teams.
+[00:13:54] Alright, let me switch gears a little bit.
+[00:14:02] I want to also talk about how we try to optimize our code base to make agents as effective as
+[00:14:10] possible in our code.
+[00:14:14] So we've had for many many years, more than I've been at Spotify for 15 years, and this
+[00:14:19] happened prior to iRive, so I don't know exactly how old it is, but we've had this
+[00:14:23] belief on the fewer technologies that we use, the faster we will be able to go.
+[00:14:29] And this basically comes down to a few different aspects. One, if we have a set of technologies that
+[00:14:35] we know really, really well, we're really like deep experts on them, we will be able to build
+[00:14:41] better things on top of those. We can also eliminate a lot of small decisions for teams.
+[00:14:46] Instead of having to pick the technology for everything you're building, there's a ready set
+[00:14:51] set of technologies available to you that hopefully solves your problem It also means that it much easier to collaborate If you working with some other team on their components and their components look
+[00:15:08] roughly the same as yours, it's going to be easier for you to contribute to those.
+[00:15:14] And similarly, if we need to move components around or developers move to a different team,
+[00:15:21] things look roughly the same over there.
+[00:15:22] So if you look at the typical backend service at Spotify, they will all look very similar.
+[00:15:29] Same technology stack, roughly the same design patterns and so on.
+[00:15:35] And we think this makes sense for agents as well.
+[00:15:41] So for many years now, we've been driving towards a more and more standardized stack.
+[00:15:48] Less unnecessary variance at least.
+[00:15:51] We want some level of variance. We want to experiment with new technologies, evaluate new things that could be good for us,
+[00:15:58] but we don't want to do that willy-nilly. We want to be intentional about it.
+[00:16:04] And we see that this leads to more effective teams at Spotify.
+[00:16:09] And we believe that it also leads to more effective agents.
+[00:16:14] Simply, if Claude has a lot of other code to look at, and that code looks roughly consistent, Claude will do a better job.
+[00:16:23] That's what we're seeing.
+[00:16:24] And we actually have code bases that are more fragmented, and we can actually see Claude perform worse in those code bases.
+[00:16:36] And the starting point for this is, I mentioned Backstage before, Backstage is our developer portal.
+[00:16:42] It used to be that it provided a single pane of glass for us developers.
+[00:16:49] Prior to Backstage within Spotify, we had, I think, roughly like a hundred different tools
+[00:16:54] that you as a developer would go to. It was one tool to check your deployments, one to look at CI,
+[00:17:01] one to look at A-B tests and whatnot. And it was very, very confusing. All of those tools were
+[00:17:07] kind of shit as well, like they weren't particularly good. So we thought there was an opportunity to
+[00:17:13] consolidate this and provide a better experience for our developers. And it really started with
+[00:17:17] this notion of a catalog of all our software. I mentioned before that we have thousands of
+[00:17:22] components in production and Backstage came about just as a way to know who owns one of those
+[00:17:30] components. Let's say we have an incident and I need to be able to page someone on the owner of
+[00:17:36] that team. Before Backstage I couldn't even figure out who that owner was. So it started as a way to
+[00:17:42] just having a catalog for that. Over the years it's then grown into having lots and lots of tools
+[00:17:48] around those components as well. So today as a human developer, everything I do when I need to
+[00:17:57] take an action on some of our software components, I'm going to do that in Backstage.
+[00:18:02] And as it turns out, that's equally useful for agents.
+[00:18:07] So we expose all of these as MCPs or command line tools for our agents.
+[00:18:12] And Claude can go look up who's an owner for something,
+[00:18:15] and it can go ping that team on Slack if it needs to ask questions about it, for example.
+[00:18:20] This has turned out to be incredibly useful for us.
+[00:18:23] And in particular, as we've scaled up, it allows us to keep track of everything we have going on.
+[00:18:32] It is also a way for us to drive our standardization.
+[00:18:38] So I mentioned this before.
+[00:18:39] We have strong recommendations for which technologies to use for a particular problem.
+[00:18:46] And we describe this in a few different ways.
+[00:18:48] We have a technology radar, as many companies do, that just lists all the technologies that are available and what state they're in.
+[00:18:57] Like this one we recommend using, this one we don't recommend using, and so on.
+[00:19:01] We also have what we call golden state.
+[00:19:04] This is essentially for a particular type of component.
+[00:19:08] If you're this type of back-end service or you're this type of iOS view,
+[00:19:15] these are the technologies and practices that we recommend that you use.
+[00:19:22] And we have a UI in Backstage that we call soundcheck,
+[00:19:28] check that where you as a team can go in and self-assess this. This is an example of such a view.
+[00:19:35] You can see here some component and it has a requirement to define a valid owner. That was
+[00:19:42] what I was talking about before. This allows us to then make our code base much, much more
+[00:19:50] consistent and has been something that we've been driving over several years. It's been very,
+[00:19:56] very powerful and set us up well for where we are.
+[00:20:00] with AI. And we then also combine that with static analysis and linting. So these things are then
+[00:20:06] implemented in our code bases as checks so that when Claude works in our code base, it will get
+[00:20:13] immediate feedback on if it's using the right set of technologies and the right set of design patterns.
+[00:20:19] So if Claude comes up with something that a way to, I don't know, call gRPC in a way that
+[00:20:25] that we know is not optimal for our infrastructure,
+[00:20:30] Claude will get feedback from our Lint system to correct that.
+[00:20:35] And we think this is super useful both for our developers and for our agents.
+[00:20:42] And we see this all the time.
+[00:20:44] When I work with Claude in our codebase,
+[00:20:48] I will see Claude run into these Lint checks all the time and correct itself.
+[00:20:52] awesome way to drive this type of standardization. All right, I'll try to sum this up.
+[00:21:02] First, hopefully this came through, but the need for strong engineering practices
+[00:21:09] has not gone away with agents. It remains as important as it was before.
+[00:21:15] Boris mentioned verification this morning. We fully agree with that. The ability to have your
+[00:21:24] code being well tested and having your agents being able to invoke those tests, either
+[00:21:31] Claude running locally or Honk with the verification tools that I showed before,
+[00:21:37] that is the way to make your agents be much more autonomous and come up with better solutions in
+[00:21:43] your code Similarly what I just talked about in terms of making sure that your code base is consistent and it well what developers and agents are supposed to do turns out to make agents work much much better at least in our case
+[00:22:03] We're also very careful about trying to measure everything, measure every aspect of our developer experience.
+[00:22:13] So we instrument all our infrastructure, we instrument all our PRs and so on,
+[00:22:19] and we can collect that and measure how we're doing.
+[00:22:22] So some of the numbers that I've been showing here today comes from that instrumentation.
+[00:22:26] And we have tons and tons of metrics that we're tracking.
+[00:22:32] We believe that human judgment matters just as much as it did before,
+[00:22:37] or even more now that we're able to move faster.
+[00:22:39] We need to figure out where to apply that human judgment though.
+[00:22:46] I mentioned the increase in PR frequency.
+[00:22:51] The flip side of that is that we now have 76% more PRs to review.
+[00:22:58] One of our most frequent feedbacks at the moment is there's just too many PRs to review.
+[00:23:07] so we need to figure out where we apply humans to review those pr's where it matters the most
+[00:23:15] so that won't be all pr's we're already order approving some pr's that we think are safe enough
+[00:23:22] to merge without human review and then we try to focus the human review where it really matters
+[00:23:28] and i think this will be recurring we'll figure out over time where we need the human judgment to
+[00:23:35] be applied And that going to be both I think prior to invoking the agent and post invoking the agent And lastly as we moving faster are seeing that coding is much less of a bottleneck now
+[00:23:55] It used to be that if you looked at the way that we build our products, our product development
+[00:24:00] lifecycle, we were mostly waiting on developers building out features, implementing them.
+[00:24:08] And that might have been early in the phase where we need to validate something, or it
+[00:24:12] might be building that out for production.
+[00:24:15] Both of those cases, that was one of the main bottlenecks that we had as a company.
+[00:24:20] And that is now starting to loosen up.
+[00:24:22] I won't say that it's completely eliminated, but it's starting to be reduced.
+[00:24:27] So for example, for that early validation, Spotify is a company that has too many ideas,
+[00:24:36] way too many ideas about what we could do to our users than we've ever been able to build,
+[00:24:40] than we had the capacity to build.
+[00:24:43] And having that many ideas about what we can do means that we need to validate which of
+[00:24:48] those ideas make sense.
+[00:24:50] And one way we can do that is to prototype.
+[00:24:54] Prototype used to be a fairly expensive thing for us to do.
+[00:24:57] You had to convince a bunch of developers to build something for you so you can then show
+[00:25:02] that to other people.
+[00:25:05] One thing that Claude and Agents allows us to do is to allow anyone to prototype in our
+[00:25:12] actual production codebase.
+[00:25:16] So now at Spotify you can open up Claude in our client monorepo and through a set of skills
+[00:25:24] and some infrastructure that we've built you can prompt Claude to build out any feature
+[00:25:29] that you want to try out and imagine.
+[00:25:34] will build that for you You will get an app back that you can install and test on your device and share with other people within Spotify to actually get a sense of what it feels to use that idea you had
+[00:25:47] And this has brought prototyping for something that could take days or weeks
+[00:25:52] to literally taking minutes now.
+[00:25:56] So anyone, including as it turns out one of our CEOs,
+[00:26:01] are now building these prototypes for the ideas they have.
+[00:26:03] So that's for prototyping and then the same is true for building things out in production.
+[00:26:11] But what we're seeing is that this is moving the constraints around.
+[00:26:15] So where coding used to be the bottleneck, we're now seeing more and more of those constraints and bottlenecks
+[00:26:22] turning into other aspects of how we build products.
+[00:26:25] And in particular, where we have human decision making in the loop.
+[00:26:30] loop. So again, things like deciding what we're going to ship to our users or which ideas we want
+[00:26:37] to explore. Those things used to be, we didn't have to make that many of those decisions because
+[00:26:42] again we were constrained on how fast we could build things, but as that constraint lifts we
+[00:26:47] need to figure out better and more effective ways of making those decisions. And we're seeing this
+[00:26:53] now and we're trying to shift around how we plan the work we do and how we decide on or how we make
+[00:27:00] those decisions at the moment. It is still very much an ongoing learning at the moment and the
+[00:27:05] set of experiments that we're running, but I think in six months or so I think we'll have a very,
+[00:27:10] very different way of building products compared to what it had looked like previously.
+[00:27:19] That was it. Again, if you want to try out Fleet Shift and Honk,
+[00:27:23] that's where you can take a look at that and thanks for having me.

@@ -1,0 +1,402 @@
+Title: What's new in Claude Code
+Video: https://www.youtube.com/watch?v=sRvUXLquiRg
+Caption: whisper (whisper-large-v3-turbo, audio transcription)
+================================================================================
+
+[00:00:00] Ralf Reviewer
+[00:00:07] Good morning, London. Good morning, folks. How's it going?
+[00:00:20] Yeah, there we go. That's the London energy we're looking here.
+[00:00:25] So, yes, my name is Ralf. I'm part of the technical staff at Anthropic.
+[00:00:29] topic. In my role, I work with partners and customers all across Europe, helping them
+[00:00:34] to build on and with Cloud. When they asked me to present what's new in Cloud Code, I
+[00:00:40] was prepared to do a seven-hour session straight with everything that the team has been releasing
+[00:00:44] in the last couple of months. If you have been following the change log, that's quite
+[00:00:49] a lot of things we have to cover. But luckily for you and for me, the venue doesn't have
+[00:00:54] another day extra for us to have an event and we created a subset of features that we
+[00:01:00] released in the last few months.
+[00:01:01] So, let's take a look into the two main categories that we are going to cover today.
+[00:01:08] Starting with the developer experience, because yes, we know that you are using this tool more
+[00:01:13] and more every day and we want this to make you a pleasant and convenient experience while
+[00:01:19] you are using the tools that you love.
+[00:01:21] And the second bit, we are talking about autonomy, meaning we are empowering Claude to do more
+[00:01:27] without interrupting you when it doesn't need it.
+[00:01:29] So the functions and features that let Claude do the work on its own.
+[00:01:35] And last, because again, the changelog sometimes looks like more a news feed with the amount
+[00:01:40] of features we are releasing, I'm going to point you to where you can find more information,
+[00:01:45] more details, and keep yourself up to date with the latest and greatest.
+[00:01:50] All right, so let's start with the first one, because even though Claude can do a lot on
+[00:01:56] its own, we care a lot about developer experience.
+[00:01:59] And having this tool that is convenient, nicer to use, and pleasant to interact every day
+[00:02:04] is paramount for everyone at Anthropic.
+[00:02:07] So let's start with the first functionality, which is remote control.
+[00:02:11] Can I get a show of hands if any of you have used remote control before?
+[00:02:16] Yes, very small fraction with a big audience.
+[00:02:19] Cloud control is a very nice feature that lets you start a session on your computer
+[00:02:24] and take this on the go from your mobile app, with Cloud, or in any browser, in any other
+[00:02:31] device.
+[00:02:32] Think about it, dispatching a session and go run some errands, walking the dog, that's
+[00:02:37] something I do a lot, or maybe even a bio break if you want.
+[00:02:41] Let's stop doom scrolling and start Cloud coding whenever you want.
+[00:02:46] And it's a really convenient way to dispatch a task and interact with Cloud every time it
+[00:02:50] needs to come back with a prompt.
+[00:02:52] You receive notifications on your app whenever Cloud needs an input.
+[00:02:55] And also, it's pretty easy to set up.
+[00:02:58] And as you saw in the audience, not a lot of people are using it.
+[00:03:01] So why don't we take a look in a demo of how simple it is to set up.
+[00:03:07] So I'm going to start with a demo around.
+[00:03:11] So what I have here on the screen is on the left-hand side, I have my session running on
+[00:03:15] Claude.ai, so this is on the website, and also on the side here I have my Claude session
+[00:03:22] that I usually have.
+[00:03:23] So what you can do with remote control is just start with a comment, actually let me
+[00:03:28] make it bigger for you, remote control, and just press enter.
+[00:03:32] Now your session is active in the web and on your mobile phone, and you can start saying
+[00:03:36] And hey, just a simple prompt, give me 10 jokes about the London weather, because that's
+[00:03:44] what's happening today.
+[00:03:45] It's a joke, it's spring, and we have like this raining outside.
+[00:03:48] And there you go, it started in there.
+[00:03:50] And if you see on the left-hand side, I already have a session in here, which is kind of with
+[00:03:56] a weird name, but I can take over my session on the go, on the website.
+[00:04:01] What I can do as well, and something that you also should be doing, is that you can
+[00:04:05] rename your session.
+[00:04:08] If you don't place any arguments here, Claude will make sense of what you're doing and give
+[00:04:12] it a name.
+[00:04:13] Like, if I press enter, it will tell me, oh, this is a London rain joke.
+[00:04:17] And now you know from your mobile phone that that's what the session was about.
+[00:04:22] And you can keep on online.
+[00:04:24] So I say, okay, another 10 jokes about the tube.
+[00:04:29] And there you go, you can have the back and forth between your session on the go and your
+[00:04:33] session on your computer.
+[00:04:36] All your tooling, all your dev environment, everything that you're doing on your computer
+[00:04:40] is accessible from both the web UI but also from the cloud mobile app.
+[00:04:47] Very neat feature, very nice functionality, just start using today.
+[00:04:51] If I can give you a pro tip that we use it on our site you can set up on your cloudsettings file for remote control to always be on So every session is a remote control accessible because you never know when your puppy needs to go for a new walk or when nature
+[00:05:05] calls. All right. Let's go back to the slides and go to the next feature. And yes, I was supposed
+[00:05:15] to ask for a show of hands, but I'm seeing a lot of people smiling and nodding that, hey,
+[00:05:18] this is something that I was expecting. So yes, we finally have it, a flickering-free experience.
+[00:05:24] It turns out that in our previous approach for appending data and new information into
+[00:05:31] the terminal was a bit tricky to get right, because when you have a big scroll back on
+[00:05:36] your terminal, every time you want to append something new, depending on what it is that
+[00:05:41] something, it might cause the whole repainting of the terminal.
+[00:05:44] And that's why you see the flickering.
+[00:05:47] But now Cloud Code has a new full screen mode, which virtualizes the whole scroll back of
+[00:05:54] the terminal.
+[00:05:55] So we have Cloud not only inside your terminal, Cloud Code is the terminal now whenever you
+[00:06:00] want to interact.
+[00:06:01] That means that scroll back that caused all the flickering is now virtualized.
+[00:06:05] We are only rendering the parts of the screen that you are actually seeing it, meaning even
+[00:06:10] on very long sessions we can keep the memory usage super flat.
+[00:06:14] By virtualizing the experience inside Cloud Code full screen, we can also start playing
+[00:06:21] with other types of functionalities, like for example clickable elements inside the
+[00:06:25] terminal.
+[00:06:26] You can have an option to both expand text and also other types of buttons that are inside
+[00:06:33] the terminal.
+[00:06:34] But better than myself talking about functionalities inside the CLI, let me show you in a quick
+[00:06:39] demo as well.
+[00:06:44] I have here my cloud code as you usually have, and as you see it started in the regular mode,
+[00:06:53] not the full screen one, but now you can come with a slash command, TUI, that stands for
+[00:06:59] terminal user interface, and you have just the option now to pass the parameter full
+[00:07:05] screen.
+[00:07:06] With this one, cloud will reload, and now you are in a flickering free rendering experience.
+[00:07:11] Now the full terminal is cloud code.
+[00:07:14] And now I can give just two examples.
+[00:07:16] So let's say write me a file with 10 facts about Europe and another one with 10 facts
+[00:07:29] about the UK.
+[00:07:31] And while cloud is doing all of this, you're going to see that normally what you have is
+[00:07:36] like the portions of the file that is going to be rendered.
+[00:07:40] And you can only see a couple lines.
+[00:07:43] But now because of the clickable experience that we have, you can already start expanding
+[00:07:49] some of these options.
+[00:07:50] I can already click here, for example, and open the whole 10 facts.
+[00:07:54] And also you can see here down the bottom, I have an option to go way down to the bottom
+[00:07:59] of my conversation.
+[00:08:01] In fact, if I just put here another instruction, write me a paragraph about the UK, I'm very
+[00:08:12] inspired by the UK today, and you're going to see that this option here for going to
+[00:08:16] the end, now it's updated with, hey, you have a new message right at the bottom, so you
+[00:08:19] can click it and go straight down.
+[00:08:22] So with this experience, the teams are guaranteeing a flickering free experience whenever you're
+[00:08:28] working with Cloud Code, I invite you to try on, and just like the other functionalities
+[00:08:34] we discussed, you can enable this by default, so every new session comes with a full screen
+[00:08:40] UI, and that's how we are mostly doing ourselves as well.
+[00:08:44] All right, up next we do have a whole UI refresh on Cloud Code Desktop, and for those of you
+[00:08:54] that have used the Cloud Code Desktop in the previous versions, like a couple of months
+[00:08:58] ago, and saw it, yeah, not for me, not something I would use, I'd rather use the CLI.
+[00:09:02] I'm with you.
+[00:09:03] A lot of us do prefer the CLI for most of the things, but I do invite you to come back
+[00:09:08] and take a second look, because the team have revamped completely the experience in the desktop
+[00:09:13] app, and there's a lot of new functionalities that you can use.
+[00:09:16] You saw a little pic in the first keynote, and we're going to see a little bit more in
+[00:09:21] just a moment, but we are seeing that other users are preferring the desktop app for very
+[00:09:27] specific tasks. I don't think we are going to expect you to use this on your full-time
+[00:09:31] job, like the eight hours of the day or maybe 12 hours of the day, depending on how much
+[00:09:35] you are building, but for some specific bits, the desktop actually provides a much better
+[00:09:40] experience. But let me give you a walkthrough in a quick demo.
+[00:09:49] So I have here my desktop app, let me just make this a little bit bigger.
+[00:09:54] And the first thing that you going to notice is that on the left side you have an option with all your sessions right And from the sessions you can start grouping them in different categories And what I like
+[00:10:05] a lot is to group them by projects. This will group every session by what GitHub repo or
+[00:10:11] what repo you are working on. So if I just click over here, you're going to see that
+[00:10:15] I have three sessions on my ScaliDraw demo, the other ones I have on other projects working
+[00:10:20] on and these are grouped so you can for the ones that are parallel clothing and using a lot of
+[00:10:24] sessions you can really see which one pertains to each project. The other bits as well, let me take
+[00:10:32] here some for example one of these sessions that I was running, you have the option on the top to
+[00:10:39] take a look if you have a conversation you can take a look at the plan that spin up that conversation.
+[00:10:44] For those of you that use it plan modes and want to find a step-by-step implementation steps of
+[00:10:49] functionality, for example, you have the option to take a look really easily from the desktop
+[00:10:55] app into what the plan looks like for the feature. For example, I was creating here
+[00:11:00] a Dart mode for this application. The nice thing about this UI is that you can start
+[00:11:05] appending comments on it. If you select any part of the plan that you didn't like, you can just
+[00:11:09] leave a comment to it. This will be pushed back to Claude for making that fix. If we go even beyond
+[00:11:17] on that. Let's say, for example, I have here one application that I built and I have a
+[00:11:23] lot of diffs on it. That's another point as well. You can start seeing the diffs of the
+[00:11:29] files from that pull request. Let me close this file one. And you can start appending
+[00:11:33] comments as well for your code. So you can say, OK, Claude, explain me this line, for
+[00:11:40] And what's going to happen is that Claude will take that line in particular and start
+[00:11:50] checking what is that particular line and giving you an explanation of that piece of
+[00:11:56] code.
+[00:11:58] What else do we have on the desktop app?
+[00:12:04] As Boris mentioned, you do have the GitHub integration quite neat on the bottom, so you
+[00:12:09] can append fixes into it and even going beyond check for your files of a particular development
+[00:12:18] project that you are doing.
+[00:12:19] As I was saying, this is not only the diff, but I can take a look at the files themselves.
+[00:12:24] So if I click over here, and I have the full files of that project.
+[00:12:29] So yeah, take a look, explore a lot more.
+[00:12:32] Like everything else we are doing with Cloud Code, we are very open for your feedback.
+[00:12:37] So experiment, report bugs, report new features, and suggest what direction of travel we should
+[00:12:43] be going.
+[00:12:44] And, yeah, with that, let's go back to the slides.
+[00:12:50] And we can cover a little bit on the development experience bit.
+[00:12:54] And now I want to talk about the autonomy part.
+[00:12:57] Because each of the functionalities that I'm going to cover next have one major root cause.
+[00:13:03] And do you know when you started a long running session or what do you expect was a long running
+[00:13:07] session on Cloud Code?
+[00:13:09] Just to come back and see that Cloud got stuck into maybe prompt authorization requests or
+[00:13:14] maybe got the wrong building comment, for example.
+[00:13:17] Just something silly that you thought, oh, come on, you could do this without me.
+[00:13:21] You don't need my interjection on this one.
+[00:13:24] So yes, models are getting much more capable as we saw it in the previous session, and
+[00:13:28] Claude is getting a lot smarter to assess when does it need your input or not.
+[00:13:33] So yeah, everything that we are going to show in this part of the session is to show you
+[00:13:38] that is there a time to get more confident in that Claude can assess when does it need
+[00:13:43] to bother you for any of those points that I mentioned before.
+[00:13:47] And the first one, which is a new mode that we have in Claude code, which is the auto
+[00:13:52] mode.
+[00:13:53] Auto mode is that for that specific case when you are working, put a prompt into Claude
+[00:14:00] and think, hey, this is going to run for some time, and come back as an authorization request.
+[00:14:06] Can I read this file, for example, do you authorize me to access this folder?
+[00:14:10] That was quite frustrating, and with auto mode, those days are gone.
+[00:14:14] What auto mode is doing is first leveraging the high capability of the latest models as
+[00:14:19] well to assess if a situation is destructive or not. Because what AutoMode does is that
+[00:14:25] for every time where otherwise Claude will stop and go to and say, hey, can I guess permission
+[00:14:30] for this bit? AutoMode checks that with a classifier that checks two things. The first
+[00:14:36] thing is, is this action destructive? Am I going to regret this down the line? So yeah,
+[00:14:41] that's the first check. The second check is pretty much, does this look like a prompt
+[00:14:47] injection. So yeah, this is this part of the situation that looks like it's going to inject
+[00:14:53] something on my prompt So if the checks pass so none of this is true Claude takes the action on your behalf So it doesn stop and it continues running If any of those checks fail what happens is that Claude will try to find a workaround
+[00:15:08] maybe a scenario where there is another path where we don't have to go and ask for those
+[00:15:11] particular permissions and don't have that destructive way that we are going.
+[00:15:15] And if that case is not as well possible, then Claude will come to you and say, hey,
+[00:15:21] I need your permission to execute this bit.
+[00:15:23] So this gives Claude a lot more autonomy and don't bother you when you don't need to be.
+[00:15:30] For example, we value a lot your time, and Claude should earn your time on that as well.
+[00:15:34] Boris was talking about asynchronous coding, that's exactly the type of thing that we can
+[00:15:38] start leveraging it.
+[00:15:40] Let Claude run and just bother you when you actually need it to be consulted for.
+[00:15:47] Yes, the next one is work trees.
+[00:15:52] Can I show of hands if you ever use Worktrees on your day-to-day?
+[00:15:56] That's much better.
+[00:15:57] Yes, still, I would love to have the whole room working, but Worktrees are your friend
+[00:16:03] whenever you want several Claude to work on the same project, same repo, and you don't
+[00:16:07] want different Claude to step on each other's feet.
+[00:16:11] The idea here is that a WorkTree is a copy of your project in a segregated subdirectory
+[00:16:16] that is only accessed by one Claude session.
+[00:16:19] Actually work trees existed way before Cloud Code and they are supported by Cloud Code
+[00:16:24] since the early beginnings.
+[00:16:26] But to be honest, it was quite tricky to get it right because you have to manage all these
+[00:16:30] different directories.
+[00:16:31] Work trees are kind of ephemeral if you start working on something and stop it.
+[00:16:35] So managing all of that yourself was something that was quite tricky.
+[00:16:38] But now it's super simple because Cloud Code now has this native support for work trees.
+[00:16:44] Whenever you want to start working in a new feature that needs to be parallelized amongst
+[00:16:48] several sessions. You can start your session using cloud-worktree and will copy that repo
+[00:16:54] to a segregated directory and work on it independently. You can have multiple clouds working on the
+[00:16:59] same project in different features without checking and editing the same files.
+[00:17:05] If you are already in a session, for example, and don't want to start a new cloud code session,
+[00:17:09] you can just ask Claude to create a worktree for you. You will also see that in other UIs
+[00:17:14] that we are going to present, the desktop app for example, and the other one that we
+[00:17:17] are going to show in a moment, worktrees are native to it. So if you start a new session
+[00:17:22] in the desktop app for example, there is a flag already saying hey, this session is going
+[00:17:26] to start a new worktree, so you don't have to manage yourself. So yeah, worktrees, use
+[00:17:31] it, they are a friend, and if you are a parallel cloud code user like a lot of us, there is
+[00:17:36] no other way to get it better.
+[00:17:41] Yes! Okay, auto memory, that's another nice feature that is giving Claude a lot of autonomy as well.
+[00:17:48] How many of you think that every time you start a new session on Claude, it looks like you are working on a blank slate?
+[00:17:55] You need to tell Claude the same things a lot of times, and even though you have your Claude.md file and some instructions to get it right,
+[00:18:04] there are some little things that are never there, or most of the times are never there.
+[00:18:09] Auto memory fixes that. Because auto memory is something that Claude does automatically,
+[00:18:15] so it will check for some notes and some things as your session progresses, and take notes in the
+[00:18:21] back. So think about your coding styles, some architectural choices, your debugging insights,
+[00:18:27] for example, the ways that only you know how it works. Claude will access that and save this in a
+[00:18:33] memory.md file. It's not going to update that file in every session. It really has the discerning
+[00:18:38] capabilities to understand this is something I need to remember for the future. And it
+[00:18:44] will load for every other new session together with your cloud.md file. And you might be
+[00:18:49] asking, yeah, we have cloud.md files, we have memory.md files, why do we have these two
+[00:18:55] and what are the differences? I think an easier way to understand, imagine that the cloud.md
+[00:19:00] is the onboarding document you give to cloud on the first day of work, and the memory.md
+[00:19:04] file is the notes that Claude is taking while actually doing the work.
+[00:19:08] One is a manual, the other one is a note-taking.
+[00:19:11] The other thing as well is that the memory.md file is a very short file, it's not like a
+[00:19:16] big one.
+[00:19:17] It's mainly an index to other files with specific memories itself, so it's not bloating your
+[00:19:22] context.
+[00:19:23] Actually, we are leveraging progressive discovery because every time Claude needs, for example,
+[00:19:29] to get access to your debugging memory, you get access first to the index, find the file
+[00:19:33] for the debugging memory itself, and then it loads in your context. So you don't have
+[00:19:37] this bloated context in every session.
+[00:19:42] Other thing as well, all the sessions that are part of your project, all the work trees
+[00:19:47] in that project as well, leverage the same memory. And also the memory files do not leave
+[00:19:53] your computer. It's not something that's pushed to your GitHub, it's not something that lives
+[00:19:57] in the cloud. So it sits on your mind.
+[00:20:00] Last bit, you can definitely audit and check for those memory files by just typing slash
+[00:20:06] memory and you can see the whole directory that Cloud is managing for you.
+[00:20:10] All right, the next one, and this one happens with me a lot.
+[00:20:17] I happen to work with partners and customers all across Europe, as I mentioned, and in
+[00:20:21] a lot of these conversations people ask me, hey, how is the Anthropic developer team using
+[00:20:27] Claude in their day-to-day. And of course, there's not a lot I can talk about, but this
+[00:20:32] one I can definitely do. Because this is a practice the teams have incorporated, tested,
+[00:20:37] saw it was working, and baked it into the product. So code review is an automated review process for
+[00:20:44] every PR that you create. And it's a process that is both multi-agent and multi-phased.
+[00:20:50] So imagine that every time you create a PR, Claude will span up a team of different agents
+[00:20:55] to assess different parts of that PR. And these agents are checking for different stuff.
+[00:21:00] Some are checking for errors, some are checking for bugs, some are checking for vulnerabilities,
+[00:21:06] logical errors, for example. And based on all of those findings, that's the first phase.
+[00:21:10] There's a second phase, which will actually assess all the findings from those agents against your
+[00:21:16] actual code. So we can actually make sure that those findings are actually real. In that sense,
+[00:21:21] we can speed up the findings of those errors much quicker. You will find errors or logical
+[00:21:29] problems that will take hours for you to discover now in a matter of minutes.
+[00:21:37] CodeReview is already native on the GitHub app if you have installed Cloud on your GitHub repo,
+[00:21:42] so you can automate this for every new pull request that your repo receives. And you can also
+[00:21:47] manually start a new review session using the command ultra-review. It's not a super-review,
+[00:21:54] not a great-review, it's an ultra-review. It's a slash-ultra-review from your cloud code terminal,
+[00:21:59] and you're going to start implementing PR reviews the same way that Anthropic teams are doing.
+[00:22:07] Yeah. Now for one that is really exciting, and we talked a little bit about it in the keynotes
+[00:22:12] What's early this morning?
+[00:22:13] Routines.
+[00:22:14] This was shipped early this month, I think.
+[00:22:18] Still in research preview.
+[00:22:19] And this helps you create sections in cloud code without you having to manually trigger
+[00:22:24] them yourself.
+[00:22:26] So think about this, a schedule, a workflow that can be triggered based on an API call
+[00:22:31] from another system, for example, or based on a timer, or based on a webhook.
+[00:22:35] So you can start imagining all the capabilities that you can incorporate on your workflows.
+[00:22:41] This already works natively with GitHub, you're going to see this in an example, but as I said, you can just plug an API call to it.
+[00:22:48] Think about every time your e-commerce makes a sale, you want to start a routine with Cloud, that's just an API call away.
+[00:22:55] And the capabilities of the routines themselves are the same ones as an actual chat window as an actual cloud code session that you having So if you want Claude to make curl requests for other systems to check for some specific
+[00:23:07] connectors and so on, it's what we are going to be able to do.
+[00:23:12] And yeah, why don't we see a quick demo of routines and some of its capabilities as well.
+[00:23:21] So I'm back here on my Cloud Code desktop, and as you can see here on the top we have
+[00:23:28] the Routines button.
+[00:23:29] So in this one I have already prepared two of them, but as you can see, you can, well,
+[00:23:36] let's take a look at the first one.
+[00:23:37] So for example, in this one I'm checking a repository that's not my repository, it's
+[00:23:41] just one public repo out there, and I created one routine that runs both at 8 a.m. and 4
+[00:23:48] 4pm every day, checking for new commits on this master repo and also for new issues on
+[00:23:54] it.
+[00:23:55] If I scroll down, as you can see here, I also can incorporate some curl requests, you can
+[00:24:02] ask Claude to do anything that Claude would do in a regular session.
+[00:24:06] And down here, you can see we have it run every day, so this one already run today,
+[00:24:13] And I have here both the new issues requests and no new commits for this repo in particular.
+[00:24:20] And you have all the log in of every day it was running without my intervention.
+[00:24:26] My computer doesn't even need to be on because these are running in the cloud.
+[00:24:29] So let's create one just to see how easy it is.
+[00:24:33] So I'm going to click on your routines and here on this side, click on a new one and
+[00:24:38] you can create on a remote environment.
+[00:24:41] That's what we are going to do.
+[00:24:42] I'm going to say here, let's say issue triage, and let's say assess the issue and give me
+[00:24:57] your review. Do sound like a medieval knight, because that's always more funnier that way.
+[00:25:06] We're going to select a repo, a remote repo, and I'm going to put here on my own
+[00:25:11] on ScullyDrawFork, and my GitHub event in this case, you can pick one that's going to
+[00:25:18] be an issue open.
+[00:25:27] So every time an issue is open, Claude will execute this routine.
+[00:25:33] You can also add some connectors to it, in this case it's not applicable, so I'll just
+[00:25:37] click on create, and this one, we have it connected to my repo, and so on.
+[00:25:43] So what I can do is access that repo itself, which is this one, and I can create a new
+[00:25:52] issue.
+[00:25:53] Let create here a new issue and I say hey I found a backdoor on this app There a backdoor please fix it I mean there no back door but issues are random so let just create one of these
+[00:26:09] And what happens is that this will trigger a web hook, we will trigger my routine, and
+[00:26:12] that will start.
+[00:26:13] Just take a couple of seconds, but while this is running, I can show you the other one that
+[00:26:19] I created before.
+[00:26:20] So I have here my posh mp review, which runs every time somebody creates a pull request
+[00:26:26] on that same repo.
+[00:26:28] And this one is reviewing this PR and comments with findings in the PR itself.
+[00:26:32] So the one that I created is not interacting with the issue, it's just like providing me
+[00:26:35] the report.
+[00:26:36] This one is coming back to the issue and creating one review right there.
+[00:26:39] So I'm clicking here and I'm seeing the first one.
+[00:26:43] And I have this PR that was open.
+[00:26:47] So I created the first PR yesterday, and Claude came and did a review based on that routine.
+[00:26:55] Nobody has to tag anything, nobody has to make the integrations, just the webhook from
+[00:26:59] GitHub triggered a Claude session, and that started the whole PR sounding like a very
+[00:27:05] posh MP.
+[00:27:07] So that should give us time to come back to the one that I created with the issue.
+[00:27:12] Let's see this one.
+[00:27:13] Yeah, we already did this one in here.
+[00:27:15] And this one is my medieval knight checking for the issue.
+[00:27:21] So that's the kind of workflows that are going to start already building it.
+[00:27:25] Think about a lot of the webhooks from GitHub, any API calls from your external systems, all
+[00:27:30] of this running in the cloud without your computer being open.
+[00:27:33] That boils a lot to what Boris mentioned, that hey, now you are asynchronous doing your
+[00:27:39] work.
+[00:27:40] Let the clouds do your work for you and just come back and assess what is going on in there.
+[00:27:45] All right.
+[00:27:48] Yeah, that being said, we can go really quick to talk about agent view.
+[00:27:52] And we saw a little bit of this this morning.
+[00:27:55] With agent views, you have one view for all your cloud code sessions.
+[00:28:00] So if you are addicted to cloud code parallel sessions like I am, you have that
+[00:28:05] window with that monitor with many terminals open at once,
+[00:28:10] the agent view lets you manage that in a much more seamless and easy way.
+[00:28:14] You can see all your sessions based on what is their current status, which one is waiting
+[00:28:19] for a prompt, which one is completed, which one needs your input, for example.
+[00:28:23] And better than myself, showing you a slide, let's go to the last demo of today so I can
+[00:28:29] show you how does that work.
+[00:28:31] So agent view is really easy to get started.
+[00:28:37] So if we just start our session with cloud agents like this, you're going to see the
+[00:28:42] first, agent views is something that makes your sessions run in the background, because
+[00:28:46] as you can see here, I already have two sessions with Cloud Code open in there.
+[00:28:51] And if I go a little bit smaller, you can see that I can start dispatching.
+[00:28:56] What is my schedule for today Give me a Spotify playlist for CodeWithClodes London and let plan
+[00:29:11] a new dark mode for this app.
+[00:29:17] As you can see, all of this is running in parallel, and it's actually running in the
+[00:29:21] background so I can leave CodeCode as I just did right now and come back.
+[00:29:25] keep on running, so you don't have to be attached to the terminal anymore. You can go inside
+[00:29:30] any of the sessions if you press enter. And you can see here I already have a Spotify
+[00:29:34] playlist for London. You can come back, you can pick on some of this. So for example,
+[00:29:39] calendar is there. If you just press space, you can send a prompt to that session without
+[00:29:43] delving into the session itself. So how many appointments for today? And yeah, if there's
+[00:29:57] a session that is waiting for you to take action, for example, you can see the grouping
+[00:30:01] already from working to complete. In this case, for example, now session needs an input
+[00:30:06] and you can go over there, go into it or just peek into it as I said before. So yeah, agent
+[00:30:13] Infuse is released in public preview, and I welcome you to try it if you are one person
+[00:30:19] that uses several cloud code sessions at once.
+[00:30:23] So I could be talking a lot more, actually, I'm already over time, and we could talk a
+[00:30:27] lot more about other features in regards to cloud code, but one thing that I have to mention
+[00:30:32] to you is that none of this will be possible without first you leveraging those tools and
+[00:30:37] using this every day, but also providing all the feedbacks, all the features requests and
+[00:30:41] all the bug reporting that you have been doing. So please keep on doing that.
+[00:30:45] And for particularly the ones that are managing teams or enterprise deployments of cloud code,
+[00:30:51] we released several features that were made just for you. Better Windows support,
+[00:30:56] wizards for cloud deployments with both Google Cloud Platform and AWS. We have native binaries,
+[00:31:02] so you can leverage the installation straight from your governance pipeline.
+[00:31:09] And yes, the last bit, just to be super crisp, is that there's a lot of other things and
+[00:31:16] a lot more that we can talk about.
+[00:31:19] Cloud code, follow the dev team on the socials, you have the cloud devs on Twitter.
+[00:31:25] We do have a what news section inside the documentation that just sums up what needs
+[00:31:30] to be assessed and what's important for you to that.
+[00:31:33] And of course, the changelog is there.
+[00:31:37] subscribe to our newsletter.
+[00:31:39] And one thing that we should never stop doing, especially in these days and age, is never
+[00:31:44] stop learning.
+[00:31:45] There's a lot of things that we need to be aware of.
+[00:31:48] So keep learning, keep building, keep thinking.
+[00:31:51] Thank you so much.
+[00:31:52] You guys were amazing.
+[00:31:53] That was fantastic.

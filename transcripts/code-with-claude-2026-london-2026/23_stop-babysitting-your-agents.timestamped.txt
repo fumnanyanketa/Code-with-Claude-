@@ -1,0 +1,607 @@
+Title: Stop babysitting your agents
+Video: https://www.youtube.com/watch?v=wI0ptqCSL0I
+Caption: whisper (whisper-large-v3-turbo, audio transcription)
+================================================================================
+
+[00:00:00] Siddh Bhundasarya
+[00:00:02] Good afternoon everybody.
+[00:00:16] My name is Siddh Bhundasarya.
+[00:00:18] I'm one of the founding engineers of CloudCode.
+[00:00:21] And today I'm excited to be here to talk to you guys about
+[00:00:25] how you can stop babysitting your agents.
+[00:00:29] As models have been getting smarter,
+[00:00:32] I've noticed that we're increasingly spending a larger percentage of our time
+[00:00:37] staring at the screen, waiting for Cloud to finish its work,
+[00:00:41] or just acting as a glorified QA tester for Cloud.
+[00:00:45] And this can be quite unsatisfying and also just an inefficient use of your time.
+[00:00:52] And my goal for this talk is to give you strategies
+[00:00:58] and help you take back some of this time so that you can manage your agents better.
+[00:01:05] You can also think of this as a more advanced Cloud Code talk,
+[00:01:11] so a Cloud Code 301 type university class.
+[00:01:16] And because of that, we have some prerequisites and some table stakes
+[00:01:20] that everyone here should have at least heard about,
+[00:01:24] if not implemented for your own projects.
+[00:01:26] starting with a very high-quality Cloud MD file.
+[00:01:30] This is the single highest leverage thing that you can do
+[00:01:34] to improve your Cloud Code experience.
+[00:01:36] So if you haven't done this yet, highly encourage you to try it out.
+[00:01:40] Number two is connecting your tools to Cloud Code.
+[00:01:44] A good rule of thumb is that if a tool is useful for you
+[00:01:48] in your day-to-day life, it will also be useful for Cloud.
+[00:01:51] So things like Slack, Asana, Linear, Datadog, BigQuery, all of these things help Cloud stitch together a much richer context for itself.
+[00:02:03] And it's able to perform much better if you give it access to these tools.
+[00:02:08] And finally, setting up your remote environment on Cloud Code Web.
+[00:02:13] This makes it so that the compute that's running your cloud code is separated or decoupled from your laptop.
+[00:02:22] So you can close your laptop, your laptop could die, you could spill some water on your laptop,
+[00:02:26] and your cloud code sessions will still continue because they're running in the cloud.
+[00:02:30] I'd love to see a show of hands here. How many people use cloud code every day?
+[00:02:38] day? Okay, that's almost everyone. How many people have completed the first two
+[00:02:45] things here? So high-quality CloudMD and you've connected your tools.
+[00:02:49] Okay, it's about 50% I'd say. And then how many people have done all three? Okay, if you haven't
+[00:03:00] raised your hand at all, don't worry, you'll still get some value out of the stock, but I would
+[00:03:05] encourage you to start with these three things first.
+[00:03:13] So why does your tooling need to change?
+[00:03:17] Most software tooling so far was built with humans in mind.
+[00:03:24] Whether it's linters, IDEs, Prettiers, type checkers,
+[00:03:28] even compilers, they were mostly written with the goal
+[00:03:33] of making humans and human teams faster.
+[00:03:37] But the problem now is that humans aren't writing most
+[00:03:41] of our code anymore.
+[00:03:42] It's agents.
+[00:03:43] So we have to take a step back, zoom out,
+[00:03:46] and reconsider our tooling.
+[00:03:48] And when you do that, there's some good news,
+[00:03:52] and then there's some bad news.
+[00:03:54] The good news is that a lot of these tools
+[00:03:57] that we've built for ourselves translate over pretty well
+[00:04:00] for agents as well.
+[00:04:02] So things like Prettiers and Linters and Symbol servers,
+[00:04:06] Claude and agents can end up using these things
+[00:04:08] quite effectively.
+[00:04:10] And they serve them pretty well.
+[00:04:12] But the bad news is that we also have blind spots.
+[00:04:18] As human beings, we have some assumptions
+[00:04:21] that we make about our tooling and our tool chain
+[00:04:24] that Claude doesn't have.
+[00:04:26] And for that reason, it's important to ask the question,
+[00:04:29] what does an agent need from your code base that a human takes
+[00:04:33] for granted?
+[00:04:34] And I'd love for you guys to keep that question in mind
+[00:04:37] as we continue to the rest of the talk,
+[00:04:39] because it kind of frames the goal of not babysitting
+[00:04:44] your agents as much in a much more clear way.
+[00:04:50] So this is our roadmap for today.
+[00:04:52] We be talking about three distinct things that build on top of each other And when you take all of these three things together they become incredibly powerful and give you a set of tools that can help you work in a way that
+[00:05:08] we just haven't worked before as human beings. So we'll be talking about verification,
+[00:05:14] which is how to teach Claude to check its own work. Once Claude can check its own work and be
+[00:05:21] be more reliable, we can now run many clods at the same time
+[00:05:25] and be confident that they'll be doing the right thing.
+[00:05:28] So we'll be talking about strategies for multi-clodding
+[00:05:30] or parallelizing your work.
+[00:05:32] And then finally, we'll end with background loops.
+[00:05:35] And background loops are a way for you
+[00:05:37] to completely take your keyboard out of the hot bath.
+[00:05:41] So your keyboard is not the bottleneck anymore,
+[00:05:43] and Claude just keeps running in the background in a loop
+[00:05:46] doing useful work for you.
+[00:05:51] So I'd like to start the verification section with a brainstorm for a minute or so.
+[00:06:03] I'd like everyone here to think about the last software project or feature that you worked on.
+[00:06:08] And while you were working on that feature, how did you check your own work?
+[00:06:13] And I don't just mean how did you check the final output of your work, but I also mean how did you iterate on your work in a way that gave you confidence
+[00:06:21] confidence that you will end up in a place where you're expecting to go.
+[00:06:25] So let's take 30 seconds.
+[00:06:27] If you have a pen and paper in front of you, feel free to jot this down.
+[00:06:30] If you have a laptop and you want to put this in your notes, let's take 30 seconds together
+[00:06:34] and just come up with your last project and kind of how you verified your work there.
+[00:06:51] OK.
+[00:06:53] I see some typing slowing down.
+[00:07:08] So hopefully you've had a chance to think about it a little bit.
+[00:07:13] It's OK if you haven't completely.
+[00:07:15] But I've found that most software engineering tasks
+[00:07:19] can be broken down into the series of steps
+[00:07:22] that you see on the screen.
+[00:07:25] Some combination or sequence or subset of these things
+[00:07:32] enable you to check your own work and build software.
+[00:07:35] So you start with designing and writing code.
+[00:07:39] You then usually end up building your code,
+[00:07:42] running your compilers, type checkers, et cetera.
+[00:07:45] If they fail, you kind of go back and change your code again
+[00:07:47] and do that in a loop.
+[00:07:50] Then you might run your executable,
+[00:07:53] whether that's a Docker container or a CLI application
+[00:07:56] or a web server.
+[00:07:59] And then you might check for side effects.
+[00:08:01] So if you're running a web server,
+[00:08:02] you might spin up your browser.
+[00:08:04] And you might see if the UI elements are showing up
+[00:08:06] in the correct place.
+[00:08:08] You might even look for logs to see
+[00:08:11] if this is a specific log that you're
+[00:08:13] looking for present in your logs.
+[00:08:15] Or you might check the database to see what the state is
+[00:08:18] and if state has been manipulated correctly.
+[00:08:21] And then hopefully you'll run unit tests to make sure
+[00:08:23] that you haven't made any regressions
+[00:08:25] and your feature hasn't broken some other feature.
+[00:08:28] And hopefully you also added new unit tests for the thing
+[00:08:32] that you're working on.
+[00:08:34] And then finally, you deploy the staging.
+[00:08:36] Or if you're really brave, you go straight to prod.
+[00:08:40] And that's usually how humans verify their work
+[00:08:43] and build software.
+[00:08:45] And what's interesting is that the same exact playbook
+[00:08:49] can be used by Claude quite effectively to also verify
+[00:08:54] its own work and build software.
+[00:08:56] So as we go through the rest of this presentation,
+[00:09:01] it's helpful to think about teaching Claude
+[00:09:03] how to do things in a similar way that you would do them.
+[00:09:07] And the only thing that's required
+[00:09:09] is giving Claude the right tools and instruction set
+[00:09:12] to make this possible.
+[00:09:18] OK, so we've talked about verification,
+[00:09:20] how humans do verification, and how Claude should theoretically
+[00:09:24] do verification.
+[00:09:25] But loops are really what makes the whole thing go around.
+[00:09:31] And this is arguably the most important slide
+[00:09:33] in this presentation.
+[00:09:35] So if you haven't been paying attention yet,
+[00:09:37] This is a good time to get started.
+[00:09:41] A loop essentially is an autonomous circuit
+[00:09:45] that you can complete for Cloud.
+[00:09:47] And it allows Cloud to hill climb on a given task
+[00:09:52] or a given success criteria.
+[00:09:54] So you can think about it as giving Cloud access to tools to verify its own work and to write code And what Claude will do is it will write some code
+[00:10:05] It will check if there's a failure.
+[00:10:07] If there's a failure, it will debug that failure
+[00:10:09] and write some more code.
+[00:10:10] And then it keeps doing that in a loop again and again and again
+[00:10:14] until it gets to a success state.
+[00:10:15] And when it finally gets to a success state,
+[00:10:18] you can be confident that the PR that it's sending you
+[00:10:21] is higher quality and will actually work.
+[00:10:25] So in this image that you see on the screen,
+[00:10:29] I faced an issue recently where on my personal website,
+[00:10:32] the sign up button stopped working.
+[00:10:34] And what I told Claude was to make the sign up button work.
+[00:10:38] And this is kind of what it did.
+[00:10:40] There's more steps here too, but for brevity's sake,
+[00:10:43] it basically started writing some code.
+[00:10:46] It built my app.
+[00:10:48] It clicked my sign up button, opened up a browser,
+[00:10:51] and saw that clicking the sign up button isn't really
+[00:10:53] doing anything.
+[00:10:54] It doesn't take you anywhere.
+[00:10:56] So then it decided to read some logs,
+[00:10:58] and it found out what the problem was.
+[00:11:01] It fixed the code, reloaded the app,
+[00:11:03] and kept doing that until it got to a successful state.
+[00:11:07] And finally, what it came up with was a PR that indeed worked.
+[00:11:11] So the most important thing to take away from this slide
+[00:11:14] is that wherever possible, our goal now
+[00:11:17] is to get Claude into a loop by giving it the tools
+[00:11:21] and instructions that are required for it to work
+[00:11:23] effectively.
+[00:11:28] So verification comes in many flavors.
+[00:11:31] We talked about UX verification.
+[00:11:33] But you can have back-end verification.
+[00:11:35] You may want to verify your entire app end-to-end,
+[00:11:38] including infra.
+[00:11:39] And the core concept here remains the same.
+[00:11:42] You want to give Claude the tools and the instructions
+[00:11:45] to get it into a loop.
+[00:11:47] And once you kind of figure that piece out,
+[00:11:49] all three of these flavors kind of merge into one.
+[00:11:53] You don't have to be very specific about the instructions
+[00:11:56] you give Claude.
+[00:11:57] As long as it has all the right tools and instructions,
+[00:11:59] it'll be able to verify all of these things.
+[00:12:05] So we've talked a lot about theory,
+[00:12:06] and we've talked a lot about hypotheticals and jargon.
+[00:12:10] But I wanted this slide to be a little bit more concrete.
+[00:12:13] So what does it actually mean to give Claude
+[00:12:16] the instructions and the tools to make it go in a loop.
+[00:12:19] And it usually boils down to four things.
+[00:12:22] And I'll go through the front end or UX section from this slide.
+[00:12:26] The first thing is to run your application.
+[00:12:29] So for a front end application or a front end verification
+[00:12:34] loop, this might correspond to running your dev server.
+[00:12:37] So running npm run start or whatever your dev server might
+[00:12:41] be, it just spins up a dev server.
+[00:12:43] Once the dev server is up, you want
+[00:12:45] Claude to actually use the web server.
+[00:12:48] And the way it does that is by opening up a browser.
+[00:12:51] My personal MCP tool of choice for this
+[00:12:53] is the Claude in Chrome MCP tool.
+[00:12:56] You can access this with slash Chrome
+[00:12:59] if you're using Claude code.
+[00:13:00] You can also use Playwright, or there's
+[00:13:02] a bunch of other browser control MCPs
+[00:13:04] that you can use to do that.
+[00:13:07] Once Claude can drive your browser,
+[00:13:11] the next step is to prove that something works.
+[00:13:15] So if it's a fix it's working on,
+[00:13:17] you want to take a screenshot before the fix and after the fix
+[00:13:21] and make sure that it's the right state.
+[00:13:25] And finally, there's unblocking it.
+[00:13:28] So if you've ever tried to create a verification
+[00:13:32] loop in a production app, you'll very quickly
+[00:13:34] find that there are some blockers you run into.
+[00:13:39] And some of the common blockers are, for example, auth
+[00:13:42] and state.
+[00:13:44] So auth basically means you want to give Claude an identity
+[00:13:48] that it can log into to your web application
+[00:13:50] so it can actually start to use your app.
+[00:13:52] And then state means you may want to pre-configure some state.
+[00:13:56] For example, if you have an e-commerce store,
+[00:13:58] you may want to populate the inventory for that store
+[00:14:01] for Claude to be able to use your app meaningfully.
+[00:14:04] And this isn't very novel.
+[00:14:07] In fact, in traditional software engineering too,
+[00:14:09] when you write end-to-end tests, writing these state setup
+[00:14:13] scripts are quite common.
+[00:14:14] The only difference here is that you
+[00:14:16] want to give Claude access to these scripts,
+[00:14:19] and you want to make them dynamic.
+[00:14:20] You don't want to be too prescriptive about what
+[00:14:23] these scripts are doing.
+[00:14:24] And that allows Claude to do a much wider variety of things
+[00:14:28] than you can do with static scripts.
+[00:14:34] OK.
+[00:14:35] So we know what a verification loop now is.
+[00:14:37] We know how to write one.
+[00:14:39] How do you package it?
+[00:14:40] How do you distribute this script to your colleagues,
+[00:14:43] to your co-workers, even to your future self?
+[00:14:46] And one of the best ways of doing this is by using a skill.
+[00:14:50] You can think of a skill as just a way
+[00:14:53] to store some arbitrary context about a specific topic And in this case that topic happens to be a verification loop The interesting thing about skills also is that you can make them self
+[00:15:06] So if you put in instructions into your skill
+[00:15:09] about improving the skill every time Claude hits a blocker,
+[00:15:13] you will end up creating this self-documenting,
+[00:15:17] self-improving skill, which everyone on your team
+[00:15:19] can contribute to, not just you.
+[00:15:21] And this makes it really powerful.
+[00:15:23] This is actually how we do verification in the Cloud Code
+[00:15:25] team as well.
+[00:15:26] We have a single verification skill.
+[00:15:29] And the skill is explicitly told to keep documenting itself.
+[00:15:34] So every time someone runs into a blocker,
+[00:15:36] the skill will go back in and edit itself
+[00:15:40] so that next time when you or your colleague run
+[00:15:42] into the same issue, it's not a problem.
+[00:15:48] OK.
+[00:15:48] So we're going to jump into a demo next.
+[00:15:52] But before the demo, I want to talk about what
+[00:15:55] the application that I'm going to be using.
+[00:15:58] There is a type tester application called MonkeyType.
+[00:16:03] How many of you have heard of MonkeyType?
+[00:16:06] OK, I thought so.
+[00:16:07] It's a niche community.
+[00:16:09] But it's basically a type tester where
+[00:16:11] it shows you a bunch of words, as you can see.
+[00:16:14] And you have to type those words as accurately
+[00:16:17] and as fast as possible.
+[00:16:18] And the application just tracks your stats for you.
+[00:16:22] I like this as a demo app because it is representative of a real-world full-stack app.
+[00:16:28] It's written in TypeScript with an express backend and MongoDB and Redis as persistence layers.
+[00:16:35] And it's open source.
+[00:16:37] So you guys can go to monkeytype.com right now.
+[00:16:39] You can even check out the source code if you want.
+[00:16:42] But what we'll be doing in this demo is we'll be creating a verification loop live.
+[00:16:47] So we'll tell Claude to spin up a new dev server.
+[00:16:49] We'll tell it to kind of go and use the Chrome MCP
+[00:16:54] to check some of its work.
+[00:16:56] And then once we create the verification skill,
+[00:16:59] we'll also create a new feature and ask
+[00:17:01] Claude to use the verification skill to verify itself.
+[00:17:06] So let's get started with the demo.
+[00:17:11] So we can switch over to my laptop screen.
+[00:17:17] OK.
+[00:17:18] So this is a brand new Cloud Code session.
+[00:17:21] I've already done the homework of setting up
+[00:17:23] MonkeyType locally.
+[00:17:25] I've also installed some dependencies
+[00:17:27] and curated a CloudMD because I didn't
+[00:17:29] want to do that in front of you guys and waste your time.
+[00:17:32] So let's tell Cloud to spin up the dev server.
+[00:17:42] OK, so it says the dev server is already running.
+[00:17:44] And that's right, because I started it right before our talk.
+[00:17:48] And let's go and check out what's on the front end.
+[00:17:52] So if we go here, if monkey type opens up,
+[00:17:57] I can start typing, and there's a little timer that shows up.
+[00:18:01] I'm not very good at typing, so there's a lot of typos here.
+[00:18:04] But it's essentially what I would expect.
+[00:18:08] Let's also check out the back end link.
+[00:18:12] This just returns a JSON.
+[00:18:15] And it just basically means that the back end is up and running,
+[00:18:19] which is good.
+[00:18:21] The next thing I'm going to do is I'm
+[00:18:23] going to make sure that my Chrome MCP is enabled.
+[00:18:26] And the way you do that is just slash Chrome.
+[00:18:30] And as you can see here, it says status enabled, extension
+[00:18:34] installed, which is exactly what we're looking for.
+[00:18:36] If you don't have it installed, it'll
+[00:18:37] take you to a little setup guide,
+[00:18:39] and you can install it for yourself.
+[00:18:40] And now I'm going to say use the Chrome MCP to make sure that the front end is working.
+[00:18:52] Make it quick, please.
+[00:18:55] Okay.
+[00:18:59] And what we should see now is that this is the tab that Claude is using, and it should
+[00:19:09] call the Chrome MCP tool.
+[00:19:10] So if you go back here, we can see two Chrome MCP tool calls.
+[00:19:15] I can Control-O and see exactly what it did.
+[00:19:18] So it navigated to localhost 3000,
+[00:19:23] and then it's looking at the contents of the tab,
+[00:19:26] which is great.
+[00:19:27] But we want to do something more exciting.
+[00:19:29] Just looking at a static web page isn't very helpful.
+[00:19:32] So let's say, can you, actually before I do that,
+[00:19:35] I'm going to resize these so you guys can see what's happening in the background.
+[00:19:45] OK.
+[00:19:46] Can you try typing and make sure everything works?
+[00:19:58] OK.
+[00:19:58] So, clause.
+[00:20:00] Apparently, he's also not very good at typing.
+[00:20:03] But it typed in something, and it says that typing works.
+[00:20:08] That's great.
+[00:20:09] Let's do one more thing.
+[00:20:10] Let's say, can you also use the settings and change something?
+[00:20:23] OK, so it navigated to the Settings page,
+[00:20:27] And it's changing the difficulty to export.
+[00:20:31] Not a good idea based on how it performed.
+[00:20:37] OK.
+[00:20:38] And it claims that the setting is persisted,
+[00:20:42] and it's able to verify that.
+[00:20:45] So that's great.
+[00:20:46] This is what we did so far is we just held Claude's hand
+[00:20:50] and told it exactly what to do.
+[00:20:52] So we were like, spin up the dev server,
+[00:20:54] go and do these two or three things that we care about.
+[00:20:57] And that's basically verification, right?
+[00:21:01] What I can do next is I can tell Claude
+[00:21:02] to take all the learnings from this session
+[00:21:05] and put it into a skill file.
+[00:21:07] So I can say, take everything we learned
+[00:21:12] and put it into a skill file in docclaweddemoverification.
+[00:21:22] I didn't have to give it the full path,
+[00:21:24] but I chose to anyway.
+[00:21:26] OK, let's see.
+[00:21:28] It wants to create a new directory.
+[00:21:37] OK, so it's now proceeding to write a fairly large scale.md file.
+[00:21:43] And if you look at what's inside this file,
+[00:21:46] we'll just skim through it real quick.
+[00:21:48] It says, number one, bring up the stack,
+[00:21:50] which is basically what we did.
+[00:21:51] It has some commands to do that.
+[00:21:53] It has Docker Compose, blah, blah, blah.
+[00:21:57] Then it loads up the Chrome MCP tools,
+[00:21:59] because that's what we told it to do next.
+[00:22:02] And then finally, there is a smoke test,
+[00:22:05] where it's using the browser tools
+[00:22:07] to actually check its own work.
+[00:22:11] So I'm going to go ahead and say yes.
+[00:22:15] Great.
+[00:22:16] So that must have looked quite simple, and it really is.
+[00:22:20] Creating a verification loop is simple.
+[00:22:23] There were a few blockers that came up along the way
+[00:22:26] when I was setting up this demo.
+[00:22:28] We don't have to talk about those right now,
+[00:22:30] but I'm sure that if you were to do this yourself,
+[00:22:32] you can probably get this up and running
+[00:22:34] within five to 10 minutes.
+[00:22:37] What I'll do next is, because both Claude and I
+[00:22:40] are so bad at typing, I'm going to tell Claude
+[00:22:43] to make a confetti animation every time I mistype,
+[00:22:48] and then use the verification skill that we just created
+[00:22:50] to verify its own work.
+[00:22:52] So let's say every time I mistype,
+[00:22:59] please show me a confetti animation
+[00:23:05] and use the skill that we just created to verify your work.
+[00:23:12] OK.
+[00:23:22] So it's going to do its thing, figure out where to write this code,
+[00:23:29] and then hopefully the demo gods will be with us tonight.
+[00:23:42] Okay, so it wants to write some files.
+[00:23:53] I'm going to switch on auto mode.
+[00:23:59] So it doesn't have to ask me for every file edit.
+[00:24:12] Okay this is interesting So it created the feature and then it realized that there were a
+[00:24:27] couple of lint errors. So you see this like, oh excellent errors too. And then it proceeded to fix
+[00:24:33] those errors next and then it's verifying itself again so you see the verification loop
+[00:24:42] in action now where it's it wrote some code it encountered some issues it fixed those issues
+[00:24:51] by writing some more code and it kind of went in a circle doing that until it came to a good state
+[00:24:56] So let's test it out ourselves as well.
+[00:25:02] Okay, it's still doing something.
+[00:25:04] Let's let it stop.
+[00:25:26] .
+[00:25:35] OK, so we do see the confetti showing up.
+[00:25:40] It put us on expert mode, which is why it keeps disappearing on me.
+[00:25:45] But effectively, Claude was able to do the job
+[00:25:49] and fix its own lint errors.
+[00:25:54] I won't, we're running short of time,
+[00:25:56] so I'm not going to let this finish,
+[00:25:58] but hopefully that gives you a taste
+[00:25:59] of how powerful a verification loop can be
+[00:26:02] and how Claude can continue to hill climb on a task
+[00:26:05] if you give it the right instructions and tools to do so.
+[00:26:09] Let's switch back over to the slides now.
+[00:26:14] The key takeaway here is, you know,
+[00:26:16] you should try to hold Claude's hand
+[00:26:19] and show it how to do verification.
+[00:26:23] And once you've taught it how to do verification,
+[00:26:27] it can very easily summarize those learnings
+[00:26:29] into a skill file, which you can then
+[00:26:31] package and distribute for your future self
+[00:26:34] and for your teammates.
+[00:26:41] OK, so now that we have mastered verification,
+[00:26:46] we can graduate to multi-clotting or parallelizing
+[00:26:51] our work more effectively.
+[00:26:53] The problem that arises when you try to run too many cloud instances at the same time is that they all eat at your attention.
+[00:27:03] And your attention is a scarce resource.
+[00:27:05] I personally find that more than four to five sessions open simultaneously takes a big load on my brain.
+[00:27:13] And I can't really function beyond that.
+[00:27:15] So what are some ways that we can scale that?
+[00:27:18] we can scale that and what are some strategies we can use
+[00:27:22] to multi-cloud more effectively.
+[00:27:25] There's four things that we'll talk about today.
+[00:27:30] There's the Cloud Code desktop app, which provides you a GUI
+[00:27:34] and makes it easier to manage multiple sessions.
+[00:27:39] There is Agent View.
+[00:27:40] So if you love the terminal, like I do,
+[00:27:43] and you want to stay in the terminal,
+[00:27:45] But then we have Cloud Agents that provide you
+[00:27:48] some of the same benefits of the desktop app inside the terminal.
+[00:27:54] You can also run Cloud in the cloud.
+[00:27:56] So if you run it on our website, Cloud
+[00:27:59] is now running in our cloud as opposed to your laptop.
+[00:28:04] And finally, there's remote control, which
+[00:28:05] is my favorite feature.
+[00:28:07] And we'll talk more about this when we get to it.
+[00:28:10] So this is a screenshot of what the desktop app looks like.
+[00:28:14] On the left, you have a sidebar.
+[00:28:16] And the sidebar has all your sessions across all surfaces.
+[00:28:20] So it has your sessions that are running locally
+[00:28:23] in the terminal.
+[00:28:24] It has your sessions running in the Cloud.
+[00:28:26] It has your sessions running in all Git repos And so it becomes the central control plane for working with Cloud and your sessions You can also pin sessions you can rename them you can color your sessions differently
+[00:28:42] and all of these things effectively are just solving the problem of grabbing your attention.
+[00:28:47] If you rename a session to something that's memorable to you, when you come back to it,
+[00:28:52] you know what that session was doing.
+[00:28:53] So these are all kind of ways to just make your attention more,
+[00:29:00] protect your attention more.
+[00:29:05] If you love the terminal, this used to be how you would multicloud.
+[00:29:10] This is a setup of how I used to multicloud at least.
+[00:29:14] I used to have a Tmux window manager with four panes,
+[00:29:18] and each pane would work on a different work tree.
+[00:29:21] tree. This works, honestly, but it is a lot to manage. Who here knows what Tmux is? Okay,
+[00:29:31] great. That's a lot of people. And who here knows what work trees are? Great, about 50%.
+[00:29:39] So you have to kind of manage work trees and Tmux yourself, which works and I think I'm
+[00:29:45] used to it now, but it's also not the most convenient thing.
+[00:29:49] We can do better.
+[00:29:50] And what we arrived at was Cloud Agents.
+[00:29:56] This is a feature that we released, I think, a week ago,
+[00:29:59] maybe a little bit more than a week.
+[00:30:01] And the way you access it is just say
+[00:30:04] Cloud Agents instead of Cloud.
+[00:30:06] And it opens up this view, which is very similar to the desktop
+[00:30:09] sidebar that we saw before.
+[00:30:12] And this view lists all your sessions that are running
+[00:30:15] on your local computer.
+[00:30:17] It also sorts them by the degree of attention
+[00:30:20] that they require.
+[00:30:21] So if a session needs your immediate attention,
+[00:30:24] and if it's blocked on, let's say, a permission prompt
+[00:30:26] or a question or some input that it needs from you,
+[00:30:29] it'll show up right at the top.
+[00:30:31] If a session is running or if a session has completed
+[00:30:33] its desired success date, it'll be further down.
+[00:30:37] You can also customize it.
+[00:30:39] So you can, again, pin sessions.
+[00:30:40] You can rename sessions.
+[00:30:41] You can reorder them.
+[00:30:43] And again, this is a way to just manage your workload
+[00:30:46] and manage your attention a little bit better.
+[00:30:53] Cloud Code on the web.
+[00:30:56] We've talked about this a little bit,
+[00:30:57] but the main goal here is how do you decouple your laptop
+[00:31:02] with your Cloud Code sessions?
+[00:31:05] I find it quite annoying that when
+[00:31:06] I'm walking from meeting to meeting,
+[00:31:08] I have to have my laptop open and just walk like this
+[00:31:12] everywhere.
+[00:31:13] When I'm driving back home, I'm also annoyed
+[00:31:16] because there's no internet, and I can't
+[00:31:18] leave my laptop open in my car.
+[00:31:21] So having your sessions be running in the cloud
+[00:31:24] is really nice.
+[00:31:26] You don't have to worry about the compute
+[00:31:28] that it's actually running on.
+[00:31:30] And if you haven't given Cloud Code on the Web a shot,
+[00:31:33] just go to cloudai.com and it's pretty easy to get started.
+[00:31:37] And finally, remote control.
+[00:31:44] As I said earlier, this is my favorite feature.
+[00:31:46] And remote control essentially gives you
+[00:31:49] the option to control any session running
+[00:31:53] on any surface with your phone.
+[00:31:56] The way to get started with remote control
+[00:31:58] is you just go to wherever you're running your Cloud Code
+[00:32:01] session and say slash remote dash control.
+[00:32:05] And once you do that, it will pop up on your mobile app.
+[00:32:09] It will also send you notifications.
+[00:32:11] So if Claude needs some help from you or needs your input,
+[00:32:14] your phone will buzz, and you could be in your car.
+[00:32:17] You could be doing whatever you want,
+[00:32:19] and you could just give Claude the input that it needs.
+[00:32:26] I am running short on time, so I'm
+[00:32:28] going to skip this demo, unfortunately.
+[00:32:30] But I was just going to show you Claude agents
+[00:32:32] as part of this demo.
+[00:32:33] If you haven't given Cloud agents a try, just give it a shot.
+[00:32:42] OK so we talked about how to make Cloud more reliable by making it or giving it the skills to verify its own work We also talked about how do you multi more effectively But even that isn quite
+[00:33:00] satisfying. You still have to actually spin up a new session. You have to have a goal in mind,
+[00:33:06] and whether it's on the desktop app or the terminal or web, you have to go and spin up a
+[00:33:11] session. How do you remove yourself from the loop even more? And that's what this next session is
+[00:33:17] going to be about. So as software engineers, we have a lot of different tasks. And not all of
+[00:33:26] these tasks are writing code for a specific new feature or a bug that you're working on.
+[00:33:32] A lot of this is just bookkeeping in some ways. So personally, I'm spending a lot of my time now
+[00:33:38] now, babysitting my PRs.
+[00:33:41] I think we all have a lot more PRs now
+[00:33:43] that we're able to generate with the help of Cloud and AI.
+[00:33:47] And these PRs need to merge.
+[00:33:50] But before merging, you need to get through your review
+[00:33:53] comments, you need to get through merge conflicts,
+[00:33:55] you need to get through CI failures.
+[00:33:57] There's a lot that goes on.
+[00:33:58] And if you have like 20 or 30 of these PRs
+[00:34:00] you're trying to merge in a day, you
+[00:34:02] can easily end up spending hours on babysitting these.
+[00:34:07] Updating docs is another good one.
+[00:34:10] I think as we increase our velocity of shipping features
+[00:34:13] and shipping fixes, we also need to keep up with docs.
+[00:34:16] Similarly, triaging, monitoring feedback,
+[00:34:19] and just in general, keeping CI green,
+[00:34:22] these are all things that you need to do every day.
+[00:34:26] But they don't necessarily need you in the loop.
+[00:34:29] They just need to be running in some sort of loop.
+[00:34:33] And that's where the slash loop command comes in.
+[00:34:37] So slash loop is a way to run a prompt
+[00:34:43] at a specific interval in Cloud Code.
+[00:34:46] So you can say slash loop 10 minutes
+[00:34:48] and babysit my open PRs.
+[00:34:50] And what this will do is the Cloud Code,
+[00:34:53] the session that's running the slash command
+[00:34:55] will wake up every 10 minutes.
+[00:34:57] It will run this prompt.
+[00:34:58] And if you have your Cloud MDs and your tools defined
+[00:35:02] and set up correctly, it will be able to figure out
+[00:35:04] what to do by itself.
+[00:35:05] So you don't really have to be babysitting and monitoring
+[00:35:09] your PRs manually.
+[00:35:16] Routines.
+[00:35:17] Routines are basically slash loop, but running remotely.
+[00:35:21] So we talked about Cloud Code on the web before
+[00:35:24] and how that uses a remote container to run your sessions.
+[00:35:28] Routines live and work in the same containers.
+[00:35:32] The way you set up routines is by going to the web app
+[00:35:35] or the desktop app, you'll see a little routines tab out there.
+[00:35:40] And you can set up a new routine quite easily.
+[00:35:44] You can have a time-based trigger,
+[00:35:46] or you can have an event-based trigger.
+[00:35:48] And both of those triggers can lead to a new Cloud Code
+[00:35:51] session opening up with a specified prompt.
+[00:35:55] So for example, we have a routine that updates our docs
+[00:35:59] every day for the Cloud Code team.
+[00:36:02] We also have a routine that looks at our issues and feedback
+[00:36:06] that's coming in and posts on our Slack channel every six hours.
+[00:36:10] So this can be quite useful to do routine tasks
+[00:36:16] that don't necessarily require you in the loop.
+[00:36:25] Cool.
+[00:36:26] So once you stack all of these three skills together,
+[00:36:30] you end up at this system which is able to do a lot of work
+[00:36:35] even without you having to manually be on your keyboard.
+[00:36:39] And that really is the ultimate goal,
+[00:36:42] is that you can spend your attention and your time
+[00:36:45] on the tasks that you care about.
+[00:36:47] And everything else can just be delegated to Claude
+[00:36:49] and with high reliability and a high degree of confidence.
+[00:36:57] Cool.
+[00:36:57] So that's all I have for you guys.
+[00:36:59] Thank you so much, and I hope you enjoyed the talk.
