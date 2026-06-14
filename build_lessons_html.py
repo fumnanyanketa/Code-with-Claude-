@@ -26,16 +26,16 @@ TEMPLATE = r'''<!doctype html>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#faf9f5; --surface:#ffffff; --surface-2:#f3f0e7; --text:#2b2a27; --muted:#75716a;
+  --bg:#ffffff; --surface:#ffffff; --surface-2:#f4f1ea; --text:#2b2a27; --muted:#75716a;
   --accent:#c4623f; --accent-soft:#e9c8b9; --border:#e7e2d6; --shadow:0 1px 3px rgba(40,34,24,.06),0 8px 24px rgba(40,34,24,.05);
-  --code-bg:#282320; --max:760px;
+  --code-bg:#282320; --max:760px; --card:#f3efe6; --card-border:#ddd6c4;
   --k:#3b82a6; --k-bg:#e8f1f5; --tip:#b8842f; --tip-bg:#faf2df; --ok:#3f8a52; --ok-bg:#e9f3ea;
   --no:#c0533f; --no-bg:#f7e9e5; --goal:#8257b8; --goal-bg:#f0e9f8; --note:#75716a; --note-bg:#f1efe8;
 }
 html[data-theme="dark"]{
   --bg:#1b1a17; --surface:#242220; --surface-2:#2e2b27; --text:#ece7dd; --muted:#a39d92;
   --accent:#e08a63; --accent-soft:#5a3f30; --border:#37332c; --shadow:0 1px 3px rgba(0,0,0,.4);
-  --code-bg:#1f1c19;
+  --code-bg:#1f1c19; --card:#2a2723; --card-border:#403b32;
   --k:#7fb6cf; --k-bg:#23323a; --tip:#d9aa55; --tip-bg:#352c1b; --ok:#7bc08c; --ok-bg:#1f2f23;
   --no:#e08a76; --no-bg:#352321; --goal:#b794e6; --goal-bg:#2c2436; --note:#a39d92; --note-bg:#2a2723;
 }
@@ -74,7 +74,7 @@ li{margin:6px 0}
 hr{border:none;border-top:1px solid var(--border);margin:40px 0}
 strong{font-weight:650}
 /* Lesson meta hero */
-.lesson-meta{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin:0 0 34px;box-shadow:var(--shadow);font-size:14.5px;line-height:1.9}
+.lesson-meta{background:var(--card);border:1px solid var(--card-border);border-left:4px solid var(--accent);border-radius:12px;padding:18px 22px;margin:0 0 34px;box-shadow:var(--shadow);font-size:14.5px;line-height:1.9}
 .lesson-meta p{margin:0;color:var(--muted)}
 .lesson-meta strong{color:var(--text)}
 /* Tables */

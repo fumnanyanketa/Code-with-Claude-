@@ -413,9 +413,9 @@ def schedule_agent(problem, max_rounds=3):
 
 ---
 
-## Exercises (warm up drills)
+## Practice exercises (optional extra reps)
 
-> These are smaller drills to do before or alongside the Capstone. A tiny test setup is enough, even a notebook with 5 test cases that prints pass or fail.
+> **What these are:** five small, self contained coding tasks. Each one asks you to *do* one specific thing (they are not quiz questions), so you get focused practice on a single skill. They are optional and independent of each other. The **Capstone Project above is the main build**, and it already includes all of these skills in one place, so feel free to skip straight to it if you would rather build one bigger thing. Each exercise is labelled by difficulty. A tiny test setup is enough, even a single notebook with 5 test cases that prints pass or fail.
 
 ### Exercise 1: build the eval first (foundational)
 Write a 5 case eval for a support assistant in a topic you know well (for example a software billing assistant). Make sure you include **one control case, two edge cases, and one capability or handoff case** (where the assistant must pass the user to a human or refuse). Write down the answer you expect for each case before you write any prompt.

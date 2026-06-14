@@ -9,16 +9,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#faf9f5; --surface:#ffffff; --surface-2:#f3f0e7; --text:#2b2a27; --muted:#75716a;
+  --bg:#ffffff; --surface:#ffffff; --surface-2:#f4f1ea; --text:#2b2a27; --muted:#75716a;
   --accent:#c4623f; --accent-soft:#e9c8b9; --border:#e7e2d6; --shadow:0 1px 3px rgba(40,34,24,.06),0 8px 24px rgba(40,34,24,.05);
-  --code-bg:#282320; --max:760px;
+  --code-bg:#282320; --max:760px; --card:#f3efe6; --card-border:#ddd6c4;
   --k:#3b82a6; --k-bg:#e8f1f5; --tip:#b8842f; --tip-bg:#faf2df; --ok:#3f8a52; --ok-bg:#e9f3ea;
   --no:#c0533f; --no-bg:#f7e9e5; --goal:#8257b8; --goal-bg:#f0e9f8; --note:#75716a; --note-bg:#f1efe8;
 }
 html[data-theme="dark"]{
   --bg:#1b1a17; --surface:#242220; --surface-2:#2e2b27; --text:#ece7dd; --muted:#a39d92;
   --accent:#e08a63; --accent-soft:#5a3f30; --border:#37332c; --shadow:0 1px 3px rgba(0,0,0,.4);
-  --code-bg:#1f1c19;
+  --code-bg:#1f1c19; --card:#2a2723; --card-border:#403b32;
   --k:#7fb6cf; --k-bg:#23323a; --tip:#d9aa55; --tip-bg:#352c1b; --ok:#7bc08c; --ok-bg:#1f2f23;
   --no:#e08a76; --no-bg:#352321; --goal:#b794e6; --goal-bg:#2c2436; --note:#a39d92; --note-bg:#2a2723;
 }
@@ -57,7 +57,7 @@ li{margin:6px 0}
 hr{border:none;border-top:1px solid var(--border);margin:40px 0}
 strong{font-weight:650}
 /* Lesson meta hero */
-.lesson-meta{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin:0 0 34px;box-shadow:var(--shadow);font-size:14.5px;line-height:1.9}
+.lesson-meta{background:var(--card);border:1px solid var(--card-border);border-left:4px solid var(--accent);border-radius:12px;padding:18px 22px;margin:0 0 34px;box-shadow:var(--shadow);font-size:14.5px;line-height:1.9}
 .lesson-meta p{margin:0;color:var(--muted)}
 .lesson-meta strong{color:var(--text)}
 /* Tables */
@@ -156,7 +156,7 @@ h2:first-of-type{margin-top:8px}
 <li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
 </ul>
 </li>
-<li><a href="#exercises-warm-up-drills">Exercises (warm up drills)</a><ul>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
 <li><a href="#exercise-1-build-the-eval-first-foundational">Exercise 1: build the eval first (foundational)</a></li>
 <li><a href="#exercise-2-cleanup-pass-foundational">Exercise 2: cleanup pass (foundational)</a></li>
 <li><a href="#exercise-3-tool-versus-instruction-intermediate">Exercise 3: tool versus instruction (intermediate)</a></li>
@@ -603,9 +603,9 @@ conflict, escalate.
 <p>💡 <strong>Keep yourself honest:</strong> change one thing at a time and re-run. If you cannot say which change caused an improvement, you changed too much at once.</p>
 </blockquote>
 <hr />
-<h2 id="exercises-warm-up-drills">Exercises (warm up drills)</h2>
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
 <blockquote>
-<p>These are smaller drills to do before or alongside the Capstone. A tiny test setup is enough, even a notebook with 5 test cases that prints pass or fail.</p>
+<p><strong>What these are:</strong> five small, self contained coding tasks. Each one asks you to <em>do</em> one specific thing (they are not quiz questions), so you get focused practice on a single skill. They are optional and independent of each other. The <strong>Capstone Project above is the main build</strong>, and it already includes all of these skills in one place, so feel free to skip straight to it if you would rather build one bigger thing. Each exercise is labelled by difficulty. A tiny test setup is enough, even a single notebook with 5 test cases that prints pass or fail.</p>
 </blockquote>
 <h3 id="exercise-1-build-the-eval-first-foundational">Exercise 1: build the eval first (foundational)</h3>
 <p>Write a 5 case eval for a support assistant in a topic you know well (for example a software billing assistant). Make sure you include <strong>one control case, two edge cases, and one capability or handoff case</strong> (where the assistant must pass the user to a human or refuse). Write down the answer you expect for each case before you write any prompt.</p>
