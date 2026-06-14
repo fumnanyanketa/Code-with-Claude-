@@ -1,0 +1,415 @@
+Title: What legal agents inherit from coding agents: Lessons from Legora
+Video: https://www.youtube.com/watch?v=nho1YAEPuwA
+Caption: whisper (whisper-large-v3-turbo, audio transcription)
+================================================================================
+
+[00:00:00] Music
+[00:00:02] Music
+[00:00:04] Music
+[00:00:06] Music
+[00:00:08] Music
+[00:00:10] Music
+[00:00:12] Music
+[00:00:14] Music
+[00:00:16] Please welcome to the stage staff software engineer at Lagora, Jacob Emmerling.
+[00:00:22] Music
+[00:00:24] Music
+[00:00:26] Hi, I'm Jacob. I'm an engineer at Legora where we are building collaborative AI for lawyers.
+[00:00:36] And today I want to talk about how we learn from coding agents when building an agent
+[00:00:40] to do legal work. But before we get into it, a bit of context about what we do at Legora.
+[00:00:45] We're basically building an AI-based workspace for lawyers to do end-to-end legal tasks on.
+[00:00:51] And we have over a thousand customers today, including some of the largest law firms in
+[00:00:55] the world. We originally founded in Stockholm, valued over five billion dollars now and did
+[00:01:00] kind of a record sprint from one to 100 million in ARR. But that's not really why you should
+[00:01:05] listen to me today. This year is. Six months ago we had a realization of how we built agents
+[00:01:12] and realized that we need to do something different. And this all stemmed from this
+[00:01:16] chart that probably everybody in this room here is very familiar with. We've all seen
+[00:01:20] over the last years, AI and coding going from bad autocomplete to good autocomplete, chatbots,
+[00:01:26] agents, and background agents and beyond.
+[00:01:29] And it doesn't look like it's going to stop anytime soon.
+[00:01:31] And we have heard talks this morning about new stuff in cloud code and how organizations
+[00:01:35] are leveraging AI to make software engineering more efficient.
+[00:01:38] And it's just going to keep getting more and more important for our day-to-day work as
+[00:01:42] software engineers.
+[00:01:44] And the interesting part when looking at this is, and if you're building in any other vertical,
+[00:01:48] you probably noticed a similar thing, is that other verticals outside of coding were actually
+[00:01:53] quite behind looking back like six months ago. And this is a realization we had back
+[00:01:58] then. And we thought a lot about why does this, and what are the reasons coding is accelerating
+[00:02:03] so fast, why are agents so powerful for coding and not for legal work yet. And we started
+[00:02:09] thinking about in which ways is coding similar to legal work, and what are the analogies
+[00:02:14] that we can draw to learn from it.
+[00:02:17] And there's actually a lot of parallels
+[00:02:18] once you start looking into it.
+[00:02:20] For example, both coding and legal work
+[00:02:23] are based heavily on prior work.
+[00:02:25] Both lawyers and engineers work a lot
+[00:02:27] with text-based documents.
+[00:02:29] There's strict conventions within organizations and firms.
+[00:02:32] And there's also a strong review culture.
+[00:02:34] For example, as engineers,
+[00:02:36] we are reviewing each other's pull requests
+[00:02:38] before code ships to production
+[00:02:39] or now also the pull requests of agents.
+[00:02:43] And lawyers do a similar thing
+[00:02:44] where an associate would draft a document, and before it goes out to any client, a partner
+[00:02:49] will review it and sign off on it.
+[00:02:51] And this is not something magical about legal and coding and some unique combination of
+[00:02:55] those two that leads to all these parallels.
+[00:03:00] There's a lot of parallels between any kind of knowledge work and coding.
+[00:03:03] So if you build in any other vertical, it's a very interesting exercise to do.
+[00:03:08] And after looking at this, the obvious next question becomes, how do we make use of this?
+[00:03:12] like how do we get in on coding agents getting better and better to make our vertical better.
+[00:03:20] There's basically three buckets, how you can learn from coding agents as we found. First
+[00:03:25] of all, there's stuff that you can reuse one to one. Stuff like to-dos, planning, sub-agents,
+[00:03:31] sandboxes, human in the loop. There's a lot of things that over time coding agents figured
+[00:03:35] out how to solve a certain UX or how to make agents good at certain long-running tasks,
+[00:03:40] And these things turned out to be pretty universal for agents in general.
+[00:03:44] And it's also exactly the things that you get for free when using the Anthropic Agent
+[00:03:47] SDK or managed agents even.
+[00:03:51] Next up is a bit more interesting.
+[00:03:52] There is stuff you can translate.
+[00:03:54] And these are things that look very similar in your domain to some subproblem in coding.
+[00:04:00] And it's not as simple as just copying them.
+[00:04:02] You kind of need to look at the pattern of how coding solves something and translate it
+[00:04:05] pattern to your domain.
+[00:04:07] And we're going to look at some examples of all of these.
+[00:04:09] so it's going to get a bit more clear, hopefully.
+[00:04:12] And lastly, probably the most exciting part,
+[00:04:15] because it's actually about building new stuff,
+[00:04:17] is stuff you need to invent for your domain.
+[00:04:20] And for us, it's stuff like grounding every answer in citations
+[00:04:22] so lawyers can verify where certain claims in the agent's output come from
+[00:04:27] or working with large sets of documents for due diligence use cases.
+[00:04:33] Okay, we're going to walk through all of these different ones now
+[00:04:36] after I grab a bit of water.
+[00:04:39] First off, we're going to look at planning mode and human in the loop as an example for what you can reuse from coding agents.
+[00:04:52] You probably notice when you work on a bigger task together with cloud code or your coding agent of choice you start instead of just like firing off a prompt and let it rip for a few hours you start off like planning like a detailed plan of how the work should be done
+[00:05:07] And this basically solves a few different things. First of all, you're exploring the problem together
+[00:05:11] with the agent, you're gathering a lot of context and you're also making upfront decisions so that
+[00:05:16] then the agent doesn't need to make decisions for you when it actually executes the work.
+[00:05:19] work. It turns out this works exactly the same way in legal if you wanted to. If there's
+[00:05:26] any bigger legal task a lawyer would work at, now in Legora with our agent, they would
+[00:05:31] just plan all the work beforehand, iterate on a plan, and when they're happy with all
+[00:05:35] the decisions and assumptions made, they can let the agent execute on the plan. So it's
+[00:05:39] literally just like a one-to-one translation of the UX that coding agents have established
+[00:05:44] and found out to work very well for human agent collaboration.
+[00:05:49] Next up, a similar example, approval of tool calls or in general dangerous actions.
+[00:05:55] For example, in your coding agent, you don't want your agent to execute like random shell
+[00:06:00] commands that are not sandboxed.
+[00:06:02] You want it to ask you, should I run this?
+[00:06:04] Is this safe?
+[00:06:05] And you answer yes or no.
+[00:06:07] And then the agent acts accordingly.
+[00:06:08] It's a similar thing in an agent working with legal stuff.
+[00:06:11] you don't want it to randomly go and delete a bunch of important client documents, you
+[00:06:15] want to be in the loop for certain actions. So same again as the established UX and we
+[00:06:21] just took it as it is and put it into our agent and therefore we didn't need to do the
+[00:06:25] whole iteration loop of figuring out what is the perfect UX for this use case, we could
+[00:06:30] just take what coding agents already figured out and apply it to our domain.
+[00:06:37] Next up is going to be a bit more interesting. It's about document editing and it's something
+[00:06:42] where we needed to translate from the coding agent domain to our domain. To give a bit
+[00:06:46] of context here, lawyers basically love working with Microsoft Word files. They spend a lot
+[00:06:52] of their time in Microsoft Word drafting stuff and like redlining documents, reviewing documents
+[00:06:58] and going back and forth. So obviously if you build an agent for legal work this is
+[00:07:01] something you need to solve very well. And for us, this is also something we solved quite
+[00:07:08] a while back in some way and that's what I want to look at firstly and walk you through
+[00:07:13] how we solved this problem before, after we had this grand realization of doing it differently.
+[00:07:21] Maybe also interesting to know why docx editing is a bit more challenging than just editing
+[00:07:26] plain text files. A docx file is basically a zip file of a bunch of XML files with a
+[00:07:31] lot of metadata and a lot of noise in there. So it's not as simple as editing a markdown
+[00:07:35] file. So what we did initially, we had some kind of top level agent handing off an editing
+[00:07:43] intent to another reasoning model and then that model got context about the current document
+[00:07:48] that needs to be edited and a bunch of instructions on high level what should be edited and then
+[00:07:52] reasoned about which edits to make throughout the documents. So if you have for example
+[00:07:57] like a 50 page template that you want to fill out, that model would then figure out, oh,
+[00:08:01] I need to insert something on page one, page three, page five, page six, but it doesn't
+[00:08:05] write out the full edits because that would be like a lot of tokens and then the models
+[00:08:09] used to get very lazy and just started like filling out the templates mid document.
+[00:08:16] So what we then did with these like individual like editing markers where we know in this
+[00:08:21] space you need to insert something like this, in this space you need to insert something
+[00:08:24] gave them to individual models and had them write out the full edits with style information
+[00:08:28] and also pay attention to what was before and after it to synthesize it into the document.
+[00:08:34] This worked very well and solved a lot of the exhaustiveness problems, but it also brought a
+[00:08:39] bunch of other problems. Because basically what you have with this kind of setup is you have a
+[00:08:43] lot of individual LLM calls with independent reasoning, different contexts, different tools,
+[00:08:49] and you just have all these handoff problems.
+[00:08:53] So, for example, if you add a bunch of new tools and things your top level agent can
+[00:08:59] do, suddenly your agent starts handing off to this editing reasoning model and gives
+[00:09:05] it some instructions about pulling context via this tool that this editing model doesn't
+[00:09:09] even have.
+[00:09:10] So you run into all these weird issues, like the more powerful your agent gets.
+[00:09:15] And of course you don't want to limit how powerful your agent can be and limit in too
+[00:09:21] many ways.
+[00:09:23] So if we contrast that to what all the coding agents out there converge to, we see it's
+[00:09:29] quite different.
+[00:09:30] Basically all the coding agents out there work in a way where they just read, edit and
+[00:09:34] verify things in a loop.
+[00:09:36] You read usually line based, simple plain text files that these agents need to read
+[00:09:41] and editing then happens with some tool that either does string replace, patches or line-based
+[00:09:45] editing and then afterwards you model either reasons about what to do next or run some
+[00:09:51] static type checking linting stuff like this And when we looked at this I mean as engineers we on a daily basis use these coding agents we also tried playing with it on like bigger documents for example We threw in these
+[00:10:06] large tracing documents and had it made like surgical edits to 20 places and it just worked
+[00:10:11] and it didn't have all these weird exhaustiveness issues that we run into with editing legal
+[00:10:16] documents in the past. And this made us very intrigued to basically change how our agent
+[00:10:22] does document editing. So what we tried then is basically the exact same thing, just with
+[00:10:28] a bit of different tool implementations to make it work. So we have the same editing loop, we have
+[00:10:33] a read tool, an edit tool and a verify step and the reading happens in the form of an intermediate
+[00:10:39] representation of the .docx file. We basically take the .docx file, transform it in a flat
+[00:10:45] representation that is like a single text-based file that the agent can interact with and then
+[00:10:49] And then we have a bunch of editing tools that work on this intermediate representation
+[00:10:54] and it can just go back and forth between reading and editing, see its own edits and
+[00:10:57] keep looping.
+[00:10:59] And I want to quickly talk about the first time we tried this out because it was quite
+[00:11:05] a realization for us to see this work.
+[00:11:08] So what we did back then was we built a POC.
+[00:11:14] We got intrigued by coding agents solving these exhaustive editing things.
+[00:11:18] So we built a POC of editing docx documents in the same way.
+[00:11:22] And as any good POC goes about, you don't have any structured eval set you run against
+[00:11:27] it.
+[00:11:28] You start vibe checking it and talking to the model and see how it works.
+[00:11:31] And you have these ideas about what things are hard and what are easy.
+[00:11:35] So I looked at this with a colleague of mine who was deep down the challenges of editing
+[00:11:40] legal documents.
+[00:11:41] He built our first Word edit initially.
+[00:11:44] So he knows about all the hard parts about editing legal documents exhaustively.
+[00:11:49] And I asked him, okay, what should we try with this?
+[00:11:51] What's something hard?
+[00:11:52] What was challenging before?
+[00:11:54] And he said, I'll just pass it this 10-page document and ask it to translate it paragraph
+[00:12:00] by paragraph from English to Swedish.
+[00:12:03] Because apparently that was something that, in our previous setup or in previous models,
+[00:12:09] usually was very challenging to get done exhaustively.
+[00:12:12] So we did this, we passed the thing in, asked the agent to translate paragraph by paragraph
+[00:12:17] from English to Swedish and just kept like started editing paragraph by paragraph as
+[00:12:21] you would expect.
+[00:12:23] Then sometimes it got a bit lost, started rereading the whole thing, sees oh I forgot
+[00:12:27] a paragraph up here, goes back, edits the paragraph and just keeps doing this for like
+[00:12:31] 10 minutes.
+[00:12:33] And at the end we opened up the document and everything was translated.
+[00:12:38] And the funniest part about this was that to test how good this new harness and tool
+[00:12:42] design works, we run this whole thing on Haiku, so this wasn't even a good model.
+[00:12:47] And I think this was really a moment first where we realized, okay, this might actually
+[00:12:51] work.
+[00:12:52] Like there might actually be something about mirroring tool design from coding agents and
+[00:12:56] getting a lot of benefits from it.
+[00:12:58] And I think the interesting part here is that my mental model is kind of that you want to
+[00:13:04] have the model almost feel like it's inside a coding agent harness and it just does a
+[00:13:09] legal task.
+[00:13:10] Because then suddenly you get these benefits from all the reinforcement learning and fine
+[00:13:14] tuning that is done on the coding agent harnesses because your harness looks very similar in
+[00:13:18] tool design and leads to very similar trajectories in tool calling.
+[00:13:22] And a lot of stuff you just get for free, but it's pretty cool.
+[00:13:27] Okay, that's it for editing.
+[00:13:30] Another example I want to quickly go over is linting for legal documents.
+[00:13:39] This is exactly what it looks like.
+[00:13:40] It's basically ESLint for legal documents.
+[00:13:45] You can imagine, as engineers we use a lot of static type checkers and tools and they
+[00:13:51] are very powerful also for agents to get a feedback loop on all the mechanical stuff
+[00:13:55] that you want to have them do right.
+[00:13:58] And it turns out also in legal documents there's a lot of static things that you can actually
+[00:14:03] verify that help an agent on a bigger task.
+[00:14:06] For example, if you have a big contract that references a paragraph later in the beginning
+[00:14:10] and an agent removes the paragraph that's been referenced, it's cool to have a static
+[00:14:16] way to check that all references are still intact and then give the agent this feedback
+[00:14:20] loop of, hey, you might want to edit a section at the bottom where you referenced this paragraph.
+[00:14:25] There is also something very cool and you can take this way further by for example doing
+[00:14:30] LLM based things inside of this linter to lint more or less mechanical stuff so you can
+[00:14:36] make this feedback loop feel very similar to coding.
+[00:14:42] That's it for stuff that we translated while building our agent.
+[00:14:46] Lastly I want to talk about stuff that we need to invent when building our agent.
+[00:14:52] And there like equivalence for this in any domain There like very domain specific things that people working inside a domain need to solve every day and you want your agent to solve it equally well as a human could do to get the best
+[00:15:05] possible outcomes. A good example for this in our case is your diligence. So you can imagine you have
+[00:15:12] two companies, company A buying company B and there's a lawyer in the middle who then gets the
+[00:15:17] task to make sure everything is fine with this transaction. And what they need to do is basically
+[00:15:22] they need to go through all the contracts that company B has with other parties and review them.
+[00:15:27] And as one can imagine, if this is like a large company, they have a lot of contracts,
+[00:15:32] like thousands and thousands of contracts you need to review and also other binding documents.
+[00:15:38] And I mean, of course, lawyers do this task today and there's a lot of tools that help them do this.
+[00:15:43] And we also have such a tool on the platform already. It's called Tabular Review.
+[00:15:47] It's what we see here on the slide also. It's this grid-like interface
+[00:15:51] where every row is a document and then you can do a structured data extraction by adding
+[00:15:57] columns to it and specifying what you want to extract.
+[00:15:59] So instead of reading the whole document, you can then lean on an LLM to extract the
+[00:16:04] relevant pieces of information from you and help you get a good overview of large documents
+[00:16:08] set.
+[00:16:09] And then as a lawyer, you would filter down on specific parties or specific red flags
+[00:16:13] that you want to then follow up on and dive deeper into.
+[00:16:17] So when we're building our agent to do legal work, we obviously need to give it away to
+[00:16:21] do the same kind of work. So what we do is we just give it access to use tabular review,
+[00:16:26] the feature that we have on the platform in the same way that a human would use it. So
+[00:16:29] our agent can go, take a folder of documents, throw it into this tool, and then we generate
+[00:16:35] all these cell values and the agent basically specify what to extract. And then it can go
+[00:16:40] and filter down this huge grid of data and figure out what's relevant for the task at
+[00:16:45] And yeah, there's analogies for this probably in all different domains.
+[00:16:50] For example, accountants would want to have some way to do reconciliation very mechanically.
+[00:16:56] Doctors also have probably some very specific tasks they need to solve.
+[00:16:59] So you can like really think of this as like the last 20% of your agent to make it really
+[00:17:04] well for a specific domain.
+[00:17:08] Okay, that's the three different categories of things.
+[00:17:12] And now we're going to have a quick live demo of how this looks like in our agents today.
+[00:17:17] We're going to pray that the live demo works.
+[00:17:21] Okay.
+[00:17:22] Is it visible?
+[00:17:23] Yes.
+[00:17:24] Great.
+[00:17:25] So this is Legora.
+[00:17:28] You log in, you get a chat box, like in a lot of AI tools.
+[00:17:34] And we can look a bit around.
+[00:17:35] I prepared a project that's called employment agreements.
+[00:17:40] And if we look here, we have a bunch of files in here, it's not that many, a bunch of employment
+[00:17:47] agreements for different employees here and we have an HR policy that's like specifying
+[00:17:55] how we, what kind of benefits our company has and a bunch of stuff like this.
+[00:18:01] So if we want to go in here now and give our agent a task, we can ask it to, I want to
+[00:18:10] give every employee an extra week of vacation during Christmas and let's plan out the work
+[00:18:16] we need to do for that.
+[00:18:19] Drop in a prompt here and now what we expect the agent to do is to look, first of all,
+[00:18:25] make itself familiar with its environment.
+[00:18:27] It's searching for stuff here now, for example.
+[00:18:29] searching for employment agreements, vacation time off to figure out what agreements do
+[00:18:33] we have, what policies do we have.
+[00:18:36] And then we wanted to reason a bit about what needs to be done for this change and create
+[00:18:41] us a plan.
+[00:18:42] And now it's creating this plan.
+[00:18:45] And if we look in here, we're going to see, okay, this is still streaming in.
+[00:18:48] It says we need to do a bunch of steps here.
+[00:18:52] First of all, we need to review all employment agreements.
+[00:18:55] We need to amend some employment agreements to add the Christmas shutdown clause.
+[00:19:01] Very nice.
+[00:19:02] And then we also need to update our HR policy manual.
+[00:19:05] And I mean, the cool thing here is that like if you would drop an agent into a code base
+[00:19:09] and ask it to do a random thing, it would first go out and collect all this context.
+[00:19:13] We didn't need to tell it that we have a policy that we need to update or we have five employment
+[00:19:18] agreements that we need to update.
+[00:19:19] goes and collects all these things that need to happen for this change.
+[00:19:26] And we could now iterate with the agent on this and tell it oh no we don't want an extra
+[00:19:30] section for this or phrase it like this or whatever but for the purpose of this demo
+[00:19:35] we are fine with this and we can send off the plan here and have it execute what we
+[00:19:40] planned out.
+[00:19:46] And what happens now under the hood
+[00:19:47] is this exact editing loop I talked about.
+[00:19:50] First, it starts reading the documents,
+[00:19:52] then it reasons about what edits to do,
+[00:19:53] then it calls some editing tool,
+[00:19:55] then it goes back and reads the documents
+[00:19:56] to see that the edits were made
+[00:19:57] and if everything is looking fine.
+[00:20:00] So it's thinking a bunch of you now about how to do this, which is great because it
+[00:20:05] means it's hopefully going to work.
+[00:20:08] And this is the moment where good salespeople start to talk about stuff.
+[00:20:12] I'm not very used to demoing the product, so it's going to be a bit boring.
+[00:20:19] But we should pretty soon get some stuff back.
+[00:20:22] Okay, now it's copying over all the documents it wants to modify to a different space to
+[00:20:26] modify them then so I can review the changes before they get written back.
+[00:20:30] And in a second we should start to get the first edit streamed in here.
+[00:20:36] Yes.
+[00:20:37] If we collapse this, you can see now that it starts editing the different employment
+[00:20:40] agreements and I can look in here.
+[00:20:44] It's actually interesting, there was one employment agreement that I had from before for testing
+[00:20:47] where it already had the Christmas shutdown clause but now it decided to also unify this
+[00:20:52] one to make the dates uniform to the other ones.
+[00:20:55] So that's pretty cool.
+[00:20:56] But I basically see here what it's adding to the individual documents and all the edits
+[00:20:59] it's making.
+[00:21:01] And then I can also see the redlined version of the original document.
+[00:21:05] So if I click in one of the agreements here, okay, this is a boring one because it's the
+[00:21:10] one that had the clause.
+[00:21:11] But this is one of the employment agreements that it edited.
+[00:21:14] I can go in here and I see redlined with the right formatting in the right indentation
+[00:21:18] and added a clause here to the benefits section about the Christmas shutdown that every employee
+[00:21:22] is going to benefit from.
+[00:21:24] it also goes and updates the annual leave policy and in the same way I can go to the
+[00:21:30] policy here. This is our policy and then we should get a red line for annual leave on the
+[00:21:36] right section about the new thing we just added. And now it also gets a bit ambitious. It wants to
+[00:21:41] draft an employee announcement memo. So communicate to our employees that they have more vacation now.
+[00:21:48] Yeah, we could like select which template to use for that memo and how that should look like.
+[00:21:52] and it's just going to go and draft this thing. But we don't need to wait for that, it's just
+[00:21:57] going to spit out a document in the end. Okay, that's it for this part of the demo.
+[00:22:03] Another thing I want to show related to the due diligence like mass document review use case is this one here So here we have another Legora project with a bunch of files in there We have like around 100 files in here that are like random documents
+[00:22:18] that might pop up in the due diligence of a company.
+[00:22:21] For example, we have, I don't even know what's in here.
+[00:22:24] It's like insurance policies, workers, compensation.
+[00:22:27] It's random documents.
+[00:22:28] And I, of course, don't want to go through them one by one and start sorting them in.
+[00:22:32] So what I do instead, I take my prepared prompt here because this is too long to speak reliably.
+[00:22:40] And I put this in here and I'm basically asking the agent to also quickly to go somewhere
+[00:22:47] else here.
+[00:22:48] That's the right one.
+[00:22:50] So I'm basically asking the agent to do a structured review of all files in this project.
+[00:22:54] I want to know what categories of contract exists, which are the interesting parties
+[00:22:59] and if there's any red flakes in the stuff.
+[00:23:02] Yeah, it's a very legal, legal specific prompt here.
+[00:23:06] And then based on that, I wanted to also,
+[00:23:09] after it found all the different types of agreement,
+[00:23:11] I wanted to put the different employment agreements
+[00:23:15] in a folder for future work.
+[00:23:17] And again, it doesn't wanna jump right into the task,
+[00:23:20] which is fair because it's not the most detailed prompt here.
+[00:23:24] So it tries to write up a plan of how to do this,
+[00:23:27] but it looks kind of fine.
+[00:23:29] So we're just going to have it do the thing and see what comes out of it.
+[00:23:33] And now it starts to first create a tabular review, which is this grid-like document extraction
+[00:23:39] thing I talked about earlier.
+[00:23:41] And in a second, we should actually have this thing to look at it.
+[00:23:46] Let also figure out that there's like 100 documents here and that it will take a few
+[00:23:49] minutes while the AI processes each file.
+[00:23:51] It's very aware of how this works.
+[00:23:55] Under the hood now it needs to write out all the different files it wants to put in this
+[00:24:01] tablet review, so it's actually like a quite long tool call.
+[00:24:04] So it's going to take a second for this to go through, but it's looking good.
+[00:24:13] Okay there we go So now it still doing stuff and I could stay here now and it would keep talking talking and keep doing the task but what I would do instead I want to actually open this up and look at this part of the platform So this is tabular review we saw this grid
+[00:24:30] on the screenshot earlier, we have all our documents here in different rows, you can
+[00:24:36] open them up and see the documents here and then we have columns that define data that
+[00:24:41] needs to be extracted. For example here the agent decided it wants to extract the document
+[00:24:45] category and writes a detailed prompt out here what that means and how to extract this
+[00:24:50] data point. And the cool thing here is that this is actually way more than just like a
+[00:24:56] flat grid of data, actually a fully interactive reviewable surface for data. So I can open
+[00:25:02] this up here and I can see the document on the right here and I can see the extracted
+[00:25:07] data points. And what I would do now as a lawyer, I would go in here and in some cases
+[00:25:13] actually verify the answers. So for example, I can see this document is flagged as compliance
+[00:25:18] regulatory. I can see the reasoning of DLM doing this task of why it was flagged that
+[00:25:24] way and I can even click on here and get highlights in the document where it pulled the content
+[00:25:29] from. And this example is pretty boring because the document is like five rows. I'm going
+[00:25:33] to find something a bit more interesting. And we're going to see this in action. So
+[00:25:38] I have some employment agreements again here. They keep coming back. So here I have a bit
+[00:25:42] of a longer document and here it classifies it as employment agreement and I could then
+[00:25:47] go here after I verified this and actually mark this as verified and then I can also
+[00:25:51] see the progress of verification is being tracked so if you're like some more senior
+[00:25:56] lawyer doing this kind of task you could ask an associate to review all the different data
+[00:26:00] points here to double check and then you can collaborate on this surface with AI and also
+[00:26:05] between different humans.
+[00:26:07] And then I can see also here it extracted the parties here, I can click on here for
+[00:26:11] citations, get taken to the right part of the document, and here it also raised a bunch
+[00:26:16] of red flags and concerns about stuff being placeholder in our employment agreements,
+[00:26:21] which is probably not that great in the real world. So yes, this is pretty cool.
+[00:26:26] And if I go back here then I should also see yeah I don know where it is yeah here We see that the thing is verified get a cool green check mark So if we go back to the agent that hopefully finished our
+[00:26:38] task in the meantime, we actually see it came back with something, so it did this whole thing
+[00:26:42] in the background, it created this tabular review that we looked at now, and we also
+[00:26:46] don't need to look at this, but we can use it as a human in the loop step for verifying
+[00:26:50] outcomes, just get a bit of a better understanding of the underlying data. And when we come back
+[00:26:55] here, the agent figured out the document categories, it figured out the key parties, some interesting
+[00:27:01] red flags here, I can't judge how good they are, because I don't know what is in there
+[00:27:06] or not. And it also moved all the employment agreements to a specific folder. If I click
+[00:27:12] in here now, we have this folder here about employment agreements and it has all the employment
+[00:27:17] agreements in these hundreds of documents in there. Yeah, so that's it for the demo.
+[00:27:24] can go back to the slides. Great. Okay. To quickly zoom out a bit and round this off,
+[00:27:35] I think it's very interesting to also think about why coding as a domain is so much ahead
+[00:27:40] in terms of AI adoption. And there's probably a lot of different reasons for that. There
+[00:27:44] is, for example, the fact that engineers are just more willing to try new tools and to
+[00:27:49] adapt new technology in their work.
+[00:27:51] There might also be the case that coding gets so much focus now
+[00:27:54] because solving coding unlocks a lot of growth
+[00:27:57] in other niches of software engineering,
+[00:28:00] and you can accelerate progress much quicker by solving it.
+[00:28:03] But the cool thing is if you're building an area of vertical,
+[00:28:06] you don't really care why it's ahead
+[00:28:08] because you can just keep looking at what coding agents ship,
+[00:28:10] and you can reuse what's usable for your domain,
+[00:28:13] you can translate stuff that's similar but not really the same,
+[00:28:16] and then the last part you actually invent
+[00:28:18] and come up with for your specific domain agent.
+[00:28:22] And yeah, that's the framework for any vertical agent.
+[00:28:25] You can just keep looking at coding agents.
+[00:28:26] Whenever they ship something new,
+[00:28:28] you steal the thing and benefit from it.
+[00:28:31] Yeah, that's it for today.
+[00:28:33] Thank you.

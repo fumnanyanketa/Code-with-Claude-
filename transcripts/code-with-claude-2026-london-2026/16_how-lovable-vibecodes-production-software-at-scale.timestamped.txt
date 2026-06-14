@@ -1,0 +1,351 @@
+Title: How Lovable vibecodes production software at scale
+Video: https://www.youtube.com/watch?v=mhW-XXnDFSU
+Caption: whisper (whisper-large-v3-turbo, audio transcription)
+================================================================================
+
+[00:00:00] All right, great to be here. Thanks for joining. I will talk to you today about
+[00:00:22] Lovable and how our platform self-heals, which I think is an interesting topic.
+[00:00:30] But first, I want to give you a bit of background what Lovable is and what we're doing.
+[00:00:36] So if you haven't seen our UI or you haven't used Lovable, this is how it looks.
+[00:00:42] It's quite simple, the UI. To the left, you'll have a chat where you'll be able to
+[00:00:48] ask Lovable for things, and to the right, you'll have a preview.
+[00:00:50] And what this is, right, is a place for people to build software.
+[00:00:57] And it's anything from landing pages to internal tooling to more complex websites to more complex web applications.
+[00:01:06] And so we have basically any type of persona working on this platform, right?
+[00:01:13] You have kids working on it.
+[00:01:14] I think it's my favorite example.
+[00:01:16] and we have people up in the Fortune 500 using this tool as well.
+[00:01:22] So it's extremely flexible and also extremely easy to use.
+[00:01:25] And I want to give a bit of background.
+[00:01:28] And I think this UI is a good place to start
+[00:01:31] because the UI hasn't really changed in the history of Lovable since we started.
+[00:01:36] But the capabilities behind it and also the models powering it has changed drastically.
+[00:01:41] So about three years ago now, 35 months to be exact, I counted, my co-founder Anton, he created this GitHub repository.
+[00:01:54] And it was called GPT-Engineer.
+[00:01:57] And at the time, it became the fastest growing repository on GitHub.
+[00:02:02] So the most stars in the shortest amount of time.
+[00:02:04] and the reason that it blew up as it did was that I think it was one of the first,
+[00:02:11] if not the first, kind of showcase of what you can do with models to build end-to-end software.
+[00:02:19] And the tool basically was a terminal program that you went in and you asked for something
+[00:02:24] quite similar in how you could use Label today. So the demo was like asking for a snake game and
+[00:02:29] built it and it ran it for you it like generated its own like randos sh file and the render program
+[00:02:36] and and did that all end to end so um people got very excited around this at the time mostly
+[00:02:43] developers were were using ai within the space of code generation and they were using it to
+[00:02:49] become more efficient which is a great application of ai right and there's a bunch of companies
+[00:02:55] focusing on this, making developers more efficient in their current workflows.
+[00:02:59] During this time, summer of 2023, it was mostly code complete in your IDE.
+[00:03:09] But we wanted to do something a bit different. We wanted to create something for people who
+[00:03:16] didn't necessarily know how to code and did not have these capabilities at all, really,
+[00:03:21] to create software.
+[00:03:24] And we call that the 99%, right?
+[00:03:27] Not the 1% that can code, but the rest of the population.
+[00:03:31] And we set out on the mission to build a tool for them to create software.
+[00:03:37] And it didn't work back then.
+[00:03:39] It was a bit too early.
+[00:03:42] The models weren't really at a place where you could work on this abstraction,
+[00:03:46] where you kind of have the chat and the preview,
+[00:03:48] where you're just looking at the output of what you're creating.
+[00:03:51] But it started to get there.
+[00:03:54] And today I would say we're definitely there.
+[00:03:56] I think we got there about one and a half year ago where this abstraction started to make more sense.
+[00:04:02] And since then, about every three months, we get an improvement in the foundational models that I think make our use case make even more sense.
+[00:04:14] So today, right, we have 50 million projects built on the platform.
+[00:04:17] we have 600 million monthly visits to the sites built on Lovable.
+[00:04:23] And I think this is an interesting statistic because it's significantly more than what Lovable has itself,
+[00:04:31] which I think is a great sign that people are building things that kind of out-succeed Lovable combined, right?
+[00:04:38] And since I know that a lot of the audience here are engineers,
+[00:04:43] I wanted to also mention that something I learned asking one of our internal AI agents
+[00:04:51] about our data is that if you look at the functional segments of what our users identify as most of them say that they engineers The biggest segment would be founders right
+[00:05:07] But if you look on functional segments, it's engineers.
+[00:05:10] It's not what we necessarily built the platform for, but it turns out that it's quite nice
+[00:05:16] to work at this abstraction layer and not care about the code if you don't have to.
+[00:05:20] And I think it happened something in December 2025, right, where models got to a place where
+[00:05:30] I think a lot of engineers started using it more as a tool to not necessarily to autocomplete
+[00:05:39] the right single files, but where you could actually take a step back and work from a
+[00:05:42] specification.
+[00:05:43] And we introduce things like we as a community, I mean, we introduce things like Ralph Looping and these sort of things where you really let the models do more of the work.
+[00:05:55] So this is the general trend.
+[00:05:58] I want to kind of highlight two things that we do at Lovable that guide us, two of our principles in how we build.
+[00:06:07] So number one is that we really want to build production-grade software and really chase the frontier of what's possible.
+[00:06:17] And when I say that, I mean, we could have focused only on doing prototyping, but we choose to kind of continue to push what's possible to build in terms of complexity and size and ambition for our users.
+[00:06:31] and we also combine that with building for non-technical users and I think that that makes
+[00:06:39] our job hard in a sense right it's it's easier if you're building on an abstraction layer where
+[00:06:45] an expert can be in the loop with the AI but there is I would say an immense demand for
+[00:06:53] this type of use case, and increasingly so.
+[00:06:57] So there are a few things that make this challenging.
+[00:07:03] And I think this quote is interesting.
+[00:07:07] It talks about that the last 10% of code takes 90% of the time.
+[00:07:12] And the other part of this quote is that the first 90% also takes 90% of the time.
+[00:07:18] So you end up with 180% of the time.
+[00:07:20] And this is in the 1900s here, right? Late 1900s. And it's also true in the age of AI.
+[00:07:32] And I think if you've ever used kind of a vibe coding tool or you've just kind of coded with AI
+[00:07:38] and you've let the AI kind of do everything, you might have experienced that in the beginning,
+[00:07:43] you get to a first version really fast, right? But then actually finishing it off and making
+[00:07:48] sure that you don't have any bugs and all of these things take even more time.
+[00:07:52] So I find it quite interesting that, you know, this was true when we wrote all the software
+[00:07:57] by hand and the same pattern is true when we when we work with AI, maybe even more so.
+[00:08:04] And if you would kind of put this on a timeline like this, so you start building and you're
+[00:08:11] in the green, meaning you don't have much friction, kind of everything is going along.
+[00:08:15] And then at some point you reach some friction, maybe some bug that you're figuring out.
+[00:08:20] And then you keep on building and then you might get into the red here.
+[00:08:25] And the red is kind of you're stuck, right?
+[00:08:27] And you might have experienced this.
+[00:08:30] I can just think of my own experience, like when you're up late, a bit too late and you're stuck on this problem and you're trying to solve it.
+[00:08:39] and maybe you don't, then you go to sleep and you solve it maybe the next day with some more kind of work and thinking behind it.
+[00:08:46] And then you get back to work, right?
+[00:08:49] And I think this is quite a common thing for software engineers to do, and we're used to it.
+[00:08:55] But again, imagine if you're non-technical, right, and you're doing this,
+[00:09:01] especially if you're working on the abstraction as you would in Level, right,
+[00:09:05] where you're not necessarily looking at the code.
+[00:09:07] As a developer, we have a connection to GitHub, and you can always jump into a deeper level if you want.
+[00:09:12] But many users do not have that experience, or they simply are not interested in it.
+[00:09:18] And if they get stuck, it's a very bad experience for them.
+[00:09:23] It's kind of the worst thing that can happen to them, because it's much harder for them to get unstuck.
+[00:09:29] They might contract someone to help them out, and they might learn how to code,
+[00:09:34] or they might just try to prompt around it.
+[00:09:37] And they might succeed, right? But if they don't, it's kind of the worst thing that can happen in the user experience.
+[00:09:45] And it's very important for us building this experience, right, to help our users succeed and not get into this kind of hard stuck place.
+[00:09:55] So really our vision with Lovable on the technical side is that every app that is built on the platform should help improve the next
+[00:10:07] And there's a few tactics in how you can do this, and I will today present you two things
+[00:10:14] as examples of what we're doing.
+[00:10:16] But first, let me define what Stuck is.
+[00:10:21] So we have this metric internally that we call is underscore stuck.
+[00:10:25] And it will be true if you're asking for the same thing three times in a row.
+[00:10:29] So if you're asking fix it, fix it, fix it, we will assume you're stuck.
+[00:10:34] Or if you complain about the implementation the level is doing.
+[00:10:39] So if you're saying, oh, this didn't work and so on, then we will also kind of mark you
+[00:10:42] as stuck.
+[00:10:44] And then the last part is if you ask for something and then you just left.
+[00:10:51] So we can identify then if a user is stuck or not with the help of a small classification
+[00:10:58] model.
+[00:11:01] And then the thing is also that there's different kinds of being stuck.
+[00:11:05] So I'll give you kind of three buckets.
+[00:11:08] The first one is you're stuck in a way that would be solvable if you're prompted differently.
+[00:11:14] And it might even solve itself if you said, oh, fix it, fix it, like that type of follow-up.
+[00:11:18] Or you might give it some more context and the problem will be solved.
+[00:11:23] For us building the platform right, the question we have to ask ourselves is,
+[00:11:29] can we fix the problem before the user even gets stuck?
+[00:11:33] And this would be kind of the yellow stack, so you're not hard stuck yet.
+[00:11:37] And the second part here is something that should be easy to do for our agent, right?
+[00:11:46] But it might not currently be supported by our platform.
+[00:11:50] And then the question for us building our platform is, how can we keep on improving and even self-heal at the edges of our own functionality?
+[00:11:58] And what I mean by that is that, of course, our platform, because people are building with LMs, they can do so much.
+[00:12:06] it's almost impossible for us to think about everything they can do.
+[00:12:10] So we really need like a system to help us heal where we're falling short on our platform.
+[00:12:16] And the last bucket is when quite similar that it's on our side,
+[00:12:24] where our platform is falling short,
+[00:12:27] but there might be kind of bigger investment for us to do something.
+[00:12:30] And I think a great example here is that for the longest time,
+[00:12:34] Lovable had single page applications that would be client-side rendered, which is fine for most things.
+[00:12:43] But if you care a lot about SEO, it's generally best practice to have server-side rendered,
+[00:12:47] where you render the content on the server so that Google and other search indexers will be able to see that without having to render it themselves.
+[00:12:56] And luckily we shipped this last week to Lovable, but that is a bigger investment from our side, right?
+[00:13:06] And so these are all three categories in how you can get stuck.
+[00:13:10] And I'll give now two examples on what we're doing to solve this.
+[00:13:16] So first off, we have what we call Lovable Overflow.
+[00:13:21] And the name might remind you of something.
+[00:13:24] It's inspired and it's in honor of Stack Overflow.
+[00:13:28] And what it is, is really a big collection of description of issues,
+[00:13:35] just like people would go in on Stack Overflow and kind of describe the issue they're having,
+[00:13:39] and then also the solution to that issue.
+[00:13:43] And if we take an example in how you would get stuck in the first bucket,
+[00:13:48] where you could maybe prompt around it, right?
+[00:13:51] So imagine you're building something and you try your app out and you find out the scrolling is laggy.
+[00:13:58] So you're prompt-lavable. Hey, the scrolling is super laggy. At this point you're not stuck, right?
+[00:14:03] But the agent comes back and it says, hey, I fixed it. I removed the animations.
+[00:14:07] But in reality, the agent failed somehow. It thought it succeeded, but it didn't.
+[00:14:11] So you as a user, you tried it out and you're saying, hey, it's still lagging and it looks broken.
+[00:14:17] So at this point, we would say, okay, the user is stuck here in some sense.
+[00:14:22] And the worst part about this is that it will potentially repeat, right?
+[00:14:26] You might be in this back and forth with the agent.
+[00:14:31] And then hopefully at some point the agent would solve the issue.
+[00:14:37] And then when it is resolved, you're then no longer stuck after you tried it.
+[00:14:43] and often a user would move on to implementing the next thing,
+[00:14:47] or they give us explicit feedback.
+[00:14:49] Regardless, we'll further identify that,
+[00:14:50] hey, okay, you're no longer stuck.
+[00:14:53] So in this case we kind of solved it for the user right But there was some friction here And if we The question for us now really is like hey what if we can just skip to the final solution
+[00:15:06] And that is what Lovable Overflow allows us to do. So if we take the same example,
+[00:15:12] but with Lovable Overflow, you would start with the same prompt, hey, scrolling is laggy.
+[00:15:18] And what we do on the platform is that we build out this big corpus, right, of
+[00:15:23] of descriptions of problems and the solution to them.
+[00:15:26] So we will search through those descriptions
+[00:15:29] of the problems and see, hey, have other people also had
+[00:15:33] the same type of laggy experience?
+[00:15:35] And we'll have a lot of context here around
+[00:15:38] kind of the tech stack you're using
+[00:15:40] and the libraries you're using.
+[00:15:41] And this knowledge can be from kind of broad recommendation
+[00:15:45] to like specific issues with a specific package version.
+[00:15:50] And so we'll search for that.
+[00:15:52] And then we'll have a lightweight model actually add that context into the main agent when we deem that it is relevant.
+[00:16:01] And something that is happening here, right, is that we're kind of modifying the context of our main agent.
+[00:16:08] And we'll actually do that in a way that is, we're not just kind of dumping the raw context from our knowledge,
+[00:16:17] but we're modifying it a bit to make sense in the particular situation that you're in as well.
+[00:16:21] to make the job as easy as possible for our main agents.
+[00:16:27] And then sometimes we choose to withhold actually adding this knowledge
+[00:16:31] because the knowledge, as you can imagine, can become stale.
+[00:16:36] So imagine you had an issue with a JavaScript package that has since been updated.
+[00:16:45] Actually, including that knowledge could worsen the experience.
+[00:16:48] So for every knowledge file, we'll track its success ratio and we'll actually just remove it and prune it from the knowledge if it is outdated.
+[00:17:00] So we'll continuously review every piece of knowledge in our system and make sure that it's pruned when it's no longer helpful.
+[00:17:08] And at the same time, we'll kind of refill with new knowledge.
+[00:17:11] and this is actually an extremely important part of making this work,
+[00:17:16] kind of tuning the system of when you should deprecate knowledge
+[00:17:20] and when you should add in new knowledge.
+[00:17:22] And we have a lot of metrics to help us track this.
+[00:17:26] So that's Lovable Overflow.
+[00:17:29] It helps with the first bucket of when you're stuck
+[00:17:31] and it can actually improve the experience of a user by a lot,
+[00:17:38] by kind of not having to do those back and forth.
+[00:17:40] it will be faster, it will be cheaper, and it's much better for the experience.
+[00:17:45] The second thing I want to talk about is venting, we call it internally. I'll get to a bit
+[00:17:52] what we mean by this, and it's for the second bucket that I described, which is
+[00:17:57] when things are easy in theory, but somehow you still get stuck. And so you can imagine that if
+[00:18:06] If you have something that seems easy, you can imagine your own problems, right?
+[00:18:11] But it still doesn't work.
+[00:18:14] That leads to frustration.
+[00:18:16] And normally if you're working as a developer, for example, you'd either be able to fix this yourself.
+[00:18:22] Like you'll be able to update the tooling you're using, switch it out.
+[00:18:26] Or you might have a developer experience team that you can go and, you know, complain and give hopefully constructive feedback to and they will help you out.
+[00:18:33] but for the longest time, lovable has not had that.
+[00:18:39] The lovable agent, I mean, right?
+[00:18:40] So you can imagine like you just have people,
+[00:18:44] millions of people every day asking you like,
+[00:18:46] hey, can you do this for me?
+[00:18:47] Can you do this for me?
+[00:18:49] And you don't have, and you get stuck, right?
+[00:18:53] And it's not your fault
+[00:18:54] and you don't have anyone to talk to.
+[00:18:57] So you need to vent.
+[00:18:57] And it turns out that this is actually a very good idea
+[00:19:01] in our experience.
+[00:19:03] And I like to really think of it analogous to just letting our kind of normal co-workers vent their experience.
+[00:19:13] You know, there might be something wrong in the office or the code base and so on.
+[00:19:16] And you really want to take note of what's being said.
+[00:19:22] So, of course, we've been observing Lovable and we've been looking at, hey, when are things going wrong and so on?
+[00:19:28] And we've been fixing things.
+[00:19:29] But if you give the agent a tool to tell you when it's feeling frustration, that's another way to do it.
+[00:19:40] So we did just that. So here we have the vent dash dash send underscore feedback.
+[00:19:46] It's a tool for our agent and I'll just read it out for you.
+[00:19:49] So the prompt for this tool is just use vent send feedback once per user message.
+[00:19:55] when tooling docs or platform behavior materiously slows or degrades your work.
+[00:20:00] For example, you might have missing or unsuitable tools,
+[00:20:04] unclear tool names, parameters or schemas,
+[00:20:06] confusing or conflicting docs or instructions,
+[00:20:09] or broken or unexpected platform behavior,
+[00:20:12] and even repeated failed attempts caused by environment limitations.
+[00:20:17] So these are all things where if you had a developer experiencing these things,
+[00:20:21] you'd either want to fix it, right?
+[00:20:23] Or you'd want to tell someone else so they could fix it.
+[00:20:25] And how this works in our case with the vent tool is that once the agent hits this frustration, it can use this tool and that message will be sent to our Slack.
+[00:20:42] Before a human looks at it, we will have another agent monitor the Slack and filter for dedupes,
+[00:20:49] and it will also investigate what is going on.
+[00:20:53] And then, if it is relevant, it will open a PR.
+[00:20:57] And this PR will then be reviewed and potentially merged by an engineer.
+[00:21:02] So you can imagine as an engineer, you wake up and you'll just have a few PRs to review,
+[00:21:06] and click, click, click, make sense, and then some of them will not make sense.
+[00:21:10] and about 50% of them do make sense.
+[00:21:14] So I'll give you one example here.
+[00:21:18] So this is our code dash dash copy tool.
+[00:21:21] So this is the lovable agent.
+[00:21:23] It's kind of in session here,
+[00:21:25] and it had issues copying a file.
+[00:21:27] So we had a user who had a screenshot here,
+[00:21:29] and the screenshot had a space in it.
+[00:21:33] And apparently we had a bug in our code.
+[00:21:36] So normally the agent wouldn't be able to fix this.
+[00:21:38] the tool was simply broken for files with special characters in it.
+[00:21:44] So it's saying here like, oh, it tried URL encoding the name,
+[00:21:49] and it tried all of these things, and it's still not working.
+[00:21:51] So it chose to vent and send a message to its creators, if you will.
+[00:21:58] And it won't help, and it has then created a PR for us to review.
+[00:22:03] And it turns out that, yeah, this was a bug.
+[00:22:06] And after we got this event, we had a merged PR in production 10 minutes afterwards.
+[00:22:12] And we have multiple examples of this where there are things like can be just small things on our side that can cause a user to get stuck where actually the agent is very good at describing that issue.
+[00:22:28] Another example, which I think is quite fun, so Framer Motion, it's a TypeScript library where you can do animations.
+[00:22:39] And our agent was complaining about their types It trying to create this cubic base here curve and saying I should just be able to place in numbers in an array And I shouldn have to care about this easing type that they have
+[00:22:55] And I think this is a fun example because, I don't know, maybe Framer Motion has a reason for why they have this typing.
+[00:23:03] But it could also be that the agent here has a point, right?
+[00:23:07] And in theory, we don't allow it to do this yet, but I'm thinking maybe we should.
+[00:23:12] We could let the level agent contribute to these open source libraries, just like it
+[00:23:18] contributes to our own code base and kind of self-heal the JavaScript ecosystem as well.
+[00:23:25] And so I'm not sure if we did anything with this.
+[00:23:28] I'll have to check.
+[00:23:29] But this is so it's not actually just limited to our platform.
+[00:23:33] It can be the tech stack and a really open source library as well.
+[00:23:40] A third thing that came out of this, which we didn't expect, is that we'd have these spikes in
+[00:23:49] vents. So this is the hourly vent tool called this graph here, and we have three of these spikes.
+[00:23:54] I don't know if you can guess what the spikes could be when we get a bunch of vents. The agent
+[00:23:59] feels a lot of frustration right so they were production incidents on on our platform and so
+[00:24:07] it was either that inferencing was down or we were missing like sandboxes some some kind of network
+[00:24:16] level failure even and in those cases the the agent would you know feel a lot of frustration
+[00:24:23] and let us know. And it turns out that this is actually extremely helpful because we've had a
+[00:24:30] few examples now where we have these systems where we're constantly monitoring all of our metrics and
+[00:24:36] it will page engineers and try to alarm us before our users kind of identify it and whatnot so we
+[00:24:43] can fix it as soon as possible. But several times now this Slack channel with the agent venting has
+[00:24:51] been kind of the first signal for us to identify a production incident and even if it's not the
+[00:24:56] first signal it has actually become a very helpful tool for um for engineers to debug what is what
+[00:25:02] is going on so often you get patients like oh we have some some problem on the platform and you're
+[00:25:08] trying to figure out what is the actual problem and it turns out just looking at what the what
+[00:25:12] what the agent is experiencing is a great signal.
+[00:25:18] The final example here I'll show you is that it's quite meta now, so bear with me.
+[00:25:24] So the agent experienced venting too much.
+[00:25:29] It triggered this tool I think 43 times in this example and it spammed us on Slack And normally you know we could give the agent feedback like hey please don do that
+[00:25:40] But it actually gave us feedback, right?
+[00:25:42] It said you need to think about how the tool works when you have parallel conversations
+[00:25:50] with an agent and you're doing parallel work.
+[00:25:52] So it proposed like, hey, we should have, you know, a de-dupe safeguard,
+[00:25:55] and that would help not sending a bunch of duplicate submissions.
+[00:26:00] and so it created a PR for us and we're like yeah that sounds great you don't have to spam us
+[00:26:06] anymore and that was just reviewed and then emerged into production as well so it's working
+[00:26:15] and I'll share some things that we learned both from level overflow and this venting tool
+[00:26:23] So first off, learning from these failure modes, it's very specific to the model that you're using.
+[00:26:33] So every now and then there will be a new model released, and you can imagine like Global Overflow, for example, will have a bunch of knowledge.
+[00:26:41] And when you get a new model, a lot of that will either have to be kind of retuned to that model in how you should prompt it,
+[00:26:53] or the knowledge that we had kind of saved away in our corpus
+[00:27:00] is actually included in the training data now and it's no longer needed.
+[00:27:04] And in that case, we also want to prune that from the corpus.
+[00:27:07] So actually being very strict on pruning out knowledge
+[00:27:12] has been extremely important to make this work.
+[00:27:15] And as well, knowledge has a half-life.
+[00:27:17] So you could imagine like the frame of motion example I gave.
+[00:27:20] Maybe they changed their types.
+[00:27:22] Maybe they didn't do exactly what the level agents suggested, but maybe they did something, right?
+[00:27:27] And then if we would have created some type of knowledge out of that, it's no longer valid.
+[00:27:33] And both of these examples, it comes back to that there's so much information and so many different packages
+[00:27:38] and so much that can go wrong that it's impossible for a human to kind of optimize all of these things.
+[00:27:45] So you really need it to be self-healing in that sense.
+[00:27:48] And the last part here is that the system has to be constantly tuned.
+[00:27:54] We tried this earlier at Laval and we failed because we didn't properly tune the system.
+[00:28:00] So the idea was good, but if you don't have good signals of what is working or not, then it's actually really hard to get a system that will work at scale.
+[00:28:10] Remember, we have 50 million apps now, 200,000 new ones per day, millions of messages per
+[00:28:15] day and all of this can be used to tune the system We have a lot to work with and doing that correctly is kind of what is the key to make this work So looking at the results here the stock rate is reduced
+[00:28:33] by 5%. That might not sound like a big number, but in reality that is on the same order of
+[00:28:43] magnitude in what we would see this metric move if we had a new generation of a foundational model
+[00:28:49] in in our system and so moving this metric by five percent is a big difference and the other
+[00:28:59] the other thing we saw is the publish rate went up by two percent and i will add this is from not
+[00:29:05] having level overflow at all to to having it and it's been improved since incrementally so this is
+[00:29:13] kind of the numbers for for the first version of it and and two percent publish rate it's also a
+[00:29:18] very important metric for us where we can kind of deduce that you've got into a place where you're
+[00:29:24] happy with what you built and you actually want to share it with others for the venting tool we
+[00:29:32] we merged around 10 fixes per day into production from the suggested prs and a lot of them if they're
+[00:29:40] not merged, we cluster them together and we get learnings from it as well that can inform future
+[00:29:46] developments. And then of course, as I mentioned, the production incidents are also surfaced before
+[00:29:55] even our paging system would at some points. So I just want to summarize here.
+[00:30:04] I've given you now two examples of how we're self-healing the platform, and if you would zoom
+[00:30:10] out a bit these are kind of examples in how we're making sure that we get the most out of the the
+[00:30:14] models that we're using and we're doing some other things we're fine tuning on our on our fleet data
+[00:30:20] we have quite extensive evals coverage at this point as well and i think what is very interesting
+[00:30:27] too with our data is that we have users coming to our platform with very strong intent to build
+[00:30:33] successful products or even successful companies and they come and they start out on lovable and
+[00:30:38] and they keep on prompting until they are either successful
+[00:30:42] or we fail them in some ways is how I see it.
+[00:30:45] And being able to take that as a world model
+[00:30:48] and optimize that problem is something we're working on as well.
+[00:30:53] So if you think this stuff sounds interesting,
+[00:30:55] we're actively hiring as well, level.ed slash careers.
+[00:30:57] Check us out.
+[00:30:59] And thank you so much for listening.
+[00:31:01] I hope you learned something.
+[00:31:08] you
