@@ -1,0 +1,276 @@
+Title: The capability curve
+Video: https://www.youtube.com/watch?v=DNRddIEoH3c
+Caption: whisper (whisper-large-v3-turbo, audio transcription)
+================================================================================
+
+Hi everyone, I'm Jeremy and I am a product manager here at Anthropic with our research team. and I
+work on coding behaviors and capabilities. In other words, how do we make Claude a better software
+engineer? I'm here to talk to you today about the capability curve or this pretty wild curve we've
+been on from the last few years all the way up to now. It's been pretty cool walking around the
+conference today and just comparing it to how it was last year. Last year, around the same time, I
+had just started Anthropic in March of 2025 and we had just launched Quad 4 right before Code with
+Quad. So we'd all been up late until, you know, 3 a.m. the night before launching this model, and
+the energy was just electric at the conference. Back then, Opus 4 was state-of-the-art, and Quad
+Code had sort of just launched. It wasn't even GA yet, and it hadn't really taken off completely.
+It's pretty surreal just how much has changed since then, where Opus 4 is a dinosaur, almost a
+distant memory. models are so much better, quad code is everywhere, and coding agents have
+completely revolutionized how we do software. So I'm curious, who here has shipped a PR that is
+mostly written by quad? Raise your hands. Who here has shipped a PR in the last week that was
+completely written by quad? That's almost half the room. Who here has shipped a PR where they did
+not read the code at all? it was completely written by Claude. Nice. You know, it's a dangerous game
+to do this, and you have to do it carefully and do it well, but this has completely changed how we
+do software. And you know, our CEO Dario has talked about how most software at Anthropic is now
+written by Claude. Claude has written most of the code in Claude code. And so we're just in a
+completely new paradigm, and I want to talk to you about how things have changed and how we're
+thinking about this going forward and how you can adapt to this curve and use it to make your
+applications better and better over time. So how we think about this, we often think about sort of
+benchmarks to measure progress. And one of the best benchmarks that we've had over the last few
+years for measuring progress in software engineering has been SWE Bench Verified. This benchmark is
+composed of GitHub issues and it essentially tests can the model solve the GitHub issue and pass all
+the tests accurately. And you can see here that SANA 3.7 was just at about 60% last year. And now,
+Opus 4.7 has passed 87% on this benchmark. And so essentially what this means is that models have
+gone, they're solving three times more issues than they did in the past. And they're just advancing
+rapidly on this kind of benchmark to the point where we don't even use Sweebench Verified anymore
+because our most frontier models, like Mythos Preview, have completely saturated the benchmark.
+Essentially, there's no more room to improve. In general, we're starting to move faster than
+benchmarks can come out. And that makes it harder to measure this kind of progress. But this just
+shows how, over the course of just 12 months, Claude has gone from a junior software engineer who
+can only solve a fraction of GitHub issues to almost a senior software engineer that can solve
+pretty much any well-specified GitHub issue that is presented to it. And now, sort of, the
+bottleneck has moved elsewhere beyond just solving PRs to more tricky things. So even better than a
+benchmark is a demo. And so I want to show you a demo of the same task 12 months apart from Sonnet
+3.7 up till now. So I'll show the demo. So essentially, in this demo, we compare Sonnet 4 to Opus
+4.7. And in this task, we essentially just asked Claude, can you rebuild the entirety of the
+Claude.ai website from scratch in one shot? So our Claude.ai website, it's taken many software
+engineers a lot of time to build it. Here we can see Sonnet 4. We'll take this task and start
+building. It'll start writing code. It won't really plan that much in advance. It won't necessarily
+correct its approach as it's working. It writes 2,000 lines, and it produces this sort of demo that
+sort of works, but it's a pretty basic UI. And you can see that the chat doesn't work at all. It
+doesn't actually produce a response. But then with Opus 4.7, we try the same task, the same prompt
+today And the model is able to start working It uses a bunch of tools It uses the same sort of
+approach But it has to write fewer lines to accomplish a similar result You can see it's only at
+1,700. And the application itself is better. You can see it looks more similar to Cloud at AI. It
+actually produces a completion. There is the chat sidebar. It has a chat history. It can even
+produce the diagrams. And the chat sort of input works. It can create these formatted outputs. And
+it can even make mermaid diagrams within the chat. So Opus 4.7 is just dramatically better at the
+same task and can produce a full working web application. It even added dark mode, like a true
+developer. So this is just one instance of how giving the same models the same task, or giving
+different models the same task, just completely changes the outputs that you're getting. And I think
+if you try any task that you maybe struggled with 12 months ago to get models to do successfully,
+they're going to see a huge difference. And this just shows how the foundation under our feet is
+shifting as developers, and we have to adapt to that. So I want to talk about some of the areas that
+are driving these gains in intelligence improvement and some of the biggest changes we've seen in
+models over the last 12 months. So the first area where the gains have been landing is in planning
+and reasoning before acting. I don't know how many people here remember what Sonnet 3.7 was like.
+Raise your hand if you remember using Sonnet 3.7. Yeah, so SANA 3.7 sort of acted like I might act
+when making IKEA furniture. You know, I just jump right into it, I start building, and then I look
+at the plan after I've already tried and failed. It didn't really plan in advance. It didn't really
+go into the task with a plan set out. And so this failure mode that most of our models had used to
+be acting first and then thinking later. And what's changed over the last 12 months is that rather
+than having to sort of scaffold the models really carefully and force them to plan, models will plan
+on their own. In other words, they will read before taking action. They'll compose a careful plan
+that has a high likelihood of success. And they'll figure out and investigate before they start
+taking action. They'll often also catch their mistakes as they're writing a plan. And so you'll
+notice as the models reason through, they'll say things like actually or never mind and change their
+approach as they're developing a plan. That means that it doesn't take as much work for the model to
+sort of iterate as it's building the application because it's already developed the spec in advance
+like a senior software engineer might. And so what this means for you is that as you're building
+with Quad, you should give it time to think and time to develop this plan. You may not need to force
+it into doing this, and all you need to do is sort of select a high reasoning effort and then allow
+Claude to develop the plan on its own. Another big area where we've seen improvements in Claude
+models over the last 12 months is in error recovery and adapting to failure. So you might remember
+about 12 months ago, you know, all sorts of models had this issue of doom looping. Doom looping is
+essentially the problem of having a failure and then attempting a solution. And you know, Claude
+will tell you, aha, I've got the problem. I fixed it. And then you look at the problem and it's just
+sort of repeated the same solution again. And often it would fall into this trap of trying the same
+problem and then repeating the same solution or small variations on the same solution again and
+again. This problem essentially doesn't happen anymore. And so we've sort of solved doom looping for
+the most part because models are able to try a tool call, try some action, receive the results from
+the environment as tool results, and then based on that reason about what to do, use some thinking
+tokens, use some test time compute to spend more computation and figure out how it should actually
+respond to that failure. So now, rather than just trying the same thing after encountering an error,
+the model will change their approach and keep executing through failures to accomplish the task. So
+what this means for you is that you get better task performance with fewer wasted tokens. So rather
+than a sonnet model or an opus model repeating the same task again and again and spending a bunch of
+tokens without even giving you a good result, now the model will accomplish the same result while
+trying only a couple times and iterating from its failures. And so giving the model the ability to
+iterate from failures, some way to get feedback from the environment, and some way to reason from
+that feedback will result in better outcomes than it would have 12 months ago. The third biggest
+area where we've seen a lot of improvements in cloud models over the last 12 months is sustained
+attention over long agentic runs. So about 12 months ago, if you tried a model and tried to get it
+to work across an entire code base and do some refactor and you had to use hundreds of thousands of
+tokens to do that you would notice that it started to lose the plot part way through the task It
+might forget what it doing It may forget details or fine points about how to accomplish the task. If
+you gave it a complex spec with dozens of instructions, it may miss many of those instructions or
+not remember how to accomplish it. Now, at this point, our models can hold coherence up to 1 million
+tokens and even beyond that point. And so what that means is that if you give the model a spec at
+the beginning of the task, it won't just forget it partway through. And for the most part, up to
+some limit of complexity, the model can actually remember a spec and carry it out over the course of
+millions of tokens. What this means for you is that you no longer have to necessarily break up tasks
+into these tiny, bite-sized pieces. You don't necessarily have to break up these tasks into
+individual context windows. And you don't have to babysit as much and think about, oh, you know,
+Claude is already at 200,000 tokens. I have to stop the task now. Now you can sort of just let
+Claude run and trust that the model and the harness are able to work for millions of tokens without
+necessarily having failures. We're not there yet in terms of the models having perfect coherence
+over millions of tokens, but we're much, much closer than we were 12 months ago. So that means you
+should be more ambitious with your tasks. Don't assume that Claude can't handle something because
+it's very long running. you can hand it the whole code base and see what it can do, rather than sort
+of limiting your ambition before starting the task. So together, all of these improvements stack
+into more autonomous agents. Autonomy is really composed of these different capabilities. Autonomy
+means that you're able to plan in advance and think about how to accomplish the task. It means that
+that plan sets you up for success. It means that when you run into failures, you can recover from
+those failures and keep working despite seeing errors. And it means that you sort of remember what
+you're doing partway through the task. And so you can see how these capabilities that we've been
+working on improving all ladder up into autonomous agents that can do end-to-end task completion,
+combining planning, failure recovery, and long horizon coherence. Overall, our agents are now able
+to run for many hours rather than just a few minutes. So yeah, long horizon agents are where we are
+at now. And you can see that how essentially a long horizon agent loop works is that it starts with
+a plan, it starts executing, and then it needs some way to verify its work against the environment.
+So it may run the tests, it may confirm that the tests are passing. If the tests aren't passing,
+it'll figure out how to iterate and make them pass. And it can do that over a very long period. And
+every few checkpoints, it might validate that against a goal. One of the most exciting examples I've
+seen of this recently is one of my coworkers who is the founder of Bun, which is essentially one of
+the core sort of infrastructure pieces behind QuadCode. He decided one day, I'm really tired of
+dealing with these memory errors that the JavaScript engine behind Bun constantly runs into. What if
+I rewrote the entire engine in a memory-safe language like Rust? He decided this basically last
+week. And because Bun has a great test suite with nearly 100% coverage of the entire engine, he was
+able to get Claude to run over the course of an entire week and rewrite all of Bun in Rust in one
+week to get 100% pass rate almost on the entire test suite. And then he merged this PR, and Bun is
+now written in Rust. This happened in a single week. It's hard to articulate how mind-blowing that
+is. For me, I think that it's incredible how much Quad can do if you give it something that really
+verifies the entire software system. So, you know, the only way that Jared, the founder of Bun, was
+able to do this was because they already had a great test suite and because he had the ambition to
+ask, could Quad actually do this? And then the ambition to actually try that and run it against the
+whole test suite. And so this level of software project that, you know, if Jared had done it on his
+own, he doesn't even know Rust. And yet he was able to do this regardless. this would have taken him
+many months to do in the past. And at this point, he was able to do it in a week as a single
+individual, having just many quad agents iterate against the test suite. So this is the world that
+we're living in now, where long-horizon agents can accomplish software projects that would take
+individuals months to do. And this is not really slowing down. What we're seeing is that agents are
+getting better and better, and individual software engineers are able to accomplish more than
+they've been able to in the past. Some examples from our customers, for example, Vercel has seen
+that on the planning point, models will sometimes do proofs on systems code before they even start
+the work So as they in this planning stage they actually write proofs and verify the system before
+they start the task Similarly Windsor found that on the long horizon point our models have been much
+more capable of operating with sustained reasoning over their longest agentic runs. And they're
+saying that it's sort of market leading in the ability to just have coherence over a very long time
+horizon, over many hours. Shopify also found that with Opus 4.7, It was a big step up in
+intelligence, especially in this code quality and the ability to verify its work as it goes and sort
+of fix up things as it's working. In general, every new model, we sort of hear things from our
+customers around these kinds of capabilities, how they're becoming better at planning, better at
+verifying, better at working over many hours. So how do you actually ride this curve? It's not
+really about any individual model. It's not about sort of Opus 4.7 or Opus 4.6. It's about this
+overall trajectory that we're on, where the ground is sort of shifting beneath our feet, and the
+foundation that we're building on is becoming more and more intelligent over time. Every couple of
+months, the models are becoming significantly more intelligent, and that really should change how we
+think about building applications. So here are some of the things that I've learned from working
+with our customers and working on our models over the last few months. There are a few patterns that
+I think allow you to absorb these improvements in model intelligence and really translate them into
+benefits for your own productivity, for your internal company use, as well as for your end
+customers. First of all, evals are really critical. And so one of the things that I've seen allows
+teams to iterate and build with new models the most rapidly is by having high quality evals that
+they can actually trust. And so the first step is just to build evals at all. We have a blog post on
+our engineering blog that is essentially a guide to how do you build evals. But the first step is
+really just to start. I see a lot of teams are sort of afraid to get started with evals because they
+seem like an academic exercise that might take a lot of work or that they might need to hire
+researchers to do. But essentially, evaluations are just the unit tests and the regression tests of
+the AI era. So every software application that uses AI should have evaluations. And if you don't,
+it's similar to not having unit tests for your traditional application. And so it's really critical
+to just start by building some form of an evaluation. Another important point when building
+evaluations is to make sure that they measure what you actually care about. And that means building
+evals that match your real traffic and test behaviors that you want to see in production. Something
+I often see with customers is using an academic benchmark, something like Sweetbench Verified or
+Browse Comp or Terminal Bench, rather than using an application that actually measures the use case
+they care about. So for example, if you're building a finance agent, it's best to sort of collect
+failure modes from your customers, see what's failing, what's succeeding with your application, and
+then build those into your evaluation so it measures the kinds of tasks your application actually
+does. Another important point is to know when your evals are saturated. What we mean by saturated is
+essentially that there is no more room for improvement on the evaluation. So if Opus 4.7 can already
+get 90% on the evaluation and the last 10% of tasks is impossible or unfair or just no model can get
+it, then that means that the eval is saturated. And that means that it's no longer useful for
+measuring model improvements. One trend that I've seen in working on our models during sort of early
+testing is that customers often think that the model is not that much of an improvement at first if
+they use their pre-existing evals and those evals are already saturated. So they might run their
+eval and see only a 1% improvement. And they think, oh, this model isn't that great. But then they
+spend another week testing it on harder and harder tasks. And they realize, oh, no, actually, our
+eval is in the past. Our eval does not measure model improvements anymore. And so we need to change
+our eval to actually see the gain from the new model. So you have to sort of keep raising the bar to
+make sure that your evaluation can measure model progress. Of course, like software tests, you might
+have some tests that are actually intended for regressions. And for those, you might accept having a
+100% pass rate because you expect every model to be able to do the task. But for evaluations that
+you want to use to actually measure, are models improving your application, you want them to be
+unsaturated so that as models improve, you can see that gain in your application and in your evals.
+Finally, what you want to do is actually benchmark new models on these evaluations. In general, this
+is what allows you to test models quickly because it means that you can just sort of kick off a
+script and then see the eval results, and then trust that if the model is performing better, then
+you should plug it into your application, rather than having to read all of Twitter, see what the
+vibes are about the model, test it yourself over many weeks. And so companies that tend to have
+evals tend to be the fads at adapting to new models. And what we've seen is that this is a big
+competitive advantage, because often the biggest improvement you can make to your application is
+using the best model for your application and the most frontier model. And so if you can't adapt to
+them because you don't know which model is best and you don't have evals, you're going to be slower
+than competitors who do. Another key thing that we've learned over the last few years is that you
+should shrink your scaffolding over time. What I mean by scaffolding is essentially everything that
+goes around the core LLM. So the LLM is the intelligence engine. And then around the LLM are your
+prompts, your tools, the execution environment, your skills, essentially all of the scaffolding, or
+so what sometimes people call the harness. And this is essentially the stuff that allows the model
+to operate as an agent. And one thing that we've seen is that over time, you develop this huge
+Frankenstein prompt. I've been there. And essentially, as you develop your agent, you realize some
+failure. You add some line to the prompt to adjust for that failure. And eventually, you have 3,000
+lines of mostly prompt instructions that were designed for previous models and for failures that
+might not even happen anymore. And so what you want to do is when you get a new model, you want to
+cut down your prompt, figure out what's not necessary anymore, and describe what you actually intend
+for your application, rather than just how to work around the quirks and weaknesses of previous
+models One example of this is that when we were working on the Quad 4 launch we were sort of
+adapting the Cloud application to this new model And one thing we realized is that the model was
+following instructions more effectively than previous ones And there were pieces of the Cloud.ai
+prompt that it was following that we didn't even expect it to follow. So one example of that is that
+there was an example about how to do citations in a particular format, but we didn't actually use
+that format anymore. And the model was following that instruction and producing the incorrect
+format. And once we changed that example and sort of just tweaked a few characters in the prompt, it
+completely fixed that whole class of errors. So that's an example of how, you know, sometimes when
+you have a huge prompt, you don't even expect the model to follow every component of it. But as the
+models get smarter, you sort of have to reassess and look. Maybe there's a bug in the prompt. Maybe
+there's some instructions that aren't relevant anymore. And maybe there are some things that we
+should cut out to allow the model to sort of just work autonomously. So in general, we recommend
+that when you get a new model and as you improve your application, you shrink your scaffolding down
+and you audit your prompt and system for things that are not really relevant anymore. And ideally,
+you can use your evals to test whether, you know, if you cut down your system prompt to the bare
+minimum, can the model still perform just as well? Finally, a really key practice that we've seen a
+bunch of our customers adopt and that helps with adapting to the capability curve is giving the
+model room to work. And what this means is a few different things. First of all you want to allow
+the model to think when appropriate Essentially all of the models at this point at the frontier are
+reasoning models which means that they benefit from test time compute Essentially, if you give them
+the option to, then they can use more test time compute to apply more computation and apply more
+intelligence to the problem. And that can result in better outcomes. And so in general, you want to
+allow adaptive thinking, which gives the model to choose to think when appropriate. And you also
+want to sort of dial the effort parameter up depending on your application. So for very
+intelligence-sensitive use cases, like most software engineering or enterprise agents, you want to
+set the effort level pretty high, usually to sort of the highest setting or close to that, to allow
+maximum intelligence at the cost of more token usage. Another key thing that you want to do to give
+the model the room to work is allow it to operate autonomously. And this can be a little scary. if
+you give the model access to a production system, you don't want it to delete your cluster or deploy
+jobs to prod without you asking. And so one practice that we've found is effective is something
+called auto mode. We published a blog post about this as well. But essentially in Cloud Code, we
+have an auto mode classifier that for every tool call, we use a prompted classifier to check, is
+this tool call safe? And can we just approve it automatically? Or does it really need human
+approval? And this allows us to sort of trust Claude to run autonomously. And almost every software
+engineer at Anthropic at this point, we're using auto mode to allow the model to just work on its
+own and only loop us in when it actually needs approval for something critical or dangerous And so
+you can apply this pattern to your own applications And we looking to make it more and more possible
+for people to run agents autonomously while still keeping them safe and looping in humans when
+needed And finally, a really important practice is to close the agent loop. And what I mean by this
+is allowing your agents to help you improve your agents. And essentially what this means is that you
+want to design your system so that Claude or Claude code can inspect its own outputs and iterate on
+them to improve your system. One example of this is that I often will sort of plug Cloud Code into
+some agent I'm working on. And if that agent already has evaluations to measure success, I can just
+ask Cloud Code, how can I improve the prompt? How can I improve the tools to get a higher score on
+this application? And because Cloud has access to the full agent loop, it can run the agent itself.
+It can run the evaluation itself. It can help you autonomously improve your own agent loop. And so
+if you can give Claude the ability to iterate on your own system, then you can sort of get to the
+point where you're almost self-improving. And you can sort of direct Claude to make improvements
+without having to be in the details of iterating on every piece. So giving the model the room to
+work by allowing it to think when appropriate, allowing it to work autonomously in a controlled way,
+and by closing the agent loop, allows you to build really autonomous agents that can do much more
+productive work than ever before. Overall, this is sort of the capability curve that we've been on
+and how to adapt to it. And thank you everyone for listening.

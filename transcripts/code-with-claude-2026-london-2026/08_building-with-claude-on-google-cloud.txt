@@ -1,0 +1,201 @@
+Title: Building with Claude on Google Cloud
+Video: https://www.youtube.com/watch?v=l8fxVYIP4HQ
+Caption: whisper (whisper-large-v3-turbo, audio transcription)
+================================================================================
+
+. Thank you. Thank you. Hello. Hello, everyone. Thank you for being here today. Pretty excited to be
+on this stage and talking about what you can do with the cloud on Google Cloud. So before to start,
+I just want to ask you a very simple question. So how many of you used an AI coding tool this week?
+Raise your hand. The majority sounds good. How many of you used the same coding tool to build and
+deploy something on Google Cloud? Raise your hand. OK. Not that bad, but we can do better. And so
+the goal of this presentation is showing you how you can do better. But before to start, let me
+quickly set the stage. So at enterprise level, when you start building and you want to ship a
+product or new feature, you usually take a team, a full team like this one. So in our case, let's
+assume that our team has a product manager that might have an idea for a new services or a new
+feature. And then you have a UI UX developer that start from that idea and try to render it, try to
+visualize it for the entire team. Of course, once the idea is visualized, then you need a software
+engineer that essentially builds the core logic, the back end of that idea, and everything that is
+needed to ship it. Of course, before you ship this idea, you want to be sure that you do it
+confidently. So you want to be sure that you ship it in a secure way. So you drag in Security
+Engineer that will review your code. And once the new feature or the product gets deployed, what you
+want to do is that you want to have a kind of a system that will allow you to collect how the user
+are using your new product or the feature itself to generate some insights that will allow the PM to
+improve the product itself. So this is kind of the team that you probably employ to build a product
+or this new feature. But with respect to this team, Cloud Code, the Anthropics coding agent,
+provides a set of capabilities that will essentially augment them across this entire software
+lifecycle. So today, what I'm going to do, I'm going to put on five different ads, And I will show
+you how you can leverage cloud models running on Google Cloud to build and deploy a simple feedback
+app that it would be used at the end of this session to provide me a feedback on my performance here
+on the stage. But before to start, let me introduce myself. I'm Iman Nardini. I'm a developer
+advocate at Google Cloud. And what I do every day, essentially, I build content, in this case, in
+partnership with Anthropic to enable you and developers in this room to build and deploy your own
+application using Google Cloud itself. So with that being said, talking about building and deploying
+with Cloud on Google Cloud, the first thing that you need to do probably is, if you use Cloud Code,
+is setting the tool itself. So the setup, how you can use Cloud models with Cloud Code But with
+models hosted on Google Cloud, it's pretty straightforward. So you have different way. You have
+different methods. But the simplest one that you can get access to is the application default
+credential, which automatically find some credentials, like the user credentials, based on your
+environment. And then you have a wizard, like the one that you see here, that will detect the
+project and the region, verify which models, which cloud models are available on your project. They
+can be invoked and let you pin them so you can use in your coding session. So at this point,
+probably most of you are familiar with this interface. So what are the advantages of using Cloud
+Model on Google Cloud? Well, there are many. And first of all, let me just list some of them. So
+first of all, if you use Cloud Models on Google Cloud, you pay per token. So you don't receive any
+message per cap. And if you need some additional capacity to run this model because maybe you're
+building a production application, you can always get access to what is called provisioning
+throughput, which essentially provide you more capacity with respect to models that we support As I
+just said using cloud models on Google Cloud is pretty straightforward So nothing changed with
+respect to your environment. You don't need some API key to store or rotate or anything of these
+things. You get access to models directly from your dedicated project where you can set your own
+policy. And the data that you use during your session, they remain in that project. And models are
+served in multi-regions. So they can be global, they can be multi-region endpoints. For high
+availability, you can pick and choose depending on where you are developing. And last but not least,
+talking about high availability, Google Cloud support high quality and availability service
+standards with respect in serving cloud models, making the platform itself one of the best place
+where you can run cloud models or get access to cloud models in the market. So I hope these are some
+few reasons that convince you why to consider using cloud models on Google Cloud. But with that
+being said, let's start building what I just introduced you. So as I said, five different ads. The
+first one is the ads of the PM. So let's assume that you just joined the company you have this idea
+for new services. In our case, I said at the beginning, a feedback app that you want to build. So in
+the past, what you have to do probably is going to the UI UX team, asking for a prototype and just
+waiting. But now using code, what you can do, you can just draft a picture while you're drinking a
+coffee or a tea here in London and ask Claude to render for it. So without further ado, let's see
+this in action. So here is our code code. I just created a Cloud MD where I passed some role with
+respect to our PM. The goal is creating a Y frame for our UX developer, starting from a scratch. The
+scratch is that one. And as you can see in a few seconds, he creates a prototype for it. for it. And
+notice, this is a PM that probably doesn't know how to use Git, but because the way we define our
+environment, we call code, is also able to submit this wireframe that you see here on a GitHub
+repository, creating a PR. So this is pretty simple, and in a few minutes, you start, you move from
+scratch on a paper to a wireframe that now can be used from my UI UX developer. Okay, so let's move
+on. I changed that, now I am the UI UX engineer. So the PM gives me the prototype, and from that
+one, what I want to do, I want to build a more solid interface for a production application. So in
+particular, in this case, we want to create four pages, starting from the landing page to the tank,
+to the tanking page, Plus, I'm going to create a dashboard view that I will show you later to check
+the temperature of the room while the demo is going to run. So in this case, in order to build these
+four pages, essentially, I used one of the components that you can find in Cloud Code, which is the
+planning mode. So probably most of you are familiar with it, but with the planning mode, this mode
+puts Claude in a mode where he thinks and he propose before he starts coding. And this is very
+important because it gives me some degree of freedom to decide what to build before Claude starts
+building based on my personal preference. So with that being said, let's jump in the second demo. So
+again, I have my Cloud MD in this case. As you can see, I just provided him some description. And
+here I'm using the plan mode to convert the wireframe into a production interface. So what he does,
+he creates a sort of a spec to create those pages. Of course, in the reality, probably you connect
+with Figma to collect some of this information. But then let's see that I'm good with that. I just
+tell him to start building. it builds very quickly and then again I will just submit a new PR and
+push my code into the repository. So pretty simple the only thing that changed here as you can see
+as you saw is that in this case it creates a plan And this is like the new kind of production
+interface that it creates starting from that wireframe. So now we have the new PR in our repo. I
+just look at it. It's a very simple one. We already saw the code. So I am the same person. I know
+what it did. I accept and merge. OK, so let me go on and change my hat again. So now I am the
+software engineer. So the front end is done. Now what we want to do is package the back end and
+deploy on Google Cloud. As we saw at the beginning, most of you, you don't know how to build and
+deploy an application on the platform, on Google Cloud. But this is not a problem, because in the
+last few months, Google Cloud spent a considerable amount of time to integrate with the open by
+coding ecosystem that is fostering around Cloud. And we introduced two important things. One is the
+official Google Cloud skills, and the other one is the developer knowledge API with the associated
+MCP server. So with the developer knowledge API, what you get is essentially an MCP server that will
+allow Claude to access to fresh documentation and implementation guides that they get refreshed
+every 24 hours that will essentially allow you and Claude to build some architecture, let's say so.
+In this case, it's a simplified version of it, like this one. So with the developer knowledge API,
+you will be able to, together with Cloud, to say, OK, I can deploy the API on a serverless function
+on Cloud Run. Then I can attach a dedicated DB for website, like file stores. And because, as I said
+at the beginning, we want to process the raw information that you provide with the feedback form in
+order to generate some insight and improve the application, I will also ingest the raw data in
+BigQuery, which is our analytical data warehouse, implementing a data pipeline that will essentially
+allow me to visualize the data in a dashboard tool like Looker. So this you will build just together
+with Cloud that will read the documentation and will help you to figure it out what's the best
+implementation to deploy on Google Cloud without you knowing about Google Cloud itself. So once you
+have the overall picture, then you also want to know, OK, how do I deploy on Cloud Run? Or how do I
+read raw records from Firestore to BigQuery? So the implementation itself, you can leverage the
+Google Cloud skills that we launched recently. So you will be, at the end, not only able to build an
+architecture like this one, but also actually deploying it on Google Cloud. So with that being said,
+let's see this in action as well. Before to do that, I just want to highlight that in this case, to
+build the components of that architecture, I will use another component of code, which is
+represented by the sub-agents. In this way, I can parallelize tasks, simulating like a team sprint.
+And I will have one sub-agent for the API, one for the data pipeline in BigQuery, and the other one
+for the dashboard. So with that being said, let's jump in the demo. So in this case, first of all, I
+want to show you that I connect Cloud with the MCP server for the documentation, and I have some
+dedicated skills. In this case, the first thing that I will do, I will ask to design the
+architecture and the spec of the API using the MCP server and the skills itself. So as you can see,
+he's querying the MCP server with a specific, asking for some specific information. And based on
+what he retrieves from the documentation, he builds the architecture. Then he used the skills to
+create the spec for the API. So in this case, it's a very simple one. As you can see, it has
+different pages, different paths, And it provides you a very detailed description on the API itself.
+So we accept it. We have the architecture. And we have the specification for the API. The next step
+is parallelizing with the sub-agents and build the entire system. So as you can see, I'm using
+different models and different sub It pretty quick And it will also test the code at the end once it
+implemented the app as you can see here So it runs a test And once it's finished to run the test, it
+will also use an additional skills, which is the one that I was describing before, to build all the
+components that are needed to deploy the application on Google Cloud. So in this case, it will build
+a CI CD pipeline using two of the products that we have on Google Cloud. One is Cloud Build for the
+CI and the Cloud Deploy for the deployment for the CD. So once it finishes, again, it creates a PR,
+and it pushes the PR on GitHub. In this case, because we build those CI-CD pipelines, the entire
+process, what it will do, It will trigger a workflow after you merge it. And the workflow
+essentially will be a pipeline, a building pipeline on Google Cloud. So here you can see all the
+steps for the API, for the dashboard. And the last step is related to the release. So once this
+pipeline finishes to run, it will push a new release on the continuous deployment tool, and the
+continuous deployment tool, it will trigger a release, as you can imagine. And in this case, because
+we are still developing, it will deploy the application in a development environment without, of
+course, requiring any promotion for now, because we are still in that environment. And this is kind
+of, like, this is the application running on the serverless function that I was saying at the
+beginning, and this is the same UI that I was showing you before. So far, so good. So now we have
+our application deployed. So at this point, the code is in the development environment. But as I
+said, before to move to production, we want to be confident about the code itself. We want to run a
+security review. Now, there are many ways how you can run the security review using Cloud Code. In
+this case, we created a custom plugin. And that's because in a real world, probably your company has
+different security review requirements. So you might want to check for the top 10 issue when you
+deploy an application, or if the application has something that is invalid. In the case, when you
+deploy this kind of application in Cloud, you want to check things like the service account in order
+to limit the permission that the services that the application can get access to in order to avoid
+any expected situation. But as you can imagine, this is just a possible scenario. So in this case,
+we are going to use the review to check if there is some input validation to run some input
+validation. And then it will also modify the permission related to the service account and it will
+deploy the application in this case in production. So let's see this in action as well. OK. So as
+you can see, I defined the plugin and I provide some prompt to describe what it has to do. So it
+will start checking for the permissions and also to check for implementing the input validation that
+we were saying. It will figure it out that there is something wrong. So it will change the code in a
+couple of seconds, as you can see here. And this will essentially fix the application. It will also
+run an additional test. And this is exactly as we did before. So that's why it's so fast. It will
+open a new PR, and it will push the code in our repository. But in this case, because the code
+passed the review, not only we will build and we will trigger a new release, but when the new
+release will go to our continuous deployment product, which is Cloud Deploy, once it gets deployed
+in the development environment, we can also review the application one time more. and finally
+promote and approve it to be shipped into production. And this is something that you can quickly do
+using the capabilities of the product itself, of Cloud Deploy. So once you get the application in
+production, the result is exactly the same as I was showing you before. But again, as you can see,
+with the clock code, You started from a prototype, and you were able to deploy with respect also on
+the development production setting your application on Google Cloud. So at this point, we deployed
+the application. The last thing that I want to do is that I want to start collecting some metrics on
+how you are using the application. So for example, how long is taking you to provide me a feedback
+using this application? because if it takes too long, maybe it means that my UI experience is not
+the best. I can improve it. So what we want to do is that we want to run some analytics based on the
+input that I receive from you. And again, as you probably don't know how to deploy an application on
+Google Cloud, you probably don't know how to run analytics on Google Cloud. You don't know the
+analytical data warehouse in Google Cloud, which is BigQuery, as well as you don't know the
+dashboard tool. And so this is again not a problem because as part of that integration that I
+mentioned before on Google Cloud we also have now official MCP server that will allow you to
+essentially run analytics in BigQuery, as well as building an entire dashboard on the fly. And just
+to give you an idea of how powerful these MCP server are, let me quickly show you the last demo. So
+this is our application that we just deployed. And just to give an idea, this is the live dashboard
+that I built also at the beginning. I integrated a cloud to summarize some feedback. But this
+dashboard is more for us, right? Like you cannot give that dashboard to a PM, essentially. And
+that's why you want to build some proper analytics. So the raw data are stored in BigQuery. And you
+can use the BigQuery MCP server to analyze those data that I was showing you and generate some
+statistics around it. Now, these statistics are still in the terminal, and probably the PM, they
+don't like this, they want to present some numbers whatever So what you can do is that you can use
+the second NCP server that will use those numbers to create a dashboard in the Google Cloud
+dashboard tool which is Looker And at the end of the day, thanks to this interaction, you will get
+just one link. And this is the dashboard that tells us, for example, how long it takes you to
+provide a session and also compare different probabilistic distribution. So this is a better output
+that you can present in order to discuss and improve, discuss on how you can improve the app itself.
+And again, even if you don't know a dashboard tool, you were able to build this using a code code
+and the MCP server that we provide. Okay, so this was my last demo. So let's wrap up the session. At
+this point, what I try to demonstrate today. So essentially two things. One on the cloud code side
+you can use plan mode subagents MCP skills plugins in order to prototype applications like the one
+that I showed you today and deploy them on Google Cloud And on the Google Cloud side apart from
+hosting the application itself you can leverage, you can get access to cloud models in a way that,
+as you saw, makes your coding essentially frictionless for the entire session. So if you want to
+learn more on how you can build more complex application rather than a feedback one that I showed
+you today, please check out the repo, the quick start, and the documentation that we are going to
+share at the end of the session. And I hope I cover everything. But for now, thank you so much for
+being here, and enjoy the rest of the event. Thank you.

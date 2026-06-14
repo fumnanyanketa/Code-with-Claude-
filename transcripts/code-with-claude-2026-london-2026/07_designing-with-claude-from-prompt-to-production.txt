@@ -1,0 +1,291 @@
+Title: Designing with Claude: From prompt to production
+Video: https://www.youtube.com/watch?v=Uvl-tRga98g
+Caption: whisper (whisper-large-v3-turbo, audio transcription)
+================================================================================
+
+Dan Carey Reviewer How is everybody? A little bit more than that. Come on, guys. How is everybody?
+Thank you. Thank you. So, I'm Dan Carey. I am a product manager. I lead up product within Anthropic
+Labs. Today, we're going to talk a little bit about cloud design. Can I get a quick show of hands?
+Who has already tried Claude Design? Okay, great. For those of you who haven't had a chance yet,
+Claude Design is a new product from Anthropoc Labs and it lets you collaborate with Claude to create
+polished visual artifacts. These can be designs, prototypes, slides, one-pagers, more. You can do a
+lot of different things with this product. And as of, I think it's yesterday, the product has been
+live in research preview for one month. So we're pretty happy about that. Today, I'm going to tell
+you a little bit about how a very small team, it was three people for most of the development, built
+Cloud Design in about 10 weeks from idea to launching the product. And the reason I'm going to share
+these things with you is because the most common question I get asked is, why did you decide to
+start working on this? How did you see that this was an opportunity for building a new AI-enabled
+product? How'd you build it? How'd you launch it? So everything I'm going to cover here, There is no
+real secret sauce. These are all things that work well for us. Take what you like. You can do a lot
+of these things tomorrow. To start, I want to tell you about what Anthropic Labs is. It's kind of
+funny. It's a lab inside a frontier lab. We don't have any labs within Anthropic Labs, but it is
+labs quite a ways down. The way that we usually talk about it is as a bet factory. And by that, I
+mean we have very small teams exploring the frontier of what the models can do and making bets about
+whether or not something will work. We run experiments to find out what works, we double down on the
+things that are working, we fold the things that are not working, and at any given time, we might
+have a dozen small teams exploring different concepts. So it's lots of exploration, small number of
+really high-conviction releases of things that we think can be moonshots or change how people work
+with the models. There's a few products that came from here that you may know. Cloud code came out
+of labs, design came out of labs, MCP came out of labs, skills came out of labs. We had the Cloud
+and Chrome extension, we had our work on hands-free audio come out of labs. So this is a process
+that's worked pretty well for us, and we just keep turning the crank on this. If you look at how
+each of our bets operate on a day-to-day basis, you're going to see a lot of parallels with lean
+startup methodologies. Nothing there is rocket science. We did not invent any of these things. I'd
+say the biggest difference is the speed at which we run our loops. We spend time with users and also
+anthropic researchers every single day. My favorite thing to talk to users about is, please complain
+at me. And my favorite thing to talk to researchers about is what have you been surprised by lately?
+Because both things are often opportunities for new bets, new products, new things to explore that
+could pay off for us. We also aim to ship to users every day or two. We're trying to ship something
+new every single day in response to what we hear from people. We are trying to keep a very, very
+high cadence of innovation on the team, and we are trying to get things out based off of what people
+tell us. Likewise when people tell us something is not working or they have feedback or they have a
+suggestion, early on in a project we try to ship them the response to that the next day. Oftentimes
+we are able to do the same day, sometimes it is the next day. Not everything hits that bar, but our
+usual goal is to get things out very quickly to people when they have feedback. Finally, we do not
+try to predict the future. A lot of labs groups out there do try to predict the future. They say in
+ten years time we are going to have this amazing technology and it is going do these amazing things.
+We don't do that. Instead, we try to ship, we watch people use the stuff, we learn what they do, we
+ship, we watch, we learn, we ship, we watch, we learn. We just run that loop over and over. And so
+for Cloud Design, we ran that loop somewhere between 50 and 100 times over the course of those ten
+weeks. So why did we start working on Cloud Design? Well, we started working on Cloud Design because
+Cloud Code made engineers really, really fast, and the rest of us had to keep up. So product
+development timelines that used to be six months, and then they would be a month, and then a week,
+and now a day So sometimes things that you were spending a week on before are now something that you
+are getting done in a couple of hours and getting out in front of users that is rapid Can I see a
+very quick show of fingers from people I very curious The last feature you shipped how many weeks
+did it take from idea to getting it in front of users? It's okay if you need two hands, and don't be
+shy here. One, one, ten, one, two, one, four, one, a lot of different answers, but things Things
+have gotten a lot faster. Think about what your answer would have been a year ago. All these
+timelines have compressed a lot. And so once Cloud Code took off, the bottleneck moved. The
+bottleneck moved from building the feature to figuring out the right things to be building for your
+users in a lot of cases. So the option was either, you know, skip those early steps, just try and
+decide on the fly and potentially build the wrong thing really fast or try to find ways for the rest
+of us to speed up. So our designers, our PMs were having trouble keeping up. We needed our own
+accelerator tool. And somebody on our team, Nate, who was a designer on Cloud Code previously, he
+had seen firsthand what happens when some of these teams speed up to such a huge extent. And that
+got him thinking about the problem and the potential solution. And so he ended up hacking together a
+prototype over the course of a weekend while he was working on a different bet. It was very simple.
+It was the agent SDK, it was a very thin IDE wrapper, and it used an existing skill that he had
+already been using in cloud code. This is how a lot of our labs bets start. It's one person, one
+weekend, one screen recording, someone gets something, hacks something together, and just shares
+what they did. So, for us, Nate posts this in Slack. We run a lot of things in Slack. And everybody
+helpfully chimed in with both this is what's promising about this and also here's all the stuff that
+doesn't work, totally broken, please go fix. And that was his roadmap for the first couple of weeks
+on this. It was just what's the promising stuff to lean into? What are the major blockers we want to
+address? I do think it's worth calling out the things that we did not do. So we did not write a PRD
+in advance, we had zero vision docs, we had zero KR meetings, we did not have an H1 annual staffing
+plan, we did not have a two-page year for what we were going to do over the next two years, we did
+not write the press release in advance for what we were doing. Those things are great if you know
+exactly what you're building. We did not know exactly what we were building. All we knew is that we
+had a spark. So who here works off of PRDs? Has written one or worked off of one in the last month?
+Most of the room. Now, of those people that raised your hand, who would rather be working off of a
+prototype that worked and showed you the feature fully? Exact same hands. Pretty good. So we like to
+use prototypes because documents are imprecise. It's so easy for two people to look at the same doc
+and have two different products in mind about what the experience should be. And usually those two
+ideas are not the same idea that the author had when they were writing the thing in the first place.
+So docs are imprecise. Prototypes are more concrete, they're more visceral. They let you get hands
+on with the thing and really feel the experience yourself. And over the course of this project, we
+were able to get our prototyping cycle down to a couple of minutes. So, if somebody had an idea,
+they were able to prototype it and get it out in a couple of minutes. For us, the easiest way of
+doing this is talk to it with somebody else on your team, record it, transcribe it, there's tons of
+great tools for that, and mainly talk about what the problem is, what does the solution generally
+do, why do you care about solving this problem, and then we would take that transcript and we would
+just give it to Claude Design once we had something working and we would say, give me a few options
+for this. This has effectively replaced PRDs for me as a product manager that's been writing them
+for almost two decades now. Now I just do prototypes, this is my flow, it works pretty well. In labs
+we do this ritual every once in a while, we get together and we call them pitch offs and the thing I
+like doing about these is we all get together, we brainstorm, you're basically trying to nerd snipe
+other people to come work on your thing with you that you think the team should do. And when we
+first started doing these, people talk and you just talk and present your thing and it's not that
+compelling. The first time we did this with quad design is what convinced me that we had a promising
+product on our hands. Because in these pitch-offs, most of the ideas people come up with during the
+pitch-off, someone says something and you're inspired by what they say. Somebody has an idea that
+you fork off of and you come up with something new on your own. by the second half of it, 100% of
+the pitches were prototypes or slides made with quad design. And they were being made on the fly in
+the meeting And that what really convinced us that this is a proof point we should double down on
+this bet We should take this to market The other thing that a little bit different about the way
+that teams work in labs is the size of the teams. So almost every labs bet, it starts as a single
+person. It's just one person with their good buddy Claude exploring a really hard problem and
+exploring a pretty hard idea. And at this point, you are not trying to build the best product in the
+world, you are just looking for that little moment of magic, you are looking for that little hint of
+heat. You are looking for, hey, this is a promising idea because there is a little sparkly glimmer
+here that we can build into something compelling. And most labs, I'll admit, do not make it past
+this point. Most things we end up folding before they get here. And that's totally okay. This early
+exploration is usually hours or a few days for most things. Once we do have a promising spark, we
+usually scale the team up massively, you know, 300 percent, all the way to three people. So these
+are not big teams. And the reason why we do that is that we want it to be a very tight group
+exploring together with very little collaboration overhead. If something is so compelling that we're
+pretty convinced that we're going to taking it to a product, after it's had three people for a
+while, we might scale it up to five people ahead of launch. So who here works on a team that is
+smaller than 20 people? Almost everybody, but not everybody. What about smaller than ten? Five?
+Smaller than three? Is there anyone here that's totally solo? Oh, yeah, a couple of people.
+Three-ish, Three-ish, two and a half? Four. Okay. So for most of Claude's design development, it was
+only three people with Claude, and luckily Claude is a pretty good team member. So what makes that
+possible? I'm sure this is also true of a lot of the solo builders in this room. Everyone on the
+team does everything. The engineers talk to users, PMs write code, designers do data analysis, all
+of these things are enabled in part with Claude. And the lines between the roles on this team, they
+have essentially dissolved at this point. You do have your specialization, you do have the unique
+perspective and diversity that you bring to a team, but at any moment, any one of these people on
+this team can talk to 10 users, you can realize what the underlying problem is, you can design a
+solution to it, You can ship it to users, you can listen for feedback, you can keep iterating solo
+if you need to. And quite often that's the case. That's how most features happen. Most things on the
+team are totally solo. And having this small team where everyone can do everything, that's the main
+thing that minimizes coordination overhead for us. Again most things can be done solo, but let's say
+you have to get the whole team together, oftentimes that's as easy as talking to the person on your
+left and the person on your right and you're done. It's not a big alignment meeting, it's not
+something you have to schedule, it's not something that you have to wait for. And so this helps us
+minimize coordination overhead. We've already minimized planning and process just by relying on
+prototypes and just doing these two things alone would let us go pretty quickly, right? They would
+let us go pretty fast, they would take down these big long cycles at the beginning of major
+milestones. But we go a good bit faster and we go a good bit faster by then really aggressively
+optimizing every single other step in our development process in our loop. So our loop is our loop.
+This may not be the right loop for you. That's not the message here. If you're working on hardware,
+this is probably the wrong loop. But our loop is pretty basic. We talk to users, we design features,
+we ship code, we read feedback, and then we do it again. Again, we're trying to do this over and
+over and over and over. The point is not the specific loop, it's not the specific interventions that
+we did here, it's rather the thought process that goes into these is why are you doing this work
+that Claude could do for you a lot of times? Why haven't you built your own tooling? Every little
+bit of optimization that you do on your loop is going to pay you back if you're running it 50 to 100
+times in a project. So for a really simple example, I mentioned that we talk to users every day. We
+want that to be the easiest thing in the world. We are people, we do things that are easy, we tend
+to do things that are hard less often. And so we want the easiest thing in the world for us to be to
+talk to users. And so we did the really basic stuff from the beginning. We create shared Slack
+channels with anyone using the product, we do a ton of internal dog fooding, we talk to our dog
+fooders all the time with new features. But then we sped this up by bringing Claude into all of
+those conversations. So Claude looks at all of our customer conversations. It looks for
+commonalities across conversations You and I may be talking to different users today who may have
+the same suggestion We want Claude to tell us that if we don talk We do it for early analysis we do
+it for early investigation We have Claude do the first look at all of this stuff for us We are the
+ones having the conversation. We don't put Claude between us in the users in that case, but we do
+have it do all of the analysis that we were already doing on every other conversation as an
+immediate follow-up. So talking to users, most important thing, obviously we want to optimize it.
+Our next thing on here was designing features and luckily we have a great product for that now. When
+we got started, we did not have the tool that we wanted for designing features. Our team, we would
+use quad code, we would build prototypes with it and then when it came time to share that prototype,
+I would either record a video or we would put up a branch and say pull down this branch and try it
+or you would just commit it into a sandbox and let other people pull it down and try it. So we
+wanted to use Cloud Design to design Cloud Design and so very quickly Cloud Design got great at
+designing Cloud Design which is fantastic. I have to say, if you do any developer tool, if you're
+using your own developer tool to improve your developer tool, it's the best situation in the world.
+It makes things so much easier. There's a lot of other features that you see in Cloud design today,
+from the way it explores code bases, the way it links with GitHub, even multiplayer was something
+that we built based off of how we were working in Cloud design to design Cloud design. For
+multiplayer, we were getting to these scenarios where I might prototype something and then share it
+with somebody else on the team, they would take a look at it and then they would tell me what they
+thought we should change about it and I would hands on keyboard type it in and then we would look at
+what it was. We We wanted to take that step out and so we made it possible for multiple people to be
+iterating on the same design at the same time. We had originally built that for ourselves to go
+faster and then as soon as we brought the product over to users, the very first request was can I
+use this with the rest of the people on my team in real time. So we made a first class part of the
+product. The next thing that we've done in here is we wanted to optimize how we ship code. So if
+you've used Cloud Design, you have probably used the handoff to Cloud Code. It's fantastic. It's
+such a good way of getting your designs into production. And that's another feature that we built
+really to speed up our own workflow. When we started out, we would design our features and then we
+would export all the files, then we would import them into Cloud Code, and then we would retype all
+of the context that we had done over multiple terms of conversation with Cloud Design so that Cloud
+Code would have all that context. And that was slow. We didn't like it being slow, right? So we
+wanted to improve it. And so we originally built this for ourselves and then as soon as we started
+handing off the product to other people, the first request was great, now how do I get this into
+production? So first was multiplayer and then right after was okay, now that I have the thing, I
+want to actually ship it. And so this was another spot where we just had too much friction, we're
+working for ourselves, we're optimizing for ourselves to get it out there. The last step in our
+iteration cycle is to read feedback. At this point, we get too much feedback for one person to read
+through all of it. I think that would be a full-time job. But we still want to make sure we don't
+miss anything. And even if we had that one person whose full-time job was to read that feedback, we
+would probably miss things. And we would miss things because the number of small issues that pop up,
+you don't want to miss them. It's too much for any one person to keep in their head. So to deal with
+that scale, we ended up building our own feedback clustering tool. It took an afternoon. It wasn't
+something that we were going to wait on. We needed to have this. So right away we ended up building
+this, we rolled this out, and now we have Claude taking a look at all feedback that comes in. It
+tries to match it up with system monitors, with system traces, it tries to look for common trends
+across things, it does initial analysis if things look like a bug. We have tried to make all of
+those initial steps that we would do looking at that feedback automatic to speed ourselves up. So we
+also found ourselves we would take everything it said and then we would have to come up with a
+suggestion after reading through all of that. So now we have Claude give us a suggestion on how to
+fix it and then we found ourselves copying and pasting and so we just made that a button to bring it
+directly over to our development tooling. So not everything we built worked. Just because you're
+really fast doesn't mean you're always really right. We got tons of things wrong as we were building
+the product. So I want to tell you about one specific time where we got this wrong, and that was we
+started out early on and we built these really advanced controls. These gave you really fine control
+over every single pixel. You could do anything with these. These were for power users. In our early
+testers, we had a few power users who were very vocal, gave great feedback, And they love this
+feature. They love this set of tools. And we thought, great, we have something good on our hands,
+all the feedback we are hearing looks great, but then as we dug into the usage, we found that
+everybody else hated them. Like, didn't just dislike them, people hated them. They were confusing,
+they were actively harmful to the product. And so we ripped them out. For us, this took a grand
+total of one week. So yes, we got off track but from idea to course correcting and ripping out the
+feature and going on to the next thing, took us about a week of time. If we had been doing a
+quarterly development cycle and we had planned this to do this over a quarter, we would have been
+off track for an entire quarter. That would have been really bad for the product given that the
+entire product shipped in less than a quarter. For us, it's not necessarily can you always go fast,
+it's can you always iterate in a small enough cycle that you're able to very quickly find out when
+you're wrong. This comes back to the run experiments bullet from earlier. So this taught us a couple
+of things. One this taught us that we should be a tool that lifts the level of craft for everybody,
+not just the ceiling on power users. It also taught us that we want to be as open as possible
+because there will be users that we never meet the full needs of. There's going to be some power out
+user out there who wants to do something very specific that we're not going to support. And that's
+what convinced us that we want this to be a very open tool. That's why if you export from it, you
+get HTML, CSS, JavaScript. That's why we're trying to do more and more integrations that you can
+take things directly into other tools. We haven't talked about this publicly before, but I think
+this week or next week, we're going to be pushing out the ability for any design tool to integrate
+with Cloud Code, sorry, Cloud Design, just via their existing MCPs. So we want this to be a tool
+where you are able to explore it lists the level capability for everyone and then the people that do
+have very specialized needs if they have a tool of choice they can take their designs right into
+them They yours So this slide is fun On the left is that first prototype. It's a terminal and a
+browser and that's about it. It's not the shiniest thing in the world. This is the level of those
+early explorations where all you're looking for is that little bit of promise, right? This is not
+obviously the final product that launched. On the right is the final product that launched. And
+there's a lot that separates them. I'll admit this one on the left, it does have a little bit of
+promise in it. But 99% of the value came from those ten weeks of iterating and shipping and talking
+to users every single day. The value came from the experimentation, figuring out what the right
+thing was to build rather than knowing in advance this is exactly what we are going to be doing. So
+to put the amount of iteration this team does in perspective, Cloud Design shipped on a Friday and
+by the following Monday we had shipped 62 improvements to the product. That's a good number given
+the size of the team we talked about earlier. And we made the product more token efficient. We
+improved its ability to handle images, we made it better at exploring code bases, we made most
+exports instant. It's a pretty long list and it was all based off of user feedback that we got on
+launch day. Now, this was not a Herculean effort. This was not something that required all-nighters
+from everybody. This was something that was very natural because the team had built up the processes
+and the muscles and the practice of doing this every single day for ten weeks prior. This became a
+quick, normal way of working for us. I mentioned earlier that quad design has been live for one
+month, and so also you may have seen this but last night we doubled token limits for the product So
+one of the pieces of feedback we heard was that people liked it they wanted to use it more so we
+making that easier That across all subscription plans Before we close, I want to share one of the
+more counterintuitive things we've learned working in labs, and that is that you do not want to work
+on the thing that already works. You often want to prototype the thing that almost works. And the
+reason why you do that is because the models are improving so rapidly. The level of intelligence
+keeps going up. And the next model may just fix the issues that you cannot solve via engineering. We
+had this with Cloud Design. There were a bunch of issues in that early prototype that we did not
+solve. We did not fix them with clever engineering. We did not fix them with amazing insights. We
+fixed them with Opus 4.7 coming out. And that's going to be true of a lot of things that everyone in
+this room that we all work on together. The model releases are a tide that lifts all boats. They do
+a lot for you. So remember, early on, you're looking for that hint of magic. You're not looking for
+something that works in full, that works completely, that handles every edge case. You're looking
+for something that could become that in the future. And so that's why when you find it, you want to
+start exploring, start building, start bringing in front of users and figuring out the shape of the
+product that works. The shape is the most important thing and the thing we all get wrong when we
+first start. So there's three concrete things that you can try tomorrow from this talk if you want,
+if there's nothing else you took away from it. The first is go ahead, next time you're going to
+write a PRD, skip it. Don't write it. Instead, just talk with Claude, talk with somebody on your
+team and take the transcript and don't talk about specifically what the feature is, what buttons
+there are. instead just spend time talking about why you're trying to solve this problem. What are
+the characteristics of a good solution And give that to Claude Design give that to Claude ask it to
+give you three variations on a prototype that might solve that See if that works for you The second
+pick something that you've been waiting for. It could be feedback clustering like we did, it could
+be a new analysis tool, and just build it one afternoon. Everyone waits on tools when at this point
+internal tooling, building your own stuff is rapid. It's very fast. So go go ahead and scratch your
+own itch, you will be happy that you did. It will pay itself off very quickly. The third, and this
+one looks simple but I think this is actually the hardest, take one real feature request, I don't
+mean like a small bug fix or a padding change, take one real feature request from a user and turn it
+around in 24 hours, get the idea in front of them and follow up with them for feedback. The reason
+why I bring that up is not this urge to go faster, it's because the first time you do this, if
+you're not doing this already, you will find a bunch of roadblocks in your existing process and the
+existing way that you build software if you have been on a longer timeline. That could be everything
+from the way that you do deploys, the way that you ask somebody on your team to review your code,
+that could be a whole host of things. Going through this once really helps. I wouldn't try to do all
+three of these at once. I would layer these on. one is going to teach you something a little bit
+different that helps you move a little bit faster. This is the last show of hands, I promise. Who is
+going to try number one? A lot. Two? Three? Okay. Thank you so much. That's the talk. Thank you for
+your time. I would love to talk to folks who have used the product or even those that haven't. I'm
+I'm going to be by the demo booth for most of the day for Collada Design. So please come find me,
+tap me on my shoulder, come complain to me or tell me what surprised you. I love that.
