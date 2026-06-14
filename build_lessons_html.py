@@ -57,7 +57,16 @@ h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
 /* ---------- Nav ---------- */
 nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
 nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
-.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
 .logo .dot{color:var(--teal)}
 .navlinks{display:flex;gap:24px;margin-left:8px}
 .navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
@@ -218,11 +227,11 @@ footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
 
 <nav class="bar"><div class="wrap">
   <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
-  <span class="logo">Building with Claude<span class="dot">.</span></span>
+  <a class="logo" href="{{HOME}}">Building with Claude<span class="dot">.</span></a>
   <div class="navlinks">
+    <a href="{{HOME}}">All lessons</a>
     <a href="#overview">Overview</a>
-    <a href="#start">Start</a>
-    <a href="#capstone-project-build-promptlab">Capstone</a>
+    <a href="#capstone">Capstone</a>
   </div>
   <div class="nav-cta">
     <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
@@ -261,7 +270,7 @@ footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
           <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
           <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
         </ul>
-        <a class="btn btn-coral" href="#capstone-project-build-promptlab" style="width:100%;justify-content:center">Jump to the project</a>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
       </div>
     </div>
   </div>
@@ -277,11 +286,12 @@ footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
     <article>
       {{BODY}}
     </article>
+    {{NAV}}
   </main>
 </div>
 
 <footer class="site"><div class="wrap">
-  <span class="logo">Building with Claude<span class="dot">.</span></span>
+  <a class="logo" href="{{HOME}}">Building with Claude<span class="dot">.</span></a>
   <span class="fnote">A self-paced course generated from the Code with Claude 2026 (London) talks. Code snippets are illustrative reconstructions of the approaches shown. Adapt them to the current SDK.</span>
 </div></footer>
 
@@ -329,7 +339,7 @@ addEventListener('scroll',spy);spy();
 '''
 
 
-def convert(md_path: str, out_path: str) -> None:
+def convert(md_path: str, out_path: str, home: str = "../index.html", prev=None, nxt=None) -> None:
     raw = pathlib.Path(md_path).read_text()
 
     m = re.match(r"#\s+(.+)\n", raw)
@@ -377,8 +387,19 @@ def convert(md_path: str, out_path: str) -> None:
     body_html = md.convert(body_src)
     toc_html = md.toc
 
-    body_html = re.sub(r'(<h2 id="[^"]*")(>\s*(?:\U0001F6E0️?\s*)?Capstone)', r'\1 class="capstone-h"\2', body_html)
-    toc_html = re.sub(r'(<a href="#[^"]*")(>\s*(?:\U0001F6E0️?\s*)?Capstone)', r'\1 class="toc-capstone"\2', toc_html)
+    # Give the Capstone heading a stable id ("capstone") so nav and hero button
+    # always reach it, and point its TOC link there too.
+    body_html = re.sub(r'<h2 id="[^"]*"(>\s*(?:\U0001F6E0️?\s*)?Capstone)', r'<h2 id="capstone" class="capstone-h"\1', body_html)
+    toc_html = re.sub(r'<a href="#[^"]*"(>\s*(?:\U0001F6E0️?\s*)?Capstone)', r'<a href="#capstone" class="toc-capstone"\1', toc_html)
+
+    # Previous / next / home navigation so every lesson is interlinked.
+    nav = '<nav class="lessonnav">'
+    if prev:
+        nav += f'<a class="ln prev" href="{html.escape(prev["href"])}"><span class="dir">&#8592; Previous</span><b>{html.escape(prev["title"])}</b></a>'
+    nav += f'<a class="ln home" href="{html.escape(home)}"><b>All lessons</b></a>'
+    if nxt:
+        nav += f'<a class="ln next" href="{html.escape(nxt["href"])}"><span class="dir">Next &#8594;</span><b>{html.escape(nxt["title"])}</b></a>'
+    nav += '</nav>'
 
     pyg_css = HtmlFormatter(style="one-dark").get_style_defs(".codehilite")
 
@@ -390,6 +411,8 @@ def convert(md_path: str, out_path: str) -> None:
            .replace("{{SPEAKER}}", html.escape(speaker))
            .replace("{{TIME}}", html.escape(time_short))
            .replace("{{YT_URL}}", html.escape(yt_url))
+           .replace("{{HOME}}", html.escape(home))
+           .replace("{{NAV}}", nav)
            .replace("{{TOC}}", toc_html)
            .replace("{{BODY}}", body_html)
            .replace("{{PYGMENTS_CSS}}", pyg_css))
