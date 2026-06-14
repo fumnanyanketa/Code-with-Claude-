@@ -20,7 +20,7 @@ TEMPLATE = r'''<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{TITLE}} — Building with Claude</title>
+<title>{{TITLE}} | Building with Claude</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -62,6 +62,10 @@ h1{font-family:Lora,Georgia,serif;font-size:40px;line-height:1.15;margin:0 0 18p
 h2{font-family:Lora,Georgia,serif;font-size:27px;margin:52px 0 14px;font-weight:600;padding-top:8px;letter-spacing:-.01em}
 h3{font-size:20px;margin:34px 0 10px;font-weight:650}
 h2+h3{margin-top:18px}
+/* Capstone heading: a prominent "hands-on project" banner so skimmers notice it */
+h2.capstone-h{background:linear-gradient(120deg,var(--goal-bg),var(--surface));border:1px solid var(--border);border-left:5px solid var(--goal);border-radius:14px;padding:22px 22px 18px;margin-top:60px;box-shadow:var(--shadow);position:relative}
+h2.capstone-h::before{content:"HANDS-ON PROJECT";display:block;font-family:Inter,sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--goal);margin-bottom:6px}
+.toc a.toc-capstone{color:var(--goal);font-weight:600}
 p,li{color:var(--text)}
 a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-soft)}
 a:hover{border-bottom-color:var(--accent)}
@@ -143,7 +147,7 @@ h2:first-of-type{margin-top:8px}
       <h1>{{TITLE}}</h1>
       <div class="lesson-meta">{{META}}</div>
       {{BODY}}
-      <footer>Building with Claude — a self-paced course generated from the Code with Claude 2026 (London) talks. Code snippets are illustrative reconstructions of the approaches shown; adapt to the current SDK.</footer>
+      <footer>Building with Claude, a self-paced course generated from the Code with Claude 2026 (London) talks. Code snippets are illustrative reconstructions of the approaches shown. Adapt them to the current SDK.</footer>
     </article>
   </main>
 </div>
@@ -238,6 +242,14 @@ def convert(md_path: str, out_path: str) -> None:
     )
     body_html = md.convert(body_src)
     toc_html = md.toc
+
+    # Make any "Capstone" section stand out (prominent banner + highlighted TOC link).
+    body_html = re.sub(
+        r'(<h2 id="[^"]*")(>\s*(?:🛠️?\s*)?Capstone)',
+        r'\1 class="capstone-h"\2', body_html)
+    toc_html = re.sub(
+        r'(<a href="#[^"]*")(>\s*(?:🛠️?\s*)?Capstone)',
+        r'\1 class="toc-capstone"\2', toc_html)
 
     pyg_css = HtmlFormatter(style="gruvbox-dark").get_style_defs(".codehilite")
 

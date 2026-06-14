@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Module 2 · Lesson 3 — The Prompting Playbook — Building with Claude</title>
+<title>Module 2 · Lesson 3: The Prompting Playbook | Building with Claude</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -45,6 +45,10 @@ h1{font-family:Lora,Georgia,serif;font-size:40px;line-height:1.15;margin:0 0 18p
 h2{font-family:Lora,Georgia,serif;font-size:27px;margin:52px 0 14px;font-weight:600;padding-top:8px;letter-spacing:-.01em}
 h3{font-size:20px;margin:34px 0 10px;font-weight:650}
 h2+h3{margin-top:18px}
+/* Capstone heading: a prominent "hands-on project" banner so skimmers notice it */
+h2.capstone-h{background:linear-gradient(120deg,var(--goal-bg),var(--surface));border:1px solid var(--border);border-left:5px solid var(--goal);border-radius:14px;padding:22px 22px 18px;margin-top:60px;box-shadow:var(--shadow);position:relative}
+h2.capstone-h::before{content:"HANDS-ON PROJECT";display:block;font-family:Inter,sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--goal);margin-bottom:6px}
+.toc a.toc-capstone{color:var(--goal);font-weight:600}
 p,li{color:var(--text)}
 a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-soft)}
 a:hover{border-bottom-color:var(--accent)}
@@ -122,135 +126,153 @@ h2:first-of-type{margin-top:8px}
     <div class="toc">
 <ul>
 <li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
 <li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
 <li><a href="#learning-objectives">Learning objectives</a></li>
 <li><a href="#prerequisites">Prerequisites</a></li>
-<li><a href="#part-1-the-setup-a-prompt-in-trouble">Part 1 — The setup: a prompt in trouble</a><ul>
-<li><a href="#the-three-case-types-every-eval-needs">The three case types every eval needs</a></li>
+<li><a href="#part-1-the-setup-a-prompt-in-trouble">Part 1: the setup, a prompt in trouble</a><ul>
+<li><a href="#the-three-kinds-of-test-cases-every-eval-needs">The three kinds of test cases every eval needs</a></li>
 <li><a href="#the-method">The method</a></li>
 </ul>
 </li>
-<li><a href="#part-2-prompt-hygiene-do-this-first-every-time">Part 2 — Prompt hygiene (do this first, every time)</a><ul>
-<li><a href="#fix-21-add-structure-with-xml-tags">Fix 2.1 — Add structure with XML tags</a></li>
-<li><a href="#fix-22-add-an-output-contract-and-enforce-it-in-the-harness">Fix 2.2 — Add an output contract (and enforce it in the harness)</a></li>
+<li><a href="#part-2-prompt-cleanup-do-this-first-every-time">Part 2: prompt cleanup (do this first, every time)</a><ul>
+<li><a href="#fix-21-add-structure-with-xml-tags">Fix 2.1: add structure with XML tags</a></li>
+<li><a href="#fix-22-define-the-output-and-enforce-it-in-the-harness">Fix 2.2: define the output, and enforce it in the harness</a></li>
 </ul>
 </li>
-<li><a href="#part-3-targeting-failures-one-at-a-time">Part 3 — Targeting failures one at a time</a><ul>
-<li><a href="#failure-31-the-model-withholds-information-it-has-hotspot">Failure 3.1 — The model withholds information it has (hotspot)</a></li>
-<li><a href="#failure-32-mental-math-proration">Failure 3.2 — Mental math (proration)</a></li>
-<li><a href="#failure-33-one-sided-trade-offs-billing-escalation">Failure 3.3 — One-sided trade-offs (billing escalation)</a></li>
+<li><a href="#part-3-fixing-failures-one-at-a-time">Part 3: fixing failures one at a time</a><ul>
+<li><a href="#failure-31-the-model-hides-information-it-actually-has-the-hotspot-case">Failure 3.1: the model hides information it actually has (the "hotspot" case)</a></li>
+<li><a href="#failure-32-doing-maths-in-its-head-the-proration-case">Failure 3.2: doing maths in its head (the "proration" case)</a></li>
+<li><a href="#failure-33-only-telling-one-side-of-the-story-the-billing-error-case">Failure 3.3: only telling one side of the story (the "billing error" case)</a></li>
 </ul>
 </li>
-<li><a href="#part-4-building-a-new-agent-from-scratch">Part 4 — Building a new agent from scratch</a></li>
+<li><a href="#part-4-building-a-new-assistant-from-scratch">Part 4: building a new assistant from scratch</a></li>
 <li><a href="#key-takeaways">Key takeaways</a></li>
 <li><a href="#common-pitfalls">Common pitfalls</a></li>
-<li><a href="#practice-project-build-promptlab">🛠️ Practice project — build PromptLab</a><ul>
-<li><a href="#what-youll-build">What you'll build</a></li>
+<li><a href="#capstone-project-build-promptlab" class="toc-capstone">🛠️ Capstone Project: build PromptLab</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
 <li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
-<li><a href="#milestones-build-incrementally-each-one-is-shippable">Milestones (build incrementally — each one is shippable)</a></li>
-<li><a href="#definition-of-done">Definition of done</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
 </ul>
 </li>
-<li><a href="#exercises-warm-up-drills">Exercises (warm-up drills)</a><ul>
-<li><a href="#exercise-1-build-the-eval-first-foundational">Exercise 1 — Build the eval first (Foundational)</a></li>
-<li><a href="#exercise-2-hygiene-pass-foundational">Exercise 2 — Hygiene pass (Foundational)</a></li>
-<li><a href="#exercise-3-tool-vs-instruction-intermediate">Exercise 3 — Tool vs. instruction (Intermediate)</a></li>
-<li><a href="#exercise-4-fix-a-one-sided-rule-intermediate">Exercise 4 — Fix a one-sided rule (Intermediate)</a></li>
-<li><a href="#exercise-5-hill-climb-a-from-scratch-agent-advanced">Exercise 5 — Hill-climb a from-scratch agent (Advanced)</a></li>
+<li><a href="#exercises-warm-up-drills">Exercises (warm up drills)</a><ul>
+<li><a href="#exercise-1-build-the-eval-first-foundational">Exercise 1: build the eval first (foundational)</a></li>
+<li><a href="#exercise-2-cleanup-pass-foundational">Exercise 2: cleanup pass (foundational)</a></li>
+<li><a href="#exercise-3-tool-versus-instruction-intermediate">Exercise 3: tool versus instruction (intermediate)</a></li>
+<li><a href="#exercise-4-fix-a-one-sided-rule-intermediate">Exercise 4: fix a one sided rule (intermediate)</a></li>
+<li><a href="#exercise-5-climb-the-ladder-on-a-from-scratch-assistant-advanced">Exercise 5: climb the ladder on a from scratch assistant (advanced)</a></li>
 </ul>
 </li>
 <li><a href="#cheat-sheet">Cheat sheet</a></li>
-<li><a href="#connections-to-the-rest-of-the-course">Connections to the rest of the course</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
 </ul>
 </div>
 
   </aside>
   <main>
     <article>
-      <h1>Module 2 · Lesson 3 — The Prompting Playbook</h1>
-      <div class="lesson-meta"><p><strong>Course:</strong> Building with Claude — A Self-Paced Course<br />
-<strong>Module 2:</strong> Core skills — working with the model<br />
+      <h1>Module 2 · Lesson 3: The Prompting Playbook</h1>
+      <div class="lesson-meta"><p><strong>Course:</strong> Building with Claude, a self-paced course<br />
+<strong>Module 2:</strong> Core skills, working with the model<br />
 <strong>Speaker:</strong> Margo van Laar, Applied AI Engineer, Anthropic (London)<br />
 <strong>Source talk:</strong> <a href="https://www.youtube.com/watch?v=G2B0YWuJUgI">The prompting playbook</a> · <a href="../../transcripts/code-with-claude-2026-london-2026/05_the-prompting-playbook.txt">full transcript</a><br />
-<strong>Estimated time:</strong> 45–60 min (read + exercises)</p></div>
+<strong>Estimated time:</strong> 45 to 60 minutes (read plus exercises)</p></div>
       <hr />
 <h2 id="in-one-sentence">In one sentence</h2>
-<p>Prompting is a debugging discipline, not a writing exercise: you make changes <strong>one at a time against an eval suite</strong>, apply general "hygiene" first, and reach for the <em>right</em> fix — structure, a tool, a better model, or a multi-step loop — instead of piling on more instructions.</p>
+<p>Prompting is a debugging skill, not a writing skill. You improve a prompt by making changes one at a time and checking each change against a set of tests, you tidy the prompt up first, and you reach for the right fix (clearer structure, a tool, a stronger model, or a multi step process) instead of just adding more instructions.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands on <strong>Capstone Project</strong> where you build a small tool called <strong>PromptLab</strong> and use it to take a real assistant from broken to working. Everything before the Capstone teaches the skills you will use there. If you want to see the finish line first, jump to the <strong>"Capstone Project: build PromptLab"</strong> section near the end, then come back.</p>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday AI terms. Here they are in simple words, so nothing below is confusing:</p>
+<ul>
+<li><strong>LLM (Large Language Model):</strong> the kind of AI that reads and writes text. "Claude" is an LLM. Think of it as a very capable text assistant.</li>
+<li><strong>Model:</strong> one specific version of that AI, for example "Sonnet 4.6" or "Opus 4.7." Different models have different strengths, speeds, and prices, much like different car engines.</li>
+<li><strong>Prompt:</strong> the text instructions you give the model to tell it what to do and how to behave. Writing good prompts is called <strong>prompt engineering</strong>.</li>
+<li><strong>Token:</strong> the unit the model reads and writes in. A token is roughly three quarters of a word. You are billed per token, so "using more tokens" means "costing more and taking longer."</li>
+<li><strong>Latency:</strong> how long the model takes to respond, measured in seconds. Lower is faster.</li>
+<li><strong>API (Application Programming Interface):</strong> the connection your code uses to send a prompt to the model and get its answer back. An "API call" is one such request.</li>
+<li><strong>Eval (evaluation):</strong> a set of test cases you run a prompt against to measure whether it works. This is the single most important idea in the lesson.</li>
+<li><strong>Harness:</strong> all the code and settings around the model (the API call, the tools you give it, the loop that runs it). The prompt is what you say to the model; the harness is everything else that surrounds it.</li>
+</ul>
+<p>You do not need to memorise these. Every term is also explained again the first time it appears below.</p>
 <h2 id="why-this-lesson-matters">Why this lesson matters</h2>
-<p>Prompting is "arguably the first skill we had to learn as engineers working with LLMs, and it continues to be one of the most critical." Most of the time you are <strong>not</strong> writing a prompt from scratch — you're maintaining one that several people have edited, that mixes policy, tone, and old model-specific patches, and that suddenly performs worse after a model migration. This lesson gives you a repeatable method for exactly that situation, then shows how to start a brand-new agent the right way.</p>
+<p>Prompting was, in Margo's words, "arguably the first skill we had to learn as engineers working with LLMs, and it continues to be one of the most critical." In real jobs you are usually not writing a prompt from a blank page. More often you are maintaining a prompt that several people have edited over time, that mixes rules, tone, and old fixes together, and that suddenly works worse after you switch to a newer model. This lesson gives you a repeatable method for that exact situation, and then shows how to start a brand new assistant the right way.</p>
 <h2 id="learning-objectives">Learning objectives</h2>
 <p>By the end of this lesson you will be able to:</p>
 <ol>
-<li>Build a minimal <strong>eval suite</strong> with the three case types every prompt needs (control, edge, capability/handoff).</li>
-<li>Apply <strong>prompt hygiene</strong> — structure, removing cruft, output contracts — before chasing specific failures.</li>
-<li>Diagnose <em>why</em> a prompt fails and choose the correct fix: rewrite an instruction, give the model a <strong>tool</strong>, change the <strong>model/effort</strong>, or split into a <strong>multi-prompt loop</strong>.</li>
-<li>Recognize and avoid the core anti-pattern: <strong>overfitted instructions</strong> ("ban lists" and one-sided rules) inherited from older models.</li>
+<li>Build a small <strong>eval</strong> (a set of test cases) with the three kinds of cases every prompt needs.</li>
+<li>Apply basic <strong>prompt cleanup</strong> (clear structure, removing junk, defining the output) before chasing specific problems.</li>
+<li>Work out <em>why</em> a prompt is failing and pick the correct fix: rewrite an instruction, give the model a <strong>tool</strong>, switch model or reasoning effort, or split the work into a <strong>multi step loop</strong>.</li>
+<li>Spot and avoid the most common trap: leftover instructions from older models that quietly make newer models behave worse.</li>
 </ol>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
-<li>Module 2 · Lesson 1 (<em>The Prompting Playbook</em> assumes the basics of sending messages to Claude).</li>
-<li>Helpful: Module 3 (<em>Evals for taste</em>) — this lesson leans heavily on evals; you can take them in either order.</li>
+<li>Module 2 · Lesson 1 (this lesson assumes you know the basics of sending a message to Claude and getting a reply).</li>
+<li>Helpful but optional: Module 3 (Evals for taste). This lesson leans on evals, and Module 3 goes deeper on them. You can do them in either order.</li>
 </ul>
 <hr />
-<h2 id="part-1-the-setup-a-prompt-in-trouble">Part 1 — The setup: a prompt in trouble</h2>
-<p>Picture a customer-support bot for a fictional telco, <strong>Meridian Mobile</strong>. The prompt has "no clear owner," covers "policy, tone, processes," and carries "patches for previous models all mixed together." After migrating to a new model, several test cases regress.</p>
+<h2 id="part-1-the-setup-a-prompt-in-trouble">Part 1: the setup, a prompt in trouble</h2>
+<p>Picture a customer support chatbot for a made up phone company called <strong>Meridian Mobile</strong>. ("Customer support chatbot" just means an assistant that answers customer questions about their account.) The prompt behind it has, in Margo's description, "no clear owner," it covers "policy, tone, processes," and it carries "patches for previous models all mixed together." A <strong>patch</strong> here means a small instruction someone added in the past to fix a specific problem with an older model. After the team switches to a newer model, several of their tests start failing.</p>
 <blockquote>
-<p>🔑 <strong>Key idea — you can't fix what you can't measure.</strong> When a prompt regresses after a model change, there are two possible causes, and you must tell them apart:
-1. The new model is <strong>capable but behaves differently</strong> → you can fix it with prompting.
-2. The new model is <strong>less capable</strong> at this task → no amount of prompting will fix it.
-An eval suite is what lets you distinguish these and prove a change actually helped.</p>
+<p>🔑 <strong>Key idea: you cannot fix what you cannot measure.</strong> When a prompt gets worse after a model change, there are only two possible reasons, and you must tell them apart:
+1. The new model is just as capable but <strong>behaves differently</strong>. You can fix this by adjusting the prompt.
+2. The new model is <strong>less capable</strong> at this task. No amount of prompting will fix that, and you need a different model.
+An <strong>eval</strong> (your set of test cases) is what lets you tell which situation you are in, and it proves whether a change actually helped or not.</p>
 </blockquote>
-<h3 id="the-three-case-types-every-eval-needs">The three case types every eval needs</h3>
-<p>The demo uses just <strong>five</strong> test cases (yours will have far more), but they cover three essential categories:</p>
+<h3 id="the-three-kinds-of-test-cases-every-eval-needs">The three kinds of test cases every eval needs</h3>
+<p>An <strong>eval</strong> is just a collection of <strong>test cases</strong>. A test case is one example input plus the answer you expect. The demo uses only five test cases to stay simple (a real one would have many more), but they cover three essential kinds:</p>
 <table>
 <thead>
 <tr>
-<th>Case type</th>
+<th>Kind of case</th>
 <th>What it checks</th>
 <th>Meridian example</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Control</strong></td>
-<td>A case that should <em>always</em> pass — unambiguous, well-handled</td>
-<td>"What's the data limit on the basic plan?"</td>
+<td><strong>Control case</strong></td>
+<td>Something that should <em>always</em> work. It is clear cut and the model handles it well. It is your "nothing is on fire" signal.</td>
+<td>"What is the data limit on the basic plan?"</td>
 </tr>
 <tr>
-<td><strong>Edge</strong></td>
-<td>A case where the model has failed before; the prompt should prevent regression</td>
-<td>Proration math; not withholding info the model has</td>
+<td><strong>Edge case</strong></td>
+<td>Something the model has gotten wrong before. The prompt should stop that mistake from coming back.</td>
+<td>Doing the billing maths; not hiding information it actually has.</td>
 </tr>
 <tr>
-<td><strong>Capability / handoff</strong></td>
-<td>Does the model know the limits of its job — when to escalate or refuse?</td>
-<td>Escalate billing errors to a human</td>
+<td><strong>Capability or handoff case</strong></td>
+<td>Does the model know the limits of its job: when to pass the customer to a human, or when to refuse?</td>
+<td>Sending billing disputes to a human.</td>
 </tr>
 </tbody>
 </table>
 <blockquote>
-<p>💡 The capability/handoff case is the one teams most often forget. A model that confidently answers something it should have escalated is worse than one that fails loudly.</p>
+<p>💡 The capability or handoff case is the one teams most often forget. A model that confidently answers something it should have passed to a human is more dangerous than one that simply fails and says so.</p>
 </blockquote>
 <h3 id="the-method">The method</h3>
-<div class="codehilite"><pre><span></span><code>1. Run the eval on v0 of the prompt        → see the failure modes
-2. Apply general hygiene (clean up first)  → often a free uplift
-3. Target failure modes ONE AT A TIME      → isolate cause and effect
-4. Re-run the eval after every change       → keep what helps, revert what doesn&#39;t
+<p>Here is the loop you will repeat for the rest of Part 1, 2, and 3:</p>
+<div class="codehilite"><pre><span></span><code>1. Run the eval on version 0 of the prompt   -&gt; see what is failing
+2. Clean up the prompt first                 -&gt; often an easy win on its own
+3. Fix failing cases ONE AT A TIME           -&gt; so cause and effect are clear
+4. Re-run the eval after every change         -&gt; keep what helps, undo what does not
 </code></pre></div>
 
-<p>After the first run, the control case passes but the bot "performs pretty poorly in the other areas." Before zooming in on specific failures, clean up.</p>
+<p>On the first run, the control case passes but the bot "performs pretty poorly in the other areas." Before zooming in on any single problem, clean the prompt up.</p>
 <hr />
-<h2 id="part-2-prompt-hygiene-do-this-first-every-time">Part 2 — Prompt hygiene (do this first, every time)</h2>
-<p>The original prompt has tell-tale problems: it claims the bot is a human ("which just isn't true"), and it contains text <strong>copied straight from a website</strong> — "the key giveaway is a reference to a hero image" and "references to cookies at the bottom." Everything is jammed "into one big paragraph" with "no real way of unpacking policy from guidelines from tone."</p>
-<h3 id="fix-21-add-structure-with-xml-tags">Fix 2.1 — Add structure with XML tags</h3>
-<p>A messy, undifferentiated prompt looks like this:</p>
+<h2 id="part-2-prompt-cleanup-do-this-first-every-time">Part 2: prompt cleanup (do this first, every time)</h2>
+<p>The original prompt has obvious problems. It tells the bot it is a human, "which just isn't true." It contains text that was clearly copied straight off a web page: the giveaway is "a reference to a hero image" (a "hero image" is the big banner picture at the top of a website) and even "references to cookies at the bottom" (website "cookies" are unrelated to a support bot). And everything is crammed "into one big paragraph" with no separation between rules, tone, and data.</p>
+<h3 id="fix-21-add-structure-with-xml-tags">Fix 2.1: add structure with XML tags</h3>
+<p><strong>XML tags</strong> are labels written in angle brackets, like <code>&lt;role&gt;</code> and <code>&lt;/role&gt;</code>, that mark where a section starts and ends. They are an easy way to show the model which part of the prompt is which. A messy, unlabelled prompt looks like this:</p>
 <div class="codehilite"><pre><span></span><code>You are a friendly human support rep for Meridian Mobile. Our hero image
-shows... [website cruft] ... Always be polite. Never give wrong plan
-details, point them to the URL. Plans: basic 10GB... Calculate prorations
-correctly. We use cookies to... Always calculate prorated amounts correctly.
+shows... [website junk] ... Always be polite. Never give wrong plan
+details, point them to the URL. Plans: basic 10GB... We use cookies to...
+Always calculate prorated amounts correctly.
 </code></pre></div>
 
-<p>Restructure it so each kind of information is separated:</p>
+<p>Restructure it so each kind of information is clearly separated:</p>
 <div class="codehilite"><pre><span></span><code>&lt;role&gt;
 You are a customer support assistant for Meridian Mobile, a mobile network operator.
 &lt;/role&gt;
@@ -262,8 +284,8 @@ You are a customer support assistant for Meridian Mobile, a mobile network opera
 
 &lt;policy&gt;
 - Plan data allowances are listed in &lt;plan_data&gt;.
-- Customers on grandfathered/legacy plans may have different allowances —
-  these are captured in the customer&#39;s account context.
+- Customers on grandfathered or legacy plans may have different allowances.
+  These are captured in the customer&#39;s account context.
 &lt;/policy&gt;
 
 &lt;tone&gt;
@@ -275,75 +297,79 @@ Friendly and professional. Avoid jargon.
 &lt;/plan_data&gt;
 </code></pre></div>
 
-<p>Re-running the eval after <em>only</em> this change already improves performance.</p>
+<p>Just doing this, with no other change, already improves the results. (A <strong>grandfathered</strong> or <strong>legacy</strong> plan means an old plan a customer is still on even though the company stopped offering it to new customers. More on that in Part 3.)</p>
 <blockquote>
-<p>🔑 <strong>Rule of thumb (quote):</strong> <em>"If you're reading a prompt and you can't tell guidelines from policy from data, most likely the model isn't able to either."</em> — Margo van Laar</p>
+<p>🔑 <strong>Rule of thumb (quote):</strong> "If you're reading a prompt and you can't tell guidelines from policy from data, most likely the model isn't able to either." (Margo van Laar)</p>
 </blockquote>
-<h3 id="fix-22-add-an-output-contract-and-enforce-it-in-the-harness">Fix 2.2 — Add an output contract (and enforce it in the harness)</h3>
-<p>If output format is inconsistent, define it explicitly <strong>and</strong> back it up in the API call rather than relying on the prompt alone:</p>
+<h3 id="fix-22-define-the-output-and-enforce-it-in-the-harness">Fix 2.2: define the output, and enforce it in the harness</h3>
+<p>An <strong>output contract</strong> is simply a clear statement of the exact format you want the answer in. If your answers come back in inconsistent shapes, define the format and then back it up in the <strong>harness</strong> (the code around the model) rather than hoping the prompt alone is enough.</p>
 <div class="codehilite"><pre><span></span><code>&lt;output_format&gt;
 Respond with your message wrapped in &lt;response&gt;...&lt;/response&gt; tags.
 &lt;/output_format&gt;
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># Enforce the contract in the harness, not just the prompt.</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Enforce the format in the harness, not just in the prompt text.</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
     <span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-sonnet-4-6&quot;</span><span class="p">,</span>
-    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>                  <span class="c1"># the most tokens (text) the reply may use</span>
     <span class="n">system</span><span class="o">=</span><span class="n">system_prompt</span><span class="p">,</span>
     <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
-    <span class="n">stop_sequences</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;&lt;/response&gt;&quot;</span><span class="p">],</span>   <span class="c1"># stop generating at the closing tag</span>
+    <span class="n">stop_sequences</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;&lt;/response&gt;&quot;</span><span class="p">],</span>   <span class="c1"># stop generating the moment this text appears</span>
 <span class="p">)</span>
 </code></pre></div>
 
+<p>A <strong>stop sequence</strong> is a piece of text that tells the model "stop writing as soon as you produce this." Here it makes the model stop right after it closes the <code>&lt;/response&gt;</code> tag, which keeps the output tidy.</p>
 <blockquote>
-<p>💡 For complex schemas (e.g. nested JSON), prefer <strong>structured outputs</strong> to guarantee shape programmatically. The prompt "is not always the most effective way of handling issues" — change the harness too.</p>
+<p>💡 If your output is more complicated (for example <strong>JSON</strong>, a common machine readable text format that uses braces and quotes), use a feature called <strong>structured outputs</strong>, which forces the answer into a fixed shape automatically. As Margo puts it, the prompt "is not always the most effective way of handling issues," so change the harness too.</p>
 </blockquote>
-<p>After hygiene, two cases pass consistently. Three failures remain: <strong>hotspot</strong>, <strong>proration</strong>, <strong>billing error</strong>. Now target them one at a time.</p>
+<p>After cleanup, two of the five cases pass reliably. Three problems remain: <strong>hotspot</strong>, <strong>proration</strong>, and <strong>billing error</strong>. Now fix them one at a time.</p>
 <hr />
-<h2 id="part-3-targeting-failures-one-at-a-time">Part 3 — Targeting failures one at a time</h2>
-<h3 id="failure-31-the-model-withholds-information-it-has-hotspot">Failure 3.1 — The model withholds information it has (hotspot)</h3>
+<h2 id="part-3-fixing-failures-one-at-a-time">Part 3: fixing failures one at a time</h2>
+<h3 id="failure-31-the-model-hides-information-it-actually-has-the-hotspot-case">Failure 3.1: the model hides information it actually has (the "hotspot" case)</h3>
+<p>"Hotspot" here means using your phone as a wireless internet source for other devices, and plans include a data allowance for it.</p>
 <p><strong>Question:</strong> "How much hotspot data is on my unlimited plan?"
-<strong>Customer reality:</strong> They're on a <em>grandfathered</em> plan and their account data says <strong>5 GB</strong>.
-<strong>Bug:</strong> The bot answers with the generic "4 GB" and tells the customer to "go check this out yourself" — deflecting to a URL instead of giving the answer it already has.</p>
-<p>The culprit instruction:</p>
+<strong>The customer's reality:</strong> they are on a grandfathered (old) plan, and their account record clearly says <strong>5 GB</strong>.
+<strong>The bug:</strong> the bot ignores that and answers with the generic "4 GB," then tells the customer to "go check this out yourself" by sending them to a web link, instead of giving the answer it already has.</p>
+<p>The instruction causing this:</p>
 <div class="codehilite"><pre><span></span><code>We changed our plans recently. The policy doc shows current plan data, and
 customers on grandfathered plans have different rates. NEVER give a customer
-the wrong plan details — instead, point them to the URL.
+the wrong plan details, instead point them to the URL.
 </code></pre></div>
 
-<p>That "never give wrong details → point to URL" line is an old <strong>patch</strong> for a weaker model. Newer models follow instructions more literally, so the patch is now <strong>overfitted</strong>: the bot suppresses correct info to avoid being "wrong." The fix is to state the balanced truth:</p>
+<p>That "never give wrong details, send them to the URL" line is an old patch written for a weaker model. Newer models follow instructions more literally, so the patch is now <strong>overfitted</strong>. (<strong>Overfitting</strong> means following a rule so rigidly that it backfires. Here the bot suppresses the correct answer just to avoid any risk of being "wrong.") The fix is to state the balanced truth and trust the data:</p>
 <div class="codehilite"><pre><span></span><code>Customers on grandfathered plans may have different allowances. The customer&#39;s
-account context is the accurate source of truth — use it to answer directly.
+account context is the accurate source of truth, so use it to answer directly.
 </code></pre></div>
 
 <blockquote>
-<p>🔑 <strong>Lesson:</strong> We worry about hallucination (inventing facts), but the <strong>opposite</strong> also happens — the model <strong>withholds</strong> information it actually has, usually because of a defensive patch.
-✅ <strong>Best practice:</strong> <strong>Version-control your defensive changes.</strong> Whenever you add a patch, record <em>why</em>. Later models may make it counterproductive, and you'll want to find and remove it.</p>
+<p>🔑 <strong>Lesson:</strong> everyone worries about the model <strong>inventing</strong> facts (this is called <strong>hallucination</strong>, when an AI states something untrue as if it were true). But the opposite also happens: the model <strong>withholds</strong> information it genuinely has, usually because of a defensive patch like this one.
+✅ <strong>Best practice: keep a record of your defensive changes.</strong> <strong>Version control</strong> (a system like Git that tracks every edit and why it was made) lets you note why each patch was added. A newer model can turn an old patch harmful, and you will want to find it and remove it.</p>
 </blockquote>
-<h3 id="failure-32-mental-math-proration">Failure 3.2 — Mental math (proration)</h3>
+<h3 id="failure-32-doing-maths-in-its-head-the-proration-case">Failure 3.2: doing maths in its head (the "proration" case)</h3>
+<p><strong>Proration</strong> means charging only for the part of a billing period you actually used. If you upgrade your plan halfway through the month, proration works out the fair amount for the remaining days.</p>
 <p><strong>Question:</strong> "What if I upgrade to the 30 GB plan? What will my next bill be?"
-<strong>Bug:</strong> The model "reasons through it, does a little mental math," but never returns a concrete, trustworthy number.</p>
-<p>The culprit instruction just <em>exhorts</em> the model:</p>
+<strong>The bug:</strong> the model "reasons through it, does a little mental math" (works the sum out in its head), but never gives a concrete, trustworthy number.</p>
+<p>The instruction causing this only <em>nags</em> the model:</p>
 <div class="codehilite"><pre><span></span><code>Don&#39;t ever give a customer a vague answer. CRITICAL: always calculate any
 prorated amounts correctly.
 </code></pre></div>
 
 <blockquote>
-<p>🔑 <strong>Lesson (quote):</strong> <em>"Instructions don't add capability. Telling the model it's critical to do a calculation right doesn't make it better at mental maths."</em></p>
+<p>🔑 <strong>Lesson (quote):</strong> "Instructions don't add capability. Telling the model it's critical to do a calculation right doesn't make it better at mental maths."</p>
 </blockquote>
-<p>The correct fix is to <strong>give it a tool</strong> so it executes the math reliably. Three steps:</p>
-<div class="codehilite"><pre><span></span><code># 1. In the prompt — tell it when to use the tool
+<p>The right fix is to give the model a <strong>tool</strong>. A <strong>tool</strong> is a small function (a piece of code) that the model can choose to run when it needs to, for example to do exact maths or look something up. <strong>Tool use</strong> is the general name for this ability. There are three steps.</p>
+<div class="codehilite"><pre><span></span><code># 1. In the prompt: tell it when to use the tool
 Whenever a calculation is required, use the calculate_proration tool. Do not
 do arithmetic yourself.
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># 2. Define the tool schema so the model knows what it does and when to call it</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 2. Describe the tool so the model knows what it does and when to call it.</span>
+<span class="c1">#    This description is called the &quot;tool schema&quot;.</span>
 <span class="n">calculate_proration_tool</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;calculate_proration&quot;</span><span class="p">,</span>
     <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Calculate a prorated charge when a customer changes plan &quot;</span>
                    <span class="s2">&quot;partway through a billing cycle. Use this for ANY billing math.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;input_schema&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;input_schema&quot;</span><span class="p">:</span> <span class="p">{</span>                       <span class="c1"># the inputs the tool expects</span>
         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
         <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;old_plan_price&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">},</span>
@@ -360,274 +386,273 @@ do arithmetic yourself.
     <span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-sonnet-4-6&quot;</span><span class="p">,</span>
     <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
     <span class="n">system</span><span class="o">=</span><span class="n">system_prompt</span><span class="p">,</span>
-    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">calculate_proration_tool</span><span class="p">],</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">calculate_proration_tool</span><span class="p">],</span>       <span class="c1"># hand the tool to the model</span>
     <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># 3. Implement the actual maths behind the tool</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 3. Write the actual maths the tool runs.</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">calculate_proration</span><span class="p">(</span><span class="n">old_plan_price</span><span class="p">,</span> <span class="n">new_plan_price</span><span class="p">,</span> <span class="n">days_remaining</span><span class="p">,</span> <span class="n">days_in_cycle</span><span class="p">):</span>
     <span class="n">daily_old</span> <span class="o">=</span> <span class="n">old_plan_price</span> <span class="o">/</span> <span class="n">days_in_cycle</span>
     <span class="n">daily_new</span> <span class="o">=</span> <span class="n">new_plan_price</span> <span class="o">/</span> <span class="n">days_in_cycle</span>
-    <span class="n">credit</span>  <span class="o">=</span> <span class="n">daily_old</span> <span class="o">*</span> <span class="n">days_remaining</span>          <span class="c1"># unused portion of old plan</span>
-    <span class="n">charge</span>  <span class="o">=</span> <span class="n">daily_new</span> <span class="o">*</span> <span class="n">days_remaining</span>           <span class="c1"># new plan for remaining days</span>
+    <span class="n">credit</span>  <span class="o">=</span> <span class="n">daily_old</span> <span class="o">*</span> <span class="n">days_remaining</span>    <span class="c1"># money owed back for the unused old plan</span>
+    <span class="n">charge</span>  <span class="o">=</span> <span class="n">daily_new</span> <span class="o">*</span> <span class="n">days_remaining</span>    <span class="c1"># cost of the new plan for the remaining days</span>
     <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">charge</span> <span class="o">-</span> <span class="n">credit</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
 
-<p>With the tool wired in, the eval passes — the model does the maths "using the tool in the background and returns the correct response."</p>
-<h3 id="failure-33-one-sided-trade-offs-billing-escalation">Failure 3.3 — One-sided trade-offs (billing escalation)</h3>
-<p><strong>Scenario:</strong> A genuine billing conflict that should be <strong>escalated to a human</strong>.
-<strong>Bug:</strong> The bot tries to diagnose and explain the problem itself instead of escalating.</p>
-<p>The culprit instruction tells only one side of the story:</p>
+<p>(A <strong>tool schema</strong> is the written description of a tool: its name, what it does, and what inputs it needs. The model reads the schema to decide when and how to use the tool.) With the tool connected, the case passes. The model "does the maths using the tool in the background and returns the correct response."</p>
+<h3 id="failure-33-only-telling-one-side-of-the-story-the-billing-error-case">Failure 3.3: only telling one side of the story (the "billing error" case)</h3>
+<p><strong>Scenario:</strong> a genuine billing dispute that should be <strong>escalated</strong> (passed up) to a human staff member.
+<strong>The bug:</strong> the bot tries to diagnose and explain the problem itself instead of escalating.</p>
+<p>The instruction causing this tells only one side:</p>
 <div class="codehilite"><pre><span></span><code>Avoid escalating or transferring to a care specialist unless absolutely
 necessary, as it costs ~$8 and counts against our fast-resolution contract.
 </code></pre></div>
 
-<p>With only the <em>cost</em> of escalating stated, the model overfits to never escalating. State <strong>both</strong> sides:</p>
+<p>Because the prompt mentions only the <em>cost</em> of escalating, the model leans hard toward never escalating. State <strong>both</strong> sides so it can weigh them:</p>
 <div class="codehilite"><pre><span></span><code>Escalating to a care specialist costs ~$8 and counts against our fast-resolution
-target — so don&#39;t escalate trivially. BUT if you get a billing error wrong, it
-can cost a refund AND the customer&#39;s trust. When there is a genuine billing
+target, so do not escalate trivially. However, if you get a billing error wrong,
+it can cost a refund AND the customer&#39;s trust. When there is a genuine billing
 conflict, escalate.
 </code></pre></div>
 
 <blockquote>
-<p>🔑 <strong>Lesson:</strong> The model "optimizes for a goal." If you give it only one side of a trade-off, it will overfit to that side.
-As models get smarter they make trade-offs <em>themselves</em> — so <strong>state both sides</strong> and let them weigh it. (This is the same failure shape as the hotspot patch.)</p>
+<p>🔑 <strong>Lesson:</strong> the model "optimizes for a goal." (To <strong>optimise for</strong> something means to push as hard as possible toward it.) If you give it only one side of a <strong>trade-off</strong> (a choice where you gain one thing but give up another), it will overdo that side. As models get smarter they weigh trade-offs themselves, so state both sides and let the model balance them. This is the same shape of mistake as the hotspot patch.</p>
 </blockquote>
 <p>All five cases now pass. ✅</p>
 <hr />
-<h2 id="part-4-building-a-new-agent-from-scratch">Part 4 — Building a new agent from scratch</h2>
-<p>The second scenario: an agent that builds a <strong>week-long retail staff schedule</strong> for 8 employees against hard constraints (head-count per shift, availability, etc.). Building from zero means choosing three things, not one: <strong>prompt + model + harness</strong>.</p>
-<p>Because the rules are hard constraints, you don't need an LLM judge — you can grade with a <strong>deterministic Python function</strong> that counts violations:</p>
+<h2 id="part-4-building-a-new-assistant-from-scratch">Part 4: building a new assistant from scratch</h2>
+<p>The second scenario is starting fresh. The goal is an assistant that builds a <strong>week long staff schedule</strong> for 8 retail employees while satisfying hard rules (enough people on each shift, only scheduling people when they are available, and so on). When you build from zero you choose three things, not one: the <strong>prompt</strong>, the <strong>model</strong>, and the <strong>harness</strong>.</p>
+<p>Because the rules are strict, you do not need another AI to judge the output. You can grade it with a plain <strong>Python function</strong> (a small block of code) that counts rule breaks. This is called a <strong>deterministic grader</strong>, where "deterministic" means it always gives the same answer for the same input, with no AI judgement involved.</p>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">count_violations</span><span class="p">(</span><span class="n">schedule</span><span class="p">,</span> <span class="n">employees</span><span class="p">,</span> <span class="n">requirements</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the number of hard-constraint violations in a generated schedule.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return how many hard rules a generated schedule breaks.&quot;&quot;&quot;</span>
     <span class="n">violations</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">shift</span> <span class="ow">in</span> <span class="n">requirements</span><span class="p">:</span>
         <span class="n">assigned</span> <span class="o">=</span> <span class="n">schedule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">shift</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">[])</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">assigned</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">shift</span><span class="o">.</span><span class="n">required_headcount</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">assigned</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">shift</span><span class="o">.</span><span class="n">required_headcount</span><span class="p">:</span>     <span class="c1"># not enough people on this shift</span>
             <span class="n">violations</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">for</span> <span class="n">emp_id</span> <span class="ow">in</span> <span class="n">assigned</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">employees</span><span class="p">[</span><span class="n">emp_id</span><span class="p">]</span><span class="o">.</span><span class="n">is_available</span><span class="p">(</span><span class="n">shift</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">employees</span><span class="p">[</span><span class="n">emp_id</span><span class="p">]</span><span class="o">.</span><span class="n">is_available</span><span class="p">(</span><span class="n">shift</span><span class="p">):</span> <span class="c1"># person scheduled when unavailable</span>
                 <span class="n">violations</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">violations</span>
 </code></pre></div>
 
-<p>The talk then walks a <strong>hill-climb</strong> across approaches. Watch how the lever changes at each step:</p>
+<p>This kind of "satisfy a set of strict rules" problem has a name: <strong>constraint satisfaction</strong>. A <strong>constraint</strong> is just a rule that must hold.</p>
+<p>The talk then climbs a ladder of approaches, getting better each time. Watch which lever changes at each step:</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: right;">#</th>
+<th style="text-align: right;">Step</th>
 <th>Approach</th>
 <th>Result</th>
-<th>Cost / latency</th>
+<th>Cost and latency</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: right;">1</td>
 <td><strong>Sonnet 4.6</strong>, simple prompt</td>
-<td>All 5 fail; burns tokens, doesn't check its work</td>
+<td>All 5 fail. Burns tokens and does not check its work.</td>
 <td>baseline</td>
 </tr>
 <tr>
 <td style="text-align: right;">2</td>
 <td><strong>Opus 4.7</strong>, same prompt</td>
-<td>Still fails, but <strong>far fewer violations</strong> — more reasoning helps</td>
+<td>Still fails, but <strong>far fewer rule breaks</strong>. More reasoning power helps.</td>
 <td>similar</td>
 </tr>
 <tr>
 <td style="text-align: right;">3</td>
-<td><strong>Opus 4.7 + adaptive thinking</strong> (API change only)</td>
-<td><strong>Reliably passes</strong></td>
-<td>~3× tokens, ~3× latency (~100s)</td>
+<td><strong>Opus 4.7 with adaptive thinking</strong> (a harness change only)</td>
+<td><strong>Passes reliably</strong></td>
+<td>about 3x the tokens, about 3x the latency (~100 seconds)</td>
 </tr>
 <tr>
 <td style="text-align: right;">4</td>
-<td><strong>Sonnet 4.6 + better prompt</strong> ("check your work before output")</td>
-<td>Passes 2/5; failures are now <em>output-limit</em> truncations, not rule violations</td>
-<td>even more tokens if you raise max_tokens</td>
+<td><strong>Sonnet 4.6 with a better prompt</strong> ("check your work before answering")</td>
+<td>Passes 2 of 5. The failures are now answers cut off by the length limit, not rule breaks.</td>
+<td>even more tokens if you raise the limit</td>
 </tr>
 <tr>
 <td style="text-align: right;">5</td>
-<td><strong>Agentic generate→evaluate→repair loop</strong> (3 small prompts)</td>
+<td><strong>A generate, evaluate, repair loop</strong> (3 small prompts working together)</td>
 <td><strong>All 5 pass</strong></td>
-<td><strong>lower</strong> tokens &amp; latency than #4</td>
+<td><strong>lower</strong> tokens and latency than step 4</td>
 </tr>
 </tbody>
 </table>
-<p>Approach 3 needs only an API change:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Same prompt — just let Opus decide how much to think.</span>
+<p><strong>Adaptive thinking</strong> (step 3) means letting the model decide for itself how much private "scratch work" to do before answering. More thinking usually means a better answer, but it costs more tokens and time. It is just a harness change:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Same prompt as before. Just let Opus decide how much to think.</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
     <span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-opus-4-7&quot;</span><span class="p">,</span>
     <span class="n">max_tokens</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span>
-    <span class="n">thinking</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;adaptive&quot;</span><span class="p">},</span>   <span class="c1"># model chooses its own reasoning depth</span>
+    <span class="n">thinking</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;adaptive&quot;</span><span class="p">},</span>   <span class="c1"># the model chooses its own reasoning depth</span>
     <span class="n">system</span><span class="o">=</span><span class="n">system_prompt</span><span class="p">,</span>
     <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
-<p>Approach 5 splits one big prompt into <strong>three small, independent prompts</strong>:</p>
+<p>Step 5 splits one big prompt into <strong>three small prompts</strong>, each with a single job. Running smaller, focused steps in sequence is what people mean by an <strong>agentic loop</strong> (an "agent" is an AI that takes a series of actions on its own toward a goal, rather than answering in one shot).</p>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">schedule_agent</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">max_rounds</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-    <span class="n">schedule</span> <span class="o">=</span> <span class="n">generate</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>                 <span class="c1"># 1. draft a schedule</span>
+    <span class="n">schedule</span> <span class="o">=</span> <span class="n">generate</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>                  <span class="c1"># 1. draft a schedule</span>
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_rounds</span><span class="p">):</span>
-        <span class="n">violations</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">schedule</span><span class="p">,</span> <span class="n">problem</span><span class="p">)</span> <span class="c1"># 2. LLM lists specific violations + evidence</span>
+        <span class="n">violations</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">schedule</span><span class="p">,</span> <span class="n">problem</span><span class="p">)</span>  <span class="c1"># 2. another prompt lists exactly what is broken</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">violations</span><span class="p">:</span>
             <span class="k">break</span>
-        <span class="n">schedule</span> <span class="o">=</span> <span class="n">repair</span><span class="p">(</span><span class="n">schedule</span><span class="p">,</span> <span class="n">violations</span><span class="p">)</span>  <span class="c1"># 3. make targeted fixes</span>
+        <span class="n">schedule</span> <span class="o">=</span> <span class="n">repair</span><span class="p">(</span><span class="n">schedule</span><span class="p">,</span> <span class="n">violations</span><span class="p">)</span>   <span class="c1"># 3. a third prompt fixes only those problems</span>
     <span class="k">return</span> <span class="n">schedule</span>
 </code></pre></div>
 
 <blockquote>
-<p>🔑 <strong>Two viable winners:</strong> <em>Opus 4.7 + adaptive thinking</em> <strong>or</strong> the <em>generate→evaluate→repair loop</em>. The loop has a bonus: you can inject <strong>soft constraints at runtime</strong> in the evaluate step without touching the deterministic grader — e.g. <em>"Harry doesn't like working with Sally, separate them where possible"</em> or <em>"add a third shift on Wednesday."</em></p>
-<p>💡 <strong>Design principle:</strong> When steps are "easy and repeatable to separate out," isolate them into their own prompts instead of asking one mega-prompt to do everything.</p>
+<p>🔑 <strong>Two good winners:</strong> "Opus 4.7 with adaptive thinking," or the "generate, evaluate, repair loop." The loop has a bonus: you can add <strong>soft constraints</strong> at run time. (A <strong>soft constraint</strong> is a nice to have preference rather than a strict rule, for example "try to keep Harry and Sally on different shifts" or "add a third shift on Wednesday.") You add these in the evaluate step in plain English, without touching the deterministic grader.</p>
+<p>💡 <strong>Design principle:</strong> when steps are "easy and repeatable to separate out," split them into their own prompts instead of asking one giant prompt to do everything.</p>
 </blockquote>
 <hr />
 <h2 id="key-takeaways">Key takeaways</h2>
 <ol>
-<li><strong>Evals first.</strong> They're the only way to know whether a prompt change is a real improvement or noise. Cover control, edge, and capability/handoff cases.</li>
-<li><strong>Hygiene before heroics.</strong> Structure with XML tags, delete copied-in cruft, and add an output contract — often a free uplift.</li>
-<li><strong>Change one thing at a time.</strong> Isolate each failure mode so cause and effect are clear.</li>
-<li><strong>Instructions don't add capability.</strong> If the model can't do the task, give it a <strong>tool</strong>, a <strong>bigger model</strong>, more <strong>thinking</strong>, or a <strong>multi-step loop</strong> — don't just tell it to "be careful."</li>
-<li><strong>Beware overfitted patches &amp; one-sided rules.</strong> Old defensive instructions ("never...", "always...", ban-lists) can make smarter models <em>withhold</em> info or refuse to act. State both sides of trade-offs and let the model decide.</li>
-<li><strong>Version-control defensive changes</strong> so you can find and remove them when a new model makes them harmful.</li>
+<li><strong>Evals first.</strong> A set of test cases is the only honest way to know whether a change helped or just got lucky. Cover control, edge, and capability or handoff cases.</li>
+<li><strong>Clean up before anything clever.</strong> Add structure with tags, delete copied in junk, and define the output. This is often a free win.</li>
+<li><strong>Change one thing at a time.</strong> Isolate each failing case so you can see exactly what your change did.</li>
+<li><strong>Instructions do not add capability.</strong> If the model genuinely cannot do a task, give it a <strong>tool</strong>, a <strong>stronger model</strong>, more <strong>thinking</strong>, or a <strong>multi step loop</strong>. Do not just tell it to "be careful."</li>
+<li><strong>Watch out for old patches and one sided rules.</strong> Leftover "never do X" or "always do Y" instructions can make a smarter model hide information or refuse to act. State both sides of a trade-off and let the model decide.</li>
+<li><strong>Record your defensive changes</strong> with version control, so you can find and remove them when a new model makes them harmful.</li>
 </ol>
 <h2 id="common-pitfalls">Common pitfalls</h2>
 <ul>
-<li>❌ Telling the model to "do better" instead of giving it the capability to do better.</li>
-<li>❌ Long ban-lists / "never do X" stacks that the next model over-optimizes for.</li>
-<li>❌ One-sided cost statements (mentioning the cost of an action but not the cost of inaction).</li>
-<li>❌ Leaving website/boilerplate cruft (hero images, cookie notices) in a prompt.</li>
-<li>❌ Changing several things at once, so you can't tell what helped.</li>
-<li>❌ Relying on the prompt alone for output format when <code>stop_sequences</code> / structured outputs would be more reliable.</li>
+<li>❌ Telling the model to "do better" instead of giving it the means to do better.</li>
+<li>❌ Long lists of "never do this" rules that the next model will over apply.</li>
+<li>❌ Stating only the cost of an action and never the cost of doing nothing.</li>
+<li>❌ Leaving website boilerplate (hero images, cookie notices) in a prompt.</li>
+<li>❌ Changing several things at once, so you cannot tell what actually helped.</li>
+<li>❌ Trusting the prompt alone for output format when a stop sequence or structured outputs would be more reliable.</li>
 </ul>
 <hr />
-<h2 id="practice-project-build-promptlab">🛠️ Practice project — build <strong>PromptLab</strong></h2>
+<h2 id="capstone-project-build-promptlab" class="capstone-h">🛠️ Capstone Project: build PromptLab</h2>
 <blockquote>
-<p>This is the main event: the best way to make this lesson stick is to <strong>build the very tool Margo used in the talk</strong> — a small eval workbench — and then use it to harden a real agent end-to-end. <em>"I five-coded this web app so that we can iterate on the prompt together... I can run my evals on all five test cases and inspect the results."</em> You're going to build your own. <strong>We'll build this out together</strong> — start as small as a CLI, grow it as far as you like.</p>
+<p>This is the main hands on project for the lesson, and the best way to make everything above stick. You are going to build the very tool Margo used in the talk. In her words: "I five-coded this web app so that we can iterate on the prompt together... I can run my evals on all five test cases and inspect the results." We will build this out together, so do not worry about size. Start as small as a single script and grow it as far as you like.</p>
 </blockquote>
-<h3 id="what-youll-build">What you'll build</h3>
-<p><strong>PromptLab</strong> — an eval-driven prompt workbench, plus the support agent you develop inside it. It has two halves that map exactly to the two halves of this lesson:</p>
+<h3 id="what-you-will-build">What you will build</h3>
+<p><strong>PromptLab</strong> is a small workbench for improving prompts the eval driven way, plus the assistant you develop inside it. It has two halves that line up exactly with the two halves of this lesson:</p>
 <ol>
-<li><strong>The harness</strong> — define test cases, run a prompt against all of them, and see a green/red results grid (like Margo's web app).</li>
-<li><strong>The agent</strong> — a support assistant for a fictional company that you take from a broken v0 to all-green by applying every technique in this lesson.</li>
+<li><strong>The harness:</strong> a way to define test cases, run a prompt against all of them, and see a simple pass or fail grid (green and red), just like Margo's web app.</li>
+<li><strong>The assistant:</strong> a support assistant for a company you choose, which you take from a broken first version to all green by applying every technique in this lesson.</li>
 </ol>
 <blockquote>
-<p>🎯 <strong>Pick your domain.</strong> Reuse <strong>Meridian Mobile</strong> (telco) for continuity, or swap in something you find fun — a <strong>gym chain</strong>, a <strong>streaming service</strong>, a <strong>co-working space</strong>. The shape you need: tiered <em>plans</em>, a <em>mid-cycle upgrade</em> (→ proration math), a <em>grandfathered/legacy</em> edge case, and a <em>dispute</em> that must be escalated to a human. That single domain naturally exercises every skill below.</p>
+<p>🎯 <strong>Pick your world.</strong> Reuse <strong>Meridian Mobile</strong> (the phone company) so it matches the lesson, or swap in something you find fun, such as a <strong>gym chain</strong>, a <strong>streaming service</strong>, or a <strong>co-working space</strong>. You just need a world that has: tiered plans, an upgrade partway through the month (so you need proration maths), an old "grandfathered" plan (an edge case), and a dispute that must go to a human (a handoff case). That one world naturally exercises every skill below.</p>
 </blockquote>
 <h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
 <table>
 <thead>
 <tr>
 <th>Lesson skill</th>
-<th>Where you'll use it in PromptLab</th>
+<th>Where you use it in PromptLab</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Eval suite (control / edge / capability)</td>
-<td>Milestone 1 — you can't proceed without it</td>
+<td>Building an eval (control, edge, capability)</td>
+<td>Milestone 1, you cannot move on without it</td>
 </tr>
 <tr>
-<td>Prompt hygiene (XML, output contract)</td>
-<td>Milestone 3 — measure the free uplift</td>
+<td>Prompt cleanup (tags, output contract)</td>
+<td>Milestone 3, measure the free win</td>
 </tr>
 <tr>
-<td>Fix overfitted patches</td>
-<td>Milestone 4a — the "withheld info" bug</td>
+<td>Removing overfitted patches</td>
+<td>Milestone 4a, the "hidden information" bug</td>
 </tr>
 <tr>
-<td>Tools &gt; instructions</td>
-<td>Milestone 4b — the proration tool</td>
+<td>Tools beat instructions</td>
+<td>Milestone 4b, the proration tool</td>
 </tr>
 <tr>
-<td>State both sides of a trade-off</td>
-<td>Milestone 4c — the escalation bug</td>
+<td>Stating both sides of a trade-off</td>
+<td>Milestone 4c, the escalation bug</td>
 </tr>
 <tr>
-<td>Model / effort selection</td>
-<td>Milestone 5 — the from-scratch capability</td>
+<td>Choosing model and thinking effort</td>
+<td>Milestone 5, the from scratch feature</td>
 </tr>
 <tr>
-<td>generate → evaluate → repair loop</td>
-<td>Milestone 5 — constraint solving</td>
+<td>The generate, evaluate, repair loop</td>
+<td>Milestone 5, solving the schedule</td>
 </tr>
 </tbody>
 </table>
-<h3 id="milestones-build-incrementally-each-one-is-shippable">Milestones (build incrementally — each one is shippable)</h3>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Scaffold.</strong> Set up a project, connect the Anthropic SDK (the official code library for calling Claude), and create a <code>cases.json</code> file with 5 test cases: 1 control, 2 edge, 1 capability or handoff, and 1 of your own. (Smallest version: a single Python script. Bigger version: a small web page with a results grid.)</li>
+<li><strong>Eval runner.</strong> Write code that runs the current prompt against every test case and prints a <strong>pass or fail grid</strong>. This is your dashboard for everything that follows.</li>
+<li><strong>The broken version 0.</strong> Write a deliberately messy prompt on purpose (one big paragraph, copied in junk, and an old "never give wrong info, send them to the URL" patch). Run the eval to get a red baseline.</li>
+<li><strong>Clean up.</strong> Restructure with <code>&lt;role&gt;</code>, <code>&lt;guidelines&gt;</code>, <code>&lt;policy&gt;</code>, and <code>&lt;tone&gt;</code> tags, delete the junk, and add an output contract plus a stop sequence. Re-run and record the improvement.</li>
+<li><strong>Fix the failures one at a time.</strong>
+   - <strong>(a)</strong> Fix the hidden information bug by removing the old patch and trusting the account data.
+   - <strong>(b)</strong> Add a <code>calculate_proration</code> tool (schema plus the maths) so the model stops doing sums in its head.
+   - <strong>(c)</strong> Fix the escalation bug by stating both sides of the cost versus benefit.</li>
+<li><strong>Add a from scratch feature.</strong> Give the assistant a second skill: a <strong>weekly staff scheduler</strong> with hard rules. Write a deterministic <code>count_violations</code> grader, then climb the ladder yourself: simple prompt, then a stronger model, then adaptive thinking, then the generate, evaluate, repair loop. Note the tokens and latency at each step.</li>
+<li><strong>Stretch goals.</strong> Save every prompt version and show a leaderboard of them. Add an AI based grader for tone. Allow soft constraints at run time ("keep Harry and Sally on different shifts") without changing the deterministic grader.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
 <ul>
-<li><strong>M0 · Scaffold.</strong> Project + Anthropic SDK + a <code>cases.json</code> (or <code>.yaml</code>) with 5 test cases: 1 control, 2 edge, 1 capability/handoff, 1 of your choice. <em>(Smallest version: a Python script. Bigger: a tiny web UI with a results grid.)</em></li>
-<li><strong>M1 · Eval runner.</strong> A function that runs the current prompt against every case and prints a <strong>pass/fail grid</strong>. This is your instrument panel for everything that follows.</li>
-<li><strong>M2 · The broken v0.</strong> Write a deliberately messy prompt (one big paragraph, copied-in cruft, an old "never give wrong info → send them to the URL" patch). Run evals → establish a red baseline.</li>
-<li><strong>M3 · Hygiene pass.</strong> Restructure with <code>&lt;role&gt;/&lt;guidelines&gt;/&lt;policy&gt;/&lt;tone&gt;</code>, delete cruft, add an output contract + <code>stop_sequences</code>. Re-run → record the uplift.</li>
-<li><strong>M4 · Target failures one at a time.</strong></li>
-<li><strong>(a)</strong> Fix the withheld-info bug by removing the overfitted patch and trusting the account data.</li>
-<li><strong>(b)</strong> Add a <code>calculate_proration</code> tool (schema + implementation) so the model stops doing mental math.</li>
-<li><strong>(c)</strong> Fix the escalation bug by stating <strong>both sides</strong> of the cost/benefit trade-off.</li>
-<li><strong>M5 · A from-scratch capability.</strong> Add a second skill to the agent — a <strong>weekly staff scheduler</strong> under hard constraints. Write a deterministic <code>count_violations</code> grader, then hill-climb: simple prompt → bigger model → adaptive thinking → <strong>generate→evaluate→repair loop</strong>. Plot violations vs. tokens vs. latency.</li>
-<li><strong>M6 · Stretch.</strong> Version every prompt and show a <strong>leaderboard</strong> of versions; add an <strong>LLM-judge</strong> grader for tone; allow <strong>soft constraints at runtime</strong> ("keep Harry and Sally on different shifts") without touching the deterministic grader.</li>
-</ul>
-<h3 id="definition-of-done">Definition of done</h3>
-<ul>
-<li>✅ All eval cases pass <strong>consistently</strong> (run each a few times — beware variance).</li>
-<li>✅ You can point to <strong>each change</strong> and show, from the grid, the failure it fixed.</li>
-<li>✅ At least one case is fixed by a <strong>tool</strong>, and one by <strong>stating both sides of a trade-off</strong> — proving you didn't just "add more instructions."</li>
-<li>✅ The scheduler passes via the <strong>loop</strong> at lower cost/latency than brute-forcing one mega-prompt.</li>
+<li>✅ Every test case passes <strong>consistently</strong> (run each a few times, since results vary slightly).</li>
+<li>✅ You can point to <strong>each change</strong> and show, from the grid, the exact failure it fixed.</li>
+<li>✅ At least one case is fixed by a <strong>tool</strong>, and one by <strong>stating both sides of a trade-off</strong>, proving you did not just "add more instructions."</li>
+<li>✅ The scheduler passes using the <strong>loop</strong> at lower cost and latency than forcing one giant prompt to do it all.</li>
 </ul>
 <blockquote>
-<p>💡 <strong>Keep it honest:</strong> change <strong>one thing at a time</strong> and re-run. If you can't attribute an improvement to a specific change, you've changed too much at once.</p>
+<p>💡 <strong>Keep yourself honest:</strong> change one thing at a time and re-run. If you cannot say which change caused an improvement, you changed too much at once.</p>
 </blockquote>
 <hr />
-<h2 id="exercises-warm-up-drills">Exercises (warm-up drills)</h2>
+<h2 id="exercises-warm-up-drills">Exercises (warm up drills)</h2>
 <blockquote>
-<p>Smaller drills to do before or alongside the capstone. Work these against a tiny eval harness — even a notebook with 5 test cases and a pass/fail print is enough. Reuse the Meridian scenario or invent your own.</p>
+<p>These are smaller drills to do before or alongside the Capstone. A tiny test setup is enough, even a notebook with 5 test cases that prints pass or fail.</p>
 </blockquote>
-<h3 id="exercise-1-build-the-eval-first-foundational">Exercise 1 — Build the eval first (Foundational)</h3>
-<p>Write a 5-case eval for a support bot in a domain you know (e.g. a SaaS billing assistant). Make sure you include <strong>one control case, two edge cases, and one capability/handoff case</strong> (where the bot must escalate or refuse). Write down the <em>expected</em> answer for each before you write any prompt.</p>
-<h3 id="exercise-2-hygiene-pass-foundational">Exercise 2 — Hygiene pass (Foundational)</h3>
-<p>Take this deliberately messy prompt and restructure it with <code>&lt;role&gt;</code>, <code>&lt;guidelines&gt;</code>, <code>&lt;policy&gt;</code>, and <code>&lt;output_format&gt;</code> tags; remove anything that doesn't belong:</p>
+<h3 id="exercise-1-build-the-eval-first-foundational">Exercise 1: build the eval first (foundational)</h3>
+<p>Write a 5 case eval for a support assistant in a topic you know well (for example a software billing assistant). Make sure you include <strong>one control case, two edge cases, and one capability or handoff case</strong> (where the assistant must pass the user to a human or refuse). Write down the answer you expect for each case before you write any prompt.</p>
+<h3 id="exercise-2-cleanup-pass-foundational">Exercise 2: cleanup pass (foundational)</h3>
+<p>Take this deliberately messy prompt and restructure it with <code>&lt;role&gt;</code>, <code>&lt;guidelines&gt;</code>, <code>&lt;policy&gt;</code>, and <code>&lt;output_format&gt;</code> tags, removing anything that does not belong:</p>
 <div class="codehilite"><pre><span></span><code>You are a helpful human agent. Our homepage hero banner says &quot;Switch &amp; Save!&quot;.
 Be nice. Never quote a wrong price, send them to /pricing instead. We accept
 cookies. Plans: Lite $10/10GB, Pro $30/50GB. Always get the math right.
 </code></pre></div>
 
 <p>Run your eval before and after. What changed, and why?</p>
-<h3 id="exercise-3-tool-vs-instruction-intermediate">Exercise 3 — Tool vs. instruction (Intermediate)</h3>
-<p>Your bot keeps doing arithmetic in its head and getting it slightly wrong. Without changing the model:
-(a) write the prompt instruction that points it to a tool, (b) define the tool schema, and (c) implement the tool. Confirm the eval flips from fail → pass. <em>Reflection:</em> why couldn't a stronger instruction alone fix this?</p>
-<h3 id="exercise-4-fix-a-one-sided-rule-intermediate">Exercise 4 — Fix a one-sided rule (Intermediate)</h3>
-<p>Find a "never / always / avoid unless absolutely necessary" line in one of your real prompts. Rewrite it to state <strong>both sides of the trade-off</strong>. Predict how a smarter model would behave under the old vs. new wording, then test it.</p>
-<h3 id="exercise-5-hill-climb-a-from-scratch-agent-advanced">Exercise 5 — Hill-climb a from-scratch agent (Advanced)</h3>
-<p>Pick a constraint-satisfaction task (scheduling, seating chart, packing). Build a deterministic grader, then climb the ladder yourself: simple prompt → bigger model → adaptive thinking → <strong>generate→evaluate→repair loop</strong>. Plot violations vs. tokens vs. latency for each. Which approach is best for <em>your</em> cost/latency budget? Then add a <strong>soft constraint at runtime</strong> in the evaluate step and confirm you didn't have to touch the grader.</p>
+<h3 id="exercise-3-tool-versus-instruction-intermediate">Exercise 3: tool versus instruction (intermediate)</h3>
+<p>Your assistant keeps doing arithmetic in its head and getting it slightly wrong. Without changing the model: (a) write the prompt instruction that points it to a tool, (b) write the tool schema, and (c) write the tool's code. Confirm the failing case flips to passing. Then answer: why could a stronger instruction alone never fix this?</p>
+<h3 id="exercise-4-fix-a-one-sided-rule-intermediate">Exercise 4: fix a one sided rule (intermediate)</h3>
+<p>Find a "never / always / avoid unless absolutely necessary" line in one of your real prompts. Rewrite it to state <strong>both sides of the trade-off</strong>. Predict how a smarter model would behave under the old wording versus the new wording, then test it.</p>
+<h3 id="exercise-5-climb-the-ladder-on-a-from-scratch-assistant-advanced">Exercise 5: climb the ladder on a from scratch assistant (advanced)</h3>
+<p>Pick a constraint satisfaction task (scheduling, a seating chart, packing a bag). Build a deterministic grader, then climb the ladder yourself: simple prompt, then stronger model, then adaptive thinking, then the generate, evaluate, repair loop. Record rule breaks, tokens, and latency at each step. Which approach is best for <em>your</em> budget? Finally, add a soft constraint at run time in the evaluate step and confirm you did not have to touch the grader.</p>
 <hr />
 <h2 id="cheat-sheet">Cheat sheet</h2>
-<div class="codehilite"><pre><span></span><code>WHEN A PROMPT REGRESSES
+<div class="codehilite"><pre><span></span><code>WHEN A PROMPT GETS WORSE
   1. Do you have an eval? If not, build one (control + edge + capability).
-  2. Hygiene: structure (XML), delete cruft, output contract (+ stop_sequences).
-  3. Target ONE failure at a time; re-run after each change.
+  2. Clean up: structure with tags, delete junk, define the output (+ stop sequence).
+  3. Fix ONE failure at a time, and re-run after each change.
 
 CHOOSE THE RIGHT FIX (not &quot;more instructions&quot;)
-  Wrong/withheld facts ...... fix overfitted patch; trust the data source
-  Bad math / unreliable step . give a TOOL
-  Won&#39;t act / over-cautious .. state BOTH sides of the trade-off
-  Not smart enough ........... bigger model OR adaptive thinking
-  One prompt doing too much .. split into generate → evaluate → repair
+  Wrong or hidden facts ....... remove the old patch; trust the data source
+  Bad maths / unreliable step . give it a TOOL
+  Will not act / too cautious . state BOTH sides of the trade-off
+  Not capable enough .......... stronger model OR adaptive thinking
+  One prompt doing too much ... split into generate -&gt; evaluate -&gt; repair
 
-REMEMBER
-  • Instructions don&#39;t add capability.
-  • Version-control defensive patches.
-  • Smarter models make their own trade-offs — give them both sides.
+ALWAYS REMEMBER
+  - Instructions do not add capability.
+  - Record your defensive patches so you can remove them later.
+  - Smarter models weigh their own trade-offs, so give them both sides.
 </code></pre></div>
 
-<h2 id="connections-to-the-rest-of-the-course">Connections to the rest of the course</h2>
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
 <ul>
-<li><strong>← Module 2 · Lesson 4 (Picking the right model):</strong> the "bigger model vs. adaptive thinking" choices here are made rigorously with evals there.</li>
-<li><strong>← Module 2 · Lesson 5 (The thinking lever):</strong> deep dive on adaptive thinking / effort, the lever used in Part 4.</li>
-<li><strong>→ Module 3 (Evals for taste):</strong> formalizes the eval suite this lesson depends on (code-based vs. LLM-judge graders).</li>
-<li><strong>→ Module 5 (Claude Managed Agents):</strong> the generate→evaluate→repair pattern scales into multi-agent orchestration and "outcomes."</li>
+<li><strong>Earlier, Module 2 · Lesson 4 (Picking the right model):</strong> the "stronger model versus adaptive thinking" choices here are made rigorously, with evals, there.</li>
+<li><strong>Earlier, Module 2 · Lesson 5 (The thinking lever):</strong> a deeper look at adaptive thinking and reasoning effort, the lever used in Part 4.</li>
+<li><strong>Next, Module 3 (Evals for taste):</strong> builds out the eval idea this whole lesson rests on, including AI based graders versus code based graders.</li>
+<li><strong>Later, Module 5 (Claude Managed Agents):</strong> the generate, evaluate, repair pattern grows into multi agent systems and a feature called "outcomes."</li>
 </ul>
 <hr />
-<p><em>Source: "The prompting playbook" by Margo van Laar (Anthropic), Code with Claude 2026, London. Code snippets are illustrative reconstructions of the approaches demonstrated in the talk; adapt model IDs and APIs to the current SDK.</em></p>
-      <footer>Building with Claude — a self-paced course generated from the Code with Claude 2026 (London) talks. Code snippets are illustrative reconstructions of the approaches shown; adapt to the current SDK.</footer>
+<p><em>Source: "The prompting playbook" by Margo van Laar (Anthropic), Code with Claude 2026, London. Code snippets are illustrative reconstructions of the approaches shown in the talk. Adapt the model names and API details to the current SDK.</em></p>
+      <footer>Building with Claude, a self-paced course generated from the Code with Claude 2026 (London) talks. Code snippets are illustrative reconstructions of the approaches shown. Adapt them to the current SDK.</footer>
     </article>
   </main>
 </div>
