@@ -11,6 +11,9 @@
 ## Lesson checklist
 
 
+### Module 0: Pre-flight (optional on-ramp)
+- [ ] **Lesson 0:** Pre-flight, getting ready to build (tools, accounts, first API call)
+
 ### Module 1: Foundations
 - [ ] **Lesson 1:** Code with Claude London 2026 Opening Keynote
 - [ ] **Lesson 2:** The Capability Curve

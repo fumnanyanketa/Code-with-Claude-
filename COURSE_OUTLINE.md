@@ -11,7 +11,16 @@ across a team.*
 is the concrete thing a learner should be able to do afterward. 🎙️ = transcript
 came from audio (minor name garbling possible).
 
-Total: 9 modules · 37 lessons.
+Total: 9 modules · 37 lessons, plus an optional **Module 0 (pre-flight)** on-ramp.
+
+---
+
+## Module 0 — Pre-flight: getting ready *(optional, before Lesson 1)*
+*Objective: close the small gap this course assumes — set up the toolchain and accounts, and skim a few refreshers — so you build from Lesson 1 instead of fighting setup.*
+
+0. **Pre-flight, getting ready to build** — self-guided setup (no talk)
+   [lesson](lessons/module-0-preflight/00-pre-flight.md)
+   *Skill gained:* a verified toolchain (Python, git, the `anthropic` SDK, Claude Code), an API key stored safely, your first API call and first Claude Code session, and a map of the official free resources for any gap. Skip if you are already a working engineer.
 
 ---
 

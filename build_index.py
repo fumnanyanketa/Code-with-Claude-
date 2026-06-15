@@ -13,11 +13,13 @@ ROOT = pathlib.Path("/home/user/Code-with-Claude-")
 LESSONS = ROOT / "lessons"
 
 MODULE_NAMES = {
+    0: "Pre-flight: getting ready",
     1: "Foundations", 2: "Core skills", 3: "Measuring quality: evals",
     4: "Claude Code", 5: "Building agents: Managed Agents", 6: "Advanced agent engineering",
     7: "Deploying on your cloud", 8: "Leading the transformation", 9: "Industry case studies",
 }
 MODULE_BLURB = {
+    0: "Optional on-ramp: the accounts, tools, and refreshers to set up before Lesson 1.",
     1: "Why this matters and where model capability is going.",
     2: "Everyday skills: prompting, model choice, reasoning effort, and platform features.",
     3: "The discipline that underpins everything: measuring quality with evals.",
@@ -69,7 +71,11 @@ for mod in sorted(by_mod):
         f'<p>{html.escape(MODULE_BLURB.get(mod, ""))}</p></div>'
         f'<div class="lessons">{items}</div></section>')
 
+# Headline counts describe the core curriculum (Modules 1-9); the optional
+# pre-flight (Module 0) is rendered as a card but not counted in the stats.
 total = len(lessons)
+core_modules = len([m for m in by_mod if m >= 1])
+core_lessons = len([L for L in lessons if L[0] >= 1])
 PAGE = f'''<!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -123,9 +129,9 @@ footer{{background:var(--navy);color:#aebccb;text-align:center;padding:40px 26px
     <h1>Building with <span class="a">Claude</span></h1>
     <p>A hands-on course built from the talks at Code with Claude 2026 (London). Learn to prompt, evaluate, and ship production AI agents, step by step.</p>
     <div class="stats">
-      <div class="stat"><div class="n">9</div><div class="l">modules</div></div>
-      <div class="stat"><div class="n">{total}</div><div class="l">lessons</div></div>
-      <div class="stat"><div class="n">{total}</div><div class="l">hands-on capstones</div></div>
+      <div class="stat"><div class="n">{core_modules}</div><div class="l">modules</div></div>
+      <div class="stat"><div class="n">{core_lessons}</div><div class="l">lessons</div></div>
+      <div class="stat"><div class="n">{core_lessons}</div><div class="l">hands-on capstones</div></div>
     </div>
     <div style="margin-top:30px"><a href="start-here.html" style="display:inline-flex;align-items:center;gap:9px;background:#18c4a0;color:#04231c;font-weight:600;border-radius:999px;padding:13px 26px;text-decoration:none;font-family:Inter">New here? Start with the orientation &#8594;</a></div>
   </div>
