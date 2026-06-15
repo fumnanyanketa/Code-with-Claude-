@@ -127,6 +127,7 @@ footer{{background:var(--navy);color:#aebccb;text-align:center;padding:40px 26px
       <div class="stat"><div class="n">{total}</div><div class="l">lessons</div></div>
       <div class="stat"><div class="n">{total}</div><div class="l">hands-on capstones</div></div>
     </div>
+    <div style="margin-top:30px"><a href="start-here.html" style="display:inline-flex;align-items:center;gap:9px;background:#18c4a0;color:#04231c;font-weight:600;border-radius:999px;padding:13px 26px;text-decoration:none;font-family:Inter">New here? Start with the orientation &#8594;</a></div>
   </div>
 </header>
 <main class="wrap">
