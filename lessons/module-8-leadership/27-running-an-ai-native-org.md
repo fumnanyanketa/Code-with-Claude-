@@ -14,6 +14,14 @@ When coding stops being the slow part of building software, the old team habits 
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you run a real "process audit" on one of your own team's workflows, turn one slow ritual into a small automation, and measure the before and after. Everything before the Capstone teaches the way of thinking you will use there. If you want to see the finish line first, jump to the **"Capstone Project"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Theory of Constraints](https://en.wikipedia.org/wiki/Theory_of_constraints)** (essay). The lesson's whole frame, "the bottleneck has moved; optimise the new constraint, not the old one," is Goldratt's Theory of Constraints applied to engineering.
+> - **[The Goal (Eliyahu Goldratt)](https://en.wikipedia.org/wiki/The_Goal_(novel))** (book). The narrative that made bottleneck thinking durable management canon.
+
 ## A few plain-language basics first
 
 This is a leadership talk, so most of the terms are about how teams work rather than about code. Here they are in plain words:

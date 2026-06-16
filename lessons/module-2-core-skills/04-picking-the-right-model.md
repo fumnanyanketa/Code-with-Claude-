@@ -14,6 +14,13 @@ Choosing which model to use is a measurement problem, not a vibes problem. You b
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build a tool called **ModelSweep** that runs your own test cases across several models and settings, then plots cost, speed, and quality so you can choose with data. Everything before the Capstone teaches the skills you will use there. If you want to see the finish line first, jump to the **"Capstone Project: build ModelSweep"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Choosing the right model (Anthropic docs)](https://platform.claude.com/docs/en/about-claude/models/choosing-a-model)** (docs). The tool-agnostic decision framework the lesson teaches: pick on your own evals, weigh capability/speed/cost, and tune effort before switching models.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI terms. Here they are in simple words, so nothing below is confusing:

@@ -14,6 +14,14 @@ You can take a Claude app from a prototype on your laptop to a fully production 
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you take a real app from prototype to production on AWS, configuring Claude Code to run on Bedrock and layering in the production concerns Antonio stresses: security, observability, and cost control. Everything before the Capstone explains the choices you will make there. If you want the finish line first, jump to the **"Capstone Project"** section, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[What is Amazon Bedrock? (AWS docs)](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html)** (docs). The official overview of Bedrock as a managed, multi-provider foundation-model service, covering the durable production surroundings (security, regions, APIs) the lesson stresses.
+> - **[Claude in Amazon Bedrock (Anthropic docs)](https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock)** (docs). Anthropic's complementary guide for calling Claude specifically through Bedrock.
+
 ## A few plain-language basics first
 
 This lesson mixes Claude terms with AWS terms. Here they are in plain words:

@@ -14,6 +14,13 @@ The thing that lets AI do hard, high-stakes work in a real company is not a clev
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build a **Skill Library** for a workflow you know, complete with ownership, tests, and a tiny review process. Everything before the Capstone teaches the ideas you will use there. If you want to see the finish line first, jump to the **Capstone Project** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Algorithmic trading](https://en.wikipedia.org/wiki/Algorithmic_trading)** (essay). An authoritative, tool-agnostic primer on what a trading signal is and the central role of backtesting (in-sample, out-of-sample, live), the "iceberg" the lesson builds on.
+
 ## A few plain-language basics first
 
 This lesson uses some terms from both AI and finance. Here they are in plain words:

@@ -14,6 +14,14 @@ When an agent grows by having capability "bolted on" over time (a 400-line syste
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you take a deliberately overgrown agent called **Sprawl** and decompose it, hill-climbing your eval score from "embarrassing" to "great." Everything before the Capstone teaches the decisions you will make there. If you want to see the finish line first, jump to the **"Capstone Project: rescue Sprawl"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[How we built our multi-agent research system (Anthropic)](https://www.anthropic.com/engineering/multi-agent-research-system)** (essay). A first-principles treatment of orchestrator-vs-subagent decomposition: when to parallelize, the cost of subagents, and the communication tradeoffs, the exact decisions this lesson teaches.
+> - **[Building Effective Agents (Anthropic)](https://www.anthropic.com/engineering/building-effective-agents)** (essay). Lays out the pattern catalog (routing, orchestrator-workers, evaluator-optimizer) that frames the tool/skill/subagent choice.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI terms. Here they are in simple words:

@@ -14,6 +14,13 @@ For "fuzzy" tasks that need judgment and taste (where you cannot just run a unit
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build **Echo**, a teammate-style agent that triages a fuzzy stream of items, learns from your reactions, and opens a daily pull request to improve its own instructions. Everything before the Capstone teaches the pieces you will assemble there.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Training language models to follow instructions with human feedback (InstructGPT)](https://arxiv.org/abs/2203.02155)** (paper). The seminal RLHF paper: for fuzzy, taste-driven objectives you align a model by learning from human preferences and corrections, not from hand-coded rules.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI and software terms. Here they are in simple words:

@@ -14,6 +14,14 @@ Great models are only half the story: the Claude platform gives you a layer of f
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build **AgentTune**, taking a deliberately wasteful agent and cutting its cost by more than half while keeping (or improving) its quality, using every platform feature in this lesson. Everything before the Capstone teaches the skills you will use there. If you want to see the finish line first, jump to the **"Capstone Project: build AgentTune"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Effective context engineering for AI agents (Anthropic)](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)** (essay). The principle-level treatment of "find the smallest set of high-signal tokens," covering compaction and curation as concepts rather than specific platform buttons.
+> - **[Prompt caching (Anthropic docs)](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)** (docs). How caching works and where its roughly 90% cost saving comes from, from first principles.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI terms. Here they are in simple words, so nothing below is confusing:

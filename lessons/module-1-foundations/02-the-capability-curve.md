@@ -14,6 +14,14 @@ Claude has gone from a junior engineer who could solve a fraction of coding task
 
 > 🎯 **Where this lesson is heading.** It builds to a hands-on **Capstone Project** where you build a small harness called **CurveRider** that lets you swap models, run an eval, and prove a newer model is actually better on a task that matters to you. Everything before the Capstone teaches the skills you will use there. If you want to see the finish line first, jump to the **"Capstone Project"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Emergent Abilities of Large Language Models](https://arxiv.org/abs/2206.07682)** (paper). Explains why a model can jump from "can't do a task" to "can do it" across one generation, the first-principles account of the capability curve.
+> - **[Scaling Laws for Neural Language Models](https://arxiv.org/abs/2001.08361)** (paper). The smooth-scaling mechanism underneath the discrete capability jumps.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI and engineering terms. Here they are in plain words:

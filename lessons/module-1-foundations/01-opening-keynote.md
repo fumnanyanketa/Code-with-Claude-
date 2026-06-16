@@ -14,6 +14,14 @@ Model capability is rising on an exponential curve while most teams adopt it on 
 
 > 🎯 **Where this lesson is heading.** This is a vision and announcements talk, so there is very little code. The hands on payoff is a **Capstone Project** where you write (and partly build) a concrete plan to roll Claude out across a small team, plus a tiny demo using one newly announced feature. If you want to see the finish line first, jump to the **"Capstone Project"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Scaling Laws for Neural Language Models](https://arxiv.org/abs/2001.08361)** (paper). The seminal explanation of why capability rises predictably as you scale model size, data, and compute, the foundation under the keynote's "capability is exponential" claim.
+> - **[The Bitter Lesson (Rich Sutton)](https://en.wikipedia.org/wiki/Bitter_lesson)** (essay). General methods that leverage computation beat hand-built scaffolding over time, the durable basis for "shrink your scaffolding, build for the next model."
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI and engineering terms. Here they are in plain words so nothing below is confusing:

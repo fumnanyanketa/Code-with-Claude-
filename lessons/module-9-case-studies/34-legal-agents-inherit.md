@@ -14,6 +14,14 @@ Coding agents are years ahead of every other field, so the fastest way to build 
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build a **Domain Agent** for a field you know, by working through the reuse / translate / invent framework deliberately. Everything before the Capstone fills in each of the three buckets with real examples. If you want the finish line first, jump to the **Capstone Project**, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Code reuse](https://en.wikipedia.org/wiki/Code_reuse)** (essay). The durable engineering principle behind the lesson's core move: don't reinvent; reuse what exists, adapt the pattern, and invent only the remainder.
+> - **[Legal technology](https://en.wikipedia.org/wiki/Legal_technology)** (essay). A domain primer covering due diligence, document automation, and the verifiability requirement central to legal agents.
+
 ## A few plain-language basics first
 
 This lesson leans on a few agent and document terms. Here they are in plain words:

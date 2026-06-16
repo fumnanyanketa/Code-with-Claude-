@@ -14,6 +14,14 @@ Three large companies founded before the AI era explain how they became AI nativ
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you bring AI to a real (or realistic) legacy system: you build one agent that plugs into an existing workflow, set up a "council of agents" review, and write the enterprise rethink memo (architecture, identity, processes). Everything before the Capstone teaches the moves you will use. If you want to see the finish line first, jump to the **"Capstone Project"** section, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Accelerate! (John Kotter, HBR)](https://hbr.org/2012/11/accelerate)** (essay). Kotter is the canonical authority on leading organizational change under disruption; his "build urgency, spread through community, don't wait for perfect conditions" model is exactly the panel's change story.
+> - **[The Mythical Man-Month (Fred Brooks)](https://en.wikipedia.org/wiki/The_Mythical_Man-Month)** (book). Brooks's lessons on large legacy systems and conceptual integrity underpin the "API-first, opinionated, rethink everything" advice.
+
 ## A few plain-language basics first
 
 This panel uses enterprise engineering terms. Here they are in plain words:

@@ -14,6 +14,13 @@ A **routine** turns Claude Code from a tool that waits for you to press enter in
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build a **Routine Pack**: a small set of proactive routines that watch over a project of yours (docs, deploys, and a backlog) so you can see the same idea applied three different ways. Everything before the Capstone teaches the three decisions you will make for each routine. If you want to see the finish line first, jump to the **"Capstone Project"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Building Effective Agents (Anthropic)](https://www.anthropic.com/engineering/building-effective-agents)** (essay). The seminal, tool-agnostic taxonomy of agentic patterns, including the evaluator-optimizer loop, behind routines and the "tool to teammate" shift.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday agent terms. Here they are in simple words:

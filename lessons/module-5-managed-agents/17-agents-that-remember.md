@@ -14,6 +14,14 @@ By default each run of an agent is a blank slate that forgets everything when it
 
 > 🎯 **Where this lesson is heading.** It builds to a hands-on **Capstone Project** where you build **RecallDesk**, a small support agent that remembers customers across separate conversations and then learns from its own past runs. Everything before the Capstone teaches the pieces you will assemble there. If you want to see the finish line first, jump to the **"Capstone Project: RecallDesk"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[LLM Powered Autonomous Agents (Lilian Weng)](https://lilianweng.github.io/posts/2023-06-23-agent/)** (essay). Its memory section is the durable articulation of short-term (in-context) vs long-term (external store) memory and retrieval, the precise idea of giving agents memory across sessions.
+> - **[Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401)** (paper). The seminal paper on combining parametric memory with an external, retrievable store, the foundation of retrieval-based long-term memory.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday agent terms. Here they are in simple words, so nothing below is confusing:

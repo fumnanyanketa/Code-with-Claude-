@@ -264,6 +264,7 @@ footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
     <div class="toc">
 <ul>
 <li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
 <li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
 <li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
 <li><a href="#learning-objectives">Learning objectives</a></li>
@@ -321,6 +322,14 @@ footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
 <p>To make Claude Code do real software engineering (not just toy programming), you give it the same access, knowledge, and tooling you have, and you customize it with abstractions that scale, because every customization has to fit inside a fixed context window, so you want ones that cost almost nothing when they are not being used.</p>
 <blockquote>
 <p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands on <strong>Capstone Project</strong> where you build a <strong>Scaling Harness Lab</strong>: a small, realistic repo that you wire up with the four plugin building blocks (MCP, skills, hooks, sub agents), then deliberately stress test which ones survive when you imagine thousands of them. Everything before the Capstone teaches the skills you will use there. If you want to see the finish line first, jump to the <strong>"Capstone Project"</strong> section near the end, then come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:</p>
+<ul>
+<li><strong><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Effective context engineering for AI agents (Anthropic)</a></strong> (essay). Treats context as a finite "attention budget" and shows how to engineer the smallest high-signal token set, the lesson's central design rule, framed tool-agnostically.</li>
+<li><strong><a href="https://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer (Jay Alammar)</a></strong> (essay). Explains keys/queries/values from the ground up, so you understand why a KV cache exists and why editing early tokens forces expensive recomputation.</li>
+</ul>
 </blockquote>
 <h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
 <p>This lesson uses some everyday AI and engineering terms. Here they are in simple words, so nothing below is confusing:</p>

@@ -14,6 +14,14 @@ This lesson turns agent building into a competitive game: you deploy a managed a
 
 > 🎯 **Where this lesson is heading.** It builds to a hands-on **Capstone Project** where you run your own **DiamondForge Challenge**: a deployed agent, a one-minute eval loop, a leaderboard, and a disciplined hill-climbing process to beat your own best score. Everything before the Capstone teaches the moves you will use. To see the finish line first, jump to **"Capstone Project: DiamondForge"** and come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366)** (paper). Frames iterative agent improvement as a measure, reflect, retry loop, the exact "hill-climb on a measurable objective" discipline this lesson is built around.
+> - **[Reinforcement Learning: An Introduction (Sutton & Barto)](https://web.stanford.edu/class/psych209/Readings/SuttonBartoIPRLBook2ndEd.pdf)** (book). The bedrock text on the explore/exploit, planning, and reward framing behind optimizing an agent against a score.
+
 ## A few plain-language basics first
 
 This lesson is a competition with a few moving parts. Here they are in plain words:

@@ -14,6 +14,14 @@ A tiny team built and launched a real product (Claude Design) in about ten weeks
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you run your own fast product loop on a small idea: you replace a planning doc with a prototype, build one tool to scratch your own itch, and turn one real user request around in 24 hours. Everything before the Capstone teaches the moves you will use there. If you want to see the finish line first, jump to the **"Capstone Project"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Design thinking](https://en.wikipedia.org/wiki/Design_thinking)** (essay). The lesson's prototype, test, learn, iterate loop is textbook design thinking, the durable discipline behind "prototypes beat PRDs."
+> - **[Lean startup](https://en.wikipedia.org/wiki/Lean_startup)** (essay). Build-Measure-Learn and the MVP are the first-principles version of the daily ship-and-learn loop.
+
 ## A few plain-language basics first
 
 This is a product and team talk. Here are the everyday terms it uses, in plain words:

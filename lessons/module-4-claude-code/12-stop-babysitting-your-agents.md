@@ -14,6 +14,14 @@ To stop staring at the screen waiting for Claude, you stack three skills that bu
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build a **Self Verifying Agent Lab**: you take a real full stack app, teach Claude to verify its own changes, package that into a self improving skill, run several Claudes at once, and finally hand a recurring chore to a background loop. Everything before the Capstone teaches a piece you will use there. If you want to see the finish line first, jump to the **"Capstone Project"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Building Effective Agents (Anthropic)](https://www.anthropic.com/engineering/building-effective-agents)** (essay). Grounds the core idea: an agent loops against ground-truth verification and only needs the human when it lacks a check of its own.
+> - **[Best practices for Claude Code: give Claude a way to verify its work](https://code.claude.com/docs/en/best-practices)** (docs). The official statement of "close the loop so you're not the verification step," which is the exact thesis of the lesson.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday agent and engineering terms. Here they are in plain words:

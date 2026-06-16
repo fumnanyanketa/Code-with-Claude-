@@ -14,6 +14,14 @@ Base44 grew from a single founder to 80 engineers without losing speed by refusi
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you take one scaling pain on a team you know and solve it the Base44 way: start with the simplest possible automation (a single prompt), then upgrade it only as far as the team's size justifies. Everything before the Capstone teaches the patterns you will reuse. If you want to see the finish line first, jump to the **"Capstone Project"** section, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[The Mythical Man-Month (Fred Brooks)](https://en.wikipedia.org/wiki/The_Mythical_Man-Month)** (book). The enduring classic on what breaks as engineering teams grow (Brooks's Law, communication overhead), the backdrop to "don't add heavy process too early."
+> - **[Accelerate / the DORA research](https://dora.dev/research/)** (docs). Evidence-based grounding for keeping process lightweight and metrics-driven as you scale.
+
 ## A few plain-language basics first
 
 This talk moves fast through several technical ideas. Here they are in plain words:

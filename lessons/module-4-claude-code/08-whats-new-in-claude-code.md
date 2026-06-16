@@ -14,6 +14,14 @@ Claude Code has grown from a terminal chat tool into an everyday agent you can r
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you set up a **Hands-Off Workbench**: a real project wired so Claude can run remotely, review every change, and react to GitHub events without you babysitting it. Everything before the Capstone explains one feature you will switch on there. To see the finish line first, jump to **"Capstone Project: the Hands-Off Workbench"**, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Raising the bar on SWE-bench Verified (Anthropic)](https://www.anthropic.com/research/swe-bench-sonnet)** (essay). A first-principles look at how a coding agent is actually built (model + bash tool + edit tool + an iterative loop), independent of any specific feature set.
+> - **[Building Effective Agents (Anthropic)](https://www.anthropic.com/engineering/building-effective-agents)** (essay). The durable workflow-vs-agent distinction behind what "agentic coding tool" even means.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday terms. Here they are in plain words:

@@ -14,6 +14,14 @@ Not every domain suits the "describe it and let the agent run" model of delegati
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build a **Collaboration-First Assistant** for a domain where delegation breaks down, applying the three design principles from the talk. Everything before the Capstone explains *when* and *why* to choose collaboration, and the principles you will implement. If you want the finish line first, jump to the **Capstone Project**, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Human-in-the-loop](https://en.wikipedia.org/wiki/Human-in-the-loop)** (essay). The lesson's collaboration model maps directly onto the established human-in-the-loop spectrum and its accountability rationale: design for collaboration when you can't cheaply validate output.
+> - **[Legal technology](https://en.wikipedia.org/wiki/Legal_technology)** (essay). A domain primer; agentic legal systems succeed on verifiable, trustworthy outputs, matching the lesson's citations-as-first-class principle.
+
 ## A few plain-language basics first
 
 This lesson uses AI and a little patent-law vocabulary. Here it is in plain words:

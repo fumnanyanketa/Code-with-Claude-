@@ -264,6 +264,7 @@ footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
     <div class="toc">
 <ul>
 <li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
 <li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
 <li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
 <li><a href="#learning-objectives">Learning objectives</a></li>
@@ -316,6 +317,14 @@ footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
 <p>You can build a real, production-ready agent (here, one that wakes up at 3am to debug a software incident for you) by composing three simple pieces (an agent definition, an environment, and a session) on top of Claude Managed Agents, which runs the agent loop server-side and hands you durability, scaling, and observability for free.</p>
 <blockquote>
 <p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands on <strong>Capstone Project</strong> where you build <strong>NightShift</strong>, an on-call incident-response agent that investigates a failing service and reports the root cause, so you never get woken at 3am again. Everything before the Capstone teaches the pieces you will snap together there. If you want to see the finish line first, jump to the <strong>"Capstone Project: build NightShift"</strong> section near the end, then come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:</p>
+<ul>
+<li><strong><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview">Tool use with Claude (Anthropic docs)</a></strong> (docs). The tool-agnostic explanation of the function-calling / agentic loop (model decides, your app executes, result returns) that underpins any agent you build.</li>
+<li><strong><a href="https://arxiv.org/abs/2302.04761">Toolformer: Language Models Can Teach Themselves to Use Tools</a></strong> (paper). The seminal paper on why and how language models call external tools and APIs.</li>
+</ul>
 </blockquote>
 <h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
 <p>This lesson uses some everyday AI terms. Here they are in simple words:</p>

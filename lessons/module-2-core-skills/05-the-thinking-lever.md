@@ -14,6 +14,13 @@ Claude gets smarter when you let it spend more tokens thinking before it answers
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build **EffortLab**, a small harness that runs one hard task at every effort level and shows you, side by side, how quality, tokens, and time change. Everything before the Capstone teaches the ideas you will use there. If you want to see the finish line first, jump to the **"Capstone Project: build EffortLab"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Chain-of-Thought Prompting Elicits Reasoning in LLMs](https://arxiv.org/abs/2201.11903)** (paper). The seminal demonstration that intermediate reasoning steps, the "thinking" the effort dial controls, substantially improve accuracy on hard tasks.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI terms. Here they are in simple words, so nothing below is confusing:

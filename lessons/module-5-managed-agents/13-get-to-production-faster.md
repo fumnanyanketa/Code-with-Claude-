@@ -14,6 +14,14 @@ When you build an AI agent for real users, the hard part is no longer the model'
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build a small agent control panel called **MissionControl** that defines an agent, runs it, and shows you everything it is doing through a live event stream. Everything before the Capstone teaches the ideas you will use there. If you want to see the finish line first, jump to the **"Capstone Project: build MissionControl"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Building Effective Agents (Anthropic)](https://www.anthropic.com/engineering/building-effective-agents)** (essay). The canonical "build with simple, composable, transparent patterns" framing behind taking an agent from demo to production.
+> - **[Embracing Risk (Google SRE Book)](https://sre.google/sre-book/embracing-risk/)** (essay). Production reliability from first principles: availability targets and error budgets that outlast any tooling.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI terms. Here they are in simple words, so nothing below is confusing:

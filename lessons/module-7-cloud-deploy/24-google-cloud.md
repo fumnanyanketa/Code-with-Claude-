@@ -14,6 +14,14 @@ You can take an app idea from a paper sketch all the way to a production deploym
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build and deploy a small **Feedback App** end to end on Google Cloud, wearing the same five "hats" Iman wears in the talk (product manager, designer, engineer, security reviewer, and analyst). Everything before the Capstone teaches the pieces you will use there. If you want to see the finish line first, jump to the **"Capstone Project"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Anthropic's Claude models on Vertex AI (Google Cloud docs)](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude)** (docs). The official provider reference for running Claude on Vertex AI (setup, access, requests), durable even as model versions change.
+> - **[Claude on Vertex AI (Anthropic docs)](https://platform.claude.com/docs/en/api/claude-on-vertex-ai)** (docs). Anthropic's complementary guide for calling Claude on Vertex (SDKs, endpoints, regions).
+
 ## A few plain-language basics first
 
 This lesson mixes Claude terms with Google Cloud terms. Here they are in plain words, so nothing below is confusing:

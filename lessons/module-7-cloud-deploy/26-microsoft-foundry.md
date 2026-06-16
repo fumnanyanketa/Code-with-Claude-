@@ -14,6 +14,14 @@ You can build a working AI agent on Microsoft Foundry by deploying a Claude mode
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build the **Sparkles Cupcake Agent**: a Claude powered agent that takes real orders by talking to a cupcake shop's MCP server. Everything before the Capstone teaches the four steps you will use there (deploy, test, code, connect tools). If you want the finish line first, jump to the **"Capstone Project"** section, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[What is Microsoft Foundry? (Microsoft Learn)](https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry)** (docs). The official platform overview (deploy models including Claude, build and orchestrate agents, enterprise security and governance), the durable reference for the lesson's deploy-test-code-connect flow.
+> - **[Microsoft Agent Framework Overview (Microsoft Learn)](https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview)** (docs). First-principles coverage of agents vs workflows and tools/MCP, with explicit Claude support.
+
 ## A few plain-language basics first
 
 This lesson mixes Claude terms with Microsoft terms. Here they are in plain words:

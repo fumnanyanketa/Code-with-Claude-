@@ -14,6 +14,14 @@ To put AI to work on sensitive, high-stakes data, you do not just connect the mo
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build a **Secure MCP Gateway**: a single, audited front door that sits between an AI assistant and your data sources. Everything before the Capstone teaches the pieces you will assemble there. If you want the finish line first, jump to the **Capstone Project** section, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Financial Action Task Force (FATF)](https://en.wikipedia.org/wiki/Financial_Action_Task_Force)** (docs). FATF sets the global AML/CFT standard, the durable grounding for the alerting-to-investigation lifecycle and KYC/KYB concepts the lesson references.
+> - **[Anti-money laundering](https://en.wikipedia.org/wiki/Anti-money_laundering)** (essay). A concrete primer on transaction monitoring, suspicious-activity reporting, and KYC, the exact workflow the lesson automates.
+
 ## A few plain-language basics first
 
 This lesson mixes AI and security terms. Here they are in plain words:

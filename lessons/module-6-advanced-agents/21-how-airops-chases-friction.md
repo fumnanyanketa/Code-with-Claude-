@@ -14,6 +14,14 @@ Making powerful agents usable by non-technical people (like marketers) means hun
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build **BriefBot**, an accessible agent for a non-technical user, complete with a document-style interface, a human review gate, specialized tools, and focused sub-agents. Everything before the Capstone teaches the moves you will use there.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[PDCA: Plan-Do-Check-Act (Lean Enterprise Institute)](https://www.lean.org/lexicon-terms/pdca/)** (docs). The original scientific-method improvement cycle (Shewhart/Deming) that is the timeless backbone of "chase friction, measure, repeat."
+> - **[Building Effective Agents (Anthropic)](https://www.anthropic.com/engineering/building-effective-agents)** (essay). Grounds the harness-engineering and orchestrator/sub-agent patterns AirOps relies on in first-principles terms.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI and product terms. Here they are in simple words:

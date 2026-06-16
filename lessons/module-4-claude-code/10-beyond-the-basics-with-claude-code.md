@@ -14,6 +14,14 @@ To make Claude Code do real software engineering (not just toy programming), you
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build a **Scaling Harness Lab**: a small, realistic repo that you wire up with the four plugin building blocks (MCP, skills, hooks, sub agents), then deliberately stress test which ones survive when you imagine thousands of them. Everything before the Capstone teaches the skills you will use there. If you want to see the finish line first, jump to the **"Capstone Project"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Effective context engineering for AI agents (Anthropic)](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)** (essay). Treats context as a finite "attention budget" and shows how to engineer the smallest high-signal token set, the lesson's central design rule, framed tool-agnostically.
+> - **[The Illustrated Transformer (Jay Alammar)](https://jalammar.github.io/illustrated-transformer/)** (essay). Explains keys/queries/values from the ground up, so you understand why a KV cache exists and why editing early tokens forces expensive recomputation.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI and engineering terms. Here they are in simple words, so nothing below is confusing:

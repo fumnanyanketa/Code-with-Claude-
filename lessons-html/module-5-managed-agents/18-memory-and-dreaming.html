@@ -264,6 +264,7 @@ footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
     <div class="toc">
 <ul>
 <li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
 <li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
 <li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
 <li><a href="#learning-objectives">Learning objectives</a></li>
@@ -314,6 +315,14 @@ footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
 <p>Agents get more useful when they can learn from one task to the next, so this lesson explains how Anthropic designed <strong>memory</strong> (a shared, file-based store that lets agents carry learnings across sessions, agents, and environments) and <strong>dreaming</strong> (a separate background process that fact-checks, organises, and enriches that memory so it improves globally, not just locally).</p>
 <blockquote>
 <p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone Project</strong> where you build <strong>OnCallBrain</strong>, an incident-response agent that shares an organisation-wide memory and improves itself through nightly dreaming. The teaching before the Capstone gives you the design vocabulary you will need. To see the finish line first, jump to <strong>"Capstone Project: OnCallBrain"</strong> and then come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:</p>
+<ul>
+<li><strong><a href="https://arxiv.org/abs/2304.03442">Generative Agents: Interactive Simulacra of Human Behavior</a></strong> (paper). Its memory-stream plus "reflection" architecture (periodically synthesizing raw experiences into consolidated memories) is the seminal analogue of "dreaming."</li>
+<li><strong><a href="https://arxiv.org/abs/2303.11366">Reflexion: Language Agents with Verbal Reinforcement Learning</a></strong> (paper). Agents that improve by reflecting on past feedback in episodic memory, with no weight updates, the continual-learning idea behind self-improving agents.</li>
+</ul>
 </blockquote>
 <h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
 <p>This lesson is more about <em>design</em> than commands, so here are the terms in plain words:</p>

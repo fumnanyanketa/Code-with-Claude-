@@ -14,6 +14,14 @@ As models get more capable, you get more out of them by constraining them less: 
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you take a small app from a vague idea to a fully self-verifying artifact, using the exact three-phase workflow the talk demonstrates. Everything before the Capstone teaches one phase. To see the finish line first, jump to **"Capstone Project: the Self-Verifying App"**, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Best practices for Claude Code (Anthropic docs)](https://code.claude.com/docs/en/best-practices)** (docs). The official codification of the exact workflow the lesson teaches: explore, plan, implement, commit, "let Claude interview you," and give the agent a verification loop it can run itself.
+> - **[The Bitter Lesson (Rich Sutton)](https://en.wikipedia.org/wiki/Bitter_lesson)** (essay). The intellectual root of the lesson's "constrain capable models less" thesis.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday terms. Here they are in plain words:

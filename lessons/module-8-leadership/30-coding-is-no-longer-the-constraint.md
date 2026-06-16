@@ -14,6 +14,14 @@ When an organisation of 3,000 engineers adopts AI coding tools faster than anyth
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build a small "fleet maintenance" tool: an agent that applies one routine change across many code repositories, verifies each change, and reports results, the same shape as Spotify's system, at a size you can run yourself. Everything before the Capstone teaches the ideas behind it. If you want to see the finish line first, jump to the **"Capstone Project"** section, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Accelerate (Forsgren, Humble, Kim / DORA)](https://en.wikipedia.org/wiki/Accelerate_(book))** (book). The research-backed account of what makes software delivery fast and what to measure (lead time, deploy frequency, change-fail rate, MTTR), the foundation under "measure everything, automate maintenance."
+> - **[The SPACE of Developer Productivity](https://www.microsoft.com/en-us/research/publication/the-space-of-developer-productivity-theres-more-to-it-than-you-think/)** (paper). The authoritative answer to "don't fixate on one throughput number": productivity is multidimensional.
+
 ## A few plain-language basics first
 
 This is a platform engineering talk at large scale. Here are the terms in plain words:

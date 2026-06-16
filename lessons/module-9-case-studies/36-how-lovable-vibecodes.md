@@ -14,6 +14,14 @@ When millions of non-technical people build software with AI, the make-or-break 
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build a **Self-Healing Layer** for an AI product of your own: a stuck-detector, a reusable-fix knowledge base, and an agent feedback channel. Everything before the Capstone explains each piece. If you want the finish line first, jump to the **Capstone Project**, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[The Lean Startup](https://en.wikipedia.org/wiki/Lean_startup)** (essay). Lovable's self-healing platform is a Build-Measure-Learn engine driven by validated learning from real usage, the durable discipline behind shipping fast without flying blind.
+> - **[The SPACE of Developer Productivity](https://www.microsoft.com/en-us/research/publication/the-space-of-developer-productivity-theres-more-to-it-than-you-think/)** (paper). Supports the "make it a metric, then tune" rigor: quality and productivity must be measured across dimensions, not by one number.
+
 ## A few plain-language basics first
 
 This lesson uses some product and AI terms. Here they are in plain words:

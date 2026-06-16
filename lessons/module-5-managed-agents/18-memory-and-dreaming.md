@@ -14,6 +14,14 @@ Agents get more useful when they can learn from one task to the next, so this le
 
 > 🎯 **Where this lesson is heading.** It builds to a hands-on **Capstone Project** where you build **OnCallBrain**, an incident-response agent that shares an organisation-wide memory and improves itself through nightly dreaming. The teaching before the Capstone gives you the design vocabulary you will need. To see the finish line first, jump to **"Capstone Project: OnCallBrain"** and then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Generative Agents: Interactive Simulacra of Human Behavior](https://arxiv.org/abs/2304.03442)** (paper). Its memory-stream plus "reflection" architecture (periodically synthesizing raw experiences into consolidated memories) is the seminal analogue of "dreaming."
+> - **[Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366)** (paper). Agents that improve by reflecting on past feedback in episodic memory, with no weight updates, the continual-learning idea behind self-improving agents.
+
 ## A few plain-language basics first
 
 This lesson is more about *design* than commands, so here are the terms in plain words:

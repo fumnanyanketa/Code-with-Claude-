@@ -14,6 +14,14 @@ When an agent produces an answer, the way it got there matters as much as the an
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build **PlanScript**, a tiny custom language that your own agent writes, runs, and rewrites in a loop. Everything before the Capstone teaches the ideas you will use there. If you want to see the finish line first, jump to the **Capstone Project** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Domain-Specific Languages (Martin Fowler)](https://martinfowler.com/books/dsl.html)** (essay). The canonical treatment of what a DSL is and why a narrow language is easier and safer to program with than a general one, the design rationale behind a plan-as-executable-program approach.
+> - **[Building Effective Agents (Anthropic)](https://www.anthropic.com/engineering/building-effective-agents)** (essay). Establishes the "use the simplest, most legible mechanism that works" principle behind choosing a DSL only when it is warranted.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI and software terms. Here they are in simple words, so nothing below is confusing:

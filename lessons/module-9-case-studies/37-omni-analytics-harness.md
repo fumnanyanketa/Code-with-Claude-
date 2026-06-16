@@ -14,6 +14,13 @@ A great agent is a model plus a great **harness** plus your **business context p
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build **Blobby Jr.**, a small data-answering agent with a context layer, an agentic loop, and trace-driven debugging. Everything before the Capstone is the growing-up story of Omni's real agent, Blobby, and the lessons from each phase. If you want the finish line first, jump to the **Capstone Project**, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Semantic layer](https://en.wikipedia.org/wiki/Semantic_layer)** (essay). The semantic layer, mapping business terminology onto raw data so non-experts (and now agents) get correct answers, is the literal heart of the lesson.
+
 ## A few plain-language basics first
 
 This lesson mixes AI and data terms. Here they are in plain words:

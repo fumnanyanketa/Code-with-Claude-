@@ -14,6 +14,13 @@ When a system makes decisions based on human judgment, the human's preferences w
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build **ScoutICP**, a self-improving evaluation assistant that learns a person's taste from their decisions and keeps its own criteria document up to date. Everything before the Capstone teaches the ideas you will use there.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[DSPy: Compiling Declarative LM Calls into Self-Improving Pipelines](https://arxiv.org/abs/2310.03714)** (paper). The seminal framework for systematically optimizing prompts and pipelines from data instead of hand-crafting them, the rigorous foundation of the "self-improving prompt" idea.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI terms. Here they are in simple words:

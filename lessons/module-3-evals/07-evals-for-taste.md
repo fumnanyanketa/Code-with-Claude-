@@ -14,6 +14,14 @@ An eval is a set of repeatable tests that turn vague feelings ("this output look
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build **SlideSmith**, a slide generation agent with its own scorecard, and then climb the quality ladder the same way the talk does. Everything before the Capstone teaches the skills you will use there. If you want to see the finish line first, jump to the **"Capstone Project: SlideSmith"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Your AI Product Needs Evals (Hamel Husain)](https://hamel.dev/blog/posts/evals/)** (essay). The canonical argument for evals as core infrastructure, covering the same hierarchy (code assertions, human/model judging, A/B) and LLM-as-judge calibration the lesson teaches.
+> - **[Define success criteria and build evaluations (Anthropic docs)](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests)** (docs). The official reference on choosing graders and the "reason before the score" technique central to the lesson.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI terms. Here they are in simple words, so nothing below is confusing:

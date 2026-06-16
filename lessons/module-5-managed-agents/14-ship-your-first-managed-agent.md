@@ -14,6 +14,14 @@ You can build a real, production-ready agent (here, one that wakes up at 3am to 
 
 > 🎯 **Where this lesson is heading.** It builds to a hands on **Capstone Project** where you build **NightShift**, an on-call incident-response agent that investigates a failing service and reports the root cause, so you never get woken at 3am again. Everything before the Capstone teaches the pieces you will snap together there. If you want to see the finish line first, jump to the **"Capstone Project: build NightShift"** section near the end, then come back.
 
+
+## First-principles companion
+
+> 💡 **The durable idea behind this lesson.** The talk this lesson is built on is recent, but the underlying concept is not. For the timeless, tool-agnostic version, independent of any single product or model:
+>
+> - **[Tool use with Claude (Anthropic docs)](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)** (docs). The tool-agnostic explanation of the function-calling / agentic loop (model decides, your app executes, result returns) that underpins any agent you build.
+> - **[Toolformer: Language Models Can Teach Themselves to Use Tools](https://arxiv.org/abs/2302.04761)** (paper). The seminal paper on why and how language models call external tools and APIs.
+
 ## A few plain-language basics first
 
 This lesson uses some everyday AI terms. Here they are in simple words:
