@@ -1,8 +1,8 @@
 # My progress: Building with Claude
 
-**North-star project:** CourseForge (an agent that turns any video or playlist into an interactive course). Build every capstone toward it.
+**North-star project:** AtlasOS (a self-improving operating system of cooperating AI agents that runs knowledge work end to end). Build every capstone toward it. See [`atlas/`](atlas/) for the company brief, architecture map, and lesson-to-component roadmap.
 
-**Daily ritual:** watch the talk, read the lesson, build the capstone (toward CourseForge), commit + log, tick the box.
+**Daily ritual:** watch the talk, read the lesson, build the capstone (as the AtlasOS component for that lesson), commit + log, tick the box.
 
 **Goal:** one lesson a day, about two hours.
 
@@ -73,7 +73,7 @@
 
 ## Daily log
 
-Add one entry per day. Keep it short: what you learned, what broke, what you shipped toward CourseForge.
+Add one entry per day. Keep it short: what you learned, what broke, what you shipped toward AtlasOS.
 
 | Day | Date | Lesson | What I learned / built | What broke |
 |----:|------|--------|------------------------|------------|
