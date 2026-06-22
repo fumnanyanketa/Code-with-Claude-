@@ -1,6 +1,29 @@
 # Repository STATUS — deep-dive audit
 
-*Audit date: 2026-06-22. Branch audited from: `claude/adoring-goldberg-ea136u`. This file reports only what is actually in the files, not what branch names or commit messages claim.*
+*Audit date: 2026-06-22 (refreshed). Branch audited from: `claude/adoring-goldberg-ea136u`. This file reports only what is actually in the files, not what branch names or commit messages claim.*
+
+> **Refresh note (what the first pass under-stated):** the earlier version of this file
+> asserted the branch facts without showing an *authoritative server-side* branch count, and
+> it predated its own STATUS.md commit. This pass fixes both: branch count is now taken from
+> `git ls-remote --heads origin` (the server, not the local clone), the orphan/shared-history
+> question is answered explicitly, and the branch table reflects that `adoring-goldberg` is now
+> exactly **1 commit ahead** of `youtube` — and that single commit is *this STATUS.md and nothing
+> else*. No substantive findings changed; all were independently re-verified.
+
+---
+
+## 0. Diagnostic — authoritative branch count
+
+Queried the server directly, not the local clone:
+
+```
+git ls-remote --heads origin   →  2 branches (AUTHORITATIVE)
+git branch -r (locally visible) →  2 branches
+```
+
+- **Server is the source of truth: there are exactly 2 branches.** Local clone matches (2 = 2); nothing hidden.
+- **Both branches share history** (merge-base = `ebb25d5`). **Neither is an orphan.** `youtube` (40 commits) is a strict ancestor of `adoring` (41 commits).
+- This is **one project on two branches**, not two separate projects.
 
 ---
 
@@ -18,18 +41,19 @@ The content/archive is genuinely done. The "build a platform as you learn" half 
 
 ## 1. Branch-by-branch
 
-There is **no `main` / default branch** in this repo. Only two branches exist, and **they point to the exact same commit** (`ebb25d5`), so there is no divergence and no stranded work *between* them — the entire history is one linear line living on feature branches.
+**2 branches, both confirmed against the server. No `main` / default branch exists.** They share history (not orphans); the only difference between them is this STATUS.md.
 
-| Branch | Last commit | Ahead/behind | What's actually inside | Flag |
-|---|---|---|---|---|
-| `claude/youtube-playlist-transcripts-qkwwis` | 2026-06-16 (`ebb25d5`) | identical to the other branch (0/0) | The full repo: transcripts, course, HTML, AtlasOS scaffold. **This is the branch the GitHub Pages workflow deploys from** (`.github/workflows/pages.yml` triggers only on push to this branch). | Active / canonical |
-| `claude/adoring-goldberg-ea136u` | 2026-06-16 (`ebb25d5`) | identical (0/0) | Byte-for-byte the same tree as the branch above. No unique commits, no unique files. | Redundant duplicate |
+| Branch | Last commit | vs `youtube` (de-facto base) | Commits | What's actually inside | Flag |
+|---|---|---|---|---|---|
+| `claude/youtube-playlist-transcripts-qkwwis` | 2026-06-16 (`ebb25d5`) | base | 40 | The full repo: transcripts, course, HTML, AtlasOS scaffold. **This is the branch the GitHub Pages workflow deploys from** (`.github/workflows/pages.yml` triggers only on push to this branch). | Active / canonical |
+| `claude/adoring-goldberg-ea136u` | 2026-06-22 (`b7fc021`) | +1 / −0 | 41 | Identical tree to `youtube` **plus this STATUS.md** (the only added file, 109 lines). No other unique content. | Audit branch (otherwise a duplicate) |
 
 **Findings:**
-- **No unmerged or stranded work** — both branches are the same commit. Nothing is lost.
-- **`adoring-goldberg-ea136u` is a redundant pointer.** It carries nothing the youtube branch doesn't. (This audit adds STATUS.md to it.)
-- **Stale:** last real work was 2026-06-16 — ~6 days before this audit. Not abandoned, but idle.
-- **Deploy mismatch risk:** the Pages workflow only republishes on pushes to `claude/youtube-playlist-transcripts-qkwwis`. Work landing on any other branch (including this one) will **not** trigger a site rebuild.
+- **No unmerged or stranded work** anywhere. `youtube` is a strict ancestor of `adoring`; the lone extra commit is the audit file itself.
+- **Without STATUS.md the two branches are byte-for-byte identical.** `adoring-goldberg` exists only as a duplicate pointer (now carrying this report).
+- **Stale content:** the last *real* work (everything except STATUS.md) is 2026-06-16 — ~6 days before this audit. Not abandoned, but idle.
+- **Deploy mismatch risk:** the Pages workflow only republishes on pushes to `claude/youtube-playlist-transcripts-qkwwis`. Work landing on any other branch (including this audit branch) will **not** trigger a site rebuild.
+- **No orphan branches, no hidden branches, no second project.** What you see is the whole repo.
 
 ---
 
