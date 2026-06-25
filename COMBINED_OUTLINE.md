@@ -68,12 +68,18 @@ silently dropped; the overlaps are what collapse.
   an optional "applied gallery."
 - **Extra clouds** (Claude M7) → teach one provider in Unit 9; the other two are reference.
 
-## Two compression levels to choose from
+## Decisions (locked 2026-06-16)
 
-- **Aggressive (recommended): 11 units.** The table above. ~3 weeks core.
-- **Medium: ~14 units.** Keep Model levers (3) folded into Prompting (2); but split
-  Reliability back into Evals / Observability / Production as three units, and keep Cloud as
-  its own unit. ~4–5 weeks. Less collapse, gentler jumps between topics.
+- **Lean ~11-unit core**, per the spine table above. ~3 weeks core.
+- **Preservation rule: nothing is deleted.** Anything that does not sit on the spine becomes
+  a clearly labeled **appendix or reference page**, not a cut. Important and necessary
+  material is always reachable; it just moves off the required path.
+- **Leadership (Claude M8) and case studies (Claude M9) → optional appendices.** Valuable
+  context, but not core build skills, so they do not lengthen the required path. One case
+  study is promoted to the capstone vertical in Unit 10 (chosen when we get there).
+- **Sourcing:** the Agentic Engineering course is published publicly at
+  `fumnanyanketa.github.io/agentic-engineering`, so its content is pulled from the live site;
+  no repo-scope change is required to merge.
 
 ---
 
