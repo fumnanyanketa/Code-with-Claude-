@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 3 · Lesson 14: Gates, hooks, and handoff protocols | Claude Certified Architect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>Claude Certified Architect</b> &middot; a self-paced course</div>
+  <div class="right"><span>Built from Andrew Brown&#x27;s CCA-F course (ExamPro)</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 3 · Lesson 14</span>
+      <h1>Gates, hooks, and handoff <span class="accent">protocols</span></h1>
+      <p class="lead">When a prompt alone cannot be trusted to make an agent do the right thing in the right order, you enforce it in code — with gates that block an action until its prerequisites are met, hooks that fire logic before and after every tool call, and a structured handoff protocol that hands a stuck situation to a human with everything they need.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Andrew Brown</b></span>
+        <span class="chip">&#9201; <b>45 to 60 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-why-a-prompt-is-not-enforcement">Part 1: Why a prompt is not enforcement</a></li>
+<li><a href="#part-2-the-prerequisite-gate">Part 2: The prerequisite gate</a></li>
+<li><a href="#part-3-hooks-where-gate-logic-belongs">Part 3: Hooks — where gate logic belongs</a><ul>
+<li><a href="#the-refactor-that-makes-it-clean-hold-each-rule-in-a-lambda">The refactor that makes it clean: hold each rule in a lambda</a></li>
+</ul>
+</li>
+<li><a href="#part-4-the-handoff-protocol-quitting-well">Part 4: The handoff protocol — quitting well</a></li>
+<li><a href="#part-5-the-sdk-native-hooks-why-you-usually-shouldnt-roll-your-own">Part 5: The SDK-native hooks (why you usually shouldn't roll your own)</a></li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: A pre-tool gate and human handoff for Atlas Support</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-break-it-with-a-prompt-fix-it-with-a-gate-foundational">Exercise 1: Break it with a prompt, fix it with a gate (foundational)</a></li>
+<li><a href="#exercise-2-rules-as-lambdas-intermediate">Exercise 2: Rules as lambdas (intermediate)</a></li>
+<li><a href="#exercise-3-native-per-tool-hooks-advanced">Exercise 3: Native per-tool hooks (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>When a prompt alone cannot be trusted to make an agent do the right thing in the right order, you enforce it in code — with <strong>gates</strong> that block an action until its prerequisites are met, <strong>hooks</strong> that fire logic before and after every tool call, and a structured <strong>handoff protocol</strong> that hands a stuck situation to a human with everything they need.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone
+Project</strong> where you add a pre-tool <em>gate</em> and a structured <em>human handoff</em> to
+<strong>Atlas Support</strong>, the multi-agent system this course builds end to end. That
+handoff is not throwaway practice — it is the exact piece the Module 7 capstone
+(a support agent that escalates to a human) will stand on. Everything before
+the Capstone teaches the skills you will use there. If you want to see the
+finish line first, jump to the <strong>"Capstone Project"</strong> section, then come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> SDKs get renamed and hook APIs
+change, but the concept underneath is decades old. A gate is a <em>precondition</em>
+and a post-tool check is a <em>postcondition</em> — the timeless account is:</p>
+<ul>
+<li><strong><a href="https://www.eiffel.com/values/design-by-contract/introduction/">Design by Contract</a></strong>
+  (Bertrand Meyer, <em>Object-Oriented Software Construction</em>). A routine may run
+  only if its <strong>precondition</strong> holds, and it promises a <strong>postcondition</strong> when
+  it finishes. Swap "routine" for "tool call" and you have exactly the gate-and-hook
+  model in this lesson: enforce the contract in code, not in a hopeful comment.</li>
+</ul>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some terms that show up throughout. Here they are in plain words:</p>
+<ul>
+<li><strong>Agent:</strong> an AI that takes a <em>series</em> of actions on its own toward a goal, rather than answering in one shot.</li>
+<li><strong>Agentic loop:</strong> the repeating cycle an agent runs — gather context, take action, verify — until the task is done.</li>
+<li><strong>Tool / tool call / tool result:</strong> a function the model can choose to run; when it decides to use one that is a <em>tool call</em>, and what comes back is the <em>tool result</em>.</li>
+<li><strong>Coordinator (hub-and-spoke):</strong> an architecture where one <em>coordinator</em> agent owns routing and delegates to <em>sub-agents</em> ("spokes") exposed to it as tools. This is the shape Atlas Support already has from earlier lessons.</li>
+<li><strong>Sub-agent:</strong> an agent spawned by another agent, usually with its own isolated context (here: a <em>research</em> agent and a <em>synthesis</em> agent).</li>
+<li><strong>Gate:</strong> a check that blocks an action until its prerequisites are met. "Don't let this run until that is done."</li>
+<li><strong>Hook:</strong> a function that fires <em>automatically</em> before or after a tool call — the place you put a gate's logic so it runs every time, without you remembering to call it.</li>
+<li><strong>Handoff protocol:</strong> a structured package an agent assembles before escalating a problem to a human, so the human has everything they need without digging through the chat.</li>
+<li><strong>Anthropic SDK vs Claude Agent SDK:</strong> the <em>Anthropic SDK</em> is the lower-level library for calling the model API directly; the <em>Claude Agent SDK</em> is the higher-level library for building agents, and it has hooks built in. The Python Agent SDK sometimes lags the TypeScript one.</li>
+<li><strong>Lambda:</strong> a tiny, unnamed function you can pass around like a value. Andrew uses these to hold each gate's rule so the loop stays clean.</li>
+</ul>
+<p>You do not need to memorize these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>You have spent the last few lessons making a coordinator delegate work to sub-agents — including running them in parallel. But delegation only helps if the sub-agents run in the <em>right order</em> and only when they <em>should</em>. You might write in the prompt, "always research before synthesizing, and never call synthesis before research has completed." Will the agent obey? As Andrew warns, it might not: "when Claude has long conversations or unusual inputs or it's just having an off day, it will just not listen and will do something else." A prompt is guidance, not a guarantee. This lesson is where your architecture grows a spine — you stop <em>hoping</em> and start <em>enforcing</em>, and you give the agent a dignified way to quit and call a human when it truly cannot proceed.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>Explain why prompt guidance alone cannot guarantee ordering or prerequisites, and when to reach for code enforcement instead.</li>
+<li>Write a <strong>prerequisite gate</strong> that makes an out-of-order or unauthorized tool call structurally impossible.</li>
+<li>Attach <strong>pre-tool and post-tool hooks</strong> so a gate's logic fires automatically around every tool call.</li>
+<li>Contrast a <strong>roll-your-own</strong> hook system with the <strong>Agent SDK's native</strong> pre/post tool-use hooks, and say why the native one is cleaner and how per-tool matching works.</li>
+<li>Assemble a <strong>structured handoff package</strong> that escalates to a human with full context.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Module 3 · Lesson 13 "Running agents in parallel"</strong> and the earlier coordinator lessons — you need a working hub-and-spoke Atlas Support with at least a couple of sub-agent tools to gate.</li>
+<li>Comfort with the coordinator's agentic loop: reading <code>stop_reason</code>, seeing a <code>tool_use</code>, running the tool, feeding the result back. Gates and hooks slot <em>into</em> that loop.</li>
+<li>A little Python. The examples are short; every term is defined.</li>
+</ul>
+<hr />
+<h2 id="part-1-why-a-prompt-is-not-enforcement">Part 1: Why a prompt is not enforcement</h2>
+<p>Here is the situation Andrew sets up. Your coordinator is about to route work. You want a hard rule: <strong>research must finish before synthesis runs.</strong> The natural move is to write it into the prompt:</p>
+<blockquote>
+<p>"Always research before synthesizing, and never call the synthesis agent before the research agent has completed."</p>
+</blockquote>
+<p>Then you sit back and ask, in Andrew's words, "Okay, well, I wrote that in there. Is it going to do that?" The honest answer is: maybe. The model treats your instruction as strong <em>guidance</em>, but under long conversations, weird inputs, or just an "off day," it can quietly ignore it and do something else. For a demo that is annoying; for a support agent that issues refunds, it is a real hazard.</p>
+<p>So the question becomes: "How can we get enforcement through some programming stuff?" The answer is to stop relying on the model's goodwill and add a <strong>prerequisite gate</strong> — something that "has to happen or has to be met before it can proceed forward," and which "makes it structurally impossible for them to skip."</p>
+<blockquote>
+<p>🔑 <strong>A prompt is a request; a gate is a rule. Anything that must never happen out of order has to be enforced in code, not asked for in the prompt.</strong></p>
+</blockquote>
+<h2 id="part-2-the-prerequisite-gate">Part 2: The prerequisite gate</h2>
+<p>The simplest gate lives right inside your routing logic. Imagine the coordinator's <code>route</code> function deciding who to delegate to. You add a check: if we are about to run synthesis but research has not happened yet, don't — send it to research first.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Illustrative reconstruction — a gate baked into the route function.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">route</span><span class="p">(</span><span class="n">context</span><span class="p">):</span>
+    <span class="c1"># GATE: synthesis has a prerequisite — research must be done first.</span>
+    <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">wants</span><span class="p">(</span><span class="s2">&quot;synthesis&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">context</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;research&quot;</span><span class="p">):</span>
+        <span class="c1"># &quot;Hey, you didn&#39;t do this first&quot; — force research instead.</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="p">(</span><span class="s2">&quot;research&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">delegate</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">next_step</span><span class="p">())</span>
+</code></pre></div>
+
+<p>That is a real gate: the coordinator <em>cannot</em> reach synthesis with empty research, no matter what the model "decided," because the code reroutes it. As Andrew puts it, "you must go run the synthesis agent down here... we are enforcing it that way."</p>
+<p>This works, but notice the smell: the enforcement is tangled into the routing. Every new rule means another <code>if</code> in the middle of <code>route</code>. There is a cleaner home for this logic.</p>
+<blockquote>
+<p>💡 <strong>A gate is just a precondition check.</strong> "The prerequisite gate is: don't let
+this run until it is done." Same idea as <code>assert research_done</code> before you are
+allowed into the synthesis step.</p>
+</blockquote>
+<h2 id="part-3-hooks-where-gate-logic-belongs">Part 3: Hooks — where gate logic belongs</h2>
+<p>A <strong>hook</strong> is "a function that fires automatically before or after a tool call, which is where you put your logic gate." Instead of scattering <code>if</code>s through <code>route</code>, you register two functions on the loop:</p>
+<ul>
+<li>a <strong>pre-tool hook</strong> that runs <em>just before</em> any tool call, and</li>
+<li>a <strong>post-tool hook</strong> that runs <em>just after</em> it returns.</li>
+</ul>
+<p>Now the gate lives in the pre-tool hook: "before you do <code>delegate_synthesis</code>, if your context is research-not-done, block it." The routing code goes back to being about routing; the <em>rules</em> live in hooks that fire on their own.</p>
+<div class="codehilite"><pre><span></span><code>        coordinator wants to call a tool
+                     │
+             ┌───────▼────────┐
+             │  PRE-TOOL HOOK │  ← gate runs here; may BLOCK the call
+             └───────┬────────┘
+                     │ (allowed)
+                run the tool
+                     │
+             ┌───────▼────────┐
+             │ POST-TOOL HOOK │  ← check/clean up the result here
+             └───────┬────────┘
+                     │
+              feed tool_result back
+</code></pre></div>
+
+<p>When Andrew asked Claude to build this from scratch (the "roll-your-own" version), it produced a <code>gate.py</code> with an <code>EnforcementGate</code> object you attach pre- and post-hooks to, plus "four built-in factories" of ready-made rules — things like a <strong>max-hook-calls</strong> limit and a <strong>no-duplicate-arguments</strong> check. When a pre-hook decides a call is illegal, it raises an error and the call never happens. Andrew liked the shape: "It creates a gate, then we can add a hook and a pre-hook. That's kind of cool."</p>
+<h3 id="the-refactor-that-makes-it-clean-hold-each-rule-in-a-lambda">The refactor that makes it clean: hold each rule in a lambda</h3>
+<p>The first draft buried each rule inside <code>if/else</code> branches in the loop. Andrew pushed back — that "doesn't really seem like a hook architecture." The fix is to store each rule as a <strong>lambda</strong> (a tiny unnamed function passed around like a value; Andrew jokingly calls it a "llama" or "proc"). The loop then just <em>fires</em> whatever rules are registered, rather than hard-coding them:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Illustrative reconstruction — rules as lambdas, fired by the gate.</span>
+<span class="n">gate</span> <span class="o">=</span> <span class="n">EnforcementGate</span><span class="p">()</span>
+
+<span class="c1"># Register a rule as a small function (a &quot;lambda&quot;): synthesis needs research.</span>
+<span class="n">gate</span><span class="o">.</span><span class="n">add_pre_hook</span><span class="p">(</span>
+    <span class="s2">&quot;delegate_synthesis&quot;</span><span class="p">,</span>
+    <span class="k">lambda</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">ctx</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;research&quot;</span><span class="p">)</span>   <span class="c1"># returns False -&gt; the call is blocked</span>
+<span class="p">)</span>
+
+<span class="c1"># The loop stays dumb: it just asks the gate to run whatever is registered.</span>
+<span class="c1"># &quot;The gates fire pre-hooks and they block, then they fire post-hooks, all internally.&quot;</span>
+</code></pre></div>
+
+<p>Now, as Andrew describes the redesign, "the gates fire pre-hooks and they block, and then they fire post-hooks all internally." The loop no longer knows the rules; it just calls <code>gate.check_pre(...)</code> and <code>gate.check_post(...)</code>. Adding a rule is one more <code>add_pre_hook</code>, not surgery on the loop.</p>
+<blockquote>
+<p>🔑 <strong>Put rules in hooks, not in the loop. A hook fires every time automatically,
+so a rule you register once can never be forgotten — and holding each rule in a
+lambda keeps the loop clean and the rules easy to add.</strong></p>
+<p>💡 <strong>Andrew's honest aside:</strong> he built this in the Python Anthropic SDK and was
+not thrilled with how it read — "I don't really like this in Python... this
+would be a lot better in TypeScript." That is a real judgment worth absorbing:
+rolling your own hook system is fiddly. Which is exactly why Part 5 exists.</p>
+</blockquote>
+<h2 id="part-4-the-handoff-protocol-quitting-well">Part 4: The handoff protocol — quitting well</h2>
+<p>Some situations an agent simply should not resolve alone: a refund above a threshold, a suspected-fraud flag, an ambiguous account. The mature move is to <strong>escalate to a human</strong> — but escalate <em>well</em>.</p>
+<p>Andrew's definition is the whole idea: "A handoff protocol is a structured package that the agent assembles before escalating. It ensures whoever receives the escalation has everything they need without having to dig through conversation history."</p>
+<p>That last clause is the point. A bad handoff is "customer is upset, please help" — now a human has to reread the entire transcript. A good handoff is a <strong>structured package</strong>: the agent synthesizes the conversation into fields a human can act on immediately.</p>
+<div class="codehilite"><pre><span></span><code>HANDOFF PACKAGE  (what the agent assembles before escalating)
+-------------------------------------------------------------
+customer_id .......... who this is
+issue_summary ........ one-paragraph plain statement of the problem
+steps_taken .......... tools the agent already ran (lookup_order, attempt_refund, ...)
+current_state ........ e.g. &quot;fraud flag set; refund blocked pending review&quot;
+why_escalating ....... the rule that tripped (amount over limit / fraud / ambiguity)
+requested_action ..... exactly what the human needs to decide or do
+raw_context .......... link/pointer to full transcript, if they want it
+</code></pre></div>
+
+<p>In the build, the coordinator has support tools — <code>lookup_order</code>, <code>attempt_refund</code>, <code>clear_fraud_flag</code>, <code>simulate_backend</code>. When the loop hits a case it must not handle, it calls a <code>build_handoff</code> step: the agent is asked "to synthesize a structured handoff package for the conversation," and then it <strong>escalates</strong> — stages that package for a person. On screen, "it attempts it and then it has to escalate to the customer." The agent did not fail silently or guess; it packaged the problem and handed it up.</p>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> decide your escalation <em>triggers</em> explicitly (amount
+over X, fraud flag, low confidence), and for each one have the agent emit the
+full structured package — never a bare "help." The human should be able to act
+from the package alone.</p>
+</blockquote>
+<h2 id="part-5-the-sdk-native-hooks-why-you-usually-shouldnt-roll-your-own">Part 5: The SDK-native hooks (why you usually shouldn't roll your own)</h2>
+<p>Here is the payoff, and it comes with a build-and-verify lesson attached.</p>
+<p>The <strong>Claude Agent SDK</strong> has pre-tool-use and post-tool-use hooks built in. You register them on the agent, "so that you can go and intersect them" around your tools. No <code>gate.py</code>, no factories, no lambda plumbing — the machinery you hand-built in Part 3 is already there.</p>
+<p>Two things make the native version better than roll-your-own:</p>
+<ul>
+<li><strong>Per-tool matching.</strong> The default matches on <em>all</em> tools, but "if you wanted to, you could tell it to match on a very specific tool." So you can set "exactly what the pre and post tool hook is for each individual allowed tool" — a fraud check only around <code>attempt_refund</code>, say, instead of one big handler branching on tool name.</li>
+<li><strong>It is just cleaner.</strong> After wiring it up, Andrew's verdict on the roll-your-own version: "we created like this whole hook system and it was so complicated. But why not just use this because it's right here." The native hooks are "obviously better than rolling your own if you're using the Agent SDK."</li>
+</ul>
+<p>Now the judgment lesson — the recurring theme of this whole course. When Andrew first asked, the Python SDK reported it "does not have built-in pre-post hooks," and even he second-guessed himself: "I don't know why I thought there was pre-post hooks." He pushed back — "Are these not part of the SDK? Is this another limitation of the Python SDK?" — and on re-checking, the truth surfaced: <strong>pre and post hooks <em>are</em> built into the Agent SDK; they are just not the same thing as the Claude Code CLI's hooks feature.</strong> The first answer was wrong. Only by challenging it and verifying did the real picture appear.</p>
+<blockquote>
+<p>🔑 <strong>If you are on the Claude Agent SDK, use its native pre/post tool-use hooks
+and per-tool matching — do not hand-roll a gate system. But confirm what the SDK
+actually supports by running it: the first answer you get (from the AI, the docs,
+or your own memory) may be wrong.</strong></p>
+<p>💡 <strong>Don't confuse the two "hooks."</strong> Claude Code (the CLI) has its own hooks
+feature; the Agent SDK has <em>tool-use</em> hooks for agents you build. Same word,
+different mechanism. The confusion above came from exactly this overlap.</p>
+</blockquote>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>A prompt is guidance, not enforcement.</strong> Under long context or an "off day," the model can ignore ordering rules. Anything that must never happen out of order goes in code.</li>
+<li><strong>A gate blocks until prerequisites are met</strong> — "don't let this run until it is done" — making a skipped step structurally impossible.</li>
+<li><strong>Hooks are where gate logic belongs:</strong> a pre-tool hook (runs before, can block) and a post-tool hook (runs after). Register rules as lambdas so the loop stays clean.</li>
+<li><strong>The handoff protocol is a structured package</strong>, not a plea. It gives a human summary, steps taken, current state, escalation reason, and requested action — no transcript-digging required.</li>
+<li><strong>Prefer the Agent SDK's native pre/post tool-use hooks</strong> over rolling your own; they support per-tool matching and are far cleaner. Verify what the SDK really supports by running it — the first answer can be wrong.</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Writing the rule only in the prompt.</strong> "Always research first" is a wish. If skipping it can cause harm, gate it in code.</li>
+<li>❌ <strong>Burying gate logic in the routing <code>if/else</code>.</strong> It tangles routing with rules and is easy to forget on the next tool. Move it into hooks; hold each rule in a lambda.</li>
+<li>❌ <strong>Rolling your own hook system when the SDK already has one.</strong> You will rebuild <code>gate.py</code> and factories that ship for free. Use native hooks if you are on the Agent SDK.</li>
+<li>❌ <strong>A vague escalation.</strong> "Customer is upset, please help" forces the human to reread everything. Emit the full structured package instead.</li>
+<li>❌ <strong>Trusting the first answer about SDK support.</strong> The Python SDK first "said" no built-in hooks; it was wrong. Push back and run it.</li>
+<li>❌ <strong>Confusing Claude Code CLI hooks with Agent SDK tool-use hooks.</strong> Same word, different feature — pick the one that matches what you are building.</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: A pre-tool gate and human handoff for Atlas Support</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. You will make Atlas Support
+<em>refuse</em> to do a dangerous thing without a prerequisite, and <em>escalate well</em>
+when it must stop — the two habits that separate a toy agent from one you would
+let near a real customer. Keep it small: one gate, one handoff.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>Two guardrails bolted onto the Atlas Support coordinator you already have:</p>
+<ul>
+<li><strong>A pre-tool gate</strong> on the <code>attempt_refund</code> tool: the refund may not run unless a prerequisite is met (the order was looked up <em>and</em> no fraud flag is set). If the prerequisite fails, the pre-tool hook blocks the call.</li>
+<li><strong>A structured human handoff:</strong> when a case trips an escalation trigger (refund over a threshold, or a fraud flag), the agent assembles a structured handoff package and escalates to a human instead of acting.</li>
+</ul>
+<p>Each piece maps to a lesson idea:</p>
+<ul>
+<li>Gate → Part 2 (prerequisite gate) fired from a Part 3 pre-tool hook.</li>
+<li>Handoff package → Part 4 (the structured escalation).</li>
+<li>Optional native rewrite → Part 5 (Agent SDK pre/post tool-use hooks).</li>
+</ul>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in Atlas Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prompt is not enforcement (Part 1)</td>
+<td>You <em>stop trusting</em> the prompt for the refund rule and gate it</td>
+</tr>
+<tr>
+<td>Prerequisite gate (Part 2)</td>
+<td><code>attempt_refund</code> blocked until order-looked-up + no-fraud</td>
+</tr>
+<tr>
+<td>Pre/post hooks + lambdas (Part 3)</td>
+<td>The gate fires from a registered pre-tool hook, rule held in a lambda</td>
+</tr>
+<tr>
+<td>Handoff protocol (Part 4)</td>
+<td>A structured package the agent emits before escalating</td>
+</tr>
+<tr>
+<td>Native SDK hooks + per-tool match (Part 5)</td>
+<td>Optional: rewrite the gate as an Agent SDK pre-tool hook matched to <code>attempt_refund</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Add a pre-tool hook that logs.</strong> Before any tool call in the coordinator loop, print the tool name and arguments. Smallest working version: it just prints — you have proven the hook fires.</li>
+<li><strong>Turn it into a gate on <code>attempt_refund</code>.</strong> In the pre-tool hook, if the tool is <code>attempt_refund</code> and the prerequisite is unmet (no prior <code>lookup_order</code>, or a fraud flag is set), <em>block</em> the call and return a clear reason. Verify by trying to refund before looking up an order — it must be refused.</li>
+<li><strong>Hold the rule in a lambda.</strong> Move the prerequisite check into a lambda registered against <code>attempt_refund</code>, so the loop just fires registered rules. Adding a second rule should be one more registration, not a new <code>if</code> in the loop.</li>
+<li><strong>Define your escalation triggers.</strong> Pick two: refund amount over a threshold, and fraud flag set. Decide, in code, that these must escalate rather than act.</li>
+<li><strong>Build the handoff package.</strong> When a trigger fires, have the agent synthesize a structured package (customer_id, issue_summary, steps_taken, current_state, why_escalating, requested_action) and stage it for a human. Verify the loop escalates instead of calling <code>attempt_refund</code>.</li>
+<li><strong>Prove both paths.</strong> Run one clean case that passes the gate and refunds, and one case that trips a trigger and produces a handoff package. Confirm the human-readable package is complete enough to act on without the transcript.</li>
+<li><strong>Stretch goals.</strong> Rewrite the gate as an <strong>Agent SDK native pre-tool hook</strong> matched specifically to <code>attempt_refund</code> (Part 5), and add a <strong>post-tool hook</strong> that records every completed tool call to an audit log. Compare the native version's cleanliness to your roll-your-own.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ Calling <code>attempt_refund</code> before <code>lookup_order</code>, or with a fraud flag set, is <strong>blocked by the pre-tool hook</strong> — not merely discouraged in the prompt.</li>
+<li>✅ The prerequisite rule lives in a registered lambda/hook, not inline in the loop; adding a rule does not touch the loop body.</li>
+<li>✅ A triggering case produces a <strong>structured handoff package</strong> with all required fields and escalates to a human instead of acting.</li>
+<li>✅ A human could act on the package alone, without reading the conversation.</li>
+<li>✅ (Stretch) The gate also runs as an Agent SDK native pre-tool hook matched only to <code>attempt_refund</code>.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> a gate only counts if you <em>watched it block</em> a bad
+call, and a handoff only counts if a teammate (or future you) could act from the
+package without opening the transcript. Run both paths; don't just read the code.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice
+on one idea. Optional and independent; the Capstone already touches all of
+them, so feel free to skip straight to it.</p>
+</blockquote>
+<h3 id="exercise-1-break-it-with-a-prompt-fix-it-with-a-gate-foundational">Exercise 1: Break it with a prompt, fix it with a gate (foundational)</h3>
+<p>Tell your coordinator in the prompt "never refund before looking up the order," then deliberately prompt it into refunding first until it slips. Now add the pre-tool gate and watch the same attempt get blocked. Feel the difference between asking and enforcing.</p>
+<h3 id="exercise-2-rules-as-lambdas-intermediate">Exercise 2: Rules as lambdas (intermediate)</h3>
+<p>Refactor a gate written as inline <code>if/else</code> into a lambda registered on the gate. Then add a <em>second</em> rule (e.g., block <code>clear_fraud_flag</code> unless a manager_id is present) purely by registering another lambda — with zero changes to the loop body.</p>
+<h3 id="exercise-3-native-per-tool-hooks-advanced">Exercise 3: Native per-tool hooks (advanced)</h3>
+<p>Using the Agent SDK, attach a pre-tool hook matched to <em>only</em> <code>attempt_refund</code> and a post-tool hook matched to <em>all</em> tools. Verify (by running it) that the refund hook does not fire for other tools. Note where the SDK's real behavior differed from your first assumption.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>GATES, HOOKS &amp; HANDOFF — enforcing agent behavior in code
+---------------------------------------------------------
+WHY            A prompt is guidance, not a guarantee. Under long context /
+               odd inputs / &quot;an off day,&quot; the model may ignore ordering rules.
+               Enforce the must-nots in CODE.
+
+GATE           A prerequisite check that BLOCKS an action until met.
+               &quot;Don&#39;t let this run until that is done.&quot;  (= a precondition)
+
+HOOK           A function that fires AUTOMATICALLY around a tool call:
+                 pre-tool  -&gt; runs BEFORE; can BLOCK the call  &lt;- put the gate here
+                 post-tool -&gt; runs AFTER;  check / clean up / audit
+               Hold each rule in a LAMBDA; the loop just fires registered rules.
+
+ROLL-YOUR-OWN  gate.py + EnforcementGate + factories (max-calls, no-dupe-args).
+               Works, but fiddly (&quot;complicated,&quot; nicer in TypeScript).
+
+SDK-NATIVE     Claude Agent SDK has pre/post TOOL-USE hooks built in.
+  (preferred)  - PER-TOOL MATCHING: match all tools, or one specific tool.
+               - Cleaner: &quot;why not just use this, it&#39;s right here.&quot;
+               - NOT the same as Claude Code CLI hooks. Verify by RUNNING it.
+
+HANDOFF        Structured package the agent assembles BEFORE escalating,
+  PROTOCOL     so a human needs no transcript-digging:
+                 customer_id · issue_summary · steps_taken · current_state
+                 · why_escalating · requested_action
+               Triggers: amount over limit / fraud flag / low confidence.
+
+RULE OF THUMB  Must-never-happen -&gt; gate it. Cannot-resolve -&gt; hand it off.
+               On the Agent SDK -&gt; native hooks, not your own.
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>Earlier, Module 3 · Lesson 13 "Running agents in parallel":</strong> you made the coordinator delegate to (and fan out across) sub-agents. This lesson adds the guardrails that keep those delegations in order and safe.</li>
+<li><strong>Next, Module 3 · "Prompt chaining vs adaptive decomposition":</strong> you will choose between a fixed sequential pipeline and a plan that adapts to intermediate findings — orchestration shapes that these same gates and hooks keep honest.</li>
+<li><strong>Later, Module 7 (capstone):</strong> the <strong>support agent that escalates to a human</strong> is built directly on the handoff package you assemble here. What you write in this lesson's capstone is the seed of that final build — Atlas Support learns to know its limits and call for help.</li>
+</ul>
+<hr />
+<p><em>Source: reconstructed from the "Claude Certified Architect: Foundations" course by Andrew Brown (ExamPro). Code snippets and diagrams are illustrative reconstructions of the patterns described in the course; adapt them to the current SDK.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="13-parallel-agents.html"><span class="dir">&#8592; Previous</span><b>Running agents in parallel</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="15-chaining-vs-adaptive.html"><span class="dir">Next &#8594;</span><b>Prompt chaining vs adaptive decomposition</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <span class="fnote">A self-paced study course reconstructed from Andrew Brown&#x27;s Claude Certified Architect: Foundations course (ExamPro). Code snippets are illustrative reconstructions of the patterns shown; adapt them to the current SDK and the official exam guide. Not affiliated with or endorsed by Anthropic or ExamPro.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>

@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 4 · Lesson 16: MCP — discovery, resources, and building a server | Claude Certified Architect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>Claude Certified Architect</b> &middot; a self-paced course</div>
+  <div class="right"><span>Built from Andrew Brown&#x27;s CCA-F course (ExamPro)</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 4 · Lesson 16</span>
+      <h1>MCP — discovery, resources, and building a <span class="accent">server</span></h1>
+      <p class="lead">MCP is the open standard Anthropic created for plugging external tools and data into an agent: you point your agent at one or more MCP servers, their capabilities are discovered at connect time into a single flat tool list, and each server can expose three kinds of thing — tools (actions), resources (read-only data mapped to a schema), and prompts (templates almost nobody uses) — a distinction the exam loves to test.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Andrew Brown</b></span>
+        <span class="chip">&#9201; <b>45 to 60 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-what-mcp-is-and-why-anthropic-cares-so-much">Part 1: What MCP is, and why Anthropic cares so much</a></li>
+<li><a href="#part-2-mcp-discovery-many-servers-one-flat-tool-list">Part 2: MCP discovery — many servers, one flat tool list</a><ul>
+<li><a href="#the-consideration-the-exam-is-fishing-for">The consideration the exam is fishing for</a></li>
+</ul>
+</li>
+<li><a href="#part-3-the-three-primitives-tools-resources-prompts">Part 3: The three primitives — tools, resources, prompts</a><ul>
+<li><a href="#the-honest-nuance-andrew-hits-live">The honest nuance Andrew hits live</a></li>
+</ul>
+</li>
+<li><a href="#part-4-building-a-custom-mcp-server-the-todo-server">Part 4: Building a custom MCP server (the todo server)</a><ul>
+<li><a href="#the-build-and-verify-lesson-baked-into-this-lab">The build-and-verify lesson baked into this lab</a></li>
+<li><a href="#illustrative-shape-of-the-server">Illustrative shape of the server</a></li>
+<li><a href="#watching-it-run">Watching it run</a></li>
+</ul>
+</li>
+<li><a href="#part-5-how-the-pieces-stack">Part 5: How the pieces stack</a></li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: An MCP server that gives Atlas Support a tool and a resource</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-sort-the-capabilities-foundational">Exercise 1: Sort the capabilities (foundational)</a></li>
+<li><a href="#exercise-2-two-servers-one-flat-list-intermediate">Exercise 2: Two servers, one flat list (intermediate)</a></li>
+<li><a href="#exercise-3-break-and-defend-the-contract-advanced">Exercise 3: Break and defend the contract (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>MCP is the open standard Anthropic created for plugging external tools and data into an agent: you point your agent at one or more MCP servers, their capabilities are <em>discovered</em> at connect time into a single flat tool list, and each server can expose three kinds of thing — <strong>tools</strong> (actions), <strong>resources</strong> (read-only data mapped to a schema), and <strong>prompts</strong> (templates almost nobody uses) — a distinction the exam loves to test.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone
+Project</strong> where you build a small custom MCP server that gives <strong>Atlas
+Support</strong> a real tool <em>and</em> a read-only resource, backed by a local SQLite
+database. Everything before the Capstone teaches the pieces you will wire
+together there. If you want to see the finish line first, jump to the
+<strong>"Capstone Project"</strong> section, then come back.</p>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some terms that show up everywhere in the MCP domain. Here they are in plain words:</p>
+<ul>
+<li><strong>MCP (Model Context Protocol):</strong> an open standard, <em>created by Anthropic</em>, for connecting agents to external tools, data, and prompts. Because Anthropic invented it, the exam wants you to know it cold.</li>
+<li><strong>MCP server:</strong> a small program that exposes some capabilities (tools, resources, prompts) in the MCP format. Your agent is the <em>client</em> that connects to it. A server can wrap a database, an API, the filesystem — anything.</li>
+<li><strong>Tool / tool call / tool result:</strong> a function the model can choose to run. When it decides to use one, that is a <em>tool call</em>; what comes back is the <em>tool result</em>. Tools are for <em>actions</em> (including actions that write or change data).</li>
+<li><strong>Resource:</strong> an MCP capability that exposes <strong>read-only</strong> data described by a <em>schema</em> (a description of the shape and types of the data). Think "here is what my data looks like, read it directly."</li>
+<li><strong>Prompt (MCP prompt template):</strong> a reusable prompt a server can offer. As you will see, these are rarely used in practice.</li>
+<li><strong>Schema:</strong> a machine-readable description of data — its fields, their types, what is required. A resource carries one so the agent knows the shape of what it is reading.</li>
+<li><strong>SQLite:</strong> a tiny database that lives in a single file on disk. No server to run, no setup — perfect for a lab.</li>
+<li><strong>CRUD:</strong> the four basic data operations — <strong>C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete.</li>
+</ul>
+<p>You do not need to memorize these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>MCP is the heart of Domain 2, and Anthropic weights it heavily precisely because they built it. As Andrew puts it, "within MCP there is more than just tools. There's also resources and prompts. Nobody uses prompt templates as they're not useful. But resources are, and they don't get talked about enough, and you definitely need to know them for the exam." Most people who use MCP only ever wire up tools and never touch resources — which is exactly why the resources-vs-tools distinction is a favorite exam trap. By the end of this lesson you will not only know the difference, you will have built a server that exposes both, so the distinction is muscle memory rather than a fact you half-remember.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>Explain what MCP is and what an MCP server exposes.</li>
+<li>Describe <strong>MCP discovery</strong>: how multiple servers' capabilities load into one <em>flat</em> tool list at connection time, and why that flatness is a design consideration.</li>
+<li>Point to where you register servers in the Agent SDK (the <code>mcp_servers</code> option).</li>
+<li>Distinguish the three MCP primitives — <strong>tools</strong> (actions), <strong>resources</strong> (read-only, schema-mapped data), and <strong>prompts</strong> (mostly unused) — and defend the distinction on an exam.</li>
+<li>Build a small custom MCP server that exposes tool-based CRUD plus a read-only resource, backed by a local SQLite database.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Module 3 · Lesson 15, "Prompt chaining vs adaptive decomposition"</strong> — you should be comfortable with an agent taking a series of tool-driven steps.</li>
+<li>Earlier tool lessons in this module: you know what a tool call and tool result are.</li>
+<li>A working Agent SDK environment (from Module 0). This course does not re-cover installing the SDK.</li>
+<li>Comfort reading a little Python. The code here is illustrative — you will adapt it.</li>
+</ul>
+<hr />
+<h2 id="part-1-what-mcp-is-and-why-anthropic-cares-so-much">Part 1: What MCP is, and why Anthropic cares so much</h2>
+<p><strong>MCP</strong> — the Model Context Protocol — is an open standard Anthropic created so that any agent can talk to any external tool or data source through one common format. Instead of hand-writing a bespoke integration for every API and every database, you run (or connect to) an <strong>MCP server</strong> that speaks the protocol, and your agent — the <em>client</em> — connects to it.</p>
+<p>The payoff is reuse. A well-built MCP server for, say, GitHub or a SQL database can be dropped into any MCP-aware agent. That is why the ecosystem matters, and why Anthropic pushes it: MCP is how Claude agents reach the outside world in a standard way.</p>
+<p>Keep one framing in mind for the whole lesson: an MCP server can expose <strong>three</strong> kinds of capability — <strong>tools</strong>, <strong>resources</strong>, and <strong>prompts</strong>. Most tutorials only ever show you tools. Parts 3 and 4 are where the exam points hide.</p>
+<blockquote>
+<p>🔑 <strong>MCP is Anthropic's open standard for connecting agents to external tools and data via MCP servers. Because Anthropic created it, it is heavily weighted on the exam.</strong></p>
+</blockquote>
+<h2 id="part-2-mcp-discovery-many-servers-one-flat-tool-list">Part 2: MCP discovery — many servers, one flat tool list</h2>
+<p>Here is the mechanic the exam wants you to know. When you configure <strong>multiple</strong> MCP servers, Andrew explains, "all their tools are discovered and loaded at the connection time. And so the agent will treat it like a flat list with no awareness of which server comes from where."</p>
+<p>Read that twice. Two ideas are packed in:</p>
+<ol>
+<li><strong>Discovery happens at connect time.</strong> When your agent connects to its servers, it asks each one "what can you do?" and loads every capability then and there. You do not enumerate tools by hand; the servers advertise them.</li>
+<li><strong>The result is <em>flat</em>.</strong> All the tools from all the servers land in one undifferentiated list. The agent does not know (and does not care) that <code>create_todo</code> came from your todo server while <code>search_issues</code> came from a GitHub server. There is no folder-per-server structure the model sees — just one big list of tools.</li>
+</ol>
+<p>Where do you register the servers? In the Agent SDK, there is an <strong><code>mcp_servers</code></strong> option. Andrew is careful to flag that the snippet he shows is "just kind of a pseudo code" for the shape of it, not exact SDK syntax — but the idea is real: you specify the servers (and their launch commands or locations), the SDK installs/starts them individually, and "all these will just be available to the agent."</p>
+<p>Illustrative shape (reconstruction — adapt to the current SDK):</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Illustrative pseudo-code for the shape, not exact SDK syntax.</span>
+<span class="n">options</span> <span class="o">=</span> <span class="n">AgentOptions</span><span class="p">(</span>
+    <span class="n">mcp_servers</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;todos&quot;</span><span class="p">:</span>  <span class="p">{</span><span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">,</span> <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;todo_server.py&quot;</span><span class="p">]},</span>
+        <span class="s2">&quot;github&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;npx&quot;</span><span class="p">,</span>    <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;-y&quot;</span><span class="p">,</span> <span class="s2">&quot;@modelcontextprotocol/server-github&quot;</span><span class="p">]},</span>
+    <span class="p">},</span>
+    <span class="n">allowed_tools</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mcp__todos__*&quot;</span><span class="p">,</span> <span class="s2">&quot;mcp__github__*&quot;</span><span class="p">],</span>  <span class="c1"># which discovered tools to allow</span>
+<span class="p">)</span>
+<span class="c1"># At connect time, every tool from every server is discovered</span>
+<span class="c1"># and flattened into ONE tool list the agent sees.</span>
+</code></pre></div>
+
+<h3 id="the-consideration-the-exam-is-fishing-for">The consideration the exam is fishing for</h3>
+<p>Flatness is convenient, but Andrew flags the catch: "you can see where this could run into an issue because now you have a bunch of different tools here." Wire up five chatty servers and the model suddenly faces dozens of similarly named tools with no grouping. That bloats the context, raises the odds of the model picking the wrong tool, and is exactly the kind of trade-off an exam question will probe. The fix in practice is to be selective — only allow the tools an agent actually needs (note the <code>allowed_tools</code> filter above) rather than dumping every server's full surface into the loop.</p>
+<blockquote>
+<p>💡 <strong>Discovery is automatic and eager.</strong> You do not list tools one by one; you list <em>servers</em>, and their tools appear at connect time. Your control point is which servers you attach and which of their tools you allow — not hand-registering each function.</p>
+<p>🔑 <strong>Multiple MCP servers → all capabilities discovered at connect time → one flat tool list with no server awareness. More servers means more tools competing in one list, which is a real design consideration.</strong></p>
+</blockquote>
+<h2 id="part-3-the-three-primitives-tools-resources-prompts">Part 3: The three primitives — tools, resources, prompts</h2>
+<p>Now the core exam content. An MCP server can expose three things, and Andrew is blunt about their relative importance:</p>
+<table>
+<thead>
+<tr>
+<th>Primitive</th>
+<th>What it is</th>
+<th>Read/write</th>
+<th>Used in practice?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Functions the agent calls to <em>do</em> something</td>
+<td>Actions (read <strong>or</strong> write)</td>
+<td>Constantly — this is what everyone uses</td>
+</tr>
+<tr>
+<td><strong>Resources</strong></td>
+<td>Read-only data mapped to a <strong>schema</strong>, read directly</td>
+<td><strong>Read-only</strong></td>
+<td>Underused, but exam-critical</td>
+</tr>
+<tr>
+<td><strong>Prompts</strong></td>
+<td>Reusable prompt templates the server offers</td>
+<td>—</td>
+<td>"Nobody uses prompt templates as they're not useful"</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Prompts</strong> you can almost set aside. In Andrew's words, "nobody uses prompt templates as they're not useful." Know they exist as the third primitive; do not expect to build with them.</p>
+<p><strong>Tools</strong> you have already met. They are "basically functions that are called," and often a tool "handles a domain of an API" — it acts as a buffer in front of some external system. Andrew's example: a tool that answers "what tables exist in the database." The tool "will call a function, which will make a database call, an SQL query, and return back those results." Crucially, tools can <em>do</em> things — including write, update, and delete. They are for <strong>actions</strong>.</p>
+<p><strong>Resources</strong> are the ones "that don't get talked about enough." Picture a plain API endpoint or a database that "is just going to return back data." Wrapping every such read behind a full tool call can feel heavy. So instead, Andrew explains, "resources has this schema that maps what the data looks like from your data source, and the idea is that it'll just read it directly, and so you'll get faster results. There'll be less back and forth." A resource says: <em>here is the shape of my data (the schema), read it.</em></p>
+<h3 id="the-honest-nuance-andrew-hits-live">The honest nuance Andrew hits live</h3>
+<p>Watch the build-and-verify theme land here. Andrew admits that when the AI generated the server, he learned something about his own mental model: "I always thought that it was a direct call and I never knew it was a function inside of this, because I don't really implement resources. I usually just implement tools." Under the hood a resource is <em>still backed by a function</em> — "it's still basically like a function, it's calling it" — "but I guess the difference is that it only expects read-only information," and it "follows this schema format."</p>
+<p>So the clean mental model is not "tool = function, resource = magic direct pipe." Both run code. The real, testable difference is <strong>intent and contract</strong>:</p>
+<ul>
+<li>A <strong>tool</strong> is for <strong>actions</strong>. It can change state. The model calls it to <em>do</em> something.</li>
+<li>A <strong>resource</strong> is for <strong>read-only data</strong>, described by a <strong>schema</strong>, meant to be read directly for speed and less back-and-forth. As Andrew sums it up: "treat one as read-only, one as actions."</li>
+</ul>
+<blockquote>
+<p>💡 <strong>"Obviously you could put anything you want in here."</strong> Nothing physically stops you from writing to a database inside a resource handler — but that breaks the contract. Resources are a <em>promise</em> of read-only. On the exam and in real design, honor it.</p>
+<p>🔑 <strong>EXAM TIP — resources vs tools vs prompts.</strong> This is the MCP distinction most likely to appear on the exam:
+- <strong>Tools = actions.</strong> Functions the agent calls to <em>do</em> things; can read <strong>or</strong> write/change state.
+- <strong>Resources = read-only data.</strong> Backed by a function too, but they map your data to a <strong>schema</strong> and are read directly — faster, less back-and-forth. Never used to change state.
+- <strong>Prompts = reusable templates.</strong> The third primitive, but "nobody uses" them — knowing they exist is enough.</p>
+<p>If a question describes read-only, schema-mapped data pulled straight from a source, the answer is <strong>resource</strong>, not tool. Because most people only ever build tools, this is a favorite trap.</p>
+</blockquote>
+<h2 id="part-4-building-a-custom-mcp-server-the-todo-server">Part 4: Building a custom MCP server (the todo server)</h2>
+<p>Time to build. Andrew's lab is a <strong>custom MCP server that reads a local SQLite database</strong> in a folder called <code>todos</code>, and it deliberately exposes <em>both</em> primitives:</p>
+<ul>
+<li><strong>Tools</strong> for the write/action side — "create, update, edit, destroy to-dos" (that is CRUD).</li>
+<li><strong>A resource</strong> for the read-only side — "an MCP resource to list out to-dos."</li>
+</ul>
+<p>That split is the whole point: the <em>listing</em> is read-only data, so it belongs in a <strong>resource</strong>; <em>creating</em> and <em>deleting</em> change state, so they belong in <strong>tools</strong>. Building it this way makes the Part 3 distinction concrete instead of abstract.</p>
+<p>Andrew's prompt to the AI, roughly: load a custom MCP server that can read a local SQLite3 database in a folder called <code>todos</code>; give it tool use to create, update, edit, and destroy todos; and give it an MCP <strong>resource</strong> to list out the todos.</p>
+<h3 id="the-build-and-verify-lesson-baked-into-this-lab">The build-and-verify lesson baked into this lab</h3>
+<p>This lab is also the course's core stance in miniature — <em>don't trust generated code, verify it</em>. The AI's first attempt worried Andrew: it reached for <code>anthropic</code> / <code>AsyncAnthropic</code> directly instead of the Agent SDK, and it went off "reading the whole darn thing" trying to find reference material. As he says, "it really just comes down to like, you know, is what you're looking at correct? Because you can see it can generate out variations of code that might work, but that doesn't mean it's good code."</p>
+<p>What fixed it was giving the model the <em>right</em> reference — an inline MCP example — so it stopped guessing and produced "way, way better" code that actually used the Agent SDK and correctly set the MCP server via the <code>mcp_servers</code> option. The takeaway: generated MCP code often <em>looks</em> plausible while quietly using the wrong library or pattern. Read it, and confirm it runs and does what you meant.</p>
+<h3 id="illustrative-shape-of-the-server">Illustrative shape of the server</h3>
+<p>A minimal reconstruction of the todo server — the tools do CRUD, the resource is read-only. Adapt to the current SDK; treat this as illustrative:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># todo_server.py — illustrative reconstruction of an MCP server.</span>
+<span class="c1"># Tools = actions (create/update/delete). Resource = read-only list.</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">Server</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="s2">&quot;todos&quot;</span><span class="p">)</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;todos/todos.db&quot;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE IF NOT EXISTS todos(id INTEGER PRIMARY KEY, text TEXT, done INTEGER DEFAULT 0)&quot;</span><span class="p">)</span>
+
+<span class="c1"># --- TOOLS: actions that CHANGE state ---</span>
+<span class="nd">@server</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_todo</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO todos(text) VALUES (?)&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">text</span><span class="p">,));</span> <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="k">return</span> <span class="s2">&quot;created&quot;</span>
+
+<span class="nd">@server</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_todo</span><span class="p">(</span><span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">done</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;UPDATE todos SET done=? WHERE id=?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">done</span><span class="p">),</span> <span class="nb">id</span><span class="p">));</span> <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="k">return</span> <span class="s2">&quot;updated&quot;</span>
+
+<span class="nd">@server</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete_todo</span><span class="p">(</span><span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DELETE FROM todos WHERE id=?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">id</span><span class="p">,));</span> <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="k">return</span> <span class="s2">&quot;deleted&quot;</span>
+
+<span class="c1"># --- RESOURCE: READ-ONLY data, mapped to a schema, read directly ---</span>
+<span class="nd">@server</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s2">&quot;todos://list&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_todos</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT id, text, done FROM todos&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="c1"># Schema-shaped, read-only. No writes here — that is the contract.</span>
+    <span class="k">return</span> <span class="p">[{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;done&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">])}</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]</span>
+</code></pre></div>
+
+<p>Notice the asymmetry that <em>is</em> the lesson: three <strong>tools</strong> that write to the database, one <strong>resource</strong> that only reads from it. Both are backed by functions; only the tools are allowed to change anything.</p>
+<h3 id="watching-it-run">Watching it run</h3>
+<p>When Andrew ran the finished agent, it exercised exactly the loop you would want to demonstrate the difference: "it's listing it out [resource], and then it will go ahead and create some [tool], and then it's going to do an update [tool], it's going to do another read [resource]... now it's deleting [tool]." Reads go through the resource; changes go through tools. As he concludes, "they're both just functions, but the idea is that these are just read-only actions... treat one as read only, one as actions."</p>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> when you design an MCP server, sort each capability by intent <em>before</em> you code it. Does it change state? Tool. Is it a read of schema-shaped data? Resource. That single sort is what the exam is testing and what keeps your servers clean.</p>
+</blockquote>
+<h2 id="part-5-how-the-pieces-stack">Part 5: How the pieces stack</h2>
+<p>Put the lesson together end to end:</p>
+<div class="codehilite"><pre><span></span><code>        YOUR AGENT (the MCP client)
+                 │
+                 │  attach servers via `mcp_servers` option
+                 ▼
+   ┌──── DISCOVERY at connect time ────┐
+   │  ask each server &quot;what can you do?&quot; │
+   └───────────────┬────────────────────┘
+                   ▼
+        ONE FLAT TOOL LIST  (no server awareness)
+                   │
+   ┌───────────────┼───────────────────────────┐
+   ▼               ▼                            ▼
+ TOOLS          RESOURCES                    PROMPTS
+ actions        read-only, schema-mapped     templates
+ read OR write  read directly, faster        &quot;nobody uses&quot;
+   │               │
+   └── create_todo └── list_todos  (todo server, SQLite)
+       update_todo
+       delete_todo
+</code></pre></div>
+
+<p>You attach <em>servers</em>; the agent <em>discovers</em> their capabilities into one flat list; each capability is a <strong>tool</strong>, a <strong>resource</strong>, or a <strong>prompt</strong>; and when you build your own server you deliberately put actions in tools and read-only data in resources.</p>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>MCP is Anthropic's open standard</strong> for connecting agents to external tools and data through MCP servers — heavily weighted on the exam because Anthropic created it.</li>
+<li><strong>Discovery is eager and flat.</strong> Attach multiple servers via the Agent SDK's <code>mcp_servers</code> option; at connect time all their capabilities load into one flat tool list with no server awareness. More servers = more tools competing — a real design consideration.</li>
+<li><strong>Three primitives:</strong> tools (actions), resources (read-only, schema-mapped data), prompts (templates almost nobody uses).</li>
+<li><strong>Resources vs tools is the exam trap.</strong> Both are backed by functions, but a resource is <em>read-only</em> and schema-described for direct, fast reads; a tool is for <em>actions</em> and can change state.</li>
+<li><strong>Build a server by sorting on intent:</strong> writes → tools, read-only reads → resources. The todo lab (tool CRUD + a resource list over SQLite) makes it concrete.</li>
+<li><strong>Verify generated MCP code.</strong> It often looks right while using the wrong library or pattern — "that doesn't mean it's good code."</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Thinking MCP means only tools.</strong> It exposes tools, resources, <em>and</em> prompts. Missing resources is the single most common exam mistake.</li>
+<li>❌ <strong>Believing a resource is a "direct pipe" with no code.</strong> It is still backed by a function; the difference is it is <em>read-only</em> and schema-mapped, not that it skips code.</li>
+<li>❌ <strong>Putting a read-only list behind a tool (or writing inside a resource).</strong> It may run, but it breaks the contract the exam tests. Sort by intent.</li>
+<li>❌ <strong>Attaching every server "just in case."</strong> A bloated flat tool list confuses the model. Allow only the tools an agent needs.</li>
+<li>❌ <strong>Shipping generated server code unread.</strong> Andrew's own attempt reached for <code>AsyncAnthropic</code> instead of the Agent SDK. Read it, run it, confirm it.</li>
+<li>❌ <strong>Expecting to build with prompt templates.</strong> "Nobody uses" them; know they exist and move on.</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: An MCP server that gives Atlas Support a tool and a resource</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. You will build the MCP
+component that <strong>Atlas Support</strong> — the multi-agent support system this course
+builds end to end — stands on: a custom server exposing one real <strong>tool</strong>
+(an action) and one read-only <strong>resource</strong>, backed by a local SQLite
+database. Small on purpose; the point is to <em>feel</em> the tool-vs-resource split.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>A single custom MCP server, <code>atlas_support_server.py</code>, that wraps a local SQLite database of support tickets and exposes both primitives, plus a tiny agent that connects to it via the Agent SDK's <code>mcp_servers</code> option and exercises both:</p>
+<ul>
+<li><strong>A SQLite database</strong> (<code>atlas/tickets.db</code>) with a <code>tickets</code> table (id, subject, status).</li>
+<li><strong>Tools (actions):</strong> <code>create_ticket</code>, <code>update_ticket_status</code>, <code>delete_ticket</code> — full CRUD on the write side.</li>
+<li><strong>A resource (read-only):</strong> <code>list_tickets</code> — schema-shaped ticket data read directly, never mutating state.</li>
+<li><strong>A small driver agent</strong> that connects, lists tickets (resource), creates and updates one (tools), then lists again (resource) — proving the read/write split live.</li>
+</ul>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in the server</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCP server exposes capabilities</td>
+<td>You author the whole server from scratch</td>
+</tr>
+<tr>
+<td>Discovery via <code>mcp_servers</code></td>
+<td>Your driver agent registers the server there</td>
+</tr>
+<tr>
+<td>Flat tool list</td>
+<td>Your agent sees your tools + resource in one list</td>
+</tr>
+<tr>
+<td>Tools = actions</td>
+<td><code>create/update/delete_ticket</code> change state</td>
+</tr>
+<tr>
+<td>Resources = read-only, schema-mapped</td>
+<td><code>list_tickets</code> reads directly, never writes</td>
+</tr>
+<tr>
+<td>Sort by intent</td>
+<td>You decide which capability is which before coding</td>
+</tr>
+<tr>
+<td>Build-and-verify</td>
+<td>You run it and watch the read/write ordering</td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Stand up the database.</strong> Create <code>atlas/tickets.db</code> with a <code>tickets</code> table (id, subject, status). Smallest working version: a script that inserts one ticket and prints it back.</li>
+<li><strong>Write the read-only resource first.</strong> Add a <code>list_tickets</code> <strong>resource</strong> that returns schema-shaped rows and <em>only</em> reads. On its own, this already proves you can expose read-only data.</li>
+<li><strong>Add the CRUD tools.</strong> Add <code>create_ticket</code>, <code>update_ticket_status</code>, and <code>delete_ticket</code> as <strong>tools</strong>. Each changes state; each is deliberately <em>not</em> a resource.</li>
+<li><strong>Register the server with an agent.</strong> In a small driver script, attach the server via the <code>mcp_servers</code> option and confirm the tools and resource show up in the flat tool list.</li>
+<li><strong>Drive the read/write loop.</strong> Have the agent list tickets (resource), create one (tool), update its status (tool), then list again (resource). Watch reads go through the resource and changes through tools.</li>
+<li><strong>Verify, do not trust.</strong> Read the generated/handwritten code: is anything writing inside the resource? Is it actually using the Agent SDK? Run it and confirm the second listing reflects your changes.</li>
+<li><strong>Stretch goals.</strong> Add an <code>escalate_ticket</code> tool that flags a ticket for a human (foreshadowing Atlas Support's human-escalation finale); add a second read-only resource for a single ticket by id; add <code>allowed_tools</code> filtering so the agent only sees the capabilities it needs.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ <code>atlas_support_server.py</code> exposes at least one <strong>resource</strong> (read-only list) and the three CRUD <strong>tools</strong>.</li>
+<li>✅ A driver agent connects via <code>mcp_servers</code> and both the tools and the resource appear in its tool list.</li>
+<li>✅ Running the driver shows reads served by the resource and state changes served by tools, and the final listing reflects the changes.</li>
+<li>✅ You can point to each capability and say, without hesitating, "tool because it acts" or "resource because it is read-only."</li>
+<li>✅ Nothing inside the resource handler writes to the database.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> the moment you are tempted to make <code>list_tickets</code> also mark tickets as "seen," stop — that write belongs in a tool. Guarding that boundary <em>is</em> the exam skill.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice
+on one idea. Optional and independent; the Capstone already touches all of
+them, so feel free to skip straight to it.</p>
+</blockquote>
+<h3 id="exercise-1-sort-the-capabilities-foundational">Exercise 1: Sort the capabilities (foundational)</h3>
+<p>Take ten realistic MCP capabilities ("list open orders", "refund an order", "get product schema", "cancel a subscription", …) and label each <strong>tool</strong> or <strong>resource</strong>. For every one, write the one-word reason: <em>action</em> or <em>read-only</em>. Check yourself against the Part 3 exam tip.</p>
+<h3 id="exercise-2-two-servers-one-flat-list-intermediate">Exercise 2: Two servers, one flat list (intermediate)</h3>
+<p>Sketch (in pseudo-code) an <code>mcp_servers</code> config attaching your todo/ticket server <em>and</em> one public MCP server. Predict the flat tool list the agent will see, then name one problem that appears once both servers' tools mix, and one way to reduce it.</p>
+<h3 id="exercise-3-break-and-defend-the-contract-advanced">Exercise 3: Break and defend the contract (advanced)</h3>
+<p>Deliberately add a write to your <code>list_tickets</code> resource, run the agent, and observe that it "works." Then write two sentences on why it is still wrong — what promise you broke and how an exam question would score it. Revert the change.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>MCP — Model Context Protocol (Anthropic&#39;s open standard; exam-heavy)
+--------------------------------------------------------------------
+WHAT   Standard way to connect an agent (client) to MCP servers that
+       expose external tools + data.
+
+DISCOVERY
+  - Attach SERVERS (not individual tools) via Agent SDK `mcp_servers`.
+  - At CONNECT TIME every capability loads into ONE FLAT tool list.
+  - Agent has NO awareness of which server a tool came from.
+  - More servers = more tools competing = a design consideration.
+       -&gt; allow only the tools each agent needs.
+
+THREE PRIMITIVES
+  TOOLS      actions; functions the agent calls; can READ or WRITE
+  RESOURCES  READ-ONLY data, mapped to a SCHEMA, read directly
+             (faster, less back-and-forth). Still backed by a function.
+  PROMPTS    reusable templates — &quot;nobody uses&quot; them; just know they exist
+
+EXAM TIP (resources vs tools)  &lt;-- most-tested MCP point
+  Read-only, schema-mapped data pulled from a source  -&gt; RESOURCE
+  Something the agent DOES / that changes state        -&gt; TOOL
+  Both run code; the difference is INTENT + read-only contract.
+
+BUILD A SERVER (todo / ticket lab)
+  Tools:     create / update / delete   (CRUD, actions)
+  Resource:  list                       (read-only)
+  Backed by: local SQLite (single file, no server to run)
+  Sort every capability by intent BEFORE coding it.
+
+STANCE
+  Generated MCP code often looks right but uses the wrong lib/pattern.
+  &quot;That doesn&#39;t mean it&#39;s good code.&quot; -&gt; read it, run it, verify it.
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>Earlier, Module 3 · Lesson 15, "Prompt chaining vs adaptive decomposition":</strong> you learned to sequence an agent's steps. MCP is <em>where those steps reach the outside world</em> — the tools and resources the agent acts through.</li>
+<li><strong>Earlier in this module:</strong> you defined tools by hand; MCP is how you package and share them as reusable servers, and how you add read-only resources alongside them.</li>
+<li><strong>Next, Module 5 · "Settings scopes and precedence":</strong> you shift from <em>what</em> an agent can reach to <em>how</em> you configure and constrain it — including which MCP servers and tools are allowed where.</li>
+<li><strong>Later, across Atlas Support:</strong> the ticket server you build here becomes the data-and-action backbone the support agent uses when it finally escalates to a human. Your resource lists the tickets; your tools act on them.</li>
+</ul>
+<hr />
+<p><em>Source: reconstructed from the "Claude Certified Architect: Foundations" course by Andrew Brown (ExamPro). Code snippets and diagrams are illustrative reconstructions of the patterns described in the course. Adapt them to the current SDK.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="../module-3-orchestration/15-chaining-vs-adaptive.html"><span class="dir">&#8592; Previous</span><b>Prompt chaining vs adaptive decomposition</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="../module-5-claude-code-config/17-settings-scopes.html"><span class="dir">Next &#8594;</span><b>Settings scopes and precedence</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <span class="fnote">A self-paced study course reconstructed from Andrew Brown&#x27;s Claude Certified Architect: Foundations course (ExamPro). Code snippets are illustrative reconstructions of the patterns shown; adapt them to the current SDK and the official exam guide. Not affiliated with or endorsed by Anthropic or ExamPro.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>

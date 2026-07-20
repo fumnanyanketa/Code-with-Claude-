@@ -401,6 +401,14 @@ def convert(md_path, out_path, cfg=None, home="../index.html", prev=None, nxt=No
     lm = re.search(r"##\s+In one sentence\s*\n+([^\n#]+(?:\n[^\n#]+)*)", body_src)
     if lm:
         lead = re.sub(r"\s+", " ", lm.group(1)).strip()
+        # The lead is placed into the hero as plain text, so strip inline
+        # markdown (bold/italic/code/links) that would otherwise show as raw
+        # markers like **word**.
+        lead = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", lead)   # [text](url) -> text
+        lead = re.sub(r"\*\*(.+?)\*\*", r"\1", lead)            # **bold**
+        lead = re.sub(r"__(.+?)__", r"\1", lead)                 # __bold__
+        lead = re.sub(r"`([^`]+)`", r"\1", lead)                 # `code`
+        lead = re.sub(r"(?<![\w*])\*(?!\s)([^*]+?)(?<!\s)\*(?!\w)", r"\1", lead)  # *italic*
 
     md = markdown.Markdown(
         extensions=["fenced_code", "tables", "toc", "sane_lists", "attr_list", "codehilite"],

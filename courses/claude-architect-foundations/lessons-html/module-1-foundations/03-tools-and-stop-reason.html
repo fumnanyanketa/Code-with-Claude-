@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 1 · Lesson 3: Tools and the stop-reason loop | Claude Certified Architect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>Claude Certified Architect</b> &middot; a self-paced course</div>
+  <div class="right"><span>Built from Andrew Brown&#x27;s CCA-F course (ExamPro)</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 1 · Lesson 3</span>
+      <h1>Tools and the stop-reason <span class="accent">loop</span></h1>
+      <p class="lead">An agent gets things done by calling tools — plain code functions it can choose to run — and you drive that behaviour yourself by making one API call, reading the stop_reason field it hands back, running any tool it asked for, appending the result to the conversation, and calling the API again, looping until stop_reason says end_turn.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Andrew Brown</b></span>
+        <span class="chip">&#9201; <b>45 to 60 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-what-a-tool-actually-is">Part 1: What a tool actually is</a><ul>
+<li><a href="#tools-show-up-in-every-phase-of-the-loop">Tools show up in every phase of the loop</a></li>
+</ul>
+</li>
+<li><a href="#part-2-stop_reason-the-field-you-steer-by">Part 2: stop_reason — the field you steer by</a></li>
+<li><a href="#part-3-the-four-move-loop-how-a-tool-call-flows-out-and-back">Part 3: The four-move loop — how a tool call flows out and back</a></li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: the seed of Atlas Support — a single-tool agent loop</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-read-a-real-response-foundational">Exercise 1: Read a real response (foundational)</a></li>
+<li><a href="#exercise-2-description-driven-selection-intermediate">Exercise 2: Description-driven selection (intermediate)</a></li>
+<li><a href="#exercise-3-break-it-on-purpose-advanced">Exercise 3: Break it on purpose (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>An agent gets things done by calling <strong>tools</strong> — plain code functions it can choose to run — and you drive that behaviour yourself by making one API call, reading the <code>stop_reason</code> field it hands back, running any tool it asked for, appending the result to the conversation, and calling the API again, looping until <code>stop_reason</code> says <code>end_turn</code>.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> This is the first real hands-on lesson. It builds to a <strong>Capstone Project</strong> where you write a minimal single-tool agent loop from scratch — no framework, just the API and a <code>while</code> loop. That tiny program is the seed the whole north-star project, <strong>Atlas Support</strong>, will grow from. Everything before the Capstone teaches the four moves the loop is made of. If you want to see the finish line first, jump to the <strong>"Capstone Project"</strong> section, then come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> SDK names and endpoints change, but the shape of a tool definition does not. A tool's <code>input_schema</code> is written in <strong>JSON Schema</strong> — a small, tool-agnostic standard for describing the shape of JSON data (types, which fields are required, allowed values).</p>
+<ul>
+<li><strong><a href="https://json-schema.org/learn/getting-started-step-by-step">JSON Schema — "Getting Started"</a></strong> (official docs). The timeless account of the <code>type</code> / <code>properties</code> / <code>required</code> structure you will type into every tool you ever define, for any model or provider.</li>
+</ul>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday terms. Here they are in plain words:</p>
+<ul>
+<li><strong>LLM:</strong> the kind of AI that reads and writes text; "Claude" is one. On its own it can only produce text.</li>
+<li><strong>Model:</strong> one specific version of Claude — e.g. Opus, Sonnet, Haiku — differing in strength, speed, and price. Sonnet is the balanced default.</li>
+<li><strong>API:</strong> a way for your own program to send a request to Claude over the internet and get a reply back, instead of typing into a chat box.</li>
+<li><strong>SDK:</strong> a ready-made code library (here, the <strong>Anthropic SDK</strong> for Python) that wraps the API so you call a function instead of building web requests by hand.</li>
+<li><strong>Agent:</strong> an AI that takes a series of actions on its own toward a goal, rather than answering in one shot.</li>
+<li><strong>Agentic loop:</strong> the repeating cycle an agent runs — gather context, take action, verify — until the task is done.</li>
+<li><strong>JSON:</strong> a plain-text way of writing structured data (lists, and <code>name: value</code> pairs). It is how your program and Claude pass structured information back and forth.</li>
+<li><strong>API key:</strong> a secret password string that identifies your account so the API knows who to bill. You keep it out of your code, usually in an environment variable.</li>
+</ul>
+<p>You do not need to memorise these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>In the last lesson you learned that the agentic loop is <em>gather context → take action → verify</em>, and that Claude Code runs that loop for you. This lesson is where you pull the curtain back and run the loop <strong>yourself</strong>, by hand, in about thirty lines of Python. As Andrew puts it, "we are learning by doing it manually. It helps us see what's going on." Once you have watched a single tool call flow out of Claude, run in your code, and flow back in, every framework you meet later — the Claude Agent SDK, hub-and-spoke coordinators, MCP — stops being magic. It is all this same four-step loop underneath.</p>
+<p>There is a second reason, and it is on the exam. The CCA-F guide names <code>stop_reason</code> in Domain 1, so, in Andrew's words, "that's why we're talking about stop reason." Knowing that you steer an agent off a structured field — never by reading its prose — is a load-bearing idea you will lean on for the rest of the course.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>Explain what a tool is (a code function the model can choose to run) and give examples of tools used in each phase of the agentic loop.</li>
+<li>Define <code>stop_reason</code> and its two values, <code>tool_use</code> and <code>end_turn</code>, and say what each one tells your program to do next.</li>
+<li>Define a single tool for the Anthropic API with a name, a description, and a JSON-Schema <code>input_schema</code>.</li>
+<li>Write the core loop by hand: make the API call, branch on <code>stop_reason</code>, run the requested tool, append a <code>tool_result</code>, and repeat until <code>end_turn</code>.</li>
+<li>Recognise and fix the classic runaway loop caused by never re-calling the API inside the loop.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Module 1 · Lesson 2 ("The agentic loop and Claude Code")</strong> — you should be comfortable with <em>gather context → take action → verify</em> and with the idea that Claude picks a model (opus/sonnet/haiku) per run.</li>
+<li><strong>Module 0</strong> (optional on-ramp) — Python installed, the <code>anthropic</code> package available, and an API key. If you skipped it: you need Python, <code>pip install anthropic</code>, and a small amount of credit loaded on your Anthropic account. As Andrew warns, "there's no free tier for the API usage" — five or ten dollars is plenty for this whole course.</li>
+</ul>
+<hr />
+<h2 id="part-1-what-a-tool-actually-is">Part 1: What a tool actually is</h2>
+<p>Start with the plainest possible definition, straight from Andrew: "tools are code functions that an agent is aware of and can invoke to complete their tasks. And when I say they're code functions, I literally mean it's just a code function."</p>
+<p>That is the whole idea. A <strong>tool</strong> is an ordinary function in your program — <code>get_weather(city)</code>, <code>read_file(path)</code> — that you have told the model about. When the model decides to use one, that is a <strong>tool call</strong>; whatever your function returns is the <strong>tool result</strong>.</p>
+<p>Why does an LLM need this at all? Because, as Andrew says, "the LM is in its own little box... it can just produce text. And so it needs some way of interacting with external programs." The model cannot read your files, hit a database, or check today's weather. It can only write text. A tool is the model's hands: it writes out <em>"I want to call <code>get_weather</code> with <code>city=Winnipeg</code>"</em>, your code actually runs the function, and you feed the answer back.</p>
+<blockquote>
+<p>🔑 <strong>A tool is just a normal function you have described to the model. The model never runs it — it only <em>asks</em> you to. Your code does the running.</strong></p>
+</blockquote>
+<h3 id="tools-show-up-in-every-phase-of-the-loop">Tools show up in every phase of the loop</h3>
+<p>Remember the three phases from Lesson 2. Every one of them reaches for tools. Andrew walks the example of fixing a failing Python unit test:</p>
+<table>
+<thead>
+<tr>
+<th>Loop phase</th>
+<th>What the tool does there</th>
+<th>Example tools</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Gather context</strong></td>
+<td>Pull in information the model doesn't have</td>
+<td>read a file, search an API, query a database, scan the codebase (this is RAG — retrieval-augmented generation), check system state</td>
+</tr>
+<tr>
+<td><strong>Take action</strong></td>
+<td>Change something in the world</td>
+<td>edit code, run a command, write a file, call an API, execute a script</td>
+</tr>
+<tr>
+<td><strong>Verify results</strong></td>
+<td>Confirm the action worked</td>
+<td>run the test (<code>pytest</code>), compile the code, read the output, check logs, compare results</td>
+</tr>
+</tbody>
+</table>
+<p>Andrew's note on the "gather context" row is worth keeping: reaching out to a database to enrich the model's context "is a rag" — retrieval-augmented generation — but with agents "it just kind of seamlessly happens... we don't even think about it." You do not need a separate RAG framework; a tool that fetches data <em>is</em> your retrieval step.</p>
+<p>Claude Code ships with built-in tools in roughly five categories: file operations, search-and-find, execution (run commands), web search, and code intelligence. When you asked "can Claude Code make its own tools?" — yes, and you will build custom ones later (skills, MCP). For now the point is smaller: <strong>without tools, "no code would be changed... it would just be talking to you."</strong></p>
+<h2 id="part-2-stop_reason-the-field-you-steer-by">Part 2: <code>stop_reason</code> — the field you steer by</h2>
+<p>Here is the single most important field in this lesson. When you make an API call, the JSON that comes back includes a field called <code>stop_reason</code>. In Andrew's words, "stop reason is the reason why the claude agent has stopped executing its loop."</p>
+<p>For our purposes it takes one of two values:</p>
+<ul>
+<li><strong><code>tool_use</code></strong> — "this is when the agent stops with the intention to call an external function." Claude has decided it needs a tool and is telling you which one, with what inputs. It is now <em>your</em> move.</li>
+<li><strong><code>end_turn</code></strong> — "this is when the agent has decided to return you a result because it's done." No tool wanted; the text reply is the final answer.</li>
+</ul>
+<p>Picture Andrew's weather example. You ask, "what is the weather in Winnipeg?" Claude replies with something like <em>"Let me check the weather for you,"</em> and alongside that text it emits a <strong>tool_use</strong> block naming the tool <code>get_weather</code> with input <code>Winnipeg</code> — the city it extracted from your question. The top-level <code>stop_reason</code> on that response is <code>tool_use</code>. Claude has not answered the weather question; it has asked <em>you</em> to go get the data.</p>
+<blockquote>
+<p>🔑 <strong>You drive the loop off <code>stop_reason</code>, never off reading Claude's text.</strong> <code>tool_use</code> means "run something and come back"; <code>end_turn</code> means "we're done." This one branch is the engine of every agent you will build.</p>
+<p>❌ <strong>The trap this closes:</strong> trying to figure out whether Claude is finished by scanning its prose for phrases like "here is your answer." That is fragile and wrong. The API already tells you, in a structured field. Read the field.</p>
+</blockquote>
+<h2 id="part-3-the-four-move-loop-how-a-tool-call-flows-out-and-back">Part 3: The four-move loop — how a tool call flows out and back</h2>
+<p>A tool call is a round trip. Claude asks; you answer; Claude continues. The mechanic that makes this work is <strong>appending</strong> — you keep adding to the running list of messages. Andrew's framing: "whatever the result is, we're appending it to our message conversation."</p>
+<p>One subtlety he flags: <code>stop_reason</code> lives on the <em>response</em>, not inside your message list. "What's in the messages is not the same of what is being outputted." So you will see <code>stop_reason</code> when you inspect each API response, but it never becomes part of the conversation history you send back. The history carries the tool <em>request</em> and the tool <em>result</em>; the <code>stop_reason</code> is just your signal for what to do between calls.</p>
+<p>Here is the whole cycle as four moves:</p>
+<div class="codehilite"><pre><span></span><code>   your message: &quot;Will I be a billionaire on Mars in 2026?&quot;
+            │
+            ▼
+   (1) call the API  ──────────────►  response, stop_reason = ?
+            │
+            ├── end_turn  ──►  print the text.  DONE.
+            │
+            └── tool_use  ──►  (2) read the tool_use block: which tool? what input?
+                                   (3) run that function in your code
+                                       append the assistant&#39;s tool_use turn
+                                       append a tool_result turn (with the tool_use_id)
+                                   (4) loop back to (1) with the longer message list
+</code></pre></div>
+
+<p>Move 1 is one API call. Move 2 reads what Claude asked for. Move 3 runs it and writes the answer back into the conversation. Move 4 goes around again. You keep going until move 1 comes back <code>end_turn</code>. That is the entire lesson — four moves in a <code>while</code> loop.</p>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> every time around the loop you must (a) make a <em>fresh</em> API call with the updated messages, and (b) check the new response's <code>stop_reason</code>. Skipping either one is how the loop breaks — as you are about to see.</p>
+</blockquote>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>A tool is just a function you described to the model.</strong> The model asks to call it; your code runs it and returns the result. The LLM can only produce text on its own.</li>
+<li><strong>Tools appear in all three loop phases.</strong> Gather context (read/search/query), take action (edit/run/write), verify (test/compile/compare).</li>
+<li><strong><code>stop_reason</code> is how you steer.</strong> <code>tool_use</code> = run a tool and come back; <code>end_turn</code> = finished. Branch on this field, never on the model's prose.</li>
+<li><strong>A tool call is a round trip you append.</strong> Assistant's <code>tool_use</code> in, your <code>tool_result</code> back, then loop. The <code>tool_use_id</code> ties a result to its request.</li>
+<li><strong>The loop ends when <code>stop_reason</code> stops being <code>tool_use</code>.</strong> You must re-call the API inside the loop or it never updates — and never ends.</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Never re-calling the API inside the loop.</strong> Andrew's own loop "looped forever" for exactly this reason: "you never update the response inside the loop." If <code>response</code> never changes, <code>stop_reason</code> is <code>tool_use</code> forever. Fix: assign <code>response = client.messages.create(...)</code> <em>inside</em> the <code>while</code>.</li>
+<li>❌ <strong>Picking a tool the model can do on its own.</strong> Andrew first tried an "add two numbers" tool, then realised "this is obviously something that the agent would be capable of doing... so it might make it hard for it to know" whether to call it. Choose a tool for something the model <em>can't</em> just do in its head — a lookup, a live value, a deterministic action.</li>
+<li>❌ <strong>A vague tool description.</strong> The description is how Claude decides <em>when</em> to reach for the tool. Andrew is deliberate: "use this tool to add two numbers together... I'm being prescriptive... that way it helps it to know how to select the correct tool." Write the description as an instruction, not a label.</li>
+<li>❌ <strong>Forgetting to append the assistant's <code>tool_use</code> turn before the <code>tool_result</code>.</strong> The API needs both halves in order. If you append only the result, the <code>tool_use_id</code> it refers to isn't in the history and the call is rejected.</li>
+<li>❌ <strong>Reading <code>response.content[0]</code> and assuming it's text.</strong> When <code>stop_reason</code> is <code>tool_use</code>, the content is a list of <em>blocks</em>; you have to iterate to find the <code>tool_use</code> one. "You do kind of have to iterate to get to the correct one."</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: the seed of Atlas Support — a single-tool agent loop</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. You will hand-write the smallest possible agent: one tool, one loop, driven entirely by <code>stop_reason</code>. It is deliberately tiny — and it is the exact skeleton every later Atlas Support component bolts onto. "We are going to reap the benefits of this code going forward."</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>A short Python program, <code>main.py</code>, that:</p>
+<ul>
+<li>defines <strong>one</strong> tool with a name, a prescriptive description, and a JSON-Schema <code>input_schema</code>;</li>
+<li>sends a user question plus that tool to the API in a <code>while</code> loop;</li>
+<li>reads <code>stop_reason</code>, and when it is <code>tool_use</code>, finds the tool block, <strong>runs the real function</strong>, and appends a <code>tool_result</code>;</li>
+<li>keeps looping until <code>stop_reason</code> is <code>end_turn</code>, then prints Claude's final text.</li>
+</ul>
+<p>Because Atlas Support will be a <em>support</em> agent, use a support-flavoured tool the model genuinely cannot answer on its own — say <code>lookup_order_status(order_id)</code> that returns a canned status string. (If you'd rather mirror the transcript exactly, use Andrew's <code>magic_eightball(question)</code> that returns a random yes/no verdict. Either works; the point is the loop.)</p>
+<p>Here is an illustrative reconstruction of the whole thing. Read it, then build it move by move via the milestones below.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">anthropic</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">anthropic</span><span class="o">.</span><span class="n">Anthropic</span><span class="p">()</span>      <span class="c1"># reads ANTHROPIC_API_KEY from your environment</span>
+<span class="n">MODEL</span> <span class="o">=</span> <span class="s2">&quot;claude-sonnet-4-5&quot;</span>         <span class="c1"># use a current Sonnet id — the cost/quality &quot;goldilocks&quot;</span>
+
+<span class="c1"># --- the one tool: a lookup the model cannot do on its own ---</span>
+<span class="n">tools</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;lookup_order_status&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Use this tool to look up the status of a customer&#39;s order by its order id.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;input_schema&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;order_id&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The customer&#39;s order id, e.g. A-1042&quot;</span><span class="p">}</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;order_id&quot;</span><span class="p">],</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">lookup_order_status</span><span class="p">(</span><span class="n">order_id</span><span class="p">):</span>
+    <span class="c1"># a real tool would hit a database; we fake it deterministically</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Order </span><span class="si">{</span><span class="n">order_id</span><span class="si">}</span><span class="s2">: shipped, arriving Tuesday.&quot;</span>
+
+<span class="c1"># --- the running conversation ---</span>
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Where is my order A-1042?&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="c1"># MOVE 1: one API call, with the tool available</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">MODEL</span><span class="p">,</span>
+        <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+        <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+        <span class="n">tool_choice</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;auto&quot;</span><span class="p">},</span>   <span class="c1"># let Claude decide; we&#39;ll force tools in a later lesson</span>
+        <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;stop_reason:&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">stop_reason</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">stop_reason</span> <span class="o">!=</span> <span class="s2">&quot;tool_use&quot;</span><span class="p">:</span>
+        <span class="k">break</span>                           <span class="c1"># end_turn — Claude is done</span>
+
+    <span class="c1"># record Claude&#39;s turn (it holds the tool_use block) before we answer it</span>
+    <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">})</span>
+
+    <span class="c1"># MOVE 2 + 3: find each tool block, run it, collect the results</span>
+    <span class="n">tool_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;tool_use&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Claude wants:&quot;</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>   <span class="c1"># move 2</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">lookup_order_status</span><span class="p">(</span><span class="o">**</span><span class="n">block</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>        <span class="c1"># move 3: run the real function</span>
+            <span class="n">tool_results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;tool_result&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;tool_use_id&quot;</span><span class="p">:</span> <span class="n">block</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>      <span class="c1"># ties this result to Claude&#39;s request</span>
+                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">,</span>
+            <span class="p">})</span>
+
+    <span class="c1"># append the results as the next user turn, then MOVE 4: loop back to MOVE 1</span>
+    <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">tool_results</span><span class="p">})</span>
+
+<span class="c1"># the loop only exits on end_turn — print the final answer</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in the Capstone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A tool is a described function</td>
+<td>The <code>tools</code> list + the real <code>lookup_order_status</code> function</td>
+</tr>
+<tr>
+<td>JSON-Schema <code>input_schema</code></td>
+<td><code>type</code> / <code>properties</code> / <code>required</code> on the tool</td>
+</tr>
+<tr>
+<td>Branch on <code>stop_reason</code></td>
+<td><code>if response.stop_reason != "tool_use": break</code></td>
+</tr>
+<tr>
+<td>Round-trip by appending</td>
+<td>Append the <code>assistant</code> turn, then the <code>tool_result</code> turn</td>
+</tr>
+<tr>
+<td>Re-call the API each pass</td>
+<td><code>response = client.messages.create(...)</code> <em>inside</em> the <code>while</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>One call, one tool.</strong> Write the tool definition and make a <em>single</em> API call (no loop yet) with <code>tools=tools</code> and a question that should trigger it. Print the whole response. Success = you see <code>stop_reason: tool_use</code> and a <code>tool_use</code> block in the content. (Tip from Andrew: pretty-print with <code>print(response.model_dump_json(indent=2))</code> so the structure is readable.)</li>
+<li><strong>Detect and announce the call.</strong> Iterate <code>response.content</code>, find the block whose <code>type == "tool_use"</code>, and print its <code>name</code> and <code>input</code>. Success = your program prints exactly which tool Claude wants and with what arguments — without you having run anything yet.</li>
+<li><strong>Run it and append the result.</strong> Call the real function with <code>**block.input</code>, then append two turns to <code>messages</code>: the assistant's <code>response.content</code>, and a <code>user</code> turn holding a <code>tool_result</code> block (with the matching <code>tool_use_id</code>). Make one more API call by hand and confirm the new <code>stop_reason</code> is <code>end_turn</code>. Success = a second, final response comes back done.</li>
+<li><strong>Close the loop.</strong> Wrap it all in <code>while True</code>, <code>break</code> on anything that isn't <code>tool_use</code>, and re-assign <code>response</code> on every pass. Success = you run the file once and it drives itself to completion, printing the final text answer.</li>
+<li><strong>Stretch goals.</strong> Ask a question that needs <em>no</em> tool ("Hi, are you there?") and confirm you get <code>end_turn</code> on the first pass. Add a second tool and a question that should pick the <em>other</em> one. Swap in <code>magic_eightball</code> to match the transcript. Add a max-iteration counter — a preview of the very next lesson.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ Running <code>python main.py</code> prints at least one <code>stop_reason: tool_use</code>, then a final <code>stop_reason: end_turn</code>, then a sensible text answer that used your tool's result.</li>
+<li>✅ Your <code>while</code> loop terminates on its own — it does not run forever.</li>
+<li>✅ You can point to the exact line that (a) branches on <code>stop_reason</code>, (b) runs the tool, and (c) appends the <code>tool_result</code> with its <code>tool_use_id</code>.</li>
+<li>✅ If you delete the <code>response = client.messages.create(...)</code> line from inside the loop, you can explain why it now loops forever.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> before you write the loop, run just milestone 1 and read the raw JSON. Andrew's whole method is "validate all these things actually work as expected, and the only way to do that is to do it." Seeing the real <code>tool_use</code> block once is worth more than any diagram.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice on one idea. Optional and independent; the Capstone already touches all of them, so feel free to skip straight to it.</p>
+</blockquote>
+<h3 id="exercise-1-read-a-real-response-foundational">Exercise 1: Read a real response (foundational)</h3>
+<p>Make a single tool-triggering call and pretty-print the response as JSON. In the output, point to: the top-level <code>stop_reason</code>, the <code>tool_use</code> block, its <code>id</code>, its <code>name</code>, and the <code>input</code> Claude extracted. No loop, no execution — just learn to read the shape.</p>
+<h3 id="exercise-2-description-driven-selection-intermediate">Exercise 2: Description-driven selection (intermediate)</h3>
+<p>Define two tools, <code>lookup_order_status</code> and <code>open_support_ticket</code>, and send three different questions. Confirm Claude picks the right tool each time based purely on your descriptions. Then weaken one description to a bare label (e.g. <code>"orders"</code>) and watch selection get worse. This is why Andrew is "prescriptive" with descriptions.</p>
+<h3 id="exercise-3-break-it-on-purpose-advanced">Exercise 3: Break it on purpose (advanced)</h3>
+<p>Take your finished loop and comment out the <code>response = client.messages.create(...)</code> line inside the <code>while</code>. Run it, watch it loop forever, then stop it. Write one sentence explaining the cause ("<code>response</code> never updates, so <code>stop_reason</code> is <code>tool_use</code> forever"). Fixing a bug you created cements the lesson better than avoiding it.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>TOOL  = a code function you describe to the model. The model asks; your code runs it.
+        Choose tools for things the model CAN&#39;T do itself (lookups, live data, actions).
+        Description = an instruction (&quot;Use this tool to...&quot;), it drives selection.
+
+TOOL DEFINITION (Anthropic API):
+  name          short id, e.g. &quot;lookup_order_status&quot;
+  description   prescriptive: when to use it
+  input_schema  JSON Schema: { type:&quot;object&quot;, properties:{...}, required:[...] }
+
+stop_reason  (on the RESPONSE, not in your messages) — how you steer:
+  &quot;tool_use&quot;  -&gt; Claude wants a tool. YOUR move: run it, append result, loop.
+  &quot;end_turn&quot;  -&gt; Claude is done. Print the text. Stop.
+
+THE FOUR-MOVE LOOP:
+  1. response = client.messages.create(model, tools, tool_choice, messages)
+  2. if stop_reason != &quot;tool_use&quot;: break        # find the tool_use block(s)
+  3. run function(**block.input)
+     append assistant turn (response.content)
+     append user turn: {type:&quot;tool_result&quot;, tool_use_id:block.id, content:result}
+  4. loop back to 1 with the longer messages list
+
+#1 BUG: re-assign `response` INSIDE the loop, every pass. Forget it -&gt; infinite loop.
+tool_choice=&quot;auto&quot; for now (Claude decides). Forcing tools comes in a later lesson.
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>Earlier, Module 1 · Lesson 2 ("The agentic loop and Claude Code"):</strong> you learned the <em>gather context → take action → verify</em> loop conceptually and saw Claude Code run it. This lesson is that same loop, but you are the one running it — tools are how the phases touch the world, and <code>stop_reason</code> is the signal that decides each pass.</li>
+<li><strong>Next, Module 1 · Lesson 4 ("Loop antipatterns and ending the loop correctly"):</strong> you will harden this exact loop — always driving control flow off <code>stop_reason</code> (never by parsing text) and capping runaway loops with a max-iteration break, turning the "stretch goal" counter into a proper safety net.</li>
+<li><strong>Later, Module 2 · Lesson 6 ("Forcing structured output"):</strong> the <code>tool_choice: auto</code> you set here becomes a deliberate choice (<code>auto</code> / <code>any</code> / <code>tool</code> / <code>none</code>), and the <code>input_schema</code> you wrote becomes the way you force clean JSON out of the model.</li>
+<li><strong>Much later, Module 3 onward:</strong> this single-tool loop grows into Atlas Support — a hub-and-spoke coordinator whose sub-agents are exposed to it <em>as tools</em>. The round trip you just built is the atom every one of those agents is made of.</li>
+</ul>
+<hr />
+<p><em>Source: reconstructed from the CCA-F course by Andrew Brown (ExamPro). Code snippets and diagrams are illustrative reconstructions of the patterns described in the course. Model ids and SDK details change — adapt them to the current Anthropic SDK.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="02-agentic-loop.html"><span class="dir">&#8592; Previous</span><b>The agentic loop and Claude Code</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="04-loop-antipatterns.html"><span class="dir">Next &#8594;</span><b>Loop antipatterns and ending the loop correctly</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <span class="fnote">A self-paced study course reconstructed from Andrew Brown&#x27;s Claude Certified Architect: Foundations course (ExamPro). Code snippets are illustrative reconstructions of the patterns shown; adapt them to the current SDK and the official exam guide. Not affiliated with or endorsed by Anthropic or ExamPro.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>
