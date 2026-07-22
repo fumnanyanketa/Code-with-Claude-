@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 4 · Lesson 11: Configure your GHL command center | The AI Agency Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>The AI Agency Blueprint</b> &middot; a self-paced course</div>
+  <div class="right"><span>Re-sequenced from Owen Rensland&#x27;s 20-hour AI Agency masterclass</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 4 · Lesson 11</span>
+      <h1>Configure your GHL command <span class="accent">center</span></h1>
+      <p class="lead">You will turn a raw GoHighLevel sub-account into a working command center — branded as your own, wired to a booking calendar, a compliant phone and SMS line, a deliverable email domain, e-signable contracts, and the handful of automations that make sure no lead ever goes cold.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        <a class="play" href="https://www.youtube.com" target="_blank" rel="noopener"><span class="circ">&#9654;</span> Watch the talk</a>
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Owen Rensland (AI Agency / SMMA Full Course)</b></span>
+        <span class="chip">&#9201; <b>55 to 70 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-white-label-the-login">Part 1: White-label the login</a></li>
+<li><a href="#part-2-custom-values-write-once-reuse-everywhere">Part 2: Custom values — write once, reuse everywhere</a></li>
+<li><a href="#part-3-the-strategy-call-calendar">Part 3: The strategy-call calendar</a></li>
+<li><a href="#part-4-the-phone-system-twilio-a2p-and-a-local-number">Part 4: The phone system — Twilio, A2P, and a local number</a><ul>
+<li><a href="#buy-a-local-number-and-forward-it">Buy a local number and forward it</a></li>
+<li><a href="#a2p-10dlc-the-part-you-cannot-skip">A2P 10DLC — the part you cannot skip</a></li>
+</ul>
+</li>
+<li><a href="#part-5-email-deliverability-a-dedicated-sending-subdomain">Part 5: Email deliverability — a dedicated sending subdomain</a></li>
+<li><a href="#part-6-e-signable-agreements-replace-docusign">Part 6: E-signable agreements — replace DocuSign</a></li>
+<li><a href="#part-7-the-core-automations">Part 7: The core automations</a></li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: A fully configured, client-ready sub-account</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-custom-value-swap-foundational">Exercise 1: Custom-value swap (foundational)</a></li>
+<li><a href="#exercise-2-calendar-friction-test-intermediate">Exercise 2: Calendar friction test (intermediate)</a></li>
+<li><a href="#exercise-3-deliverability-audit-advanced">Exercise 3: Deliverability audit (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>You will turn a raw GoHighLevel sub-account into a working command center — branded as your own, wired to a booking calendar, a compliant phone and SMS line, a deliverable email domain, e-signable contracts, and the handful of automations that make sure no lead ever goes cold.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone
+Project</strong> where you fully configure one client-ready sub-account: white-label
+done, calendar live, a verified phone number forwarding to your phone,
+deliverability set, one agreement uploaded, and reminders switched on.
+Everything before the Capstone teaches one piece of that setup. If you want to
+see the finish line first, jump to the <strong>"Capstone Project"</strong> section, then
+come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> Tools rename their menus every
+quarter, but the plumbing under a small business does not change: capture,
+book, remind, sign, follow up. For the timeless version of that plumbing:</p>
+<ul>
+<li><strong><a href="https://www.hubspot.com/products/crm">"The CRM Handbook" style fundamentals — see HubSpot's free CRM basics</a></strong> and the messaging-compliance
+  primer at <strong><a href="https://www.ctia.org/the-wireless-industry/industry-commitments/messaging-interoperability-sms-mms">The CTIA Messaging Principles &amp; Best Practices</a></strong>. GHL is one packaging of these ideas; the
+  ideas outlive the packaging.</li>
+</ul>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday terms. Here they are in plain words:</p>
+<ul>
+<li><strong>CRM (Customer Relationship Management):</strong> the software that stores every
+  lead and customer and the history of every message, call, and appointment
+  with them. GoHighLevel is a CRM that also does calendars, texts, and websites.</li>
+<li><strong>Sub-account:</strong> one isolated workspace inside GoHighLevel, usually one per
+  client (or one for your own agency). It has its own contacts, calendar, and
+  phone number.</li>
+<li><strong>White-label:</strong> hiding the vendor's branding so the software looks like it
+  is yours. Your clients log in to <em>your</em> domain, not "gohighlevel.com".</li>
+<li><strong>Custom value:</strong> a saved snippet of text (like your booking link or phone
+  number) that you type once and reuse everywhere with a merge tag. Change it in
+  one place, it updates everywhere.</li>
+<li><strong>A2P 10DLC:</strong> "Application-to-Person, 10-Digit Long Code." The US carrier
+  registration system that lets a business send texts from a normal local
+  number. You must register before you can send SMS reliably.</li>
+<li><strong>DNS record:</strong> a setting at your domain provider that tells the internet
+  where your website and email live, and proves you own the domain.</li>
+<li><strong>VSL (Video Sales Letter):</strong> a short video on your landing page that explains
+  who you are and warms a cold visitor up before they book.</li>
+</ul>
+<p>You do not need to memorise these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>In Lesson 10 you created the sub-account. An empty sub-account books nobody. This
+lesson is where it becomes a machine: a lead fills a form, lands on your calendar,
+gets a text reminder from your own number, and shows up — with zero manual work
+from you. Every hour you spend here is repaid by every lead you <em>don't</em> lose to a
+forgotten follow-up. It is also where you meet your first hard legal
+requirement: you cannot legally text strangers until your messaging campaign is
+registered and your opt-outs work. Get this right once and you clone it for
+every client after.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>White-label a GHL sub-account so clients log in under your own brand.</li>
+<li>Create and reuse custom values (phone, booking page, privacy/terms, VSL,
+   first name) across the account.</li>
+<li>Build a strategy-call calendar with correct staff, meeting link, availability,
+   intervals, duration, and scheduling window.</li>
+<li>Stand up a compliant phone/SMS line: choose a provider, register A2P 10DLC,
+   buy a local number, and forward calls.</li>
+<li>Set up a dedicated email sending subdomain with the right DNS records.</li>
+<li>Upload and field an e-signable agreement, replacing DocuSign.</li>
+<li>Turn on the core automations: reminders, surveys, new-lead alerts, and a
+   trust email.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Lesson 10</strong> (you have a GHL account and a sub-account created).</li>
+<li>A domain you own (from Module 0), and access to its DNS settings.</li>
+<li>A phone you can forward calls to.</li>
+</ul>
+<hr />
+<h2 id="part-1-white-label-the-login">Part 1: White-label the login</h2>
+<p>The first thing a client sees is the login screen. If it says "GoHighLevel," you
+look like a reseller of someone else's tool. White-labeling swaps that for your
+own domain and logo, so the whole platform reads as <em>your</em> software.</p>
+<p>In GHL this lives under <strong>Agency Settings → Company / Rebranding</strong>. You point a
+subdomain you own — for example <code>app.youragency.com</code> — at GHL by adding a CNAME
+DNS record, then upload your logo and set your brand colors. Clients now log in
+at your URL and never see the vendor.</p>
+<blockquote>
+<p>🔑 <strong>White-label is not vanity — it is trust. A branded portal makes a solo
+operator look like an established company, which is exactly the credibility a
+local business owner is buying.</strong></p>
+<p>💡 <strong>Alternatives to GoHighLevel.</strong> GHL bundles CRM, funnels, calendar,
+automations, and SMS in one paid product. If you would rather assemble your own
+stack (usually cheaper and more flexible, but you wire it together yourself):
+<strong>HubSpot, Keap, Close, or Vendasta</strong> for the all-in-one route, or a stack of
+<strong>Cal.com / Calendly</strong> (booking) + <strong>Zapier or Make</strong> (automation) +
+<strong>Brevo / Mailchimp</strong> (email) + a form tool + <strong>Stripe</strong> (payments). This
+lesson teaches GHL because that is what the course uses; the concepts port
+directly.</p>
+</blockquote>
+<h2 id="part-2-custom-values-write-once-reuse-everywhere">Part 2: Custom values — write once, reuse everywhere</h2>
+<p>A <strong>custom value</strong> is a saved snippet you reference by a merge tag instead of
+retyping. Set them under <strong>Settings → Custom Values</strong>. The ones worth creating on
+day one:</p>
+<table>
+<thead>
+<tr>
+<th>Custom value</th>
+<th>What it holds</th>
+<th>Where it gets used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phone number</td>
+<td>Your business number</td>
+<td>Emails, SMS, footers</td>
+</tr>
+<tr>
+<td>Booking page</td>
+<td>Your calendar link</td>
+<td>Every "book a call" button</td>
+</tr>
+<tr>
+<td>Privacy policy URL</td>
+<td>Link to your privacy page</td>
+<td>Email/SMS compliance footers</td>
+</tr>
+<tr>
+<td>Terms URL</td>
+<td>Link to your terms</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>VSL link</td>
+<td>Your video sales letter URL</td>
+<td>Nurture emails, funnels</td>
+</tr>
+<tr>
+<td>First name</td>
+<td>The contact's first name</td>
+<td>Personalizing every message</td>
+</tr>
+</tbody>
+</table>
+<p>The payoff: when your number or booking link changes, you edit one custom value
+and every email, text, and automation updates automatically. No hunting through
+templates.</p>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> create the six custom values above <em>before</em> you
+build any automation. Then reference them by tag everywhere, never paste the
+raw value. Future-you will thank present-you.</p>
+</blockquote>
+<h2 id="part-3-the-strategy-call-calendar">Part 3: The strategy-call calendar</h2>
+<p>This is the calendar prospects book to talk to you. Configure it under
+<strong>Calendars → Create Calendar</strong>. The settings that actually matter:</p>
+<ul>
+<li><strong>Staff / team member:</strong> assign yourself (or the closer) so the invite comes
+  from a real person and syncs to their Google calendar.</li>
+<li><strong>Meeting location:</strong> connect <strong>Google Meet or Zoom</strong> so a video link is
+  auto-generated on every booking.</li>
+<li><strong>Availability:</strong> set the days and hours you will actually take calls. Owen's
+  point from the ads module applies here — <em>the more flexible your availability,
+  the lower your cost per booking</em>, because prospects find a slot before they
+  cool off.</li>
+<li><strong>Slot interval: 15 minutes.</strong> Offering 10:15, 10:30, 10:45 gives people far
+  more options than hourly slots and lifts your booking rate.</li>
+<li><strong>Duration: 30 to 45 minutes.</strong> Long enough to run a real strategy call, short
+  enough to fit several a day.</li>
+<li><strong>Scheduling window and minimum notice:</strong> how far ahead people can book (e.g.
+  the next 2 to 3 weeks) and the minimum lead time before a slot (e.g. at least
+  1 hour out, so nobody books a call for "5 minutes from now" when you are not
+  ready).</li>
+</ul>
+<blockquote>
+<p>🔑 <strong>A high booking rate is mostly a calendar-settings problem, not a sales
+problem. 15-minute intervals plus generous availability plus an auto-generated
+video link removes the friction that quietly kills bookings.</strong></p>
+<p>💡 <strong>Carry the details across.</strong> If your funnel already collected name, phone,
+and email, pass those into the calendar so the prospect does not re-type them.
+Owen: people "should not have to fill out their information twice in order to
+book a call." (You will wire this in the funnel lesson next.)</p>
+</blockquote>
+<h2 id="part-4-the-phone-system-twilio-a2p-and-a-local-number">Part 4: The phone system — Twilio, A2P, and a local number</h2>
+<p>GHL can hand you a native number in a click, but Owen recommends running phone
+and SMS through <strong>Twilio</strong> instead. The reason is control and deliverability:
+Twilio gives you a properly registered number, better SMS throughput, and it
+survives if you ever move off GHL. Native numbers are convenient but limited.</p>
+<h3 id="buy-a-local-number-and-forward-it">Buy a local number and forward it</h3>
+<p>Connect Twilio to the sub-account, then <strong>buy a local number</strong> in your client's
+area code (a local number gets answered more than a toll-free one). Set <strong>call
+forwarding</strong> so any call to that number rings your (or the client's) real phone.
+Now the CRM number is the public number, every call is logged, and it still
+reaches a human.</p>
+<h3 id="a2p-10dlc-the-part-you-cannot-skip">A2P 10DLC — the part you cannot skip</h3>
+<p>Before you send a single business text from that number, US carriers require you
+to register it under <strong>A2P 10DLC</strong> ("Application-to-Person, 10-Digit Long Code").
+You submit your business details and a "campaign" describing what you will text
+about, and the carriers approve the number for business messaging. Unregistered
+numbers get their texts filtered or blocked outright.</p>
+<blockquote>
+<p>⚠️ <strong>Reality check — this is compliance, not red tape.</strong> In the US, sending
+marketing or outreach texts without registering your A2P campaign and honoring
+opt-outs implicates the <strong>TCPA</strong> (Telephone Consumer Protection Act) and
+carrier rules. You must: (1) register your 10DLC campaign before sending,
+(2) get consent to text where required, and (3) honor <strong>STOP / opt-out</strong>
+automatically on every message. This matters <em>again</em> in the cold-SMS lesson
+(Module 6) — unsolicited SMS is heavily regulated, and other countries (UK
+GDPR/PECR, Canada CASL) are stricter still. Set it up correctly now so you are
+not scrambling later.</p>
+<p>💡 <strong>Alternatives to Twilio.</strong> <strong>Telnyx, Plivo, Bandwidth, or Vonage</strong> are all
+real substitutes with their own dashboards and 10DLC flows. The A2P
+registration requirement is the <em>carriers'</em>, not Twilio's — so it applies no
+matter which provider you pick.</p>
+</blockquote>
+<h2 id="part-5-email-deliverability-a-dedicated-sending-subdomain">Part 5: Email deliverability — a dedicated sending subdomain</h2>
+<p>If your automated emails land in spam, the whole machine is pointless. The fix is
+a <strong>dedicated sending subdomain</strong> — a subdomain like <code>mail.youragency.com</code> used
+only for sending, so its reputation is yours to build and one bad campaign never
+poisons your main domain.</p>
+<p>You set this up by adding DNS records at your domain provider that authenticate
+your mail:</p>
+<ul>
+<li><strong>SPF</strong> — lists which servers may send email as you.</li>
+<li><strong>DKIM</strong> — cryptographically signs your mail so receivers know it is really you.</li>
+<li><strong>DMARC</strong> — tells receivers what to do with mail that fails the above.</li>
+</ul>
+<p>GHL generates these records; you paste them into your DNS. Owen uses
+<strong>Cloudflare</strong> to manage DNS because its dashboard is fast and free.</p>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> connect your domain in GHL's email settings, copy
+the SPF/DKIM/DMARC records it gives you into Cloudflare (or your registrar's
+DNS), wait for them to verify, then send yourself a test email and confirm it
+lands in the inbox, not spam.</p>
+<p>💡 <strong>Alternatives to Cloudflare.</strong> Any DNS host works: <strong>your registrar's own
+DNS (Namecheap, Porkbun), Bunny.net, or Fastly.</strong> The records are identical
+wherever you host them.</p>
+</blockquote>
+<h2 id="part-6-e-signable-agreements-replace-docusign">Part 6: E-signable agreements — replace DocuSign</h2>
+<p>GHL has a documents/contracts feature that lets a client sign online, so you do
+not need a separate e-signature tool. You <strong>upload your service agreement as a
+PDF</strong>, then drag <strong>fillable fields</strong> onto it — a signature box, a date, the
+client's name — and send it for signature. When they sign, you get a legally
+executed contract back, tracked in the CRM.</p>
+<blockquote>
+<p>💡 <strong>DocuSign, and alternatives.</strong> GHL's built-in signing <strong>replaces DocuSign</strong>
+for most agency needs. If you prefer a dedicated tool, <strong>PandaDoc or Dropbox
+Sign (formerly HelloSign)</strong> are strong substitutes.</p>
+<p>⚠️ <strong>A note on contract clauses.</strong> Some coaches teach aggressive clauses
+("large charge for a missed exit interview," penalties for "false reporting").
+These can be unenforceable and can wreck your local reputation. Keep your first
+agreement simple, fair, and in your own legal name — a clean contract closes
+more clients than a scary one.</p>
+</blockquote>
+<h2 id="part-7-the-core-automations">Part 7: The core automations</h2>
+<p>Automations are the difference between a CRM and a filing cabinet. Set up these
+few under <strong>Automation → Workflows</strong>:</p>
+<ol>
+<li><strong>Appointment reminders.</strong> Text and/or email the prospect before the call
+   (e.g. 24 hours and 1 hour out). This is the single biggest lever on show rate.</li>
+<li><strong>Post-call / survey.</strong> After the appointment, send a short survey or
+   feedback request — useful data and a professional touch.</li>
+<li><strong>New-lead alert.</strong> The moment a lead comes in, text or email <em>yourself</em> so
+   you can respond fast. Speed-to-lead is a real edge.</li>
+<li><strong>The trust email.</strong> A short, personalized email that goes out after booking,
+   introducing you and building credibility before the call — the same "warm
+   them up" job the VSL does on the page. Personalize it with the first-name
+   custom value.</li>
+</ol>
+<blockquote>
+<p>🔑 <strong>Reminders are the highest-ROI automation you will ever build. A prospect
+who forgets is a no-show; a prospect who gets a well-timed reminder shows up.
+Turn reminders on before anything else.</strong></p>
+<p>❌ <strong>Pitfall:</strong> building an SMS reminder before your A2P campaign is approved.
+The texts silently fail or get filtered and you never see the reminder fire.
+Register first, <em>then</em> switch on SMS reminders.</p>
+</blockquote>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>White-label first.</strong> A branded login turns a solo operator into a company in
+   the client's eyes.</li>
+<li><strong>Custom values are the DRY principle for your CRM.</strong> Set six, reference them
+   everywhere, edit in one place.</li>
+<li><strong>Calendar settings drive booking rate.</strong> 15-minute slots, 30–45 minute
+   duration, generous availability, auto video link.</li>
+<li><strong>A2P 10DLC is mandatory, not optional.</strong> Register your campaign and honor
+   opt-outs before any SMS. This returns in the cold-SMS lesson.</li>
+<li><strong>Deliverability lives in DNS.</strong> A dedicated sending subdomain with
+   SPF/DKIM/DMARC keeps your mail out of spam.</li>
+<li><strong>GHL replaces DocuSign.</strong> Upload a PDF, add fields, get signed contracts in
+   the CRM.</li>
+<li><strong>Reminders are the money automation.</strong> They directly lift show rate.</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ Sending SMS before A2P registration is approved — texts get filtered or
+  blocked. Register first.</li>
+<li>❌ Never wiring opt-out (STOP) handling — this is a legal violation, not a
+  nice-to-have. Honor it automatically.</li>
+<li>❌ Pasting raw phone numbers and links into templates instead of custom values
+  — then having to hunt them all down when something changes.</li>
+<li>❌ Hourly calendar slots with tight availability — you strangle your own
+  booking rate.</li>
+<li>❌ Skipping the email subdomain and sending from your main domain — one bad
+  send hurts your primary reputation.</li>
+<li>❌ Assuming a native GHL number is "good enough" for volume SMS — Twilio (or a
+  Telnyx/Plivo/Bandwidth equivalent) with proper 10DLC is the durable choice.</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: A fully configured, client-ready sub-account</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. When you finish, you will
+have a real, working command center you can hand to a client — or use for your
+own agency — and prove it works by booking a test appointment and watching the
+reminder fire.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>One GHL sub-account configured end to end: white-labeled, with custom values, a
+live strategy-call calendar, a verified Twilio number forwarding to your phone, a
+deliverability subdomain, one uploaded agreement template, and reminders switched
+on. Each piece maps to a Part above.</p>
+<ul>
+<li>White-label login → Part 1</li>
+<li>Six custom values → Part 2</li>
+<li>Strategy-call calendar → Part 3</li>
+<li>Verified Twilio number + A2P → Part 4</li>
+<li>Email sending subdomain → Part 5</li>
+<li>One agreement template → Part 6</li>
+<li>Reminder + new-lead automations → Part 7</li>
+</ul>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in the sub-account</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>White-label</td>
+<td>Branded login at your own subdomain</td>
+</tr>
+<tr>
+<td>Custom values</td>
+<td>Booking link + phone reused in every message</td>
+</tr>
+<tr>
+<td>Calendar settings</td>
+<td>15-min slots, 30–45 min, video link</td>
+</tr>
+<tr>
+<td>A2P 10DLC</td>
+<td>Registered campaign before SMS reminders</td>
+</tr>
+<tr>
+<td>DNS deliverability</td>
+<td>Test email lands in inbox</td>
+</tr>
+<tr>
+<td>E-sign agreement</td>
+<td>One PDF with signature fields</td>
+</tr>
+<tr>
+<td>Automations</td>
+<td>Reminder fires on your test booking</td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>White-label the login.</strong> Point a subdomain at GHL, upload your logo, set
+   colors. Done when your login page shows your brand, not GoHighLevel.</li>
+<li><strong>Create the six custom values.</strong> Phone, booking page, privacy, terms, VSL,
+   first name. Done when each has a merge tag you can drop into a message.</li>
+<li><strong>Build the strategy-call calendar.</strong> Staff assigned, Google Meet/Zoom
+   connected, availability set, 15-min interval, 30–45 min duration, scheduling
+   window and minimum notice set. Done when you can view a bookable link.</li>
+<li><strong>Stand up the phone line.</strong> Connect Twilio, submit A2P 10DLC registration,
+   buy a local number, set call forwarding to your phone. Done when calling the
+   number rings your phone. (SMS goes live once A2P is approved.)</li>
+<li><strong>Set the email subdomain.</strong> Add SPF/DKIM/DMARC records in Cloudflare, verify
+   in GHL, send a test email. Done when the test lands in the inbox, not spam.</li>
+<li><strong>Upload one agreement.</strong> Drop in your service-agreement PDF, add signature,
+   date, and name fields. Done when you can send it for signature to yourself.</li>
+<li><strong>Turn on the automations.</strong> Appointment reminder (24h + 1h), new-lead alert
+   to yourself, and the personalized trust email. Done when a workflow is
+   published and active.</li>
+<li><strong>Stretch goals.</strong> Add the post-call survey workflow; connect Stripe for
+   deposits; clone the whole configured sub-account as a template for the next
+   client.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ Your login page is fully branded (no vendor logo).</li>
+<li>✅ All six custom values exist and render your real data in a test message.</li>
+<li>✅ A test call to your number forwards to your phone and is logged in the CRM.</li>
+<li>✅ Your A2P campaign is submitted (and, once approved, a test SMS sends).</li>
+<li>✅ A test email lands in the inbox with SPF/DKIM/DMARC passing.</li>
+<li>✅ One agreement template is uploaded with working fillable fields.</li>
+<li>✅ <strong>You book a test appointment on your own calendar and confirm the reminder
+  fires</strong> (email now; SMS once A2P is approved).</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> the capstone is not "done" until you have actually
+booked a real test slot and <em>received</em> the reminder. Configuring a workflow and
+confirming it fires are two different things — verify, don't assume.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice
+on one idea. Optional and independent; the Capstone already touches all of
+them, so feel free to skip straight to it.</p>
+</blockquote>
+<h3 id="exercise-1-custom-value-swap-foundational">Exercise 1: Custom-value swap (foundational)</h3>
+<p>Create the "booking page" custom value, drop its tag into a draft email, then
+change the value to a different URL. Confirm the email now shows the new link
+without you editing the email. This is the whole point of custom values in one
+rep.</p>
+<h3 id="exercise-2-calendar-friction-test-intermediate">Exercise 2: Calendar friction test (intermediate)</h3>
+<p>Build the calendar twice — once with hourly slots and once with 15-minute slots
+— and open the booking link for each on your phone. Notice how many more options
+the 15-minute version offers. Keep the better one.</p>
+<h3 id="exercise-3-deliverability-audit-advanced">Exercise 3: Deliverability audit (advanced)</h3>
+<p>After setting your SPF/DKIM/DMARC records, send a test email to a mail-tester
+tool (search "email deliverability test") and read the score. Fix any record it
+flags until you pass. Bonus: send to a Gmail and a non-Gmail inbox and confirm
+both land in the primary inbox.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>GHL COMMAND CENTER — SETUP ORDER
+1. White-label     → subdomain CNAME + logo + colors (Agency Settings)
+2. Custom values   → phone, booking, privacy, terms, VSL, first name
+3. Calendar        → staff · Meet/Zoom · availability · 15-min · 30-45 min
+                     · scheduling window + min notice
+4. Phone (Twilio)  → connect · A2P 10DLC REGISTER · buy local # · forward
+                     (alts: Telnyx, Plivo, Bandwidth, Vonage)
+5. Email           → dedicated subdomain · SPF + DKIM + DMARC in Cloudflare
+                     (alts: Namecheap/Porkbun DNS, Bunny, Fastly)
+6. Agreement       → upload PDF + fillable fields (replaces DocuSign;
+                     alts: PandaDoc, Dropbox Sign)
+7. Automations     → reminders (24h+1h) · new-lead alert · trust email · survey
+
+COMPLIANCE (not optional):
+  • A2P 10DLC registered BEFORE any SMS
+  • Honor STOP / opt-out automatically on every text
+  • TCPA (US) applies; UK GDPR/PECR + Canada CASL are stricter
+  • Returns in Module 6 (cold SMS)
+
+DONE = book a test appointment → reminder fires.
+
+CALENDAR TARGETS: 15-min slots · 30-45 min duration · generous availability
+GHL ALTERNATIVES: HubSpot · Keap · Close · Vendasta · or Cal.com+Zapier+Brevo
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>Earlier, Module 4 · Lesson 10:</strong> you created the sub-account and account
+  structure — this lesson filled that empty shell with working systems.</li>
+<li><strong>Next, Module 4 · Lesson 12:</strong> you build your funnel with Lovable, which feeds
+  leads into the calendar and custom values you just set up (and passes contact
+  details straight through so nobody types their info twice).</li>
+<li><strong>Later, Module 6 (Outreach):</strong> the phone number, A2P registration, and
+  opt-out handling you configured here become mandatory the moment you send cold
+  SMS — the compliance you set up now is what keeps that outreach legal.</li>
+</ul>
+<hr />
+<p><em>Source: "AI Agency Full Course" by Owen Rensland. Prices, settings, KPI numbers,
+and any config shown are illustrative reconstructions of the patterns described
+in the course. Menu names in GoHighLevel and other tools change often — adapt
+these steps to the current interface.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="10-ghl-business-foundation.html"><span class="dir">&#8592; Previous</span><b>GoHighLevel &amp; your business foundation</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="12-build-funnel-lovable.html"><span class="dir">Next &#8594;</span><b>Build your funnel with Lovable</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <span class="fnote">A self-paced course generated from Owen Rensland&#x27;s public AI Agency course. Quotes are attributed to the speaker; scripts, prices, and code are illustrative reconstructions of the patterns described — adapt them to today&#x27;s tools, and always follow platform terms and local laws.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>

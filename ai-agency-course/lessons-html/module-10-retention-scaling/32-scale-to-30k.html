@@ -1,0 +1,1011 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 10 · Lesson 32: Scale to $30k/month | The AI Agency Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>The AI Agency Blueprint</b> &middot; a self-paced course</div>
+  <div class="right"><span>Re-sequenced from Owen Rensland&#x27;s 20-hour AI Agency masterclass</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 10 · Lesson 32</span>
+      <h1>Scale to <span class="accent">$30k/month</span></h1>
+      <p class="lead">Scaling is not a growth hack — it is a set of five conditions you either meet or you don&#x27;t, and once you meet them you grow by increasing inputs, adding infrastructure, applying leverage, and finally hiring yourself out of the work.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        <a class="play" href="https://www.youtube.com" target="_blank" rel="noopener"><span class="circ">&#9654;</span> Watch the talk</a>
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Owen Rensland</b></span>
+        <span class="chip">&#9201; <b>55 to 70 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-when-not-to-scale">Part 1: When NOT to scale</a></li>
+<li><a href="#part-2-micro-and-macro-why-20-clients">Part 2: Micro and macro — why 20 clients</a></li>
+<li><a href="#part-3-operational-complexity-and-operational-pressure">Part 3: Operational complexity and operational pressure</a></li>
+<li><a href="#part-4-the-proof-of-concept-20-clients-85">Part 4: The proof of concept — 20 clients @ 85%</a></li>
+<li><a href="#part-5-the-five-scaling-conditions">Part 5: The five scaling conditions</a></li>
+<li><a href="#part-6-the-four-scaling-steps">Part 6: The four scaling steps</a></li>
+<li><a href="#part-7-leverage-and-asymmetries">Part 7: Leverage and asymmetries</a></li>
+<li><a href="#part-8-throughput-and-bottlenecks-the-pipeline">Part 8: Throughput and bottlenecks — the pipeline</a></li>
+<li><a href="#part-9-removing-yourself-by-hiring">Part 9: Removing yourself by hiring</a></li>
+<li><a href="#the-0-10k-30k-roadmap-course-finale">The 0 → $10k → $30k roadmap (course finale)</a><ul>
+<li><a href="#the-north-star-recap">The north-star recap</a></li>
+</ul>
+</li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#course-capstone-project-your-one-page-scale-plan">🛠️ Course Capstone Project: Your one-page scale plan</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-complexity-audit-foundational">Exercise 1: Complexity audit (foundational)</a></li>
+<li><a href="#exercise-2-leverage-sort-intermediate">Exercise 2: Leverage sort (intermediate)</a></li>
+<li><a href="#exercise-3-bottleneck-hunt-advanced">Exercise 3: Bottleneck hunt (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>Scaling is not a growth hack — it is a set of five conditions you either meet or you don't, and once you meet them you grow by increasing inputs, adding infrastructure, applying leverage, and finally hiring yourself out of the work.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> This is the final lesson of the course. It
+builds to your <strong>Course Capstone</strong> — a one-page "scale plan" that scores your
+own agency against the five scaling conditions, names the single constraint you
+should fix next, and picks your first hire. Everything before the Capstone
+teaches the ideas you'll use to fill it in honestly. If you want to see the
+finish line first, jump to the <strong>"Capstone Project"</strong> section, then come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> Owen's "scale until it breaks, then
+fix the pipe" is a plain-English restatement of a 40-year-old operations idea.
+For the timeless, tool-agnostic version:</p>
+<ul>
+<li><strong><a href="https://en.wikipedia.org/wiki/The_Goal_(novel)">The Goal</a></strong> by Eliyahu
+  Goldratt (1984) — the Theory of Constraints. A system's output is set by its
+  single tightest bottleneck; improving anything else is wasted motion. That is
+  exactly what "find the constraint, fix the constraint" means.</li>
+</ul>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday terms. Here they are in plain words:</p>
+<ul>
+<li><strong>Scaling:</strong> increasing the <em>volume</em> of your business — more clients, more
+  revenue — while keeping quality and margins intact. Not the same as "just
+  working harder."</li>
+<li><strong>Proof of concept:</strong> evidence that your offer actually works, measured here as
+  ~20 clients you delivered real results to. Until you have it, you have a hobby,
+  not a scalable business.</li>
+<li><strong>Unit economics:</strong> the profit math on a single client. If one client costs you
+  more to get and serve than they ever pay you, growing just loses money faster.</li>
+<li><strong>LTGP:CAC:</strong> Lifetime Gross Profit versus Customer Acquisition Cost. How much
+  profit one client brings over their whole time with you, divided by what it
+  cost to sign them. A 3:1 ratio means every $1 spent acquiring a client returns
+  $3 in gross profit.</li>
+<li><strong>Throughput:</strong> how much value actually flows all the way through your business
+  to become paid, results-getting clients.</li>
+<li><strong>Bottleneck / constraint:</strong> the one narrow point in your process that slows
+  everything downstream. Fix it and total output jumps.</li>
+<li><strong>Leverage:</strong> getting a large result from a small, well-placed effort — like a
+  lever lifting a heavy rock.</li>
+</ul>
+<p>You do not need to memorise these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>Most people trying to grow an agency scale the wrong thing at the wrong time,
+and it blows up on them. "People misunderstand the concept of scale in its
+entirety," Owen says. "People think that they need to scale, but in actuality
+they just need to find a delivery system that works." This lesson gives you a
+gate — five yes/no conditions — so you only pour fuel on a fire that's actually
+burning. Get the gate right and growth is almost boring. Get it wrong and you
+buy yourself chargebacks, refunds, and a wrecked local reputation.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>Decide honestly whether you should scale yet, or fix your product first.</li>
+<li>Confirm the five scaling conditions against your own agency.</li>
+<li>Apply the four-step scaling sequence (conditions → inputs → infrastructure → management).</li>
+<li>Spot high-leverage vs anti-leverage activities and reallocate your time.</li>
+<li>Model your business as a pipeline and find its single tightest bottleneck.</li>
+<li>Plan your first delegation hire — and understand the real responsibilities it brings.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Modules 1–9.</strong> This lesson assumes you have a working agency: an offer, a
+  client-getting system, a sales process, and a fulfillment system that delivers
+  real results. Scaling is the <em>last</em> thing you build, not the first.</li>
+<li>Comfort with the metrics and pipeline thinking from Module 3 (fundamentals) and
+  the KPI/LTGP:CAC ideas introduced earlier in the course.</li>
+</ul>
+<hr />
+<h2 id="part-1-when-not-to-scale">Part 1: When NOT to scale</h2>
+<p>Here is the uncomfortable truth Owen leads with: if you've served three or four
+clients with just-okay results, <strong>you do not scale.</strong> "You need to add more value
+to your product and deliver it better, or just find a proof of concept."</p>
+<p>Why not just grow anyway? Because you can — for about 30 days. "You'll see these
+churn-and-burn agencies scale to like 75k a month in 30 days," he says. "You can
+scale in the short term, but if you haven't found a way to deliver a valuable
+product to at least 20 clients, you're going to get chargebacks, refund requests,
+disputes everywhere once people realize this product is not that valuable. And
+then things will just start to break."</p>
+<p>The goal that comes <em>before</em> scaling is a <strong>proof of concept</strong>: roughly 20
+clients you've delivered on. Not 30, not 5. Owen picks 20 because "the most
+important thing is the LTGP:CAC" — you need enough real clients to trust your
+profit math.</p>
+<blockquote>
+<p>🔑 <strong>Fix the product first. Scaling a broken offer just distributes the
+breakage faster.</strong></p>
+</blockquote>
+<h2 id="part-2-micro-and-macro-why-20-clients">Part 2: Micro and macro — why 20 clients</h2>
+<p>Why does 20 unlock 1,000? Because <strong>what holds true for the micro holds true for
+the macro.</strong></p>
+<p>"If you can sign 20 clients with the same KPIs for success — appointments, shows,
+sales — according to the laws of scale, you can sign a thousand, because all that
+increases is the size and infrastructure." Everyone in your niche shares an
+affinity: similar businesses, similar goals, similar problems. So a system that
+reliably works on 20 roofers is a system that works on 1,000 roofers. The proof
+of concept isn't a warm-up — it <em>is</em> the machine, just smaller.</p>
+<p>This is also why the course kept telling you to stick to <strong>one niche</strong>. That
+brings us to the two forces that decide whether growth is smooth or violent.</p>
+<h2 id="part-3-operational-complexity-and-operational-pressure">Part 3: Operational complexity and operational pressure</h2>
+<p><strong>Operational complexity</strong> is how many moving parts your business has — and it
+<em>compounds</em>, it doesn't add.</p>
+<p>Owen's example: one niche means one offer, one sales script, one CRM, one set of
+SOPs, one agreement, one payment plan, and so on — say 14 things. Your complexity
+score is 1 × 1 × 1 … = <strong>1.</strong> Run two niches and you need two of almost
+everything: the score becomes 2 to the 14th power ≈ <strong>16,384.</strong> "If it's that
+complex, you are not going to scale."</p>
+<table>
+<thead>
+<tr>
+<th>Setup</th>
+<th>Rough complexity score</th>
+<th>Scalable?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One niche, one of everything</td>
+<td>1</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Two niches, ~2× everything</td>
+<td>~16,000</td>
+<td>Barely</td>
+</tr>
+<tr>
+<td>A grab-bag of offers and tools</td>
+<td>Millions</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Operational pressure</strong> is the second force. "As you increase the size of your
+business, all of your issues and problems will be amplified by at least the
+multiplier of two." A problem you have at 1× — a shaky media-buying process, weak
+client communication — doesn't stay the same size when you triple the business.
+Triple the business and that problem gets roughly 6× worse.</p>
+<p>His images stick: a tiny crack in a windshield is nothing until you drive in
+extreme conditions, then it spiders and shatters. A slight ocean-temperature rise
+looks harmless until it collapses a whole reef. Scale <em>is</em> the extreme condition.
+It finds every small crack and blows it open. That is the real reason you serve
+20 clients first — to find and seal the cracks while they're still cheap.</p>
+<blockquote>
+<p>🔑 <strong>Keep it simple, then keep it simple. Complexity compounds and pressure
+amplifies — 20 clients is how you pressure-test before it's expensive.</strong></p>
+</blockquote>
+<h2 id="part-4-the-proof-of-concept-20-clients-85">Part 4: The proof of concept — 20 clients @ 85%</h2>
+<p>Proof of concept has three aspects you work on to get to ~20 clients:</p>
+<ol>
+<li><strong>Client acquisition.</strong> With the systems from earlier modules, this "should
+   never really be your problem." Find one or two winning channels, get them into
+   KPI through testing, then scale them on the micro level.</li>
+<li><strong>Product.</strong> Your actual service — "literally your business." Owen deliberately
+   calls it your <em>product</em>, not "service delivery," because gurus treat delivery
+   as an afterthought and that's exactly how you end up with disputes.</li>
+<li><strong>Time.</strong> The one people ignore. "The typical client turnaround is 3 to 6
+   months" — that's how long it takes to know whether your product truly worked.
+   You have to let ~10–20 clients run through the full window before you can claim
+   a proof of concept.</li>
+</ol>
+<p>For context, Owen frames $10k/month as "the beginning stage before the beginning
+stage" — roughly 5 to 10 clients. Proof of concept is double that. Which sets up
+the actual gate.</p>
+<h2 id="part-5-the-five-scaling-conditions">Part 5: The five scaling conditions</h2>
+<p>Scaling is <strong>completely conditional.</strong> Ask these five questions. Any "no" means
+you are not ready.</p>
+<div class="codehilite"><pre><span></span><code>THE FIVE SCALING CONDITIONS  (all five, or you don&#39;t scale)
+
+  [ ] 1. Served at least 20 clients at ~85% success rate   ← most important
+  [ ] 2. Your offer resonates with the market
+  [ ] 3. You have a predictable appointment-booking system
+  [ ] 4. You have a predictable sales process (strangers → clients)
+  [ ] 5. You have a 3:1 LTGP:CAC ratio                      ← most important
+</code></pre></div>
+
+<p>Owen singles out <strong>#1 and #5</strong> as the two that matter most. Condition #5 is the
+health of your unit economics: for every $1 you spend acquiring a client, you
+make $3 of lifetime gross profit. That ratio is what makes "increase the inputs"
+a money-making move instead of a money-burning one.</p>
+<blockquote>
+<p>⚠️ <strong>Reality check.</strong> Conditions #1 and #5 are not paperwork — they're the
+guardrails that keep growth honest. Scaling with a strong LTGP:CAC but <em>no real
+fulfillment capacity</em> still ends in refunds and bad reviews, because you sold
+more than you can deliver. "Scale until it breaks" only works when both the
+math <strong>and</strong> the delivery are genuinely there. If you can't serve the next 50
+clients well, you are not ready, whatever the spreadsheet says.</p>
+</blockquote>
+<h2 id="part-6-the-four-scaling-steps">Part 6: The four scaling steps</h2>
+<p>Once all five boxes are checked, scaling itself is almost absurdly simple. Owen's
+four steps:</p>
+<div class="codehilite"><pre><span></span><code>1. HIT THE CONDITIONS      → the hard part; most people never get here
+2. INCREASE THE INPUTS     → more ad spend / more outbound / more posting
+3. BUILD INFRASTRUCTURE    → capacity to handle the extra inputs
+4. OPTIMIZE &amp; MANAGE       → find bottlenecks, manage people
+</code></pre></div>
+
+<p><strong>Step 2 — increase inputs.</strong> "If you are running ads, you increase the ad spend.
+If you're doing outbound, you increase the outbound volume." Literally quadruple
+your ad spend. It sounds too easy because <em>the hard part was getting the
+conditions.</em></p>
+<p><strong>Step 3 — build infrastructure.</strong> Ask yourself: "Could you handle 50 extra
+clients right now?" Almost certainly no. The fastest way to scale is to push
+inputs up until something <em>breaks</em> — a stage in your process floods and can't
+keep up — and then build infrastructure exactly there: tracking systems, media-
+buying procedures, hiring pipelines. You don't guess where to reinforce; the
+breakage tells you.</p>
+<p><strong>Step 4 — optimize and manage.</strong> "Most of your shortcomings with scaling will be
+in your ability to manage people." Building and managing teams — client success
+managers, media buyers, setters — becomes your main job.</p>
+<h2 id="part-7-leverage-and-asymmetries">Part 7: Leverage and asymmetries</h2>
+<p>Leverage = <em>lever</em> + <em>age</em> — using a small force to move a large weight. "People
+progress so much more than others by doing less."</p>
+<p>Picture a lever, a fulcrum, and a rock. The <strong>rock</strong> is your intended output
+(cash flow and growth). <strong>Pushing the lever</strong> is your daily effort. The
+<strong>fulcrum</strong> is <em>where you place your focus</em> — how you spend your energy and time.
+Move the fulcrum to the right spot and a tiny push lifts a huge rock.</p>
+<ul>
+<li><strong>Asymmetry (high leverage):</strong> small input, big output. You focus on the right
+  thing and the result costs little effort.</li>
+<li><strong>Anti-asymmetry (anti-leverage):</strong> big input, tiny output. You grind and get
+  almost nothing.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>High-leverage (do these)</th>
+<th>Anti-leverage (avoid these)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Post one YouTube video that books 30 appointments over its life</td>
+<td>Cold-call 4 hours to get 2 appointments</td>
+</tr>
+<tr>
+<td>Hire one setter who books 20 appointments/month</td>
+<td>Rebuild your website for 2 days</td>
+</tr>
+<tr>
+<td>Learn paid ads to solve booking <em>forever</em></td>
+<td>Rebrand with a new logo</td>
+</tr>
+<tr>
+<td>Hire one CSM to manage 30 clients</td>
+<td>Keep switching software to feel "efficient"</td>
+</tr>
+<tr>
+<td>Hire one media buyer to run every client's ads</td>
+<td>Chase a "mindset shift" by living a flashy lifestyle</td>
+</tr>
+</tbody>
+</table>
+<p>"The reason a guy hiring cold-callers makes way more than a guy cold-calling
+himself is just where they spend their energy and time. Everyone has the same 24
+hours." The whole engine of scale is <strong>delegation</strong> — the highest-leverage move
+there is.</p>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> before any task, ask <em>"Does this take me closer to
+my goal — more than the highest-leverage alternative would?"</em> If cold-calling
+four hours competes with hiring one setter, the setter wins.</p>
+</blockquote>
+<h2 id="part-8-throughput-and-bottlenecks-the-pipeline">Part 8: Throughput and bottlenecks — the pipeline</h2>
+<p>Model your business as a <strong>pipeline</strong>. The giant barrel at the top is the market;
+clients are the water flowing down. Each pipe is a <em>system</em> — booking, sales,
+fulfillment — and at every joint a little water leaks out. What reaches the bottom
+is your <strong>yield</strong>: paid, results-getting clients.</p>
+<div class="codehilite"><pre><span></span><code>   MARKET  ─┐
+            ▼
+   [ appointment-booking system ]  ← leaks (no-shows, unbooked)
+            ▼
+   [ sales system ]                ← leaks (lost pitches, objections)
+            ▼
+   [ value-delivery system ]       ← leaks (weak results, churn)
+            ▼
+        YIELD = money + results
+</code></pre></div>
+
+<p>A <strong>bottleneck</strong> is the pipe where flow narrows most. Owen's example: great ads,
+reminders, growth calls, demos booked — then suddenly very little flows past one
+point. The culprit is the <strong>show rate.</strong> And because a blockage early in the pipe
+starves everything downstream, "by the time you get to the end there's going to
+be nothing — no money, no yield."</p>
+<p>You find bottlenecks with <strong>metrics vs KPIs.</strong> If your goal show rate was 55–65%
+and you measure 20% over a valid sample (~30 meetings), that's a glaring, and
+<em>early</em>, bottleneck — fix it before anything else. Focus on the high-leverage
+metric: the one that, if out of KPI, starves the most water.</p>
+<blockquote>
+<p>💡 <strong>The counter-intuitive rule: when a system is in KPI, don't touch it.</strong>
+Owen's friend thought his meeting <em>quality</em> was the problem, rewrote his
+outbound scripts to fix it, and dropped his booking rate from 3.5% to under 1%.
+"Sure, he got better-quality meetings — but now he got no meetings."
+Optimization more often destroys than improves. Watch a working system like a
+hawk; don't rebuild it.</p>
+</blockquote>
+<p>To actually fix a broken system, check in this order: <strong>anomalies</strong> (are the
+calls even connecting? is the setter on vacation?) → <strong>inputs</strong> (did the leads or
+list change?) → <strong>process</strong> (did you change the script?) → <strong>environment</strong> (did
+the market shift?). Most regressions are a change <em>you</em> made and forgot.</p>
+<h2 id="part-9-removing-yourself-by-hiring">Part 9: Removing yourself by hiring</h2>
+<p>Every high-leverage move above ends in the same place: <strong>hire.</strong> The point of
+scale is to take yourself out of the day-to-day so the business grows past what
+your own two hands can do.</p>
+<p>The usual first hires:</p>
+<ul>
+<li><strong>Setters / ISAs</strong> — book appointments so you stop grinding outbound yourself.</li>
+<li><strong>Media buyers</strong> — run ads across all clients so acquisition isn't bottlenecked
+  on you.</li>
+<li><strong>CSMs (client success managers)</strong> — manage ~30 clients each, protecting
+  retention while you build.</li>
+</ul>
+<blockquote>
+<p>⚠️ <strong>Reality check — hiring is a legal and human commitment.</strong> The moment you
+pay someone, you take on real responsibilities: correctly classifying employees
+vs contractors, tax and payroll obligations, written agreements, and the duty to
+actually manage and pay people fairly. Misclassifying a worker to save money can
+mean back taxes and penalties. Get this right in your jurisdiction — talk to an
+accountant or employment lawyer before your first hire. Delegation is leverage;
+it is also a responsibility to the humans you bring on.</p>
+</blockquote>
+<hr />
+<h2 id="the-0-10k-30k-roadmap-course-finale">The 0 → $10k → $30k roadmap (course finale)</h2>
+<p>You've reached the end. Here is the whole journey compressed into a map you can
+run tomorrow.</p>
+<p><strong>0 → $10k/month.</strong> Owen keeps it brutally simple: "Book appointments and close
+deals. That's all you do every single day." His own first $10k month came at
+around <strong>50 taken sales calls</strong> — and he didn't close the first ~25. It took ~20
+calls just to sign his first client. So be patient: you need at least ~30 calls
+before your close rate even means anything (regression to the mean). $10k is
+"the beginning stage before the beginning stage" — roughly 5–10 clients.</p>
+<p><strong>$10k → $30k/month.</strong> Now it's about <strong>attacking your single specific
+constraint.</strong> Pull your business into metrics, use the pipeline visual, and see
+"exactly what's holding back most of the water." Usually it's one of two things:
+an appointment-booking problem or a sales problem. Fix that one pipe, and the
+yield jumps. "Even $10k to $30k a month for this business is not a lot" — once the
+system is real, the constraint is almost always obvious.</p>
+<blockquote>
+<p>⚠️ <strong>Reality check — the numbers.</strong> The "$30k/month" in this title is an
+<em>illustrative</em> figure from one operator's story, not a promise. Owen himself
+says "99.9% of people will not have gotten this far." <strong>Most people who start an
+agency do not reach these numbers, and timelines vary enormously.</strong> Income
+claims like these are not typical, not guaranteed, and depend on your market,
+effort, and a great deal of luck. Treat the roadmap as a direction, not a due
+date. Building a real, honest business that helps local owners get customers is
+the win — the revenue is a lagging indicator of that, if it comes at all.</p>
+</blockquote>
+<h3 id="the-north-star-recap">The north-star recap</h3>
+<p>Across 32 lessons you didn't just watch — you <em>built.</em> You picked a niche and an
+offer (Modules 1–2). You learned the fundamentals and systems thinking that let
+you see a business as inputs, processes, and feedback (Module 3). You stood up
+your infrastructure, mastered Meta ads, and built cold outreach that books
+(Modules 4–6). You learned to set and close real sales calls with presence, not
+scripts (Modules 7–8). You built a fulfillment system that turns leads into shown
+appointments clients actually pay for (Module 9). And now you know how to keep
+them and grow — without breaking (Module 10).</p>
+<p>That is a whole, working agency. The last skill — scaling — is just the discipline
+to grow it only when it's genuinely ready. Fix the product, hit the five
+conditions, increase inputs, build infrastructure where it breaks, apply leverage,
+and hire yourself out of the work. Do it honestly and you've built something real.</p>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>Don't scale a broken product.</strong> Under ~20 delivered clients, your job is to
+   fix the offer, not grow it. Scaling breakage just distributes it faster.</li>
+<li><strong>What works at 20 works at 1,000.</strong> Micro proves macro — because your niche
+   shares an affinity. All that changes with size is infrastructure.</li>
+<li><strong>Complexity compounds; pressure amplifies.</strong> One niche, one of everything.
+   Every crack you leave gets ~2× worse per unit of growth.</li>
+<li><strong>Five conditions gate scaling.</strong> 20 clients @ 85%, offer resonates,
+   predictable booking, predictable sales, 3:1 LTGP:CAC. #1 and #5 matter most.</li>
+<li><strong>Scale = increase inputs, then build where it breaks.</strong> Push volume until a
+   pipe floods; reinforce exactly there.</li>
+<li><strong>Leverage is where you point your focus.</strong> Delegation is the highest-leverage
+   act; hire to remove yourself.</li>
+<li><strong>Fix the constraint, and only the constraint.</strong> In KPI? Don't touch it.</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Scaling on 4 okay clients</strong> because a "churn-and-burn" agency posted a $75k
+  month. That month exists; the disputes three months later do too. Get proof of
+  concept first.</li>
+<li>❌ <strong>Outscaling your delivery.</strong> Great LTGP:CAC plus no fulfillment capacity =
+  refunds and one-star reviews. Grow only as fast as you can serve well.</li>
+<li>❌ <strong>Running two niches "to hedge."</strong> You just multiplied your complexity into
+  the thousands and guaranteed you can't scale either.</li>
+<li>❌ <strong>Optimizing a system that's already in KPI.</strong> You'll usually break it. Watch
+  it; don't rebuild it.</li>
+<li>❌ <strong>Grinding anti-leverage tasks</strong> (endless cold-calling, rebrands, software-
+  hopping) while a single hire would 10× the same output.</li>
+<li>❌ <strong>Hiring casually.</strong> Skipping worker classification, contracts, and tax duties
+  turns your leverage move into a legal liability.</li>
+<li>❌ <strong>Believing the income figure is a promise.</strong> It's one person's illustrative
+  number. Most people don't reach it. Build the business; don't chase the headline.</li>
+</ul>
+<hr />
+<h2 id="course-capstone-project-your-one-page-scale-plan">🛠️ Course Capstone Project: Your one-page scale plan</h2>
+<blockquote>
+<p>This is the capstone for the whole course. It's deliberately small — one page —
+because the point is an <em>honest</em> snapshot of the agency you've built and the one
+next move that matters, not a business plan nobody reads.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>A single page with three sections plus a short reflection:</p>
+<ol>
+<li><strong>Five-condition scorecard</strong> — an honest self-assessment of exactly where you
+   are. Uses Part 5.</li>
+<li><strong>Your next single constraint</strong> — the one bottleneck to fix next, found with
+   the pipeline model. Uses Part 8.</li>
+<li><strong>Your first delegation hire</strong> — the highest-leverage person to bring on, and
+   the responsibilities it carries. Uses Parts 7 and 9.</li>
+<li><strong>A short reflection</strong> tying together the agency you've built across all 32
+   lessons.</li>
+</ol>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in the scale plan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>When NOT to scale</td>
+<td>Scorecard forces the honest "am I even ready?" call</td>
+</tr>
+<tr>
+<td>Five conditions</td>
+<td>The scorecard itself</td>
+</tr>
+<tr>
+<td>Throughput / bottlenecks</td>
+<td>Naming your single constraint</td>
+</tr>
+<tr>
+<td>Leverage &amp; asymmetries</td>
+<td>Choosing the highest-leverage hire</td>
+</tr>
+<tr>
+<td>Hiring responsibly</td>
+<td>The responsibilities line under your hire</td>
+</tr>
+<tr>
+<td>North-star recap</td>
+<td>The reflection</td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Score the five conditions honestly.</strong> For each, write your real number and a
+   Yes / Partly / No. (e.g. "Condition 1: 6 clients delivered, ~70% success →
+   No.") Do not round up to feel better.</li>
+<li><strong>State your verdict in one line.</strong> "I am / am not ready to scale, because…"
+   Most honest answers are "not yet" — that's a <em>correct</em> answer, not a failure.</li>
+<li><strong>Draw your pipeline.</strong> Market → booking → sales → fulfillment → yield. Mark the
+   conversion rate at each stage from your real metrics (estimate if new).</li>
+<li><strong>Name your single constraint.</strong> The stage leaking the most water vs its KPI.
+   One sentence: "My tightest constraint is <strong><em>, currently ___ vs a target of </em></strong>."</li>
+<li><strong>Pick your first hire.</strong> Setter, media buyer, or CSM — whichever most directly
+   relieves your constraint or frees the most of your time. Say why in one line.</li>
+<li><strong>Add the responsibilities line.</strong> One sentence on how you'll do it right:
+   contractor vs employee, a written agreement, and who you'll ask (accountant /
+   lawyer) before you pay anyone.</li>
+<li><strong>Write the reflection (5–8 sentences).</strong> What agency did you build across the
+   course? What's your niche, offer, acquisition channel, and the result you get
+   clients? What is the single most important thing you'll do next?</li>
+<li><strong>Stretch goals.</strong> Attach a 90-day version: if "not ready," the plan to reach
+   proof of concept; if "ready," the exact input you'll increase first and the
+   infrastructure you'll build when it breaks.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ Every condition has a real number and an honest Yes / Partly / No.</li>
+<li>✅ Your readiness verdict is one clear sentence you actually believe.</li>
+<li>✅ Exactly one constraint is named — not three.</li>
+<li>✅ One hire is chosen, justified by leverage, with a responsibilities line.</li>
+<li>✅ The reflection would let a stranger understand your whole agency in a minute.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> the plan is only useful if the scorecard is true.
+A page that says "not ready yet, fix fulfillment, no hire this quarter" is worth
+ten pages of optimistic fiction. Grade yourself the way a bank would.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice on
+one idea. Optional and independent; the Capstone already touches all of them.</p>
+</blockquote>
+<h3 id="exercise-1-complexity-audit-foundational">Exercise 1: Complexity audit (foundational)</h3>
+<p>List every "one of" in your business — offers, scripts, CRMs, SOPs, payment
+plans. Count them. Now imagine adding a second niche and recount what you'd have
+to duplicate. Write the before/after complexity scores. Feel the compounding.</p>
+<h3 id="exercise-2-leverage-sort-intermediate">Exercise 2: Leverage sort (intermediate)</h3>
+<p>Write down everything you did in your business last week. Sort each item into
+<strong>high-leverage</strong> or <strong>anti-leverage</strong> using Part 7's table as a guide. Total the
+hours in each column. Decide one anti-leverage task to delegate or delete.</p>
+<h3 id="exercise-3-bottleneck-hunt-advanced">Exercise 3: Bottleneck hunt (advanced)</h3>
+<p>Take one real system (say, appointment booking). List its stages and the KPI for
+each. Plug in your actual numbers. Find the stage furthest below KPI — that's your
+bottleneck. Then run the fix order (anomaly → input → process → environment) and
+write down the most likely cause. Resist "fixing" anything already in KPI.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>SCALE TO $30k — FINAL CHEAT SHEET
+
+WHEN NOT TO SCALE
+  &lt;20 delivered clients  → fix the PRODUCT, not the volume
+  Scaling a broken offer → chargebacks, refunds, disputes (in ~90 days)
+
+PROOF OF CONCEPT = ~20 clients, across 3 aspects
+  1) client acquisition   2) product   3) TIME (3–6 mo turnaround)
+
+MICRO = MACRO   what works on 20 works on 1,000 (only infra changes)
+COMPLEXITY compounds (1 niche = score 1; 2 niches ≈ 16,384) → ONE of everything
+PRESSURE amplifies problems by ≥2× as you grow → seal cracks at 20 clients
+
+THE 5 SCALING CONDITIONS  (all five, or don&#39;t scale)
+  [ ] 20 clients @ 85% success   ← most important
+  [ ] offer resonates
+  [ ] predictable booking
+  [ ] predictable sales
+  [ ] 3:1 LTGP:CAC               ← most important
+
+THE 4 STEPS
+  1 hit conditions → 2 increase inputs → 3 build infrastructure → 4 optimize/manage
+
+LEVERAGE = point your focus (fulcrum) at the right spot
+  HIGH: hire a setter/CSM/media buyer, learn ads, post one video
+  ANTI: 4hrs cold-calling for 2 appts, rebrands, website tinkering
+  Delegation is the master lever.
+
+PIPELINE / THROUGHPUT
+  market → booking → sales → fulfillment → yield
+  Find the bottleneck via metric-vs-KPI. Fix ONLY the constraint.
+  In KPI? DON&#39;T TOUCH IT. Fix order: anomaly → input → process → environment.
+
+HIRE to remove yourself: setters, media buyers, CSMs
+  (get classification, contracts &amp; taxes right — real legal duty)
+
+ROADMAP
+  0→10k:   book appointments + close deals, daily. ~50 calls to first 10k mo.
+  10k→30k: attack your ONE constraint (usually booking or sales).
+
+REALITY: $30k is illustrative, NOT typical or guaranteed. Most don&#39;t reach it.
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>Earlier, Module 3 · Fundamentals:</strong> gave you systems thinking, KPIs, and the
+  pipeline/funnel visual — the exact tools you use here to find bottlenecks.</li>
+<li><strong>Earlier, Modules 4–9:</strong> built the booking, ads, outreach, sales, and
+  fulfillment systems that must be <em>in KPI</em> before you're allowed to scale them.</li>
+<li><strong>Earlier, Lesson 31 · Retention:</strong> keeping clients paying is what makes your
+  LTGP high enough to hit the 3:1 ratio — condition #5 of scaling.</li>
+<li><strong>This is the last lesson.</strong> There is no "next" inside the course — the next
+  step is <em>yours</em>: fill in your scale plan, fix your one constraint, and take the
+  agency you built to its first (and next) results-getting client.</li>
+</ul>
+<hr />
+<p><em>Source: "AI Agency Full Course" by Owen Rensland. Prices, KPI numbers, income
+figures, and scripts are illustrative reconstructions of the patterns described in
+the talk — examples to adapt, not guarantees. Income like "$30k/month" is not
+typical and not promised. Adapt all tactics to your market and comply with the
+laws that apply to you.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="31-client-retention.html"><span class="dir">&#8592; Previous</span><b>Client Retention Mastery</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <span class="fnote">A self-paced course generated from Owen Rensland&#x27;s public AI Agency course. Quotes are attributed to the speaker; scripts, prices, and code are illustrative reconstructions of the patterns described — adapt them to today&#x27;s tools, and always follow platform terms and local laws.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>

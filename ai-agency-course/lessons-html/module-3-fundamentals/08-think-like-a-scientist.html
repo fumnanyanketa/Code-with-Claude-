@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 3 · Lesson 8: Think like a scientist | The AI Agency Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>The AI Agency Blueprint</b> &middot; a self-paced course</div>
+  <div class="right"><span>Re-sequenced from Owen Rensland&#x27;s 20-hour AI Agency masterclass</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 3 · Lesson 8</span>
+      <h1>Think like a <span class="accent">scientist</span></h1>
+      <p class="lead">Treat every part of your agency — cold calls, texts, ads, funnels — as an experiment: make one educated guess, change exactly one thing, run a big-enough test without touching it, read the numbers, then improve, so growth becomes something you cause instead of something you hope for.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        <a class="play" href="https://www.youtube.com" target="_blank" rel="noopener"><span class="circ">&#9654;</span> Watch the talk</a>
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Owen Rensland</b></span>
+        <span class="chip">&#9201; <b>50 to 60 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-the-four-step-loop">Part 1: The four-step loop</a></li>
+<li><a href="#part-2-building-the-hypothesis-this-is-the-hard-part">Part 2: Building the hypothesis (this is the hard part)</a><ul>
+<li><a href="#one-or-two-variables-and-the-rest-are-constants">One or two variables — and the rest are constants</a></li>
+<li><a href="#primary-vs-secondary-metrics">Primary vs secondary metrics</a></li>
+<li><a href="#sample-size-and-the-two-magic-numbers">Sample size, and the two magic numbers</a></li>
+<li><a href="#test-duration-and-latency">Test duration and latency</a></li>
+<li><a href="#make-it-airtight-and-version-it">Make it airtight, and version it</a></li>
+</ul>
+</li>
+<li><a href="#part-3-the-testing-database">Part 3: The testing database</a><ul>
+<li><a href="#running-the-test-dont-touch-it">Running the test: don't touch it</a></li>
+<li><a href="#the-5-point-completion-checklist">The 5-point completion checklist</a></li>
+</ul>
+</li>
+<li><a href="#part-4-scale-by-volume-then-iterate">Part 4: Scale by volume, then iterate</a><ul>
+<li><a href="#the-2-abr-math">The 2% ABR math</a></li>
+<li><a href="#step-4-iterate-when-youre-not-yet-at-kpi">Step 4 — iterate (when you're not yet at KPI)</a></li>
+</ul>
+</li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: your testing database + one real test</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-spot-the-ruined-test-foundational">Exercise 1: Spot the ruined test (foundational)</a></li>
+<li><a href="#exercise-2-do-the-2-math-for-your-niche-intermediate">Exercise 2: Do the 2% math for your niche (intermediate)</a></li>
+<li><a href="#exercise-3-design-the-regression-branch-advanced">Exercise 3: Design the regression branch (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>Treat every part of your agency — cold calls, texts, ads, funnels — as an experiment: make one educated guess, change exactly one thing, run a big-enough test without touching it, read the numbers, then improve, so growth becomes something you <em>cause</em> instead of something you <em>hope for</em>.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone Project</strong> where you set up your own testing database and design one real, fully-specified test for a channel you will run later. Everything before the Capstone teaches the skills you will use there. If you want to see the finish line first, jump to the <strong>"Capstone Project"</strong> section, then come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> Owen calls it "scientific thinking," but the concept is centuries old and tool-agnostic.</p>
+<ul>
+<li><strong><a href="https://en.wikipedia.org/wiki/The_Logic_of_Scientific_Discovery">Karl Popper, <em>The Logic of Scientific Discovery</em></a></strong> (1959). Popper's core point — a claim is only worth anything if a test could <em>prove it wrong</em> — is exactly what a well-built agency test does: you set a number in advance and let reality confirm or kill your guess. The four-step loop in this lesson is the practical, business-sized version of the method Popper, Galileo, and Bacon formalized.</li>
+</ul>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday terms. Here they are in plain words:</p>
+<ul>
+<li><strong>Hypothesis:</strong> an educated guess about what will work — e.g. "this new opener will book more appointments."</li>
+<li><strong>Variable:</strong> the one thing you deliberately change in a test (the script, the subject line, the ad hook).</li>
+<li><strong>Constant:</strong> everything you deliberately <em>keep the same</em> so you can tell what caused the result.</li>
+<li><strong>Metric / KPI:</strong> a number that measures performance. A <strong>KPI</strong> (Key Performance Indicator) is the target number you decide counts as "good enough" before you start.</li>
+<li><strong>ABR:</strong> Appointment Booking Rate — the share of your outreach that turns into a booked appointment.</li>
+<li><strong>Sample size:</strong> how many attempts a test needs before its result means anything.</li>
+<li><strong>Regression to the mean:</strong> the statistics fact that a handful of early results tend to look freakishly good or freakishly bad, and only settle toward the truth after enough tries.</li>
+</ul>
+<p>You do not need to memorise these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>Owen's blunt promise: <em>"Nothing you do when building an agency should ever feel like a guess."</em> Beginners quit after 24 sales calls or 50 cold calls because "it isn't working" — when in truth they never ran a real test at all. The scientist's loop is what separates people who copy a system and pray from people who can <em>build and fix any system on any channel</em>. Owen used exactly this to take his own cold-SMS booking rate from <strong>0.6% to 4.5% in three months</strong> — a 7x improvement, one variable at a time.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>Run the four-step loop — hypothesis, test, observe, iterate — on any channel.</li>
+<li>Change exactly one variable per test and hold everything else constant.</li>
+<li>Pick a primary and a secondary metric, and set a KPI before you launch.</li>
+<li>Use the two magic numbers — 30 taken calls, 300 touches — to know when a result is real.</li>
+<li>Set a test's duration to wait out follow-ups (latency) instead of judging early.</li>
+<li>Log a test in a testing database and decide whether to scale, iterate, or regress.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Lesson 7</strong> (the fundamentals mindset — strategy, stimuli, and why copycats decay).</li>
+<li>A channel in mind that you will actually run later (cold SMS, cold calling, ads, or DMs). It does not need to be live yet.</li>
+</ul>
+<hr />
+<h2 id="part-1-the-four-step-loop">Part 1: The four-step loop</h2>
+<p>Owen strips the scientific method down to four steps you repeat forever:</p>
+<div class="codehilite"><pre><span></span><code>   OBSERVE a problem  →  (you need a &quot;thing&quot; to improve first)
+        │
+        ▼
+   1. HYPOTHESIS   make an educated guess about which variable will work
+        │
+        ▼
+   2. TEST         turn the guess into real stimuli, expose it to your niche
+        │
+        ▼
+   3. OBSERVE      collect the data, compare it to your KPI
+        │
+        ▼
+   4. ITERATE      change ONE thing, guess again  ──►  back to step 1
+</code></pre></div>
+
+<p>Before step one you make an observation — you can't build a hypothesis to fix something if you don't have a thing to fix. Then you loop. <em>"If you do this over and over and over again in everything in your life, you will succeed in all aspects of your life,"</em> Owen says — he uses it on his content, his health, his relationships, not just outreach.</p>
+<blockquote>
+<p>🔑 <strong>The loop is the skill. The channel is just where you point it.</strong> Master hypothesis → test → observe → iterate once, and it transfers to cold SMS, ads, funnels, DMs, even a YouTube thumbnail.</p>
+</blockquote>
+<h2 id="part-2-building-the-hypothesis-this-is-the-hard-part">Part 2: Building the hypothesis (this is the hard part)</h2>
+<p>Owen is honest: steps 2, 3, and 4 are easy. Step 1 is where the real work lives. A good hypothesis has five pieces.</p>
+<h3 id="one-or-two-variables-and-the-rest-are-constants">One or two variables — and the rest are constants</h3>
+<p>First, name the variable(s) that make up the stimuli you're testing. Cold calling? The variables might be the <strong>opener</strong> and the <strong>pitch</strong>. Cold email? The <strong>subject line</strong>, <strong>header</strong>, <strong>body</strong>. Paid ads? The <strong>hook</strong>, <strong>body</strong>, <strong>CTA</strong>.</p>
+<p>Everything else is a <strong>constant</strong> — the things you refuse to change so you can prove cause and effect. Testing cold-SMS scripts? Your phone number stays the same. Only the script changes.</p>
+<blockquote>
+<p>❌ <strong>The mistake that voids the whole test:</strong> sending 300 emails, getting a weak result, then changing your copy <em>and</em> your domain <em>and</em> your profile picture <em>and</em> your headline at once. Now your open rate moves and you have no idea what caused it. As Owen puts it: <em>"You can never iterate more than one variable at a time... if you iterate more than one variable at a time, then the data is [garbage] and you have to start over."</em></p>
+</blockquote>
+<h3 id="primary-vs-secondary-metrics">Primary vs secondary metrics</h3>
+<p>Set the numbers you'll measure <em>before</em> you launch. The <strong>primary metric</strong> is the direct, first-in-line number (e.g. pitch rate). The <strong>secondary metric</strong> is its "offspring" — the outcome you actually care about (e.g. ABR).</p>
+<p>The rule that surprises people: <strong>always judge by the secondary metric.</strong> If your ABR hits KPI, you do not touch your pitch rate — it doesn't matter how it got there. <em>"If the second metric is [at] KPI then you do not worry about the primary metric."</em></p>
+<h3 id="sample-size-and-the-two-magic-numbers">Sample size, and the two magic numbers</h3>
+<p>Here is where beginners self-sabotage. <strong>Regression to the mean</strong> says your first handful of results will be extreme by chance — freakishly good or freakishly bad — and only settle toward the truth with volume.</p>
+<blockquote>
+<p>💡 <strong>Owen's example:</strong> take 25 sales calls expecting a 20% close rate and close zero. That feels like failure. But you could close the next five in a row and <em>that</em> would be your real rate. <em>"You will only know your close rate once you've taken 30 calls."</em></p>
+</blockquote>
+<p>For an agency, two numbers cover almost every test:</p>
+<table>
+<thead>
+<tr>
+<th>Test type</th>
+<th>Valid sample size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sales calls</strong></td>
+<td><strong>30 conducted calls</strong> (not 30 bookings — 30 taken calls)</td>
+</tr>
+<tr>
+<td><strong>Outbound</strong> (cold SMS, email, calling)</td>
+<td><strong>300 touches</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Book zero appointments in 100 cold calls? Still could be regression to the mean. Call 300 and you might book 5–10 and land in KPI. Below your sample size, you simply don't have a result yet.</p>
+<blockquote>
+<p>⚠️ <strong>Reality check — the discipline cuts both ways.</strong> Owen mostly warns you not to quit on a bad early streak. But the same statistics kill <em>early wins</em>. Close your first two calls and you do <strong>not</strong> have a 100% close rate — that's noise too. Do not scale a channel, hire, or make promises off three lucky results any more than you'd quit off three unlucky ones. Wait for 30 / 300 in both directions.</p>
+</blockquote>
+<h3 id="test-duration-and-latency">Test duration and latency</h3>
+<p>Systems have <strong>latency</strong> — the lag between action and result. Send 300 cold emails over three days, then check your numbers the instant you're done, and you've cheated: your outreach has seven follow-ups that land over the next 2–3 weeks. Set the test <em>duration</em> long enough for those follow-ups to run, <em>then</em> read the metrics.</p>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> never judge a test the moment sending ends. Set a duration that waits out every follow-up, then score it.</p>
+</blockquote>
+<h3 id="make-it-airtight-and-version-it">Make it airtight, and version it</h3>
+<p>Ask "what could go wrong here?" and fix it before launch. Owen spent ~$5k on ads before noticing a page element was blocking his own booking button. Finally, tag the test <strong>V1, V2, V3…</strong> so you can track the lineage.</p>
+<h2 id="part-3-the-testing-database">Part 3: The testing database</h2>
+<p>Owen's whole method lives in one spreadsheet. Copy these columns and you have it:</p>
+<div class="codehilite"><pre><span></span><code> Subject | Test Version | Variables | Constants | Primary Metric |
+ Secondary Metric | Sample Size | Test Duration | Launched | Completed |
+ Result | In KPI? (scalable Y/N)
+</code></pre></div>
+
+<ul>
+<li><strong>Subject</strong> — the channel/thing you're testing (e.g. "Cold SMS — roofers").</li>
+<li><strong>Test Version</strong> — V1, V2, V3…</li>
+<li><strong>Variables</strong> — the one or two things that make up the stimuli you're changing.</li>
+<li><strong>Constants</strong> — everything held fixed (phone number, follow-up message, offer).</li>
+<li><strong>Primary / Secondary Metric</strong> — with their KPI targets written in.</li>
+<li><strong>Sample Size</strong> — 30 or 300, per the table above.</li>
+<li><strong>Test Duration</strong> — long enough to cover latency/follow-ups.</li>
+<li><strong>Launched / Completed</strong> — dates.</li>
+<li><strong>Result</strong> — the actual secondary-metric number you got.</li>
+<li><strong>In KPI?</strong> — if the result is at or near KPI, mark it <strong>scalable</strong>: don't run another test, just increase volume.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Alternatives.</strong> Any spreadsheet works — Google Sheets, Excel, Airtable, or a Notion database. Owen shares one template; the columns matter, not the tool. Copy it once, duplicate the row for each new test.</p>
+</blockquote>
+<h3 id="running-the-test-dont-touch-it">Running the test: don't touch it</h3>
+<p>Once it's built, testing is simple to understand (if not always easy to do): <strong>launch it and let it run without touching it.</strong> Send the messages, make the calls, run the ads — and don't make an emotional change halfway. <em>"Don't get 275 cold calls in and stop the test because you understand that regression of the mean could mean you could book the last 15."</em> Track your metrics a little every day so it never piles up.</p>
+<h3 id="the-5-point-completion-checklist">The 5-point completion checklist</h3>
+<p>You are only allowed to score a test when all five are true:</p>
+<ol>
+<li><strong>Nothing serious went wrong</strong> (no broken funnel, no dead booking link).</li>
+<li><strong>You didn't touch it</strong> — no mid-test changes out of emotion.</li>
+<li><strong>You logged every day, accurately</strong> — and double-checked it.</li>
+<li><strong>You didn't change the constants.</strong></li>
+<li><strong>You let it fully finish</strong> — the full duration <em>and</em> latency ran out.</li>
+</ol>
+<p>Check all five and the test is done. Only now do you compare your result to the KPI.</p>
+<h2 id="part-4-scale-by-volume-then-iterate">Part 4: Scale by volume, then iterate</h2>
+<p>Here is the payoff, and it's smaller than people think. If your secondary metric is at (or just below) KPI, <strong>you don't run another test — you increase volume.</strong> Got 3.5% ABR against a 3% target? Don't change a thing; tomorrow send double, triple, quadruple the messages.</p>
+<h3 id="the-2-abr-math">The 2% ABR math</h3>
+<p>You do not need a heroic booking rate to hit six figures. Owen's arithmetic (illustrative — plug in your own numbers):</p>
+<div class="codehilite"><pre><span></span><code> 100 cold calls/day  ×  2% ABR              =  2 bookings/day
+ 2 bookings  ×  22 working days             =  44 bookings/month
+ 44 bookings  ×  50% show rate              =  22 taken appointments/month
+ 22 appointments  ×  10% close rate         ≈  2.4 new clients/month
+ 2.4 clients/month  ×  12 months            =  ~30 recurring clients
+ ~30 clients  ≈  $30,000/month recurring    (at ~$1k/client)
+</code></pre></div>
+
+<blockquote>
+<p>🔑 <strong>A boring, scalable 2% beats a lucky, fragile 6%.</strong> Consistency and volume — not a perfect script — are what compound.</p>
+<p>⚠️ <strong>Compliance is not optional.</strong> The high-volume channels here — cold SMS and cold calling — are regulated. In the US, cold SMS to consumers implicates the <strong>TCPA</strong> and carrier <strong>A2P 10DLC</strong> registration; cold calling implicates the <strong>National Do-Not-Call Registry</strong> and state laws. The UK (GDPR/PECR) and Canada (CASL) are stricter. Before you scale volume, get consent handling, opt-outs, DNC scrubbing, and registered sender IDs right. Scaling a non-compliant test just scales your legal exposure.</p>
+</blockquote>
+<h3 id="step-4-iterate-when-youre-not-yet-at-kpi">Step 4 — iterate (when you're not yet at KPI)</h3>
+<p>If the result is below KPI, change <strong>one</strong> high-leverage variable — the one you think moves the needle most — and keep everything else constant. But make <strong>small-to-medium</strong> changes: <em>"the bigger the change, the less affinity to the original test [and it] will make it harder to iterate."</em></p>
+<p>And the move almost nobody makes — <strong>regress to the last winner if a version drops:</strong></p>
+<div class="codehilite"><pre><span></span><code> V1  →  1.4% ABR   (okay)
+ V2  →  0.9% ABR   (worse!)  ← do NOT build V3 off V2
+        │
+        └─►  go back to V1, change a DIFFERENT variable, make a new V2
+</code></pre></div>
+
+<p>If V2 made things worse, building V3 on top of V2 risks making them worse still. Return to V1, the best version so far, and branch a fresh attempt from there.</p>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>The loop is the asset.</strong> Hypothesis → test → observe → iterate works on every channel and outlasts every copied script.</li>
+<li><strong>One variable, everything else constant.</strong> Change two things and your data is worthless.</li>
+<li><strong>30 and 300.</strong> 30 taken calls for a valid close rate; 300 touches for a valid outbound test. Below that, you have noise, not a result.</li>
+<li><strong>Wait out latency.</strong> Score the test after the follow-ups land, never the second sending ends.</li>
+<li><strong>At KPI, scale by volume; below KPI, iterate one thing; if a version drops, regress to the winner.</strong></li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Quitting at 24 calls (or 50).</strong> That's regression to the mean, not failure. Finish the sample.</li>
+<li>❌ <strong>Celebrating three lucky wins.</strong> Early <em>good</em> results are noise too — don't scale off them.</li>
+<li>❌ <strong>Changing several things at once.</strong> You'll never know what caused what. Start over.</li>
+<li>❌ <strong>Judging the test the moment sending stops.</strong> Follow-ups haven't run. You measured half a test.</li>
+<li>❌ <strong>Building your next version on a loser.</strong> If V2 &lt; V1, branch a new V2 from V1 instead.</li>
+<li>❌ <strong>Scaling volume before checking compliance.</strong> More cold outreach = more regulatory risk if consent/DNC/opt-out aren't handled.</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: your testing database + one real test</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. You'll build the exact instrument Owen wishes he'd had when he started, and load it with one fully-specified test you can actually run.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>A personal <strong>testing database</strong> (a spreadsheet) plus <strong>one complete test design</strong> for a channel you'll run later in the course. Two pieces:</p>
+<ol>
+<li><strong>The database</strong> — the column headers copied from Part 3, in a tool you'll keep using.</li>
+<li><strong>One test row</strong> — every field filled in <em>before</em> you'd ever launch, mapped to the lesson's ideas.</li>
+</ol>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in the Capstone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Four-step loop</td>
+<td>The row <em>is</em> step 1 (hypothesis) written out in full</td>
+</tr>
+<tr>
+<td>One variable / constants</td>
+<td>You name exactly one variable and list what you'll freeze</td>
+</tr>
+<tr>
+<td>Primary + secondary metric</td>
+<td>You set both, with KPI targets, in advance</td>
+</tr>
+<tr>
+<td>Sample size (30 / 300)</td>
+<td>You pick the right number for your channel</td>
+</tr>
+<tr>
+<td>Test duration / latency</td>
+<td>You set a duration that waits out follow-ups</td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Create the database.</strong> Open a fresh spreadsheet and add the twelve columns from Part 3. This alone is a usable tool.</li>
+<li><strong>Pick a channel and subject.</strong> Choose one you'll run later (e.g. "Cold SMS — turf installers") and set the version to V1.</li>
+<li><strong>Name exactly one variable.</strong> e.g. the SMS opener. Write it down. Just one.</li>
+<li><strong>List your constants.</strong> Phone number, follow-up sequence, offer, sending time — everything that will <em>not</em> change.</li>
+<li><strong>Set primary + secondary metrics with KPIs.</strong> e.g. primary = positive reply rate; secondary = ABR, KPI = 3%.</li>
+<li><strong>Set sample size and duration.</strong> 300 touches; a duration long enough for every follow-up to land (e.g. 48 hours to 2 weeks).</li>
+<li><strong>Stretch goals.</strong> Write a <em>V2 branch plan</em> ("if V1 misses KPI, I'll change ___ next") and a <em>scale plan</em> ("if V1 hits KPI, tomorrow I send ___ instead of running a new test").</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ Your spreadsheet has all twelve columns and one fully filled row.</li>
+<li>✅ Exactly <strong>one</strong> variable is named; everything else appears under constants.</li>
+<li>✅ Both metrics have a written KPI number set <em>before</em> launch.</li>
+<li>✅ Sample size is 30 (sales) or 300 (outbound), and duration accounts for follow-ups.</li>
+<li>✅ You can say out loud what you'd do next in <em>both</em> cases: result at KPI vs. below it.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> if you can't name the ONE variable in a single breath, your test isn't airtight yet — split it into two tests.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice on one idea. Optional and independent; the Capstone already touches all of them, so feel free to skip straight to it.</p>
+</blockquote>
+<h3 id="exercise-1-spot-the-ruined-test-foundational">Exercise 1: Spot the ruined test (foundational)</h3>
+<p>You send 300 cold emails, get weak numbers, and change the subject line, the domain, and the send time. Write one sentence explaining why you now have to start over — and what you should have changed instead.</p>
+<h3 id="exercise-2-do-the-2-math-for-your-niche-intermediate">Exercise 2: Do the 2% math for your niche (intermediate)</h3>
+<p>Using the Part 4 formula, plug in a realistic ABR, show rate, and close rate for your channel. How many calls or messages a day do you need to reach ~$30k/month recurring? Where's your weakest number?</p>
+<h3 id="exercise-3-design-the-regression-branch-advanced">Exercise 3: Design the regression branch (advanced)</h3>
+<p>Sketch a V1 → V2 → V3 lineage on paper where V2 drops below V1. Draw exactly where V3 should branch from, and name a <em>different</em> variable to change. Explain in one line why you don't build on V2.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>THINK LIKE A SCIENTIST — the loop
+  1 HYPOTHESIS → 2 TEST → 3 OBSERVE → 4 ITERATE → repeat
+  (first: OBSERVE a real problem to fix)
+
+HYPOTHESIS = 5 pieces
+  • 1 variable (rest are CONSTANTS — change only ONE thing, ever)
+  • primary metric + secondary metric, each with a KPI set FIRST
+  • sample size:  30 taken sales calls  |  300 outbound touches
+  • test duration: long enough to outlast follow-ups (latency)
+  • version tag: V1, V2, V3…
+
+REGRESSION TO THE MEAN
+  early results = noise (cuts BOTH ways: bad streaks AND lucky wins)
+  &quot;You only know your close rate at 30 taken calls.&quot;
+
+RUN IT
+  Launch → don&#39;t touch it → log daily → wait out latency
+
+DONE? (all 5 must be true)
+  ☐ nothing broke  ☐ didn&#39;t touch it  ☐ logged daily/accurate
+  ☐ constants unchanged  ☐ fully finished (duration + latency)
+
+DECIDE (judge by SECONDARY metric)
+  at/near KPI → SCALE by volume (don&#39;t run a new test)
+  below KPI   → change 1 high-leverage variable (small change)
+  version dropped → regress to last winner, branch a new version
+
+MATH: 100 calls/day × 2% ABR × 22 days × 50% show × 10% close
+      → ~2.4 clients/mo → ~30 clients/yr → ~$30k/mo recurring
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>Earlier, Module 3 · Lesson 7:</strong> taught that systems decay and copycats die — this lesson is the antidote, the fundamental that lets you <em>build and rebuild</em> your own systems instead of hunting for someone else's.</li>
+<li><strong>Next, Module 3 · Lesson 9 "Systems, metrics &amp; the CEO dashboard":</strong> the testing loop feeds straight into systems thinking — inputs → process → output → feedback — and the metrics you set here become the numbers on your dashboard.</li>
+<li><strong>Later, Modules 5–8 (Meta Ads, Outreach, Sales):</strong> every channel you build gets pointed through this loop. The cold-SMS test you design in the Capstone is the one you'll actually run in the Outreach module.</li>
+</ul>
+<hr />
+<p><em>Source: "Fundamental Flow" by Owen Rensland, AI Agency Full Course. KPI numbers, prices, and the 2% ABR math are illustrative reconstructions of the patterns described in the talk — adapt them to your own niche's real data.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="07-strategy-stimuli-systems.html"><span class="dir">&#8592; Previous</span><b>Strategy, stimuli &amp; systems</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="09-systems-metrics-dashboard.html"><span class="dir">Next &#8594;</span><b>Systems, metrics &amp; the CEO dashboard</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <span class="fnote">A self-paced course generated from Owen Rensland&#x27;s public AI Agency course. Quotes are attributed to the speaker; scripts, prices, and code are illustrative reconstructions of the patterns described — adapt them to today&#x27;s tools, and always follow platform terms and local laws.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>

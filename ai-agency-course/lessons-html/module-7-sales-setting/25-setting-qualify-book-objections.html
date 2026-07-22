@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 7 · Lesson 25: Setting: qualify, book &amp; handle objections | The AI Agency Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>The AI Agency Blueprint</b> &middot; a self-paced course</div>
+  <div class="right"><span>Re-sequenced from Owen Rensland&#x27;s 20-hour AI Agency masterclass</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 7 · Lesson 25</span>
+      <h1>Setting: qualify, book &amp; handle <span class="accent">objections</span></h1>
+      <p class="lead">A great setter builds just enough truthful pain, qualifies the prospect (and reverse-qualifies them), locks the appointment down live on the phone, deflects the common objections with a simple acknowledge-flip-reframe, and then quietly optimizes three numbers — pickup rate, booking rate, and show rate — until booked calls turn into shown calls.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        <a class="play" href="https://www.youtube.com" target="_blank" rel="noopener"><span class="circ">&#9654;</span> Watch the talk</a>
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Owen Rensland</b></span>
+        <span class="chip">&#9201; <b>60 to 75 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-build-a-little-pain-with-truthful-numbers-not-therapy">Part 1: Build a little pain — with truthful numbers, not therapy</a></li>
+<li><a href="#part-2-why-now-powerful-but-only-for-warm-leads">Part 2: "Why now?" — powerful, but only for warm leads</a></li>
+<li><a href="#part-3-qualify-and-reverse-qualify">Part 3: Qualify — and reverse-qualify</a></li>
+<li><a href="#part-4-take-notes-in-the-crm">Part 4: Take notes in the CRM</a></li>
+<li><a href="#part-5-tie-down-the-booking-live-on-the-phone">Part 5: Tie down the booking — live, on the phone</a></li>
+<li><a href="#part-6-objection-handling-acknowledge-flip-reframe">Part 6: Objection handling — acknowledge → flip → reframe</a></li>
+<li><a href="#part-7-effortless-execution-optimize-three-metrics">Part 7: Effortless execution — optimize three metrics</a><ul>
+<li><a href="#pickup-rate-pur-do-they-answer">Pickup rate (PUR) — do they answer?</a></li>
+<li><a href="#booking-rate-abr-do-they-book">Booking rate (ABR) — do they book?</a></li>
+<li><a href="#show-rate-do-they-turn-up">Show rate — do they turn up?</a></li>
+</ul>
+</li>
+<li><a href="#part-8-see-it-live-the-bobby-dugas-cold-sms-set">Part 8: See it live — the Bobby Dugas cold-SMS set</a></li>
+<li><a href="#part-9-track-everything">Part 9: Track everything</a></li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: Your setting cheat-sheet + 10 logged reps</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-pain-in-numbers-foundational">Exercise 1: Pain-in-numbers (foundational)</a></li>
+<li><a href="#exercise-2-objection-ladder-intermediate">Exercise 2: Objection ladder (intermediate)</a></li>
+<li><a href="#exercise-3-metric-diagnosis-advanced">Exercise 3: Metric diagnosis (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>A great setter builds just enough truthful pain, qualifies the prospect (and reverse-qualifies them), locks the appointment down live on the phone, deflects the common objections with a simple acknowledge-flip-reframe, and then quietly optimizes three numbers — pickup rate, booking rate, and show rate — until booked calls turn into shown calls.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone Project</strong> where you build your own <strong>setting cheat-sheet</strong> (your niche's qualification criteria, a booking tie-down checklist, and your top objection responses) and run <strong>10 real or mock setting reps</strong>, logging pickup / booking / show rate for each. Everything before the Capstone teaches the moves you will use there. To see the finish line first, jump to <strong>"Capstone Project"</strong>, then come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> The tools change; the psychology of a qualifying conversation does not. For the timeless version:</p>
+<ul>
+<li><strong><a href="https://www.google.com/search?q=SPIN+Selling+Neil+Rackham">SPIN Selling</a></strong> by Neil Rackham (book). The research behind "let the numbers reveal the pain" — questions that surface a problem convert better than pitching a solution. Owen's "build a little pain via truthful numbers" is SPIN's <em>Problem</em> and <em>Implication</em> questions in miniature.</li>
+</ul>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday terms. Here they are in plain words:</p>
+<ul>
+<li><strong>Setting call:</strong> a short first call whose only job is to book a longer sales ("closing") call — not to sell. You qualify, build interest, and lock in a time.</li>
+<li><strong>Qualifying:</strong> checking whether a prospect is actually a good fit (enough money, time, and capacity) <em>before</em> you spend a closing call on them.</li>
+<li><strong>Reverse qualification:</strong> Owen's term for gently acting as if the prospect might <em>not</em> be a good fit, so they start selling <em>you</em> on why they are. He also calls it "tactical skepticism."</li>
+<li><strong>Tie-down:</strong> getting a small, explicit commitment ("press yes to confirm") so the booking sticks.</li>
+<li><strong>Pickup rate (PUR):</strong> of the people you dial, the share who answer.</li>
+<li><strong>Booking rate / ABR (Appointment Booking Rate):</strong> of the people you talk to (or dial), the share who book a call.</li>
+<li><strong>Show rate:</strong> of the people who booked, the share who actually show up.</li>
+<li><strong>Speed to lead:</strong> how fast you contact someone after they raise their hand. Faster is better.</li>
+<li><strong>CRM:</strong> the software that holds your contacts, notes, calendar, and text automations (Owen uses GoHighLevel; alternatives below).</li>
+</ul>
+<p>You do not need to memorise these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>In Module 6 you learned how to get a business owner on the phone. That is worthless if the call goes nowhere. This lesson is where a dial becomes a <em>confirmed appointment that actually shows up</em>. Owen is blunt about the single biggest leak: "The biggest reason why people don't show up to calls is because the setter hangs up the call before they actually get an email or get anything of substance." — <em>Owen.</em> Master the tie-down and the three metrics, and you stop wasting the outreach you worked so hard for.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>Build a small, honest amount of pain on a setting call using truthful numbers, not emotional depth.</li>
+<li>Decide when to ask "why now?" (and when it makes no sense).</li>
+<li>Qualify a prospect against income / time / capacity criteria for your niche, and reverse-qualify them ethically.</li>
+<li>Tie down a booking live on the phone so it holds.</li>
+<li>Handle the common setting objections with a repeatable acknowledge → flip → reframe pattern.</li>
+<li>Measure and improve your pickup rate, booking rate (ABR), and show rate — inside the compliance rules from Lesson 22.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Lesson 24</strong> (the setter's identity, mindset, tonality, and the two-level "surface / action" model).</li>
+<li><strong>Lesson 22's compliance rules</strong> for cold SMS and cold calling (TCPA, A2P 10DLC, Do-Not-Call). Several tips below only work if you stay inside them.</li>
+<li>A CRM with a calendar and SMS (GoHighLevel or an equivalent stack — see the alternatives callout).</li>
+</ul>
+<hr />
+<h2 id="part-1-build-a-little-pain-with-truthful-numbers-not-therapy">Part 1: Build a <em>little</em> pain — with truthful numbers, not therapy</h2>
+<p>Pain drives sales. But on a <em>setting</em> call, you want only a little of it. "On setting calls, we don't want too much pain. You do want to build some." — <em>Owen.</em> Business owners are what Owen calls <strong>PNA-energy types</strong> — practical, action-based, and harder to move emotionally. Driving into "you never see your kids at night" will get you hung up on.</p>
+<p>The move is to enter <strong>level two (the action level)</strong> just far enough to make <strong>the numbers</strong> honest. Ask how many jobs or leads they do, and gently make the real number apparent:</p>
+<blockquote>
+<p>Owen's example: they say "10 to 20 leads a month." You dig — last month was 10, before that 8, before that 6. There was never a 20. "So usually it's more like four to ten. Okay, gotcha." — <em>Owen.</em> The truth <em>is</em> the pain. You never exaggerated; you just made reality clear.</p>
+<p>🔑 <strong>On a setting call, the truthful number is enough pain. Don't go deep — go clear.</strong></p>
+<p>⚠️ <strong>Reality check.</strong> "Making the numbers apparent" only works if you stay honest. The moment you inflate their problem or your results to manufacture pain, you cross into misleading claims (FTC territory) — and business owners smell it instantly, which kills the call anyway.</p>
+</blockquote>
+<h2 id="part-2-why-now-powerful-but-only-for-warm-leads">Part 2: "Why now?" — powerful, but only for warm leads</h2>
+<p>Finding out why they're on the call <em>right now</em> builds urgency and commitment. But the timing of the question has to make sense:</p>
+<ul>
+<li>✅ <strong>Do ask</strong> for inbound and paid-ad leads: "You've probably been seeing these ads for months — why now? What's changed?"</li>
+<li>❌ <strong>Never ask</strong> on any cold outreach — cold call, cold SMS, cold DM. <em>You</em> reached out to <em>them</em>; they made no conscious decision to come to you, so "why now?" is nonsense and exposes you.</li>
+</ul>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> tag each lead's source in your CRM. If the source is "cold," the "why now?" question is off the table.</p>
+</blockquote>
+<h2 id="part-3-qualify-and-reverse-qualify">Part 3: Qualify — and reverse-qualify</h2>
+<p><strong>Qualification</strong> decides who you book and who you don't. It's niche-specific, but the rule of thumb is <strong>income, time, and job capacity</strong>. Owen's roofing criteria (illustrative — adapt to your niche):</p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Owen's roofing cut-off (example)</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Income</td>
+<td>Won't take clients under ~$500k/yr</td>
+<td>Below that they can't afford results or absorb the volume</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>Skips owners retiring/selling/checked-out this year</td>
+<td>It's not their priority; churn is guaranteed</td>
+</tr>
+<tr>
+<td>Capacity</td>
+<td>Needs enough subcontractors + sales reps to handle the jobs</td>
+<td>If they can't service the leads you send, you both fail</td>
+</tr>
+</tbody>
+</table>
+<p>"Don't just sign and close everyone that comes to you. Otherwise you'll have really bad churn." — <em>Owen.</em> Write your criteria into an SOP and keep them in mind on every call.</p>
+<p><strong>Reverse qualification</strong> is Owen's persuasion twist — "tactical skepticism." You act <em>slightly</em> unsure they qualify, so they start convincing you:</p>
+<blockquote>
+<p>"I mean, are you sure you'd even have the time for this? Do you even want to grow the business? Because we only work with growth-minded people, and I don't know if we can even help you." — <em>Owen (illustrative).</em></p>
+</blockquote>
+<p>Done with a bad tone, this gets you hung up on. Done warm, "people will actually try to convince you why they're qualified." It works because these owners are used to being in authority; breaking that pattern makes you feel different.</p>
+<blockquote>
+<p>⚠️ <strong>Reality check — this is a persuasion frame, keep it honest.</strong> Reverse qualification and lines like <em>"we don't take just anyone with a pulse and a credit card"</em> only stay ethical if they're <strong>true</strong>: you genuinely have real qualification criteria and you'd genuinely turn away a bad-fit client. If you'd actually take anyone who pays, then pretending otherwise is manipulation — and manipulated clients churn, dispute charges, and trash your local reputation. Use the frame only because it reflects a real standard you hold.</p>
+</blockquote>
+<h2 id="part-4-take-notes-in-the-crm">Part 4: Take notes in the CRM</h2>
+<p>Every setting call gets notes: income, goals, current situation, energy type, background. Whether you close it yourself or hand it to a closer, "it's crucial you take notes." — <em>Owen.</em> Put them straight in the contact record so they're waiting for you (or the closer) on the closing call. That gets the surface-level data collection out of the way, freeing the closing call to go deeper.</p>
+<blockquote>
+<p>💡 <strong>Alternatives to GoHighLevel (GHL).</strong> GHL bundles CRM + calendar + SMS + automations in one place. Cheaper / more flexible substitutes: HubSpot, Close, or Keap; or a wired-together stack of Cal.com/Calendly (booking) + Zapier/Make (automation) + Brevo/Mailchimp (email) + Stripe. A stack costs less but you assemble it yourself.</p>
+</blockquote>
+<h2 id="part-5-tie-down-the-booking-live-on-the-phone">Part 5: Tie down the booking — live, on the phone</h2>
+<p>This is the highest-leverage skill in the lesson. <strong>Do not hang up after they agree.</strong> Keep them on the line another 3–5 minutes and book them <em>while you're still talking</em>.</p>
+<div class="codehilite"><pre><span></span><code>LIVE TIE-DOWN CHECKLIST (do all of these before hanging up)
+1. &quot;You got two or three more minutes? I just want to book you in
+   so you actually get the email and know where to join.&quot;
+2. Get their email — read it back, confirm it&#39;s correct.
+3. Create the calendar event in your CRM while still on the call.
+4. &quot;Did you get that confirmation? Cool — go ahead and press YES on it.&quot;
+5. If you have a &quot;reply YES or it cancels&quot; SMS automation, get the
+   reply live too.
+6. Optional: have them save your CRM number as a contact.
+7. Verbal tie-down (humor works): &quot;My manager said he&#39;ll beat my ass
+   if someone no-shows — so, are you 100% sure you can make it?&quot;
+8. Book the call within the next 24–48 HOURS (see Part 7).
+</code></pre></div>
+
+<p>Two special cases: if they're <strong>driving</strong>, don't make them touch their phone — "just check your email as soon as you're parked and press yes to confirm, otherwise it gets cancelled." And <strong>follow up an hour later</strong> with a call or text if they haven't confirmed.</p>
+<blockquote>
+<p>🔑 <strong>A booking that isn't tied down live is a coin-flip on show. The setter's job isn't "they agreed" — it's "they're confirmed."</strong></p>
+</blockquote>
+<h2 id="part-6-objection-handling-acknowledge-flip-reframe">Part 6: Objection handling — acknowledge → flip → reframe</h2>
+<p>Setting-call objections are <strong>surface-level</strong> (closing-call objections go much deeper). They almost always come from one of: lack of trust, ego, a past bad experience, no perceived value, defensiveness, or bad timing. The fundamental move is always the same:</p>
+<div class="codehilite"><pre><span></span><code>ACKNOWLEDGE what they said  →  FLIP it back on them  →  REFRAME
+&quot;Yeah, totally, I get that&quot;     a question that            in a way that
+                                turns it around           reopens the call
+</code></pre></div>
+
+<p>Owen walks through <strong>22 common objections</strong>. Reproducing all 22 as canned scripts would defeat the point — he refuses to hand them out as a resource precisely because "this won't work for every prospect. Everyone has different energy types." Treat the pattern as the skill and the lines below as <em>illustrative</em> starting points in Owen's voice — rewrite them in yours.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Objection</th>
+<th>Root cause</th>
+<th>Illustrative response (adapt)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>"I'm busy right now."</td>
+<td>Automatic brush-off</td>
+<td>"For sure — you got five minutes? If you don't, I probably couldn't help you anyway."</td>
+</tr>
+<tr>
+<td>3</td>
+<td>"How long will this take?"</td>
+<td>No perceived outcome</td>
+<td>"Five, ten minutes — do you have time for that?" then <em>ask your first question immediately.</em></td>
+</tr>
+<tr>
+<td>7</td>
+<td>"Why you over the 10 others who called me?"</td>
+<td>Feels sold-to, wants truth</td>
+<td>"Honestly? That's a question I ask myself every single day." (humor + rapport)</td>
+</tr>
+<tr>
+<td>8</td>
+<td>"Just send me an email."</td>
+<td>No urgency, no trust</td>
+<td>"That's the point of the call — I don't even know yet if I can help you. Everyone's needs are different."</td>
+</tr>
+<tr>
+<td>11</td>
+<td>"Facebook ads don't work."</td>
+<td>Burned before</td>
+<td>"I get you — when's the last time <em>you</em> saw a Facebook ad? So do you think they work for anyone?"</td>
+</tr>
+<tr>
+<td>14</td>
+<td>"Just book me in."</td>
+<td>Brush-off; won't actually show</td>
+<td>"Honestly I don't know if we can even help you — we don't take just anyone with a pulse and a credit card, so let me learn a bit first."</td>
+</tr>
+<tr>
+<td>16</td>
+<td>"Tell me the price first."</td>
+<td>Distrust, wants to disqualify you</td>
+<td>"You know as well as me I won't drop a price on this call — and to be fair I don't know yet if we're even a fit." then a double-commitment question.</td>
+</tr>
+<tr>
+<td>22</td>
+<td>"I'm getting a phone call."</td>
+<td>Usually a lie to escape</td>
+<td>"Oh, perfect timing." (sarcastic) — if they keep talking, they weren't; if they hang up, they were.</td>
+</tr>
+</tbody>
+</table>
+<p>The rest (e.g. "I don't need more work," "I've been burned before," "I'm driving," "I'm with a client," "are you reading a script?") follow the identical pattern: name the cause, acknowledge, flip, reframe — or, for genuine bad timing, simply set the <strong>next touch point</strong> and move on.</p>
+<blockquote>
+<p>⚠️ <strong>Reality check on "we don't take anyone with a pulse and a credit card."</strong> Same rule as reverse qualification: it's a great line <em>if it's true.</em> If you'd take anyone who pays, don't say it. And note the compliance boundary — if it's a cold call, several of Owen's "just hang up" reflexes only exist because that person never consented; make sure your cold outreach was compliant in the first place (Lesson 22).</p>
+</blockquote>
+<h2 id="part-7-effortless-execution-optimize-three-metrics">Part 7: Effortless execution — optimize three metrics</h2>
+<p>Everything ends in numbers. Diagnose the funnel front-to-back: <strong>pickup → booking → show.</strong></p>
+<h3 id="pickup-rate-pur-do-they-answer">Pickup rate (PUR) — do they answer?</h3>
+<p>Target ~75%; 3% means your number is burned. Levers:</p>
+<ul>
+<li><strong>Spam-protect your numbers</strong> with Wave (or another spam-protection app for your CRM numbers).</li>
+<li><strong>Check a number before you buy it</strong> — Google "phone number spam checker," paste it, pick a low-risk one.</li>
+<li><strong>Double-dial, never triple-dial.</strong> Two calls in a row is fine; a third in a row burns the number to "spam likely."</li>
+<li><strong>Match the area code</strong> to the prospect's region. Owen keeps 30–40 numbers across states; A2P registration stays with the sub-account, so buy more numbers and pick the right area code per day.</li>
+</ul>
+<blockquote>
+<p>⚠️ <strong>Compliance boundary (from Lesson 22).</strong> Double-dialing and area-code matching are optimizations, <strong>not permission</strong>. They must stay inside TCPA, A2P 10DLC, and Do-Not-Call rules — scrub against the DNC registry, honor opt-outs, use registered sender IDs, and don't let "match the local area code" tip into deceptive caller-ID spoofing. The metric is not worth a violation.</p>
+</blockquote>
+<h3 id="booking-rate-abr-do-they-book">Booking rate (ABR) — do they book?</h3>
+<p>Mostly a skill you build with reps. Two structural levers:</p>
+<ul>
+<li><strong>Speed to lead: contact an interested lead within 3–5 minutes.</strong> This alone "majorly improves your booking rate and pickup rate."</li>
+<li><strong>~8 touchpoints.</strong> On average it takes about 8 contacts (cold SMS → call → confirmation → reminders → sales call → follow-ups) to convert. Work the leads you already have instead of always chasing new ones.</li>
+</ul>
+<h3 id="show-rate-do-they-turn-up">Show rate — do they turn up?</h3>
+<ul>
+<li><strong>Lower the friction to join:</strong> use <strong>Google Meet</strong> (one click) over Zoom. (Get an upgraded workspace either way — free tiers cap meeting length.)</li>
+<li><strong>Make reminders human.</strong> Owen's signature automation, 43 minutes out: <em>"good to hop on in 43?"</em> — it reads like a person, not a robot, and lifts show rate.</li>
+<li><strong>Don't over-blast reminders</strong> — annoyed prospects no-show on purpose.</li>
+<li><strong>A strong pre-call VSL</strong> (video sales letter) pre-loads trust and testimonials so objections are handled before the call.</li>
+<li><strong>Book within 24–48 hours.</strong> Past ~40 hours, "they seem to just forget about it." Always book inside the next day or two.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Tool alternatives.</strong> <strong>Wave</strong> (power dialer / spam protection) → Aircall, Kixie, PhoneBurner, JustCall, Orum. <strong>Send Blue</strong> (blue-bubble iMessage-style texting Owen mentions, ~$500/mo) → standard SMS via Twilio; note iMessage-for-business tools sit in a grey area, and Owen himself scaled to $20k/mo on plain CRM SMS, so this is a "later, if ever" purchase.</p>
+</blockquote>
+<h2 id="part-8-see-it-live-the-bobby-dugas-cold-sms-set">Part 8: See it live — the Bobby Dugas cold-SMS set</h2>
+<p>Owen shares a real cold-SMS set that later closed for $4k. Watching it, notice how the theory shows up naturally:</p>
+<ul>
+<li><strong>Opened with a double-commitment question</strong> without planning to: <em>"So you're a roofing company owner, or just a general contractor?"</em> — both answers lead toward the sale.</li>
+<li><strong>Built pain via numbers:</strong> got Bobby to admit he only does "six to nine roofs a year" and is "coming into a slow period."</li>
+<li><strong>Reverse-qualified with a real reason:</strong> <em>"I don't really work with everybody… I only work with one person per area."</em> — a true frame, not a bluff.</li>
+<li><strong>Made urgency and framing so strong the prospect asked to talk sooner.</strong></li>
+<li><strong>Tied down live:</strong> got the email, read it back, booked it for noon the next day, confirmed the invite went out — and, because Bobby was driving, skipped the "reply yes" step per the driving rule.</li>
+</ul>
+<blockquote>
+<p>🔑 <strong>The lesson of Bobby Dugas: reps teach the frameworks even before you know their names. Practice makes the moves automatic.</strong></p>
+</blockquote>
+<h2 id="part-9-track-everything">Part 9: Track everything</h2>
+<p>You cannot improve what you don't measure. Track <strong>pickup rate, booking rate (ABR), and show rate</strong> for every outbound method, and compare each to a <strong>KPI</strong> (target). Example: if cold-call ABR is 1% and the KPI is 5%, something in the funnel is off — track the sub-steps (pickup, pitch, resonation) and you'll usually find <em>one</em> thing out of whack. Fix it, ABR climbs. "Do not forget to track." — <em>Owen.</em></p>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>Truthful numbers are the pain.</strong> On setting calls, make reality clear instead of going emotionally deep.</li>
+<li><strong>"Why now?" is warm-lead only.</strong> Never ask it on cold outreach.</li>
+<li><strong>Qualify against income / time / capacity</strong>, and reverse-qualify only when your standard is real.</li>
+<li><strong>Tie down live or it's a coin-flip.</strong> Email confirmed, calendar "yes" pressed, booked within 24–48h, before you hang up.</li>
+<li><strong>Objections = acknowledge → flip → reframe.</strong> The pattern is the skill; scripts are just illustrations.</li>
+<li><strong>Three metrics run the game:</strong> pickup (~75%), booking (ABR), show — each with specific, compliant levers.</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Hanging up the second they agree.</strong> The number-one show-rate killer. Stay on and tie it down.</li>
+<li>❌ <strong>Going closing-call deep on a setting call.</strong> Business owners resist emotional pain; use numbers.</li>
+<li>❌ <strong>Asking "why now?" on a cold call.</strong> It's illogical and it exposes you.</li>
+<li>❌ <strong>Triple-dialing or spoofing to chase pickup rate.</strong> You burn the number and risk a TCPA/DNC violation. Double-dial, stay compliant.</li>
+<li>❌ <strong>Using reverse qualification when you'd actually take anyone.</strong> That's manipulation; it churns clients and burns your reputation.</li>
+<li>❌ <strong>Booking three days out.</strong> After ~40 hours they forget. Book inside 24–48h.</li>
+<li>❌ <strong>Not tracking.</strong> Without pickup/ABR/show you're guessing which step is broken.</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: Your setting cheat-sheet + 10 logged reps</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. You'll walk away with a one-page setting cheat-sheet you actually use on calls, plus baseline numbers for your three metrics.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>A single reference sheet tailored to <em>your</em> niche, and a small log of 10 reps that test it:</p>
+<ul>
+<li><strong>Qualification criteria</strong> for your niche (income / time / capacity cut-offs) — maps to Part 3.</li>
+<li><strong>A booking tie-down checklist</strong> — maps to Part 5.</li>
+<li><strong>Your top objection responses</strong>, rewritten in your voice — maps to Part 6.</li>
+<li><strong>A metrics log</strong> for 10 setting reps — maps to Parts 7 &amp; 9.</li>
+</ul>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in the cheat-sheet + reps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Truthful-numbers pain</td>
+<td>The "discovery" line on your sheet that surfaces real numbers</td>
+</tr>
+<tr>
+<td>Qualification</td>
+<td>Your three niche cut-offs</td>
+</tr>
+<tr>
+<td>Reverse qualification</td>
+<td>One honest "tactical skepticism" line you'd actually stand behind</td>
+</tr>
+<tr>
+<td>Live tie-down</td>
+<td>The 8-step checklist you run before hanging up</td>
+</tr>
+<tr>
+<td>Objection pattern</td>
+<td>Your acknowledge-flip-reframe responses to your top 5 objections</td>
+</tr>
+<tr>
+<td>Metrics</td>
+<td>Pickup / ABR / show logged across 10 reps</td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Write your qualification criteria.</strong> Fill in income, time, and capacity cut-offs for your niche in one line each. This alone is usable today.</li>
+<li><strong>Draft the booking tie-down checklist.</strong> Copy Part 5's 8 steps and adapt the wording (including your driving-exception line).</li>
+<li><strong>Write your top 5 objection responses.</strong> Pick the 5 objections you'll hear most; write each as acknowledge → flip → reframe <em>in your own words.</em> Mark them as yours, not Owen's.</li>
+<li><strong>Add one honest reverse-qualification line.</strong> Only include it if the standard behind it is real for you.</li>
+<li><strong>Set up your metrics log.</strong> Three columns — pickup, booked (Y/N), showed (Y/N) — one row per rep.</li>
+<li><strong>Run 10 reps.</strong> Real dials if you're compliant and ready, otherwise mock calls with a partner (one plays the owner). Improve one thing each rep and note it.</li>
+<li><strong>Stretch goals.</strong> Add a Google Meet + 43-minute human reminder to your CRM; check three CRM numbers through a spam checker before your next real dials; run 30 mock reps total (Owen's prescription) and finish <em>Neuro-Selling</em>.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ A one-page cheat-sheet exists with all four sections filled in for your niche.</li>
+<li>✅ Every objection response is in your own voice and passes the "is this true?" test.</li>
+<li>✅ You've logged 10 reps and can state your pickup, booking, and show rate.</li>
+<li>✅ You've named the one weakest number and what you'll change next.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> if any line on your sheet claims a standard you wouldn't actually enforce, cut it. A frame only persuades ethically when it's true.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice on one idea. Optional and independent; the Capstone already touches all of them.</p>
+</blockquote>
+<h3 id="exercise-1-pain-in-numbers-foundational">Exercise 1: Pain-in-numbers (foundational)</h3>
+<p>Take a mock prospect who "does 10–20 jobs a month." Write the 3 questions that would surface the <em>real</em> average — without exaggerating anything.</p>
+<h3 id="exercise-2-objection-ladder-intermediate">Exercise 2: Objection ladder (intermediate)</h3>
+<p>Pick 8 of the 22 objections. For each, write the root cause and your acknowledge-flip-reframe response. Read them aloud; cut any that sound robotic.</p>
+<h3 id="exercise-3-metric-diagnosis-advanced">Exercise 3: Metric diagnosis (advanced)</h3>
+<p>Given a funnel — 100 dials, 20 pickups, 2 booked, 1 showed — compute pickup, ABR, and show rate. Name which single number you'd fix first and the specific, <em>compliant</em> lever you'd pull.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>SETTING: QUALIFY · BOOK · HANDLE OBJECTIONS
+
+PAIN   → level 2, truthful NUMBERS only. Make reality clear, not deep.
+WHY NOW→ warm/paid leads ONLY. Never on cold outreach.
+QUALIFY→ income · time · capacity (your niche cut-offs)
+REVERSE→ &quot;tactical skepticism&quot; — only if the standard is REAL.
+NOTES  → income/goals/situation/energy → into the CRM contact.
+
+TIE DOWN LIVE (before you hang up):
+  2-3 more min → get+read-back email → book in CRM → &quot;press YES&quot;
+  → reply-YES SMS → save contact → verbal (&quot;manager&#39;ll beat my ass&quot;)
+  → BOOK WITHIN 24-48h → follow up 1h later. Driving = confirm when parked.
+
+OBJECTIONS = ACKNOWLEDGE → FLIP → REFRAME (surface-level).
+  Genuine bad timing? Set the next touch point, move on.
+
+METRICS:
+  PICKUP ~75%  → spam-check #, Wave, DOUBLE-dial (never triple),
+                 match area code — ALL inside TCPA/A2P/DNC (Lesson 22).
+  ABR          → speed-to-lead &lt;5 min · ~8 touchpoints · reps.
+  SHOW         → Google Meet · human reminders (&quot;hop on in 43?&quot;)
+                 · pre-call VSL · book within 24-48h.
+  TRACK all three vs a KPI. Fix the one number that&#39;s off.
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>Earlier, Module 6 · Outreach:</strong> you learned to get owners on the phone and the compliance rules (Lesson 22) that this lesson's pickup-rate tips must stay inside.</li>
+<li><strong>Earlier, Module 7 · Lesson 24:</strong> the setter's identity, tonality, and the surface/action levels — the foundation every move here rests on.</li>
+<li><strong>Next, Module 8 · Lesson 26 "Rapport &amp; frame":</strong> setting hands off to closing. The notes you took and the frame you set become the closer's starting point, where pain goes deeper and objections get harder.</li>
+</ul>
+<hr />
+<p><em>Source: "AI Agency Full Course" by Owen Rensland. Scripts, prices, and KPI numbers are illustrative reconstructions of the patterns described in the talk — adapt them to your niche, your voice, and current compliance rules.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="24-setting-identity-communication.html"><span class="dir">&#8592; Previous</span><b>Setting that shows: identity &amp; communication</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="../module-8-sales-closing/26-rapport-and-frame.html"><span class="dir">Next &#8594;</span><b>Rapport &amp; frame</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <span class="fnote">A self-paced course generated from Owen Rensland&#x27;s public AI Agency course. Quotes are attributed to the speaker; scripts, prices, and code are illustrative reconstructions of the patterns described — adapt them to today&#x27;s tools, and always follow platform terms and local laws.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>

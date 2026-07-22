@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 6 · Lesson 21: Cold SMS Surge | The AI Agency Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>The AI Agency Blueprint</b> &middot; a self-paced course</div>
+  <div class="right"><span>Re-sequenced from Owen Rensland&#x27;s 20-hour AI Agency masterclass</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 6 · Lesson 21</span>
+      <h1>Cold SMS <span class="accent">Surge</span></h1>
+      <p class="lead">Cold SMS is a no-ad-budget appointment machine — you scrape a list of local businesses, validate the numbers, drip a three-message Hook / Pitch / Follow-up sequence out of your CRM, and call the moment someone replies — but it only works if you first make it legally compliant, because texting strangers is heavily regulated and getting it wrong carries real financial and legal risk.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        <a class="play" href="https://www.youtube.com" target="_blank" rel="noopener"><span class="circ">&#9654;</span> Watch the talk</a>
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Owen Rensland</b></span>
+        <span class="chip">&#9201; <b>55 to 70 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-compliance-first-do-this-compliantly-or-dont-do-it">Part 1: Compliance first — "do this compliantly, or don't do it"</a></li>
+<li><a href="#part-2-the-system-at-a-glance">Part 2: The system at a glance</a></li>
+<li><a href="#part-3-fuel-for-the-fire-getting-leads-and-the-master-lead-list">Part 3: Fuel for the fire — getting leads and the master lead list</a></li>
+<li><a href="#part-4-validate-the-numbers-drop-the-landlines">Part 4: Validate the numbers (drop the landlines)</a></li>
+<li><a href="#part-5-the-hpf-script-hook-pitch-follow-up">Part 5: The HPF script — Hook, Pitch, Follow-up</a></li>
+<li><a href="#part-6-import-and-drip-5-every-5-minutes-500day">Part 6: Import and drip — 5 every 5 minutes, ~500/day</a></li>
+<li><a href="#part-7-call-within-5-minutes-and-book-live">Part 7: Call within 5 minutes and book live</a></li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: Your compliant cold-SMS surge system</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-jurisdiction-one-pager-foundational">Exercise 1: Jurisdiction one-pager (foundational)</a></li>
+<li><a href="#exercise-2-three-hpf-variants-intermediate">Exercise 2: Three HPF variants (intermediate)</a></li>
+<li><a href="#exercise-3-deliverability-compliance-audit-advanced">Exercise 3: Deliverability + compliance audit (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>Cold SMS is a no-ad-budget appointment machine — you scrape a list of local businesses, validate the numbers, drip a three-message Hook / Pitch / Follow-up sequence out of your CRM, and call the moment someone replies — but it only works if you first make it legally compliant, because texting strangers is heavily regulated and getting it wrong carries real financial and legal risk.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone Project</strong> where you stand up the whole cold-SMS system end to end AND write a compliance checklist for your own country/state, then prove it works with one compliant test send to your own phone that triggers the call-and-book flow. Everything before the Capstone teaches the skills you will use there. If you want to see the finish line first, jump to the <strong>"Capstone Project"</strong> section, then come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> The tools (GoHighLevel, Clear Out Phone) will change; the underlying idea — <em>permission-based outreach that identifies the sender and offers an easy opt-out</em> — is law, not a trend. For the timeless, tool-agnostic version:</p>
+<ul>
+<li><strong><a href="https://www.fcc.gov/consumers/guides/stop-unwanted-robocalls-and-texts">FCC rules on the TCPA and text messaging</a></strong> (US regulator). The plain-English account of why consent, sender identification, and honoring "STOP" are not optional when you text a phone you do not have a prior relationship with.</li>
+<li><strong><a href="https://www.ctia.org/">CTIA Messaging Principles and Best Practices</a></strong> (the trade body carriers follow). The rulebook the phone carriers actually enforce through A2P 10DLC registration.</li>
+</ul>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday terms. Here they are in plain words:</p>
+<ul>
+<li><strong>Cold SMS:</strong> a text message you send to a business or person who has <strong>not</strong> asked to hear from you and has no prior relationship with you. "Cold" means no prior contact.</li>
+<li><strong>Lead:</strong> a business you might want as a client — here, usually a name, a phone number, and a company name.</li>
+<li><strong>Scraping:</strong> collecting public business info (names, phones) from a source like Google Maps or the Better Business Bureau into a spreadsheet.</li>
+<li><strong>CRM:</strong> "customer relationship management" software — the database that stores your leads and sends the texts. Owen uses GoHighLevel (GHL).</li>
+<li><strong>Drip campaign:</strong> an automation that sends messages on a timed schedule (e.g. 5 texts every 5 minutes) instead of all at once.</li>
+<li><strong>A2P 10DLC:</strong> "Application-to-Person, 10-Digit Long Code" — the mandatory US registration that tells phone carriers who you are before they let your business software send texts from a normal phone number. Covered in Module 4.</li>
+<li><strong>TCPA:</strong> the US <strong>Telephone Consumer Protection Act</strong>, the federal law that governs unsolicited calls and texts to consumers.</li>
+<li><strong>Opt-out:</strong> the recipient's right to stop your messages, usually by replying "STOP." You must honor it instantly and forever.</li>
+<li><strong>DNC / do-not-contact:</strong> a list of numbers you are forbidden to contact. Scrubbing means removing those numbers from your list before you send.</li>
+</ul>
+<p>You do not need to memorise these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>If you have zero ad budget, cold SMS is the single fastest way to fill your calendar — Owen says flatly, <em>"this system alone... took me to 20K a month. No paid ads. Only this system."</em> But that upside comes attached to the most legally dangerous tactic in the whole course. Sending one text to a stranger is trivial; sending it <em>compliantly</em> is the actual skill. This lesson teaches both, and it puts the compliance first on purpose — because the difference between "free appointment machine" and "expensive legal problem" is entirely in the setup you do before the first text goes out.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>State the compliance requirements for cold SMS in your own jurisdiction and decide whether you can legally run it at all.</li>
+<li>Register/confirm your A2P 10DLC campaign, add sender identification and a STOP opt-out, and scrub your list against do-not-contact numbers.</li>
+<li>Scrape a list of local-business leads and organise them in a master lead list.</li>
+<li>Validate phone numbers to drop landlines so you only text real mobiles.</li>
+<li>Write a Hook / Pitch / Follow-up (HPF) three-message sequence.</li>
+<li>Import leads into a CRM and run a timed drip (about 5 texts every 5 minutes) with a sane daily cap.</li>
+<li>Call within 5 minutes of a positive reply and book the appointment live, on the phone.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Lesson 20</strong> (the previous outreach lesson) — you should already understand why outreach volume drives your whole business.</li>
+<li><strong>Module 4 (Infrastructure)</strong> — your CRM/GoHighLevel sub-account is set up and, critically, your <strong>A2P 10DLC registration</strong> is done. Do not send a single cold text until this is complete.</li>
+</ul>
+<hr />
+<h2 id="part-1-compliance-first-do-this-compliantly-or-dont-do-it">Part 1: Compliance first — "do this compliantly, or don't do it"</h2>
+<p>Before any tactics, the non-negotiable part. Cold, unsolicited SMS is one of the most heavily regulated things in this entire course, and the rules are not a formality — they carry real financial and legal exposure.</p>
+<blockquote>
+<p>🔑 <strong>Cold SMS is not "send texts and see who bites." It is "prove you are allowed to text this person, identify yourself, give them an easy way out — and only then send."</strong></p>
+</blockquote>
+<p>Here is the landscape, by region. <strong>You must check your own before you send.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Region</th>
+<th>The rules in short</th>
+<th>Reality</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>United States</strong></td>
+<td><strong>TCPA</strong> (federal) + carrier <strong>A2P 10DLC</strong> registration are required. Messages need clear sender identification and a working opt-out (STOP).</td>
+<td>Texting consumers without consent carries real legal exposure — TCPA statutory damages run <strong>$500–$1,500 per message</strong>. Class actions happen.</td>
+</tr>
+<tr>
+<td><strong>UK / EU</strong></td>
+<td><strong>PECR</strong> and <strong>GDPR</strong>. Marketing texts generally require <strong>prior consent</strong>; unsolicited B2C marketing SMS is effectively <strong>prohibited</strong>.</td>
+<td>Often flatly not allowed for consumers. Regulators (ICO in the UK) fine for it.</td>
+</tr>
+<tr>
+<td><strong>Canada</strong></td>
+<td><strong>CASL</strong> — one of the strictest anti-spam laws in the world.</td>
+<td>Commercial electronic messages generally need consent; penalties are severe. Cold SMS is usually a no-go.</td>
+</tr>
+</tbody>
+</table>
+<p>Even in the US, where this can be done, "can" means "after you do the setup." Your compliance checklist, every time:</p>
+<blockquote>
+<p>✅ <strong>What to do about it — the pre-send checklist:</strong>
+1. <strong>Register your A2P 10DLC campaign</strong> (Module 4) so carriers know who you are. Unregistered traffic gets filtered or blocked anyway.
+2. <strong>Identify yourself</strong> in the message — your name and/or business — so it never reads as anonymous spam.
+3. <strong>Honor STOP / opt-outs instantly and permanently.</strong> GHL and most CRMs auto-handle "STOP," but confirm it is on and never re-add an opt-out.
+4. <strong>Scrub against do-not-contact lists.</strong> Remove any number on a DNC list or any number that ever opted out.
+5. <strong>Check your jurisdiction BEFORE sending a single text.</strong> If you are in the UK/EU/Canada, assume you cannot cold-SMS consumers and use another channel (e.g. cold calling, next lesson) instead.</p>
+<p>⚠️ <strong>Reality check.</strong> Owen's course frames cold SMS as "so simple, don't overcomplicate it." The <em>sending</em> is simple. The <em>legality</em> is not, and he does not dwell on it. Treat the compliance checklist above as the price of admission. If you cannot tick every box for your location, the correct move is to not run cold SMS — do cold calling (Lesson 22) or paid ads (Module 5) instead. This is a "do it compliantly or don't do it" tactic.</p>
+</blockquote>
+<h2 id="part-2-the-system-at-a-glance">Part 2: The system at a glance</h2>
+<p>Owen's promise is that the flow is genuinely simple. Once compliance is handled, the whole machine is six steps:</p>
+<div class="codehilite"><pre><span></span><code>  ┌──────────────────────────────────────────────────────────────┐
+  │  1. SCRAPE leads      (Google Maps / BBB, or buy a list)       │
+  │  2. VALIDATE numbers  (drop landlines → keep mobiles only)      │
+  │  3. IMPORT to CRM      (master lead list → CSV → GHL contacts)  │
+  │  4. DRIP the HPF       (Hook → Pitch → Follow-up; 5 SMS / 5 min)│
+  │  5. CALL on reply      (within 5 min of a positive response)    │
+  │  6. BOOK live          (book the appointment while on the call) │
+  └──────────────────────────────────────────────────────────────┘
+</code></pre></div>
+
+<blockquote>
+<p>🔑 <strong>The engine is a drip automation plus a fast human. The software sends texts all day in the background; your only real job is to call the instant someone replies and book them there and then.</strong></p>
+</blockquote>
+<p>Owen's plug-and-play version imports a GHL "snapshot" that creates a pipeline (Cold SMS lead → Pitched → Booked → No-show) and two automations: a <strong>Queue/Pitch SMS</strong> workflow (sends the hook, waits, sends the pitch on a positive reply, follows up) and an <strong>SMS notification</strong> that pings you the moment a lead replies positively.</p>
+<blockquote>
+<p>💡 <strong>Tool alternatives.</strong> Owen builds everything on <strong>GoHighLevel</strong> (CRM + pipeline + SMS + automations bundled). You are not locked in. Alternatives: <strong>HubSpot, Keap, Close, Vendasta</strong>, or a stack you wire together yourself — <strong>Cal.com/Calendly</strong> (booking) + <strong>Zapier or Make</strong> (automation) + <strong>Brevo/Mailchimp</strong> (email) + <strong>Twilio/Telnyx</strong> (SMS) + <strong>Stripe</strong> (payments). GHL bundles it; a stack is cheaper and more flexible but you assemble it. Whatever you use, it must support A2P 10DLC-registered sending and automatic STOP handling.</p>
+</blockquote>
+<h2 id="part-3-fuel-for-the-fire-getting-leads-and-the-master-lead-list">Part 3: Fuel for the fire — getting leads and the master lead list</h2>
+<p>You cannot text anyone until you have numbers. Owen's favourite sources are <strong>Google Maps</strong> and the <strong>Better Business Bureau (BBB)</strong> for niches that live there; otherwise you can <strong>buy a list</strong> (e.g. off Fiverr) or use any other method.</p>
+<blockquote>
+<p>💡 <strong>Owen's own warning:</strong> <em>"Don't spend too much time scraping leads... it's pretty low leverage and there's a lot of methods out there."</em> Scraping is grunt work — do it fast or delegate it, don't perfect it.</p>
+</blockquote>
+<p>He organises everything into a <strong>master lead list</strong> — one spreadsheet, a tab per US state, with columns for website/BBB link, company name, phone, email, and full name. Two handy formatting tricks he calls out:</p>
+<ul>
+<li>BBB and scrapers often return company names like <code>Owen Roofing LLC</code>. The sheet reformats it to just <code>Owen Roofing</code>, so when you text "is this Owen Roofing?" it reads human, not robotic.</li>
+<li>Full names like <code>Owen Jangle Rensland</code> get split into first/last automatically for a clean CRM import.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>A note on "leads are infinite."</strong> Owen argues you can re-text the <em>same</em> list months later and people forget they were ever contacted. Be careful here: re-texting people who never responded — or worse, who opted out — is exactly what compliance rules exist to stop. Re-use a list only for numbers that never opted out, and never for anyone who replied STOP.</p>
+</blockquote>
+<h2 id="part-4-validate-the-numbers-drop-the-landlines">Part 4: Validate the numbers (drop the landlines)</h2>
+<p>You do not want to text landlines — they can't receive SMS, you waste sends, and you look careless. Owen uses <strong>Clear Out Phone</strong> to validate:</p>
+<ol>
+<li>Take your scraped phone numbers into a Google Sheet. <strong>Label the top row <code>phone numbers</code></strong> — the validator needs to know which column holds them.</li>
+<li>Run them through Clear Out Phone (cheap, pay-as-you-go credits).</li>
+<li>It returns each number tagged <strong>mobile / fixed line / toll-free</strong>. Sort A→Z on that column, <strong>delete every fixed line</strong>, keep the mobiles.</li>
+<li>Copy the clean mobiles back into the right state tab of your master lead list. Duplicates highlight red so you can spot them.</li>
+</ol>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> never send to an unvalidated list. Validation both saves money and quietly improves compliance — it stops you texting numbers that were never going to be legitimate mobile recipients.</p>
+<p>💡 <strong>Tool alternatives.</strong> Instead of <strong>Clear Out Phone</strong>, you can use <strong>Twilio Lookup</strong> (line-type intelligence via API), <strong>NumVerify</strong> (simple validation API), or <strong>Clearout</strong>. All do the same core job: tell you which numbers are real, textable mobiles.</p>
+</blockquote>
+<h2 id="part-5-the-hpf-script-hook-pitch-follow-up">Part 5: The HPF script — Hook, Pitch, Follow-up</h2>
+<p>Owen uses exactly <strong>three</strong> messages, on purpose: <em>"SMS costs money... if you have like 20 follow-ups and you send 5,000, that will end up spending a lot."</em> Three messages keeps cost and annoyance down. HPF = <strong>H</strong>ook, <strong>P</strong>itch, <strong>F</strong>ollow-up.</p>
+<blockquote>
+<p>⚠️ <strong>All scripts below are illustrative examples to adapt, not gospel — and every one of them must carry your sender identification and respect opt-outs to be compliant.</strong> Wording, pricing, and offers are reconstructions of what Owen describes.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Job</th>
+<th>Illustrative example (adapt + add identification)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hook</strong></td>
+<td>Qualify / engage. A short question that gets a reply.</td>
+<td><em>"Hi, is this [Owner/Company]? Do you guys do roof replacements? — [Your name]"</em></td>
+</tr>
+<tr>
+<td><strong>Pitch</strong></td>
+<td>Sent only after a positive reply. Convey the offer simply — a "dumbed-down" version, not your full formal offer.</td>
+<td><em>"Nice — this is [Your name]. Saw you on Google with some solid reviews. I've got about 5–8 people in [area] who need a roof replacement — open to a quick chat about sending them your way?"</em></td>
+</tr>
+<tr>
+<td><strong>Follow-up</strong></td>
+<td>For people who replied to the Hook but went quiet on the Pitch. One gentle nudge.</td>
+<td><em>"Hi [Company] — still open to chatting about this? No worries either way. — [Your name]"</em></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🔑 <strong>The Hook's only job is to get a reply. The Pitch's only job is to earn a phone call. Keep both short, human, and identified — nobody books off a wall of text.</strong></p>
+</blockquote>
+<p>Note the sequence logic in the automation: send Hook → wait → if positive reply, send Pitch and mark them <strong>Pitched</strong> in the pipeline → if no reply to the Pitch, send the single Follow-up → if they reply, they become a new lead and you get a notification to call.</p>
+<h2 id="part-6-import-and-drip-5-every-5-minutes-500day">Part 6: Import and drip — 5 every 5 minutes, ~500/day</h2>
+<p>With a clean CSV of validated, compliant leads:</p>
+<ol>
+<li><strong>CRM → Contacts → Import.</strong> Upload the CSV. Map columns (formatted company name → company, phone → phone), and tell it <strong>not</strong> to import unmatched columns. Name the import by count + date (e.g. <code>34 - 06-18-25</code>) so you can find it later. The CRM auto-drops duplicate phone numbers on import.</li>
+<li><strong>Select all → Add to automation → the Queue/Pitch SMS workflow → Drip mode.</strong></li>
+<li>Set it to send <strong>5 SMS every 5 minutes</strong>, starting a few minutes out.</li>
+</ol>
+<p>That pace means the system trickles texts out all day in the background. Owen's routine: <em>"every morning... setting it up at 8 and setting like 500 leads to go, and basically the entire day it'll just send SMS."</em> Roughly <strong>500 sends a day</strong> is his working volume.</p>
+<blockquote>
+<p>💡 <strong>Why the slow drip matters (beyond what Owen says).</strong> Blasting hundreds of identical texts at once is exactly the pattern carriers flag as spam and block. A metered drip is both gentler on deliverability and easier to keep compliant. Your CRM will also <strong>ramp</strong> your sending limit over time (Owen mentions it climbing 100 → 150 → 250 → 350 → 500 as you build sending reputation) — don't try to outrun it.</p>
+<p>💡 <strong>Testing discipline (Owen's own rule):</strong> <em>"Don't make script changes after 50 messages are sent."</em> Because you can send ~500/day, you can genuinely A/B a new script daily. The number he looks for before judging a script is about <strong>300 sends</strong>. Change one thing at a time.</p>
+</blockquote>
+<h2 id="part-7-call-within-5-minutes-and-book-live">Part 7: Call within 5 minutes and book live</h2>
+<p>This is where the money is made, and it is a human job. When a lead replies positively, your notification fires — <em>"New lead, call within 5 minutes"</em> — with a link straight to the conversation.</p>
+<blockquote>
+<p>🔑 <strong>Speed is the whole game. The value of a positive reply decays by the minute. Call within 5 minutes, every time.</strong></p>
+</blockquote>
+<p>On the call, two framing reminders from Owen:</p>
+<ul>
+<li><strong>Reset the frame.</strong> They engaged first, so the frame is already half-set — but re-establish that <em>they</em> are evaluating <em>your</em> service, not the other way around. <em>"We don't need them as clients, but they need our services."</em></li>
+<li><strong>Build urgency.</strong> No urgency, no show-up. All the reminder automations in the world won't make someone attend a call they see no value in.</li>
+</ul>
+<p><strong>Book them live, on the call.</strong> Don't tell them "I'll send a link." Because the CRM keys contacts off phone number, you just open <code>yourdomain.com/strategycall</code>, fill in their info <strong>using the same number you're calling from</strong> (so it merges to the right contact and auto-marks them Interested), and book them then and there. Since they never see your booking/confirmation page themselves, walk them through those steps while you're still on the phone. Show-up automations (confirmation text, a reminder call ~2 hours before) then do the rest.</p>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>Compliance is the first feature, not the fine print.</strong> A2P registration, sender ID, honored opt-outs, DNC scrubbing, and a jurisdiction check come <em>before</em> the first text. In the UK/EU/Canada, assume you can't cold-SMS at all.</li>
+<li><strong>The flow is six steps:</strong> scrape → validate → import → drip HPF → call on reply → book live.</li>
+<li><strong>Validate to drop landlines.</strong> Text mobiles only; it saves money and reduces junk.</li>
+<li><strong>HPF = three messages, no more.</strong> Hook engages, Pitch (post-reply) conveys a simple offer, Follow-up nudges the quiet ones.</li>
+<li><strong>Drip ~5 every 5 minutes, ~500/day.</strong> Slow and metered beats a spammy blast for both deliverability and compliance.</li>
+<li><strong>Call within 5 minutes and book on the call.</strong> Speed and live booking are what turn replies into appointments.</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Sending before A2P registration / a jurisdiction check.</strong> This is the expensive one — carrier blocks at best, TCPA exposure ($500–$1,500/message) at worst. Do the compliance checklist first, always.</li>
+<li>❌ <strong>No sender identification or no working STOP.</strong> An anonymous, un-opt-out-able text is both spam and a violation. Put your name in the message; confirm STOP is honored.</li>
+<li>❌ <strong>Re-texting opt-outs or a stale list.</strong> "Leads are infinite" does not mean "opt-outs are re-contactable." Never re-text anyone who replied STOP or never engaged.</li>
+<li>❌ <strong>Texting unvalidated numbers.</strong> Landlines waste sends and make you look careless. Validate every list.</li>
+<li>❌ <strong>Sitting on a positive reply.</strong> A reply left for an hour is a dead lead. Call within 5 minutes.</li>
+<li>❌ <strong>Rewriting the script after 20 messages.</strong> Judge a script at ~300 sends, not 20. Change one variable at a time.</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: Your compliant cold-SMS surge system</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. You will build the entire cold-SMS machine AND the compliance layer that makes it legal to run — then prove it works with a single test send to your own phone. Keep it small: one niche, a handful of leads, one clean end-to-end run.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>A working cold-SMS system for your agency plus a written compliance checklist for your jurisdiction. The pieces, each mapped to a lesson idea:</p>
+<ul>
+<li>A <strong>jurisdiction compliance checklist</strong> (Part 1) — the gate everything else passes through.</li>
+<li>A <strong>master lead list</strong> with a small batch of scraped leads (Part 3).</li>
+<li>A <strong>validated</strong> subset with landlines removed (Part 4).</li>
+<li>An <strong>HPF script</strong> with sender identification baked in (Part 5).</li>
+<li>A <strong>drip automation</strong> in your CRM (Part 6).</li>
+<li>A <strong>call-and-book flow</strong> wired to a reply notification (Part 7).</li>
+</ul>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in the Capstone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Compliance first</td>
+<td>Writing your jurisdiction checklist and confirming A2P + STOP before anything sends</td>
+</tr>
+<tr>
+<td>Scrape + master list</td>
+<td>Collecting a small lead batch into the state-organised sheet</td>
+</tr>
+<tr>
+<td>Number validation</td>
+<td>Running the batch through a validator and dropping landlines</td>
+</tr>
+<tr>
+<td>HPF script</td>
+<td>Writing Hook, Pitch, Follow-up with your name in them</td>
+</tr>
+<tr>
+<td>Drip cadence</td>
+<td>Setting 5-every-5-minutes in the automation</td>
+</tr>
+<tr>
+<td>Call + book live</td>
+<td>Triggering the notification and rehearsing the live booking</td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Write your compliance checklist.</strong> In writing, for your country/state: Is cold SMS to businesses legal here? Is A2P 10DLC registered (US)? Where's my sender identification? Is STOP auto-honored? What's my DNC-scrub step? If you can't answer all of these "yes/handled," <strong>stop and switch to cold calling</strong> — that's a valid, complete outcome for this milestone.</li>
+<li><strong>Build the master lead list.</strong> Copy the state-tab spreadsheet, scrape (or buy) 10–20 leads in one niche, paste them in cleanly.</li>
+<li><strong>Validate the numbers.</strong> Run the phones through Clear Out Phone (or Twilio Lookup / NumVerify), sort, delete fixed lines, keep mobiles.</li>
+<li><strong>Write your HPF.</strong> One Hook, one Pitch, one Follow-up — each carrying your name/business. Mark them as your v1 to test later.</li>
+<li><strong>Wire the drip.</strong> Import the validated CSV to your CRM, add to the Queue/Pitch automation in drip mode, set 5 every 5 minutes.</li>
+<li><strong>Prove it end to end — the done-criteria test.</strong> Add <strong>your own number</strong> to the list, send one compliant test, confirm you receive the Hook, reply positively, and confirm the reply fires your "call within 5 minutes" notification and you can open the booking flow.</li>
+<li><strong>Stretch goals.</strong> Add a Slack channel for reply notifications; draft the 2-hours-before reminder call script; write an SOP so you never re-read this lesson; A/B a second Hook after 300 real sends.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ You have a written, jurisdiction-specific compliance checklist and every box is either ticked or you've consciously chosen cold calling instead.</li>
+<li>✅ A <strong>compliant test send to your own number arrives</strong>, correctly identifies you, and would honor STOP.</li>
+<li>✅ Replying to that test <strong>triggers the call/booking flow</strong> (notification fires; you can open the booking calendar).</li>
+<li>✅ Your HPF messages each contain sender identification.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> the test send must go to <em>your own</em> phone. Do not send to real strangers until your compliance checklist is fully green — that is the entire point of building the checklist first.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice on one idea. Optional and independent; the Capstone already touches all of them, so feel free to skip straight to it.</p>
+</blockquote>
+<h3 id="exercise-1-jurisdiction-one-pager-foundational">Exercise 1: Jurisdiction one-pager (foundational)</h3>
+<p>Write a half-page answering: In my location, can I legally send cold marketing SMS to businesses? Cite the governing law (TCPA / PECR+GDPR / CASL / other). End with a one-line verdict: "Cold SMS OK with these steps" or "Use cold calling instead."</p>
+<h3 id="exercise-2-three-hpf-variants-intermediate">Exercise 2: Three HPF variants (intermediate)</h3>
+<p>Write three different Hooks for one niche, each under 160 characters and each identifying you. Predict which gets the highest reply rate and why. (You'll validate with real data at ~300 sends.)</p>
+<h3 id="exercise-3-deliverability-compliance-audit-advanced">Exercise 3: Deliverability + compliance audit (advanced)</h3>
+<p>Take your drip setup and list every point where a compliance or deliverability failure could occur (unregistered sender, no STOP handling, unvalidated numbers, too-fast send rate, re-texting opt-outs). For each, write the one control that prevents it.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>COLD SMS SURGE — one-page recap
+
+RULE ZERO: Do it compliantly or don&#39;t do it.
+  Pre-send checklist (US):
+    [ ] A2P 10DLC campaign registered (Module 4)
+    [ ] Sender identification in every message (your name/business)
+    [ ] STOP / opt-out honored instantly + forever
+    [ ] List scrubbed against do-not-contact / prior opt-outs
+    [ ] Jurisdiction checked BEFORE sending
+  UK/EU (PECR+GDPR) &amp; Canada (CASL): usually NOT allowed to consumers → cold call instead.
+  US risk if you skip it: TCPA $500–$1,500 PER message.
+
+THE FLOW (6 steps):
+  scrape → validate → import → drip HPF → call on reply → book live
+
+LEADS: Google Maps / BBB / buy a list. Organise in master lead list (tab per state).
+VALIDATE: Clear Out Phone (or Twilio Lookup / NumVerify) → drop FIXED LINES, keep MOBILES.
+
+HPF SCRIPT (3 msgs only — SMS costs money):
+  HOOK      = short question, qualify/engage  (&quot;is this [Company]? do you do X?&quot;)
+  PITCH     = post-reply, simple offer         (only after a positive reply)
+  FOLLOW-UP = one nudge for the quiet ones
+  → every message carries YOUR NAME. Illustrative only — adapt.
+
+DRIP: import CSV → automation → 5 SMS every 5 min → ~500/day.
+  Sending limit ramps: 100→150→250→350→500. Don&#39;t outrun it.
+  Test a script at ~300 sends, not 20. Change one thing at a time.
+
+ON A POSITIVE REPLY:
+  CALL WITHIN 5 MINUTES. Reset frame (they need you). Build urgency.
+  BOOK LIVE on the call — same phone number so CRM merges the contact.
+  Walk them through the booking steps; show-up automations handle reminders.
+
+TOOL ALTERNATIVES:
+  GoHighLevel → HubSpot / Keap / Close, or Cal.com+Zapier+Brevo+Twilio+Stripe
+  Clear Out Phone → Twilio Lookup / NumVerify / Clearout
+  Send Blue (blue-bubble) → standard SMS via Twilio (iMessage-for-business = grey area)
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>Earlier, Module 4 · Infrastructure:</strong> you set up your CRM sub-account and registered A2P 10DLC — the exact prerequisite that makes compliant cold SMS possible here.</li>
+<li><strong>Earlier, Lesson 20:</strong> established why outreach volume, not cleverness, drives your first clients — cold SMS is how you generate that volume with no budget.</li>
+<li><strong>Next, Lesson 22 · Cold Calling Catalyst:</strong> the other outreach channel — and your fallback if your jurisdiction rules out cold SMS. Many of the framing and urgency skills carry straight over.</li>
+<li><strong>Later, Module 7 · Sales: setting:</strong> the appointments you book here feed directly into the setting and closing process — cold SMS fills the calendar; sales converts it.</li>
+</ul>
+<hr />
+<p><em>Source: "Cold SMS Surge" by Owen Rensland, AI Agency Full Course. Scripts, prices, KPI numbers, and configuration steps are illustrative reconstructions of the patterns described in the talk. Adapt them to your current tools — and to the law in your jurisdiction, which is your responsibility to verify.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="20-daily-selling-engine.html"><span class="dir">&#8592; Previous</span><b>Your daily selling engine</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="22-cold-calling-catalyst.html"><span class="dir">Next &#8594;</span><b>Cold Calling Catalyst</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <span class="fnote">A self-paced course generated from Owen Rensland&#x27;s public AI Agency course. Quotes are attributed to the speaker; scripts, prices, and code are illustrative reconstructions of the patterns described — adapt them to today&#x27;s tools, and always follow platform terms and local laws.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>
