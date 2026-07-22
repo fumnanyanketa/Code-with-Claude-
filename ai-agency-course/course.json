@@ -1,0 +1,20 @@
+{
+  "title": "The AI Agency Blueprint",
+  "accent_word": "Agency",
+  "tagline": "Build an AI-powered local-business marketing agency from zero — pick a niche, craft an offer, run the ads, book the calls, close, deliver, and keep clients. One lesson at a time.",
+  "source_label": "Re-sequenced from Owen Rensland's 20-hour AI Agency masterclass",
+  "footer_note": "A self-paced course generated from Owen Rensland's public AI Agency course. Quotes are attributed to the speaker; scripts, prices, and code are illustrative reconstructions of the patterns described — adapt them to today's tools, and always follow platform terms and local laws.",
+  "modules": {
+    "0": {"name": "Pre-flight: get your tools ready", "blurb": "Optional on-ramp: every account and tool the course uses, created and working, so Lesson 1 is spent learning, not fighting setup."},
+    "1": {"name": "Foundations: the model & the mindset", "blurb": "What business you're really building, and the operating mindset that separates the people who make it from the 99% who quit."},
+    "2": {"name": "Your market & your offer", "blurb": "Pick a niche you can dominate and build an offer so good that saying no feels irrational."},
+    "3": {"name": "The operator's toolkit: fundamentals", "blurb": "The durable mental models — systems, science, metrics — so you can rebuild any tactic when it stops working."},
+    "4": {"name": "Build your infrastructure", "blurb": "Stand up the software machine — CRM, funnel, video, ad account — that turns strangers into shown, paying jobs."},
+    "5": {"name": "Meta Ads Mastery", "blurb": "The highest-value skill in the business: turning ad spend into booked appointments — how you get clients and what you deliver."},
+    "6": {"name": "Get clients on a budget: outreach", "blurb": "Book sales appointments starting from $0 with cold SMS and cold calling."},
+    "7": {"name": "Sales I: fundamentals & setting", "blurb": "Why people buy, and how to book appointments that actually show up."},
+    "8": {"name": "Sales II: closing the deal", "blurb": "Run a high-ticket sales call end to end and collect payment on the call."},
+    "9": {"name": "Deliver the result: fulfillment", "blurb": "Onboard a client and get their campaign live fast — natively — so they see results and feel looked-after."},
+    "10": {"name": "Keep clients & scale", "blurb": "Turn one client into a compounding business, then scale past $30k/month on purpose."}
+  }
+}
