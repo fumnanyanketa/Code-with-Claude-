@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 5 · Lesson 15: Offer, creative &amp; copy | The AI Agency Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>The AI Agency Blueprint</b> &middot; a self-paced course</div>
+  <div class="right"><span>Re-sequenced from Owen Rensland&#x27;s 20-hour AI Agency masterclass</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 5 · Lesson 15</span>
+      <h1>Offer, creative &amp; <span class="accent">copy</span></h1>
+      <p class="lead">The single highest-leverage decision in a paid ad is the creative, so you will learn to write an ad offer that stops the scroll, mine the Facebook Ads Library for proven winners, and script a hook / body / CTA that makes a stranger think &quot;I want that — how do I get it?&quot;</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        <a class="play" href="https://www.youtube.com" target="_blank" rel="noopener"><span class="circ">&#9654;</span> Watch the talk</a>
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Owen Rensland</b></span>
+        <span class="chip">&#9201; <b>55 to 70 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-the-four-components-of-an-ad-and-the-two-kinds-of-offer">Part 1: The four components of an ad — and the two kinds of offer</a></li>
+<li><a href="#part-2-the-media-buyer-as-scientist-research-winners-in-the-ads-library">Part 2: The media buyer as scientist — research winners in the Ads Library</a></li>
+<li><a href="#part-3-the-video-creative-hook-body-cta-and-the-80200-rule">Part 3: The video creative — hook / body / CTA and the 80/20/~0 rule</a><ul>
+<li><a href="#hook-psychology-five-levers">Hook psychology: five levers</a></li>
+<li><a href="#hooks-by-awareness-level">Hooks by awareness level</a></li>
+<li><a href="#the-four-r-body">The four-R body</a></li>
+</ul>
+</li>
+<li><a href="#part-4-the-scripting-workflow-and-where-copy-fits">Part 4: The scripting workflow — and where copy fits</a><ul>
+<li><a href="#copywriting-call-out-pain-offerbenefits-cta">Copywriting: call-out → pain → offer/benefits → CTA</a></li>
+</ul>
+</li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: A complete, film-ready ad script for your niche</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-offer-surgery-foundational">Exercise 1: Offer surgery (foundational)</a></li>
+<li><a href="#exercise-2-ads-library-dig-intermediate">Exercise 2: Ads Library dig (intermediate)</a></li>
+<li><a href="#exercise-3-awareness-re-hook-advanced">Exercise 3: Awareness re-hook (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>The single highest-leverage decision in a paid ad is the creative, so you will learn to write an ad offer that stops the scroll, mine the Facebook Ads Library for proven winners, and script a hook / body / CTA that makes a stranger think "I want that — how do I get it?"</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone Project</strong> where you write a complete, ready-to-film ad script for your niche: one ad offer, ten hook options, one four-part body, one CTA, and the primary-text copy. Everything before the Capstone teaches the pieces you will assemble there. If you want to see the finish line first, jump to the <strong>"Capstone Project"</strong> section, then come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> The tools rot; the psychology does not. For the timeless, tool-agnostic version:</p>
+<ul>
+<li><strong><a href="https://www.breakthroughadvertising.com/">Breakthrough Advertising</a> by Eugene Schwartz</strong> (1966). The origin of "awareness levels" — the idea that you must meet a prospect where their thinking already is. Owen's whole hook framework is Schwartz repackaged.</li>
+<li><strong><a href="https://www.acquisition.com/books">$100M Offers</a> by Alex Hormozi</strong> (2021). The "value equation" (dream outcome × likelihood ÷ time × effort) that Owen uses to judge whether an ad offer is any good.</li>
+</ul>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday advertising terms. Here they are in plain words:</p>
+<ul>
+<li><strong>Creative:</strong> the actual image or video of the ad — the thing people see and hear. Not the text beside it, the picture/video itself.</li>
+<li><strong>Copy:</strong> the text that sits next to the creative (Meta calls it the <em>primary text</em>). It tells the viewer what to do.</li>
+<li><strong>Offer:</strong> the exchange you propose — "give me X, get Y." An <em>ad</em> offer proposes a small first step, not the whole sale (more on this below).</li>
+<li><strong>Hook:</strong> the first 0–5 seconds of a video ad (or the top line of an image). Its only job is to earn the next few seconds of attention.</li>
+<li><strong>CTA (call to action):</strong> the instruction to act — "book a call," "get a free estimate," "learn more."</li>
+<li><strong>CTR (click-through rate):</strong> of everyone who saw your ad, the percentage who clicked it. A core health signal for a creative.</li>
+<li><strong>Ads Library:</strong> Meta's free public archive of every ad currently running on Facebook and Instagram. You can search it by keyword.</li>
+<li><strong>Awareness level:</strong> how much the prospect already knows about their problem and your solution — from "has no idea they have a problem" to "knows you, just needs a reason to act now."</li>
+</ul>
+<p>You do not need to memorise these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>Owen is blunt about where the leverage lives: <em>"Creative is everything. This is the highest leverage thing when it comes to running ads. If you have a good creative, then you are going to crush it. Your targeting, your landing page, your copy — literally none of it matters if your creative doesn't make someone stop scrolling."</em> — Owen. In earlier lessons you built the machine (the funnel, the CRM, the account). This lesson is where you build the thing that actually decides whether money comes in: the ad itself. Get this right and, as Owen puts it, <em>"one winning ad can completely change your life"</em> — it can pay you $3K a month per client for years.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>Distinguish an <strong>ad offer</strong> (sells the next immediate step) from a <strong>business offer</strong> (what you actually deliver), and write a one-sentence ad offer.</li>
+<li>Research proven winning ads in the <strong>Facebook Ads Library</strong> by filtering for longevity, and model the creative and landing page without copying unsubstantiated claims.</li>
+<li>Structure a video ad as <strong>hook / body / CTA</strong> using the correct 80 / 20 / ~0 importance split.</li>
+<li>Write hooks that pull the five <strong>psychology levers</strong> (curiosity, relevance, emotion, proof, novelty) and match the prospect's awareness level.</li>
+<li>Build a body using the <strong>four-R</strong> pattern (Relate, Reframe, Reveal, Remind/Action) and crank primary-text copy with the call-out → pain → offer → CTA framework.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Lesson 14</strong> (the audience / niche and awareness-level work in Module 5). This lesson assumes you have picked a niche and roughly know its awareness level.</li>
+<li>An AI assistant open in a browser tab (Claude, ChatGPT, or Gemini — any one works; they are interchangeable here).</li>
+</ul>
+<hr />
+<h2 id="part-1-the-four-components-of-an-ad-and-the-two-kinds-of-offer">Part 1: The four components of an ad — and the two kinds of offer</h2>
+<p>Owen defines an ad simply: <em>"a form of packaged communication designed to influence a specific audience to take a certain action."</em> Every ad breaks into four parts:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Offer</strong></td>
+<td>The exchange you propose — what they get for acting.</td>
+</tr>
+<tr>
+<td><strong>Creative</strong></td>
+<td>The image or video itself.</td>
+</tr>
+<tr>
+<td><strong>Copy</strong></td>
+<td>The text beside the creative (the primary text).</td>
+</tr>
+<tr>
+<td><strong>Destination</strong></td>
+<td>Where the click sends them (funnel or lead form — covered in Lesson 14/17).</td>
+</tr>
+</tbody>
+</table>
+<p>The trap beginners fall into is confusing the <strong>ad offer</strong> with the <strong>business offer</strong>. They are not the same thing.</p>
+<ul>
+<li>Your <strong>business offer</strong> is what you deliver: "I book qualified, shown estimate appointments with homeowners, and you only pay per shown appointment."</li>
+<li>Your <strong>ad offer</strong> is how you get someone excited enough to take the <em>next immediate step</em> — book a call, opt in, fill a form, apply.</li>
+</ul>
+<blockquote>
+<p>🔑 <strong>The ad offer's only job is to make someone stop scrolling and think: "Oh, I want that. How do I get it?"</strong> It is not trying to close the whole sale inside the ad.</p>
+</blockquote>
+<p>A good ad offer packs all of value into one sentence. Hormozi's value equation says value rises with the <strong>dream outcome</strong> and the <strong>likelihood</strong> they'll get it, and falls with the <strong>time delay</strong> and the <strong>effort</strong> required. A strong offer maxes the first two and shrinks the last two. Owen's examples (illustrative — adapt the numbers, and only promise what you can truly deliver):</p>
+<div class="codehilite"><pre><span></span><code>&quot;We help contractors add $50K a month in booked jobs — or you don&#39;t pay.&quot;
+&quot;Chiropractors: fill your calendar with 20 new patients in 30 days, guaranteed.&quot;
+&quot;Roofers: get 6 new installs in 30 days. Only pay per result.&quot;
+&quot;Solar companies: 40–60 qualified leads in 45 days.&quot;
+</code></pre></div>
+
+<p>Notice the shape: audience → dream outcome → time frame → risk-reversal. As Owen says, <em>"an ad offer is literally just a mini version of what you do, in a simplified way, to display your value to the public."</em></p>
+<blockquote>
+<p>⚠️ <strong>Reality check.</strong> A guarantee like "or you don't pay" and a number like "$50K a month" are only assets if they are true and substantiated. The FTC treats advertising claims as promises; unsupported earnings or results claims are deceptive. Write offers you can actually stand behind, and keep receipts.</p>
+</blockquote>
+<h2 id="part-2-the-media-buyer-as-scientist-research-winners-in-the-ads-library">Part 2: The media buyer as scientist — research winners in the Ads Library</h2>
+<p>Here is the mindset shift Owen wants: <em>"The best media buyers are not ad experts. A media buyer is just someone who tests creative and improves ad performance... They're not ad experts. They're just scientists. They're good at testing, good at numbers, good at analysing metrics."</em> — Owen. You are not trying to be a creative genius. You are running experiments and reading the results.</p>
+<p>And the best experiments start from what already works. The <strong>Facebook Ads Library</strong> (<code>facebook.com/ads/library</code>) is a free, public archive of every ad running on Meta. You search it like a search engine.</p>
+<p>The winner-hunting move is simple:</p>
+<div class="codehilite"><pre><span></span><code>1. Go to facebook.com/ads/library
+2. Search a keyword for your niche (&quot;roofers&quot;, &quot;deck builder&quot;, &quot;gutter cleaning&quot;)
+3. Filter / sort by ACTIVE ads, oldest start date first
+4. Any ad running 4–6+ MONTHS is very likely a winner
+5. Open it → study the creative AND click through to the landing page
+6. Model the structure (not the exact claims) into your own version
+</code></pre></div>
+
+<p>Why longevity works: nobody keeps paying to run an ad that loses money. As Owen puts it, <em>"More often than not, ads that have been active for more than 6 months are winners. If they're not winners, then the marketer that kept them up is stupid."</em> An old, still-running ad is a business voting with its wallet that this creative converts.</p>
+<p>Owen models both halves — the ad <em>and</em> the page behind it: <em>"In the landing page we can find the winning survey... this is what works."</em> Model the format, the hook style, the offer structure, the funnel flow.</p>
+<blockquote>
+<p>❌ <strong>"Model" is not "copy the claims."</strong> Modelling a <em>format</em> — a price-led headline, a family-holding-a-sign layout, a three-question survey — is normal and smart. Lifting a competitor's specific results claim ("added $2M in 90 days") that <em>you</em> cannot substantiate is an FTC problem and a lawsuit waiting to happen. Borrow structure; supply your own real proof.</p>
+<p>💡 <strong>Build a proof vault as you go.</strong> Owen recommends a Google Drive folder where you drop every real testimonial, screenshot, and win the moment it happens — even small ones ("first appointment booked"). Real, raw, recent proof is the strongest creative fuel there is, and it keeps your ads honest. Ask a client for a 30-second selfie video the instant they hit a milestone, while the emotion is high.</p>
+</blockquote>
+<h2 id="part-3-the-video-creative-hook-body-cta-and-the-80200-rule">Part 3: The video creative — hook / body / CTA and the 80/20/~0 rule</h2>
+<p>Every video creative has three pillars in order: <strong>hook → body → CTA</strong>. But time spent and importance are wildly uneven.</p>
+<div class="codehilite"><pre><span></span><code>A ~2-minute video ad:
+
+ TIME:        [ Hook 0–5s ][========= Body =========][ CTA ]
+ IMPORTANCE:  [   80%     ][          20%           ][ ~0% ]
+</code></pre></div>
+
+<p>Read that again: <strong>80% of your effort goes into the hook, 20% into the body, and essentially 0% into the CTA.</strong> This is the opposite of how beginners spend their time.</p>
+<p>Why the hook dominates: <em>"95% of people who look at an ad or video on social media... it takes literally 0.1 seconds to decide whether or not they're going to watch it... realistically, all you get is one to three seconds to completely earn attention."</em> — Owen. If the hook fails, nothing else in the ad is ever seen. So the hook's only goal is narrow: <strong>earn the next few seconds.</strong></p>
+<blockquote>
+<p>🔑 <strong>The most common reason video ads fail is not a bad hook — it is not testing enough hooks.</strong> Owen tests roughly 20 hooks against 2 bodies. You are hunting for the one that pops, and you cannot predict it, so you generate many.</p>
+</blockquote>
+<h3 id="hook-psychology-five-levers">Hook psychology: five levers</h3>
+<p>A hook works because it pulls one or more of these:</p>
+<table>
+<thead>
+<tr>
+<th>Lever</th>
+<th>What it does</th>
+<th>Mini-example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Curiosity</strong></td>
+<td>Opens a gap between what they know and want to know</td>
+<td>"The one thing every roofer gets wrong about leads..."</td>
+</tr>
+<tr>
+<td><strong>Relevance</strong></td>
+<td>Feels personal, calls them out by identity</td>
+<td>"Roofers in Virginia —"</td>
+</tr>
+<tr>
+<td><strong>Emotion</strong></td>
+<td>Taps desire, fear, pain, anger, pride, surprise</td>
+<td>"Tired of buying leads 10 other guys already called?"</td>
+</tr>
+<tr>
+<td><strong>Proof</strong></td>
+<td>Instant credibility, concrete result</td>
+<td>"We added $50K/month to Tim's decking company."</td>
+</tr>
+<tr>
+<td><strong>Novelty</strong></td>
+<td>Feels new or different, not like everyone else</td>
+<td>"Forget referrals. Forget shared leads."</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>✅ <strong>For home-improvement contractors, lean on proof and novelty.</strong> Owen: <em>"Novelty is by far the highest-performing lever you can pull."</em> Everyone in your space promises the same thing — repackage the familiar in a fresh, emotionally charged way.</p>
+</blockquote>
+<h3 id="hooks-by-awareness-level">Hooks by awareness level</h3>
+<p>The right hook depends on how aware the prospect already is (from Lesson 14). Bigger, established contractors usually sit between <strong>solution aware</strong> and <strong>product aware</strong> — so that is where your best hooks live.</p>
+<div class="codehilite"><pre><span></span><code>Unaware      → curiosity / story: &quot;One contractor went from knocking doors
+                10 hours a day to booked out 6 weeks — here&#39;s the system.&quot;
+Problem aware→ agitate: &quot;If you&#39;re still relying on referrals, that&#39;s why
+                your schedule&#39;s empty.&quot;   (weaker — avoid living here)
+Solution     → position the method: &quot;Forget shared leads. Forget word of
+ aware          mouth. Our ad system drops booked jobs straight to your phone.&quot;
+Product aware→ proof + novelty (SWEET SPOT): &quot;We help roofers add $50K a month
+                just like Tim — and book jobs, or we work for free until we do.&quot;
+Most aware   → deal/urgency (only if you have a brand): &quot;Last call to claim
+                your city — once we onboard one roofer here, we close it.&quot;
+</code></pre></div>
+
+<h3 id="the-four-r-body">The four-R body</h3>
+<p>The body sells logic, proof, and possibility. Owen: <em>"If the hook sells attention, the body sells logic, proof, and possibility."</em> Every good body contains four moves, usually in this order:</p>
+<table>
+<thead>
+<tr>
+<th>Move</th>
+<th>Job</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Relate</strong></td>
+<td>Name their pain better than they can, so they feel understood.</td>
+</tr>
+<tr>
+<td><strong>2. Reframe</strong></td>
+<td>Explain what's <em>actually</em> wrong and what fixes it.</td>
+</tr>
+<tr>
+<td><strong>3. Reveal</strong></td>
+<td>Show one specific proof — a stat, screenshot, or story.</td>
+</tr>
+<tr>
+<td><strong>4. Remind / Action</strong></td>
+<td>Tell them exactly what to do next and what happens when they do.</td>
+</tr>
+</tbody>
+</table>
+<p>A worked example (illustrative — adapt to your niche), for a decking company:</p>
+<div class="codehilite"><pre><span></span><code>RELATE:  &quot;If you own a decking company, the worst part isn&#39;t the work —
+          it&#39;s the feast-or-famine cycle. Slammed all summer, dead the
+          second the weather turns, scraping for referrals and Angi leads
+          10 other builders already called.&quot;
+
+REFRAME: &quot;Here&#39;s what&#39;s actually wrong: you&#39;re relying on leads instead
+          of booked appointments. A lead is just a name. We run the ads,
+          qualify homeowners on project size and budget, and drop them on
+          your calendar only once they&#39;ve agreed to sit down for an estimate.&quot;
+
+REVEAL:  &quot;This is a deck builder we work with — 11 qualified estimates
+          booked in two weeks, in the middle of the slow season.&quot;
+
+ACTION:  &quot;Instead of praying for referrals, you get a steady stream of real
+          estimates year-round, and you only pay when they show up. Tap
+          below to see if your area&#39;s still available.&quot;
+</code></pre></div>
+
+<p>The CTA at the end is deliberately plain: "book a call," "get an estimate," "apply below." Owen spends essentially no energy here on purpose — <em>"CTA is just the call to action... it's not important, so we're not going to take time on it."</em></p>
+<h2 id="part-4-the-scripting-workflow-and-where-copy-fits">Part 4: The scripting workflow — and where copy fits</h2>
+<p>Owen's target: a scripted ad in 60 minutes or less. The workflow stacks the pieces you just learned, and you use an AI assistant (Claude, ChatGPT, or Gemini — interchangeable) to accelerate each step:</p>
+<div class="codehilite"><pre><span></span><code>1. AUDIENCE  → paste your filled-in audience/awareness worksheet (Lesson 14)
+2. OFFER     → write ONE ad offer (audience + dream outcome + time + risk-reversal)
+3. HOOKS     → generate ~10–20 hooks across the 5 levers, at your awareness level
+4. BODY/CTA  → write 1–2 four-R bodies + a plain CTA
+5. COPY      → have AI draft the primary text (see framework below)
+   ────────────────────────────────────────────────
+   OUTPUT: an ad script = all hooks + bodies/CTAs + copy, ready to film
+</code></pre></div>
+
+<p>In early testing you want breadth: ~20 hooks × 2 bodies. Most will be mediocre; a few will jump out at you. A later lesson covers how to actually test and budget them.</p>
+<h3 id="copywriting-call-out-pain-offerbenefits-cta">Copywriting: call-out → pain → offer/benefits → CTA</h3>
+<p>The primary text (copy) follows one simple framework:</p>
+<div class="codehilite"><pre><span></span><code>CALL-OUT        &quot;Roofers in Hampton Roads 👋&quot;        (identity + emoji)
+PAIN POINT      &quot;Tired of paying for shared leads
+                 that never close?&quot;
+OFFER/BENEFITS  &quot;We book qualified, shown estimates
+                 straight to your calendar — you only
+                 pay per shown appointment.&quot;
+CTA             &quot;Tap &#39;Learn More&#39; to see if your area
+                 is open. 👇&quot;
+</code></pre></div>
+
+<p>But keep copy in perspective. Owen: <em>"Copy is important, but creative is everything. You should be focusing 99% of your energy on creative... in my opinion, you should probably just use one copy for just about everyone."</em> Write one solid piece of copy with AI, confirm a similar structure is running in the Ads Library (search "roof starting at" and filter a year+ back to see the proven pattern), and move on. Do not agonise over it.</p>
+<blockquote>
+<p>💡 <strong>Tool note.</strong> Owen reaches for a specific AI in the video, but any capable assistant works — <strong>Claude, ChatGPT, and Gemini are interchangeable</strong> for scripting, hooks, and copy. Pick whichever you already pay for. Later lessons cover image/video generation tools (Higgsfield and alternatives like Midjourney, Ideogram, Runway, Kling, Canva).</p>
+</blockquote>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>Creative is the whole ballgame.</strong> Targeting, page, and copy barely matter if the creative doesn't stop the scroll. Be a scientist: test, read metrics, repeat.</li>
+<li><strong>Ad offer ≠ business offer.</strong> The ad offer sells the <em>next immediate step</em>, in one value-packed sentence. The business offer is what you deliver.</li>
+<li><strong>The Ads Library hands you proven winners.</strong> Filter for ads running 4–6+ months, model the creative <em>and</em> the landing page — but never lift claims you can't substantiate.</li>
+<li><strong>Hook / body / CTA at 80 / 20 / ~0.</strong> You get 1–3 seconds. Spend your effort where the attention dies or survives: the hook. And test many.</li>
+<li><strong>Bodies are four-R; copy is call-out → pain → offer → CTA.</strong> Match everything to the prospect's awareness level (usually solution- to product-aware), leaning on proof and novelty.</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Writing one hook and calling it done.</strong> The single most common cause of failed video ads. Generate 10–20; you can't predict the winner.</li>
+<li>❌ <strong>Selling the whole business inside the ad.</strong> The ad offer only needs to earn a click to the next step, not close a $2K/month deal in 30 seconds.</li>
+<li>❌ <strong>Copying a competitor's results claim.</strong> Modelling a <em>format</em> is smart; borrowing "$2M in 90 days" you can't prove is deceptive advertising (FTC) — supply your own real proof instead.</li>
+<li>❌ <strong>Over-explaining the mechanism.</strong> A 55-year-old contractor doesn't care about your "AI caller." He cares: <em>how many jobs, and has it worked for someone like me?</em> Show what it does, not how it works.</li>
+<li>❌ <strong>Polishing copy while ignoring the creative.</strong> Copy is ~1% of the win. One good version, then all energy back on creative.</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: A complete, film-ready ad script for your niche</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. By the end you'll hold the exact document you hand to a camera (or an AI generator) in the next lesson — no blank page, no guessing.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>A single ad-script document for your chosen niche containing five parts, each mapped to a lesson idea:</p>
+<ul>
+<li><strong>One ad offer</strong> (Part 1) — one value-packed sentence.</li>
+<li><strong>Ten hook options</strong> (Part 3) — across the five levers, at your awareness level.</li>
+<li><strong>One four-R body</strong> (Part 3) — Relate / Reframe / Reveal / Remind-Action.</li>
+<li><strong>One CTA</strong> (Part 3) — plain and direct.</li>
+<li><strong>The primary-text copy</strong> (Part 4) — call-out → pain → offer → CTA.</li>
+</ul>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in the script</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ad offer vs business offer</td>
+<td>Writing the one-sentence ad offer</td>
+</tr>
+<tr>
+<td>Ads Library research</td>
+<td>Sourcing 3 proven models before you write</td>
+</tr>
+<tr>
+<td>80/20/~0 split</td>
+<td>Spending your effort on the 10 hooks, not the CTA</td>
+</tr>
+<tr>
+<td>Five hook levers + awareness</td>
+<td>Generating and labelling the hooks</td>
+</tr>
+<tr>
+<td>Four-R body</td>
+<td>The single body block</td>
+</tr>
+<tr>
+<td>Copy framework</td>
+<td>The primary text</td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Pull three winners.</strong> Open <code>facebook.com/ads/library</code>, search your niche, filter for ads running 4–6+ months, and screenshot three winners plus their landing pages into a "proof/models" folder.</li>
+<li><strong>Write the ad offer.</strong> One sentence: audience + dream outcome + time frame + risk-reversal. Make sure every claim in it is true for you.</li>
+<li><strong>Generate ten hooks.</strong> Paste your audience notes and offer into your AI assistant; ask for 10 hooks across curiosity/relevance/emotion/proof/novelty at your awareness level. Label each with its lever. Hand-edit the best.</li>
+<li><strong>Write one four-R body.</strong> Draft Relate → Reframe → Reveal → Remind/Action. Use a <em>real</em> proof point in the Reveal (or mark it "[insert real result]" — never a fake one).</li>
+<li><strong>Add the CTA and the copy.</strong> One plain CTA. Then have AI draft primary text as call-out → pain → offer/benefits → CTA; trim to one clean version.</li>
+<li><strong>Assemble the script.</strong> One document: offer at top, 10 hooks, the body, the CTA, the copy. This is what you film/generate next lesson.</li>
+<li><strong>Stretch goals.</strong> Write a second body for A/B testing; adapt the whole script from B2C (contractor's customers) to B2B (signing the contractor as your client) and note what changed.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ You have a single document with all five parts filled in for one real niche.</li>
+<li>✅ Every hook is labelled with the lever it pulls, and at least four pull proof or novelty.</li>
+<li>✅ The Reveal in your body uses a real (or honestly placeholder-marked) proof point — nothing fabricated.</li>
+<li>✅ You could hand this to someone with a phone tripod and they'd know exactly what to say.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> before you save the script, reread every number and claim and ask "can I prove this to a client, or to the FTC, right now?" If not, cut it or soften it.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice on one idea. Optional and independent; the Capstone already touches all of them, so feel free to skip straight to it.</p>
+</blockquote>
+<h3 id="exercise-1-offer-surgery-foundational">Exercise 1: Offer surgery (foundational)</h3>
+<p>Take one of Owen's example offers and rewrite it three ways for <em>your</em> niche, changing only one variable each time (the dream outcome, the time frame, then the risk-reversal). Notice which change makes it feel strongest.</p>
+<h3 id="exercise-2-ads-library-dig-intermediate">Exercise 2: Ads Library dig (intermediate)</h3>
+<p>Find five ads in your niche running 6+ months. For each, write one line on <em>why</em> you think it's winning (the hook lever it pulls, the offer shape, the page congruency). You're training your eye to see structure.</p>
+<h3 id="exercise-3-awareness-re-hook-advanced">Exercise 3: Awareness re-hook (advanced)</h3>
+<p>Write the <em>same</em> core message as five different hooks — one per awareness level (unaware → most aware). Feel how the framing has to change even though the underlying offer doesn't. This is the Schwartz insight in your own hands.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>AD = OFFER + CREATIVE + COPY + DESTINATION.  Creative is ~everything.
+
+AD OFFER ≠ BUSINESS OFFER
+  Business offer = what you deliver.
+  Ad offer = sells the NEXT STEP, one sentence:
+    [audience] + [dream outcome] + [time frame] + [risk-reversal]
+    e.g. &quot;Roofers: 6 installs in 30 days. Only pay per result.&quot;
+
+RESEARCH (Facebook Ads Library, facebook.com/ads/library)
+  Search niche → filter ACTIVE, oldest first → 4–6+ months = winner.
+  Model creative AND landing page. Model FORMAT, never fake claims (FTC).
+
+VIDEO STRUCTURE      time            importance
+  HOOK  (0–5s)       short           80%   ← spend effort here, test ~20
+  BODY               most of it      20%
+  CTA                end             ~0%
+  You get 1–3 seconds. Hook&#39;s only job: earn the next few seconds.
+
+HOOK LEVERS:  Curiosity · Relevance · Emotion · Proof · Novelty
+  Home improvement → lean PROOF + NOVELTY. Aim solution/product-aware.
+
+BODY = 4-R:  Relate → Reframe → Reveal(proof) → Remind/Action
+
+COPY = Call-out → Pain → Offer/Benefits → CTA
+  One version, don&#39;t over-test. Copy ~1% of the win.
+
+SCRIPT WORKFLOW (≤60 min, w/ Claude / ChatGPT / Gemini — interchangeable):
+  audience → offer → hooks → body/CTA → copy → assemble
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>Earlier, Module 5 · Lesson 14:</strong> gave you the niche, the audience worksheet, and the awareness levels — the raw material every piece of this lesson is built on.</li>
+<li><strong>Next, Module 5 · Lesson 16 "Make your creatives":</strong> you take the script you just wrote and turn it into actual assets — filming video or generating picture ads with AI tools.</li>
+<li><strong>Later, Module 5 (scaling with data):</strong> you'll launch these hooks and creatives as a real campaign, read the metrics like a scientist, and double down on the one winner that pays you for years.</li>
+</ul>
+<hr />
+<p><em>Source: "AI Agency Full Course" by Owen Rensland. Prices, scripts, offers, and KPI numbers are illustrative reconstructions of the patterns described in the talk — adapt them to your niche and substantiate every claim you make. Advertising claims are legally promises; keep proof real.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="14-ad-philosophy-audience.html"><span class="dir">&#8592; Previous</span><b>Ad philosophy &amp; your audience</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="16-make-your-creatives.html"><span class="dir">Next &#8594;</span><b>Make your creatives</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <span class="fnote">A self-paced course generated from Owen Rensland&#x27;s public AI Agency course. Quotes are attributed to the speaker; scripts, prices, and code are illustrative reconstructions of the patterns described — adapt them to today&#x27;s tools, and always follow platform terms and local laws.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>

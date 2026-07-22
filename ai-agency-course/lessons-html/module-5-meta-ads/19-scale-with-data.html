@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 5 · Lesson 19: Scale with data | The AI Agency Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>The AI Agency Blueprint</b> &middot; a self-paced course</div>
+  <div class="right"><span>Re-sequenced from Owen Rensland&#x27;s 20-hour AI Agency masterclass</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 5 · Lesson 19</span>
+      <h1>Scale with <span class="accent">data</span></h1>
+      <p class="lead">Once your campaign is live, you stop guessing and start reading the numbers: you log an ad tracker every morning, compare each metric to a target, kill the clear losers, scale the clear winners without breaking them, and use simple ad math to know exactly how much you can spend to buy a customer.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        <a class="play" href="https://www.youtube.com" target="_blank" rel="noopener"><span class="circ">&#9654;</span> Watch the talk</a>
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Owen Rensland</b></span>
+        <span class="chip">&#9201; <b>65 to 80 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-log-the-tracker-read-yesterday-not-this-minute">Part 1: Log the tracker — read yesterday, not this minute</a></li>
+<li><a href="#part-2-the-benchmark-kpis-and-the-keystone-metrics-that-actually-matter">Part 2: The benchmark KPIs — and the keystone metrics that actually matter</a></li>
+<li><a href="#part-3-kill-keep-or-scale-but-only-once-theres-enough-data">Part 3: Kill, keep, or scale — but only once there's enough data</a></li>
+<li><a href="#part-4-the-learning-phase-rules-how-to-make-changes">Part 4: The learning-phase rules — how to make changes</a></li>
+<li><a href="#part-5-media-buying-hook-testing-and-the-creative-engine">Part 5: Media buying, hook testing, and the creative engine</a></li>
+<li><a href="#part-6-the-ad-math-ltgpcac-client-financed-acquisition-reverse-budgeting">Part 6: The ad math — LTGP:CAC, client-financed acquisition, reverse budgeting</a><ul>
+<li><a href="#ltgpcac-the-31-floor">LTGP:CAC — the 3:1 floor</a></li>
+<li><a href="#client-financed-acquisition-the-accelerator">Client-financed acquisition — the accelerator</a></li>
+<li><a href="#reverse-budgeting-never-pick-a-budget-from-thin-air">Reverse budgeting — never pick a budget from thin air</a></li>
+</ul>
+</li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: Your ad-tracker + reverse-budget sheet + kill/keep/scale rulebook</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-read-the-leak-foundational">Exercise 1: Read the leak (foundational)</a></li>
+<li><a href="#exercise-2-kill-keep-or-scale-intermediate">Exercise 2: Kill, keep, or scale (intermediate)</a></li>
+<li><a href="#exercise-3-reverse-budget-both-ways-advanced">Exercise 3: Reverse budget both ways (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects">How this connects</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>Once your campaign is live, you stop guessing and start reading the numbers: you log an ad tracker every morning, compare each metric to a target, kill the clear losers, scale the clear winners without breaking them, and use simple ad math to know exactly how much you can spend to buy a customer.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone Project</strong> where you build your own <strong>ad-tracker + reverse-budget sheet</strong> and write your personal <strong>kill / keep / scale rulebook</strong> for your niche. Everything before the Capstone teaches the skills you will use there. If you want to see the finish line first, jump to the <strong>"Capstone Project"</strong> section, then come back.</p>
+<p>💬 Owen calls this "the most valuable section" of his entire ads training: <em>"If you take anything from this video, take away scaling with data — how to track, how to make decisions off of data, how to scale campaigns in the effective way without breaking things."</em> — Owen</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> The dashboards and buttons will change, but the unit-economics math will not.</p>
+<ul>
+<li><strong><a href="https://www.acquisition.com/">$100M Offers</a> and <a href="https://www.acquisition.com/">$100M Leads</a> by Alex Hormozi</strong> (books). The <strong>LTGP:CAC ratio</strong> and <strong>client-financed acquisition</strong> in this lesson are Hormozi's frameworks. Owen credits them directly: <em>"Most of this section is from Alex Hormozi."</em> Read the source for the timeless version — it applies to any business that pays to get customers, not just Meta ads.</li>
+</ul>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday advertising terms. Here they are in plain words:</p>
+<ul>
+<li><strong>KPI (Key Performance Indicator):</strong> a number you decide to watch because it tells you whether the campaign is healthy — e.g. cost per lead. A <em>benchmark</em> or <em>target</em> is the value you want that number to hit.</li>
+<li><strong>Cost per result:</strong> how much ad spend it took to get one of the things you actually want (one lead, or one booked appointment). Your north-star cost.</li>
+<li><strong>CPM:</strong> cost per 1,000 times your ad is shown. Roughly, how expensive it is for Meta to put your ad in front of people.</li>
+<li><strong>CTR (click-through rate):</strong> of the people who saw your ad, the percentage who clicked it.</li>
+<li><strong>ROAS (Return On Ad Spend):</strong> revenue divided by ad spend. A 3.0 ROAS means every $1 of ads brought back $3 of revenue.</li>
+<li><strong>Learning phase:</strong> the unstable period right after you launch or edit an ad, while Meta's algorithm is still figuring out who to show it to. Costs bounce around; don't judge yet.</li>
+<li><strong>Optimization event:</strong> one instance of the thing you told Meta to go get — usually a lead or a booked appointment. Meta needs a pile of them before its numbers mean anything.</li>
+<li><strong>Ad set:</strong> the container inside a campaign that holds your ads and your budget/targeting. This is where "learning" actually happens.</li>
+</ul>
+<p>You do not need to memorise these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>In Lesson 18 you launched a live campaign. Now money is moving and a voice in your head wants to refresh Ads Manager ten times a day and switch things off out of fear. Owen says that panic is the single biggest reason people fail: <em>"They manage ads emotionally... they'll kill campaigns before they've even had time to spend. You need to let the ads breathe."</em> This lesson replaces feelings with a repeatable routine and a set of numbers. Learn it and one winning ad can pay you 3K a month for two years. Skip it and you will strangle good ads before they ever prove themselves.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>Log a daily ad tracker from yesterday's data and read each metric against its target KPI.</li>
+<li>Name the keystone metrics that actually decide scaling: front-end ROAS, LTGP:CAC, cost per result, and the kill threshold.</li>
+<li>Apply the kill / keep / scale thresholds once an ad has <em>enough data</em> (30–50 events or 5–7 days).</li>
+<li>Follow the learning-phase rules so you never accidentally reset a winning ad.</li>
+<li>Run the ad math — LTGP:CAC (3:1 floor), client-financed acquisition, and reverse budgeting in both directions.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Lesson 18</strong> (your campaign is live and spending). This whole lesson reads the data that campaign produces.</li>
+<li>Comfort finding basic columns in Meta Ads Manager (impressions, link clicks, results, amount spent).</li>
+</ul>
+<hr />
+<h2 id="part-1-log-the-tracker-read-yesterday-not-this-minute">Part 1: Log the tracker — read yesterday, not this minute</h2>
+<p>Scaling with data starts with a boring daily habit: every morning, open Ads Manager and copy <strong>yesterday's</strong> finished numbers into a tracker (a spreadsheet). Yesterday, because today's data is half-baked and will only feed your panic.</p>
+<p>Your tracker has one row per day (and ideally a block per ad), with columns for every metric below. Owen's own workflow: fill the tracker, then paste your KPI benchmarks and the day's data into Claude and ask it to <em>"run a bottleneck analysis based on these metrics and what my constraint is"</em> — while you do the same analysis by hand so you learn to see it yourself.</p>
+<blockquote>
+<p>🔑 <strong>The tracker turns advertising from a feeling into a measurement.</strong> You cannot fix what you refuse to write down.</p>
+<p>💡 <strong>Alternatives.</strong> Owen uses a spreadsheet plus Claude. Any spreadsheet works (Google Sheets, Excel); any capable LLM works (Claude, ChatGPT, Gemini). The habit matters more than the tool.</p>
+</blockquote>
+<h2 id="part-2-the-benchmark-kpis-and-the-keystone-metrics-that-actually-matter">Part 2: The benchmark KPIs — and the keystone metrics that actually matter</h2>
+<p>Think of your funnel as a series of steps. Each step has a metric and a healthy target. When a campaign underperforms, one or two steps are the <strong>bottleneck</strong> — the constraint — and that's where you work.</p>
+<table>
+<thead>
+<tr>
+<th>Funnel step</th>
+<th>Metric</th>
+<th>Healthy target (illustrative)</th>
+<th>What a bad number usually means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ad delivery</td>
+<td>CPM</td>
+<td>~$20–$80</td>
+<td>Weak creative / thin diversification / slow page</td>
+</tr>
+<tr>
+<td>Ad → click</td>
+<td>Unique outbound link CTR</td>
+<td><strong>≥ 1.5%</strong></td>
+<td>Messaging or offer doesn't resonate</td>
+</tr>
+<tr>
+<td>First seconds</td>
+<td>Hook rate (3-sec views ÷ impressions)</td>
+<td>High as possible</td>
+<td>Weak first 1–3 seconds</td>
+</tr>
+<tr>
+<td>Click → lead</td>
+<td>Landing page conversion rate</td>
+<td><strong>5–10%</strong></td>
+<td>Slow/ugly page, incongruent message, too much friction</td>
+</tr>
+<tr>
+<td>Form health</td>
+<td>Survey submission rate</td>
+<td>~45%</td>
+<td>A question is causing drop-off</td>
+</tr>
+<tr>
+<td>Lead → booking</td>
+<td>Booking rate</td>
+<td><strong>4–6%</strong></td>
+<td>Poor calendar availability / clunky UX</td>
+</tr>
+<tr>
+<td>Booked → shown</td>
+<td>Show rate</td>
+<td>aim ~50%+ (44% is <em>low</em>)</td>
+<td>Weak reminders / no-show handling</td>
+</tr>
+<tr>
+<td>Shown → closed</td>
+<td>Close rate</td>
+<td>~25%</td>
+<td>Sales process (covered in Modules 7–8)</td>
+</tr>
+</tbody>
+</table>
+<p>These funnel metrics tell you <em>where</em> the leak is. But scaling decisions ride on a smaller set of <strong>keystone metrics</strong> — the ones Owen checks first:</p>
+<table>
+<thead>
+<tr>
+<th>Keystone metric</th>
+<th>What it tells you</th>
+<th>The line</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Front-end ROAS</strong></td>
+<td>Revenue from upfront cash ÷ ad spend</td>
+<td>Above 1 means the front end pays for itself</td>
+</tr>
+<tr>
+<td><strong>Cost per result</strong></td>
+<td>Spend per lead or per booked appointment</td>
+<td>Compare to your reverse-budget ceiling</td>
+</tr>
+<tr>
+<td><strong>LTGP:CAC</strong></td>
+<td>Lifetime gross profit ÷ cost to acquire</td>
+<td><strong>≥ 3:1</strong> or you cannot safely scale</td>
+</tr>
+<tr>
+<td><strong>Kill threshold</strong></td>
+<td>The cost-per-result number that means "dead"</td>
+<td>2–3× your target (see Part 3)</td>
+</tr>
+</tbody>
+</table>
+<p>In Owen's real roofing example, the campaign's upfront ROAS was 2.49 and lifetime ROAS was ~5, CAC was $84 against ~$2,000 upfront cash per client. His verdict: <em>"Right off the bat, this campaign is scalable... I would just scale it."</em> The funnel had two real constraints (CTR at 0.69% — should be double — and a 44% show rate), but the keystone metrics were so healthy that the correct move was still: pour in more money.</p>
+<blockquote>
+<p>🔑 <strong>Funnel metrics find the leak; keystone metrics decide whether to scale.</strong> Check keystones first.</p>
+</blockquote>
+<h2 id="part-3-kill-keep-or-scale-but-only-once-theres-enough-data">Part 3: Kill, keep, or scale — but only once there's <em>enough data</em></h2>
+<p>"Kill the losers, keep the winners" is useless advice when you can't yet tell which is which. So the first rule is patience:</p>
+<blockquote>
+<p><strong>Enough data = 30–50 optimization events, or 5–7 days, whichever comes first.</strong> Before that, every number is noise. <em>"Removing an ad at $15 in spend and three leads is not discipline, it's emotion."</em> — Owen</p>
+</blockquote>
+<p>Once an ad has real data, compare its <strong>cost per result</strong> to your target (the max cost-per-lead / cost-per-booked you'll calculate in Part 6):</p>
+<table>
+<thead>
+<tr>
+<th>If cost per result is...</th>
+<th>Verdict</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>At or under target</td>
+<td><strong>Keep</strong></td>
+<td>Let it run; consider scaling (Part 5)</td>
+</tr>
+<tr>
+<td>Between 1× and 2× target</td>
+<td><strong>The messy middle</strong></td>
+<td>Don't kill, don't scale — gather more data or fix the constraint</td>
+</tr>
+<tr>
+<td>2× target or worse</td>
+<td><strong>Kill</strong></td>
+<td>Turn it off</td>
+</tr>
+</tbody>
+</table>
+<p>There's also an early-kill shortcut so you don't feed obvious dead ads: if an ad has <strong>burned 2–3× your target cost per result with zero conversions</strong>, kill it now. Example: target of $150 per appointment, an ad spends $450 with no bookings → dead, kill it. But if it simply hasn't spent enough yet, leave it on — <em>"there's no leads on triple the budget, it's not bad luck, it's a broken ad."</em></p>
+<p><strong>Scaling is a separate, campaign-level decision.</strong> A keeper is not automatically a scaler — scaling is driven by ROAS, not by one ad looking fine. When you do scale a winner, do it gently: <strong>duplicate the winner at a higher budget, or raise budget by +20% every 2–3 days.</strong> Anything over ~20% at once throws the ad back into the learning phase.</p>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> write your thresholds down as numbers <em>before</em> you're emotional. "$X target, kill at $2X, scale at +20%/2 days." Then obey your own rulebook.</p>
+</blockquote>
+<h2 id="part-4-the-learning-phase-rules-how-to-make-changes">Part 4: The learning-phase rules — how to make changes</h2>
+<p>Owen calls this <em>"probably the most valuable part of this whole video."</em> The Meta algorithm learns at the <strong>ad-set level</strong>, and every meaningful edit scrambles that learning and restarts the unstable phase. The rules:</p>
+<ol>
+<li><strong>Never edit a live ad or a live ad set. Ever.</strong> Changing even a few words of a running ad — or its link — can destroy its performance. <em>"Never edit an existing running ad."</em></li>
+<li><strong>Big edits reset learning.</strong> Budget changes over ~20%, swapping the optimization event, or editing creative at the ad-set level all restart the learning phase.</li>
+<li><strong>To change anything, duplicate — don't edit.</strong> Want a new landing page, new placements, new targeting, or a new ad to test? Duplicate the ad set and make the change in the fresh copy. The old one keeps running clean.</li>
+<li><strong>Don't judge or edit inside the learning phase.</strong> Give it 40–50 events or 5–7 days first. <em>"Most ads were killed before they had a chance."</em></li>
+<li><strong>Change one variable at a time.</strong> If you change the hook, the audience, and the budget together and results improve, you have no idea why. That's guessing, not testing.</li>
+</ol>
+<blockquote>
+<p>❌ <strong>The fatal mistake:</strong> seeing one slow day, panicking, and editing the live ad set. That single click resets learning and guarantees several bad days — which feels like proof the ad is failing, so you edit again. Break the loop by not touching it.</p>
+</blockquote>
+<h2 id="part-5-media-buying-hook-testing-and-the-creative-engine">Part 5: Media buying, hook testing, and the creative engine</h2>
+<p>Modern media buying is about <strong>feeding the algorithm a clean signal and getting out of its way.</strong> Two practical consequences:</p>
+<p><strong>Consolidate.</strong> Fewer campaigns, fewer ad sets, more budget per ad set. Splitting $100/day across five ad sets starves them all; one ad set at $100/day gives Meta enough signal to exit the learning phase.</p>
+<p><strong>Test at volume — work backward from budget.</strong> The #1 reason people fail at ads is not testing enough creative, especially hooks. Assume roughly <strong>1 in 5 to 1 in 10 creatives is a real winner</strong>, so to find two winners you test 10–20. But each ad needs ~$10–$20/day of its own spend to test fairly, so your budget caps how many you can test at once:</p>
+<table>
+<thead>
+<tr>
+<th>Daily ad-set budget</th>
+<th>Hooks / creatives you can test fairly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$20/day</td>
+<td>1–2</td>
+</tr>
+<tr>
+<td>$50/day</td>
+<td>3–4</td>
+</tr>
+<tr>
+<td>$100/day</td>
+<td>5–6</td>
+</tr>
+<tr>
+<td>$200/day</td>
+<td>full 10-hook batch</td>
+</tr>
+</tbody>
+</table>
+<p><em>"So work backwards from your budget, not forwards."</em> Launch a batch (same body, same offer, same audience — only the hook or picture changes so you isolate the variable), let it get 5–7 days or ~50 events, then cut losers, keep winners, and feed in the next batch.</p>
+<p><strong>The creative engine</strong> is the loop that keeps you from ever running out of things to test:</p>
+<div class="codehilite"><pre><span></span><code>   IDEATION  ──▶  BATCH PRODUCE  ──▶  TEST  ──▶  CUT &amp; SCALE
+   (ads library,   (1 body,          (let it     (kill losers,
+    6mo+ winners,    5–10 hooks       get         keep winners,
+    hook levers)     or pictures)     signal)      iterate) ──┐
+        ▲                                                     │
+        └─────────────  winners make more winners  ◀──────────┘
+</code></pre></div>
+
+<p>When you find a winning hook, make 5–10 variations of <em>it</em> (new opening line, new first frame, same idea) and test those next. <em>"Winners make more winners."</em> A campaign dies the day you stop feeding it new creative.</p>
+<blockquote>
+<p>💡 <strong>Alternatives.</strong> Owen builds picture creatives with Higgsfield; alternatives include Midjourney, Ideogram, Leonardo.ai, Adobe Firefly, or ChatGPT/DALL·E. He researches winners in the free <strong>Facebook Ads Library</strong> (ads running 6+ months are usually winners) — that library is free to everyone and is your best idea source.</p>
+</blockquote>
+<h2 id="part-6-the-ad-math-ltgpcac-client-financed-acquisition-reverse-budgeting">Part 6: The ad math — LTGP:CAC, client-financed acquisition, reverse budgeting</h2>
+<p>This is the section that <em>"separates people who just run ads from people who build a real business with ads. If you don't know your numbers, you're gambling."</em></p>
+<h3 id="ltgpcac-the-31-floor">LTGP:CAC — the 3:1 floor</h3>
+<ul>
+<li><strong>LTGP (Lifetime Gross Profit):</strong> total revenue a customer pays you over their lifetime, minus your cost to deliver.</li>
+<li><strong>CAC (Customer Acquisition Cost):</strong> everything you spent to get them — ad spend plus any setter/closer commission.</li>
+</ul>
+<p>The ratio must be <strong>at least 3:1</strong>. For every $1 you spend acquiring a customer, you want ≥$3 of gross profit back over their lifetime. Below 3:1 you cannot scale: one bad ad week or one refund and you're out of cash. At 3:1+ you have margin to absorb variance and reinvest. <em>"Healthy businesses are at 3:1 or much higher."</em></p>
+<h3 id="client-financed-acquisition-the-accelerator">Client-financed acquisition — the accelerator</h3>
+<p>Client-financed acquisition means <strong>the cash a new customer pays you in the first 30 days covers the cost of acquiring them <em>plus</em> the next one.</strong> When that's true, <em>"the customers are buying the next customer"</em> — you scale until something breaks and never run out of cash. Two businesses can both be 3:1, but the one that collects more <strong>upfront</strong> scales far faster, because the cash comes back sooner and recycles into more ad spend. This is why you raise your upfront price as you gain proof and experience.</p>
+<h3 id="reverse-budgeting-never-pick-a-budget-from-thin-air">Reverse budgeting — never pick a budget from thin air</h3>
+<p>Reverse budgeting runs in two directions.</p>
+<p><strong>Backward</strong> (profit per client → max cost per step). Start from what you collect and let the 3:1 floor set your ceilings:</p>
+<div class="codehilite"><pre><span></span><code>Charge $2,000 upfront, 80% margin      →  $1,600 front-end gross profit
+Divide by 3 (the 3:1 floor)            →  ~$533  MAX CAC (max cost to acquire)
+Then walk the KPIs backward for ceilings:
+  ~$130 max cost per shown call
+  →     max cost per booked call
+  →     max cost per lead
+</code></pre></div>
+
+<p>Those ceilings are the numbers you feed into your kill threshold in Part 3.</p>
+<p><strong>Forward</strong> (revenue goal → required spend). Start from a goal and walk the funnel forward using <em>realistic</em> KPIs:</p>
+<div class="codehilite"><pre><span></span><code>Goal: $20,000/mo upfront cash, $2,000/client   →  10 clients
+10 closes @ 20% close rate                     →  50 shown calls
+50 shown @ 53% show rate                       →  94 booked calls
+94 booked @ 75% book rate                      →  126 leads
+126 leads @ realistic LP conversion            →  ~3,400 visitors
+visitors @ 1.4% CTR                            →  ~243,000 impressions
+impressions @ $30 CPM                          →  ~$7,300/mo  (≈ $240/day)
+</code></pre></div>
+
+<p>Note Owen's honesty here: at those realistic rates, $7,300 spend ÷ 10 clients = $730 CAC, which is <em>above</em> the $533 front-end ceiling. That means you're only ~1:1 on the front end and rely on <strong>back-end</strong> fulfillment revenue (the $2–4K/mo recurring) to clear 3:1 overall. You'll still be profitable — you just scale slower than the dreamy "perfect KPI" version. That gap between the dream math and the realistic math is exactly why collecting upfront matters.</p>
+<blockquote>
+<p>⚠️ <strong>Reality check: "scale until it breaks" assumes two things are true.</strong> First, healthy unit economics — a genuine 3:1 LTGP:CAC, not a hoped-for one. Second, <strong>fulfillment capacity</strong> — the ability to actually deliver results for every client you sign. If you scale ad spend past your ability to service clients, you'll book people you can't help, your results (and reviews) will crater, and churn will eat the growth. Scale the front end no faster than you can grow the back end.</p>
+</blockquote>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>Read yesterday, not this minute.</strong> Log a daily tracker; today's numbers are noise that only feeds panic.</li>
+<li><strong>Funnel metrics find the leak; keystone metrics decide scaling.</strong> Check ROAS, cost per result, LTGP:CAC, and the kill threshold first.</li>
+<li><strong>Enough data = 30–50 events or 5–7 days.</strong> No decision before that. Kill at 2× target, keep at/under target, sit in the messy middle between.</li>
+<li><strong>Never edit a live ad or ad set — duplicate instead, and change one variable at a time.</strong></li>
+<li><strong>Know your numbers.</strong> 3:1 LTGP:CAC is the floor; client-financed acquisition is the accelerator; reverse budgeting sets both your ceilings and your spend.</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Managing ads emotionally</strong> — refreshing all day and killing ads at $15 spend. Let them breathe to the data threshold first.</li>
+<li>❌ <strong>Editing a live winner</strong> — even a few words or a link change can destroy a running ad. Duplicate the ad set for any change.</li>
+<li>❌ <strong>Testing 100 creatives on $60/day</strong> — none get enough spend to prove out. Work backward: budget ÷ ~$15 = how many you can test.</li>
+<li>❌ <strong>Changing multiple variables at once</strong> — you'll never know what worked. One variable per test.</li>
+<li>❌ <strong>Scaling past your fulfillment</strong> — signing clients you can't deliver for. Growth you can't service is churn in disguise.</li>
+<li>❌ <strong>Assuming a 3:1 ratio you never calculated</strong> — "it feels profitable" is not a unit economic. Do the math.</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: Your ad-tracker + reverse-budget sheet + kill/keep/scale rulebook</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. Build it once and you own the decision-making system that separates real agency operators from button-pushers — for your niche, in your numbers.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>A single spreadsheet with three tabs, tuned to <em>your</em> niche and offer:</p>
+<ol>
+<li><strong>Ad Tracker</strong> — a daily log with one row per day and per ad, mapped to the funnel and keystone metrics from Parts 1–2.</li>
+<li><strong>Reverse-Budget Sheet</strong> — the backward math (your ceilings) and the forward math (your required spend) from Part 6.</li>
+<li><strong>Rulebook</strong> — your personal kill / keep / scale thresholds, written as numbers, from Parts 3–4.</li>
+</ol>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in the sheet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Log yesterday's data (Part 1)</td>
+<td>Ad Tracker tab, filled each morning</td>
+</tr>
+<tr>
+<td>Benchmark + keystone KPIs (Part 2)</td>
+<td>Tracker columns with target values</td>
+</tr>
+<tr>
+<td>Kill/keep/scale thresholds (Part 3)</td>
+<td>Rulebook tab, as explicit numbers</td>
+</tr>
+<tr>
+<td>Learning-phase rules (Part 4)</td>
+<td>Rulebook "do not touch" checklist</td>
+</tr>
+<tr>
+<td>Reverse budgeting (Part 6)</td>
+<td>Reverse-Budget tab, both directions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Build the tracker skeleton.</strong> Columns for date, ad name, spend, impressions, CPM, link CTR, hook rate, leads, LP conversion, bookings, booking rate, shows, show rate, closes, cost per result. Add a target row using the Part 2 table.</li>
+<li><strong>Fill one day of real data.</strong> Copy yesterday's numbers from Ads Manager into one row. Flag every metric red/green against its target.</li>
+<li><strong>Do the backward math.</strong> In the Reverse-Budget tab, enter your upfront price and margin → divide front-end profit by 3 → record your max CAC and max cost per shown/booked/lead.</li>
+<li><strong>Do the forward math.</strong> Enter a monthly upfront-cash goal → walk the funnel forward with <em>realistic</em> KPIs → land on a required daily spend. Note whether it clears 3:1 on the front end.</li>
+<li><strong>Write your rulebook.</strong> Three numbered rules: <em>Kill</em> if cost per result ≥ 2× my target of $__. <em>Keep</em> if ≤ my target. <em>Scale</em> by +20% every 2–3 days when ROAS is healthy. Add the "enough data = 30–50 events or 5–7 days" gate and the "never edit live / duplicate instead / one variable" laws.</li>
+<li><strong>Run one real decision.</strong> Using your filled tracker and rulebook, name your current bottleneck and write the single change you'd make (or "keep, gather more data").</li>
+<li><strong>Stretch goals.</strong> Paste your KPIs + data into Claude and ask for a bottleneck analysis; compare its verdict to yours. Add a chart of cost per result over time.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ You can point to one metric and say "this is my constraint" with a target next to it.</li>
+<li>✅ Your reverse-budget tab produces a specific max cost per lead and a specific daily spend — no guessed numbers.</li>
+<li>✅ Your rulebook has three thresholds written as actual dollar figures and a "do not touch" list.</li>
+<li>✅ You can state whether your realistic math clears 3:1 on the front end, and if not, why the back end still makes it work.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> if any number in your reverse-budget sheet is a hope rather than a measurement, label it "assumed" in red. You cannot scale on assumptions.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice on one idea. Optional and independent; the Capstone already touches all of them, so feel free to skip straight to it.</p>
+</blockquote>
+<h3 id="exercise-1-read-the-leak-foundational">Exercise 1: Read the leak (foundational)</h3>
+<p>Given a funnel with CTR 0.7% (target 1.5%), LP conversion 8% (target 5–10%), show rate 40% (target ~50%+), name the two bottlenecks and which you'd fix first.</p>
+<h3 id="exercise-2-kill-keep-or-scale-intermediate">Exercise 2: Kill, keep, or scale (intermediate)</h3>
+<p>Your target cost per appointment is $120. Sort these: Ad A at $95 (60 events), Ad B at $260 (55 events), Ad C at $130 (12 events), Ad D at $360 spent with zero conversions. Give a verdict and the reason for each.</p>
+<h3 id="exercise-3-reverse-budget-both-ways-advanced">Exercise 3: Reverse budget both ways (advanced)</h3>
+<p>You charge $1,500 upfront at 75% margin. Compute your max CAC at the 3:1 floor. Then set a $15,000/mo upfront-cash goal and walk the funnel forward with your own realistic KPIs to a daily spend. State whether it clears 3:1 on the front end.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>DAILY ROUTINE
+  Log YESTERDAY&#39;s data → find the constraint → obey the rulebook → don&#39;t touch live ads.
+
+FUNNEL TARGETS (illustrative)
+  CPM $20–80 · Link CTR ≥1.5% · LP conversion 5–10%
+  Survey submit ~45% · Booking rate 4–6% · Show rate ~50%+ · Close rate ~25%
+
+KEYSTONE METRICS (check first)
+  Front-end ROAS · Cost per result · LTGP:CAC ≥3:1 · Kill threshold (2–3× target)
+
+ENOUGH DATA = 30–50 events OR 5–7 days (whichever first)
+
+KILL / KEEP / SCALE
+  ≥2× target cost per result ............ KILL
+  at or under target .................... KEEP
+  1×–2× target (messy middle) ........... gather data / fix constraint
+  early kill: 2–3× target spent, 0 conv . KILL now
+  scale winners: duplicate, or +20% / 2–3 days (ROAS-driven)
+
+LEARNING-PHASE LAWS
+  Never edit a live ad/ad set → DUPLICATE instead
+  &gt;20% budget change resets learning
+  Change ONE variable at a time · Don&#39;t judge inside learning
+
+TEST VOLUME (work BACKWARD from budget, ~$10–20/ad/day)
+  $20→1–2 · $50→3–4 · $100→5–6 · $200→full 10-hook batch
+  ~1 in 5–10 creatives is a winner → test 10–20 to find 2
+
+AD MATH
+  LTGP:CAC ≥ 3:1 (floor) — below it you cannot scale
+  Client-financed acq = upfront cash covers this customer + the next
+  Reverse budget:  backward = profit ÷ 3 → ceilings
+                   forward  = revenue goal → funnel → daily spend
+  Scale until it breaks — ONLY with healthy economics + fulfillment capacity
+</code></pre></div>
+
+<h2 id="how-this-connects">How this connects</h2>
+<ul>
+<li><strong>Earlier, Module 5 · Lesson 18:</strong> you launched the live campaign. This lesson is what you do every day after — the payoff that turns a running campaign into a scaling one.</li>
+<li><strong>Next, Module 6 · Lesson 20 "Your daily selling engine":</strong> while ads bring inbound leads, outreach builds a second stream of clients. The kill/keep/scale discipline you learned here carries straight into testing outreach messages.</li>
+<li><strong>Later, Modules 7–8 (Sales):</strong> your show rate and close rate are two funnel steps this lesson only measures — those modules teach you to move them. And Modules 9–10 (fulfillment and scaling) are where "don't outscale your ability to deliver" becomes the whole game.</li>
+</ul>
+<hr />
+<p><em>Source: "Meta Ads Mastery — Scaling with Data" by Owen Rensland, AI Agency Full Course. KPI numbers, prices, and reverse-budget figures are illustrative reconstructions of the patterns Owen describes — adapt them to your own niche and current data. LTGP:CAC and client-financed acquisition are credited to Alex Hormozi.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="18-launch-a-campaign.html"><span class="dir">&#8592; Previous</span><b>Launch a campaign</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="../module-6-outreach/20-daily-selling-engine.html"><span class="dir">Next &#8594;</span><b>Your daily selling engine</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <span class="fnote">A self-paced course generated from Owen Rensland&#x27;s public AI Agency course. Quotes are attributed to the speaker; scripts, prices, and code are illustrative reconstructions of the patterns described — adapt them to today&#x27;s tools, and always follow platform terms and local laws.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>

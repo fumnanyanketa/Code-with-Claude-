@@ -1,0 +1,949 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 5 · Lesson 16: Make your creatives | The AI Agency Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>The AI Agency Blueprint</b> &middot; a self-paced course</div>
+  <div class="right"><span>Re-sequenced from Owen Rensland&#x27;s 20-hour AI Agency masterclass</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 5 · Lesson 16</span>
+      <h1>Make your <span class="accent">creatives</span></h1>
+      <p class="lead">You take the script you wrote in Lesson 15 and turn it into real, runnable assets — a short video ad you film-or-generate, edit, voice, and caption, plus AI picture ads built by having Claude write the image prompt from a proven winner — and you set up a proof-capture folder so real results keep feeding your future ads.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        <a class="play" href="https://www.youtube.com" target="_blank" rel="noopener"><span class="circ">&#9654;</span> Watch the talk</a>
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Owen Rensland</b></span>
+        <span class="chip">&#9201; <b>55 to 70 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-filming-a-video-ad-on-a-phone-script-footage">Part 1: Filming a video ad on a phone (script → footage)</a><ul>
+<li><a href="#location-congruency-the-mistake-beginners-make">Location congruency — the mistake beginners make</a></li>
+<li><a href="#recording-tips-owen-actually-uses">Recording tips Owen actually uses</a></li>
+<li><a href="#editing">Editing</a></li>
+</ul>
+</li>
+<li><a href="#part-2-ai-picture-ads-the-fastest-path-for-a-beginner">Part 2: AI picture ads (the fastest path for a beginner)</a></li>
+<li><a href="#part-3-an-ai-video-ad-b-roll-voiceover-captions">Part 3: An AI video ad — B-roll + voiceover + captions</a><ul>
+<li><a href="#a-note-on-hosting">A note on hosting</a></li>
+</ul>
+</li>
+<li><a href="#part-4-the-proof-capturing-sop">Part 4: The proof-capturing SOP</a></li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: A real ad batch for your niche</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-prompt-from-a-winner-foundational">Exercise 1: Prompt-from-a-winner (foundational)</a></li>
+<li><a href="#exercise-2-caption-legibility-test-intermediate">Exercise 2: Caption legibility test (intermediate)</a></li>
+<li><a href="#exercise-3-milestone-capture-script-advanced">Exercise 3: Milestone capture script (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>You take the script you wrote in Lesson 15 and turn it into real, runnable assets — a short video ad you film-or-generate, edit, voice, and caption, plus AI picture ads built by having Claude write the image prompt from a proven winner — and you set up a proof-capture folder so real results keep feeding your future ads.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone
+Project</strong> where you produce a real ad batch for your niche: at least two
+picture ads and one short video ad, exported at the right aspect ratios, plus
+a proof-capture folder and a weekly 30-minute habit. Everything before the
+Capstone teaches a piece you will use there. If you want to see the finish
+line first, jump to the <strong>"Capstone Project"</strong> section, then come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> Tools like Higgsfield and CapCut
+will change; the job of an ad — stop the scroll, make one promise clear, prove
+it, ask for one action — does not.</p>
+<ul>
+<li><strong><a href="https://en.wikipedia.org/wiki/Scientific_Advertising">"Scientific Advertising" by Claude C. Hopkins</a></strong>
+  (1923, public domain). The first-principles account of ads as tested,
+  measured salesmanship rather than art. Everything Owen says about hooks,
+  proof, and one clear offer traces back to ideas Hopkins laid out a century
+  before AI could make the pictures for you.</li>
+</ul>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday terms. Here they are in plain words:</p>
+<ul>
+<li><strong>Creative:</strong> the actual image or video of the ad — the thing people see.
+  Owen: <em>"Creative is everything."</em></li>
+<li><strong>Aspect ratio:</strong> the shape of the frame. <code>4:5</code> is a tall rectangle that fills
+  most of a phone feed; <code>1:1</code> is a square; <code>9:16</code> is full-screen vertical.</li>
+<li><strong>B-roll:</strong> short background clips (a crew building a deck, a finished roof)
+  you lay under a voiceover to keep the eye busy.</li>
+<li><strong>Voiceover (VO):</strong> the spoken audio read over the video. You can record it or
+  generate it with an AI voice.</li>
+<li><strong>Captions / subtitles:</strong> on-screen text of what is being said. Most feeds
+  autoplay muted, so captions are how the message actually lands.</li>
+<li><strong>Proof:</strong> real evidence your service works — screenshots, reviews, and short
+  client videos. Owen: proof that is <em>"raw over polished… real, raw, or recent"</em>
+  wins.</li>
+<li><strong>Testimonial:</strong> a client saying, in their own words, what changed for them.</li>
+</ul>
+<p>You do not need to memorise these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>You already have a script — that was Lesson 15. But a script in a doc gets you
+nothing; a homeowner has to <em>see</em> something. This lesson is where the script
+becomes an asset that runs. And it is the highest-leverage work you do, because,
+as Owen says, <em>"one ad, literally just one winning ad, can completely change
+your life… all it takes is one winning ad for your clients to pay you 3K a month
+for two plus years."</em> He is blunt about where the leverage sits: <em>"your
+targeting, your landing page, your copy — literally none of it matters if your
+creative doesn't make someone stop scrolling."</em> AI now lets a beginner make a
+week's worth of these in an afternoon.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>Film a phone-based video ad with a teleprompter, decent audio, and a
+   location that matches your audience.</li>
+<li>Generate AI picture ads by having Claude write the image prompt from a proven
+   winning ad, in the right aspect ratio.</li>
+<li>Assemble an AI video ad from B-roll, an AI voiceover, and legible captions.</li>
+<li>Run a proof-capturing SOP that collects real, substantiated evidence at every
+   client milestone — without ever fabricating results.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Lesson 15</strong> — you have a written ad script (hook, body, CTA) and a
+  price-anchored ad offer for your niche. This lesson turns it into assets.</li>
+<li>A phone with a camera, and an AI image/video tool plus a video editor
+  (specific tools and free alternatives are named below).</li>
+<li>Your niche and target market from Module 2, so location and offer stay
+  congruent.</li>
+</ul>
+<hr />
+<h2 id="part-1-filming-a-video-ad-on-a-phone-script-footage">Part 1: Filming a video ad on a phone (script → footage)</h2>
+<p>You do not need Owen's studio. He is honest that his own rig — an Aputure light,
+a Sony FX3, a Shure SM7B mic, <em>"about 3ish K total… kind of the guru setup"</em> — is
+optional. The bootstrapped version is a phone, a tripod, and a teleprompter app.</p>
+<p><strong>The minimum kit:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Piece</th>
+<th>Bootstrapped version</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Camera</td>
+<td>Your phone, recording <strong>native to the platform</strong> (vertical)</td>
+<td>Feeds are vertical; shoot vertical</td>
+</tr>
+<tr>
+<td>Stability</td>
+<td>A simple phone tripod</td>
+<td>Shaky footage reads as amateur</td>
+</tr>
+<tr>
+<td>Teleprompter</td>
+<td>A teleprompter app that records in 4K while text scrolls</td>
+<td>You read the script and look at the lens</td>
+</tr>
+<tr>
+<td>Audio</td>
+<td>A clip-on mic that plugs into the phone</td>
+<td><em>"Having good audio is very important… you don't want just the basic audio"</em></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🔑 <strong>Good audio and a steady, well-lit phone shot beat an expensive camera with
+bad sound. Script and message matter more than gear.</strong></p>
+</blockquote>
+<h3 id="location-congruency-the-mistake-beginners-make">Location congruency — the mistake beginners make</h3>
+<p>This is the load-bearing idea of Part 1. Where you film changes results:</p>
+<blockquote>
+<p>✅ <strong>Film where your audience is comfortable, not where you think looks
+impressive.</strong> Owen: <em>"Do not take some extremely expensive high-end studio and
+expect contractors to resonate with that… You think it makes you look higher
+authority because it looks good to you, but it looks good to you because that's
+what you know. They don't know it. It doesn't look good to them."</em></p>
+</blockquote>
+<p>The rule of thumb:</p>
+<ul>
+<li><strong>Client (B2C) ads</strong> — homeowners hiring a contractor — film in a
+  neighborhood, on a job site, or somewhere familiar and everyday.</li>
+<li><strong>Agency (B2B) ads aimed at founders doing $1M+/yr</strong> — a clean, professional
+  setup makes sense there.</li>
+</ul>
+<p>A mismatched, over-produced studio gets you a <em>lower</em> click-through rate.
+Congruency, not polish, is the goal.</p>
+<h3 id="recording-tips-owen-actually-uses">Recording tips Owen actually uses</h3>
+<ul>
+<li><strong>Look your best.</strong> <em>"People judge you in a split second."</em> Shower, tidy the
+  background, feel good.</li>
+<li><strong>Test before you film.</strong> Take 15 minutes to check audio and camera. A ruined
+  hour of footage is avoidable.</li>
+<li><strong>Commit to finishing each take.</strong> Your first videos will <em>feel</em> terrible —
+  <em>"this is completely normal."</em> You control the final cut; re-record tomorrow if
+  you hate it.</li>
+<li><strong>Lighten up and smile.</strong> Chasing perfection makes you look stressed on camera.</li>
+</ul>
+<h3 id="editing">Editing</h3>
+<p>Owen's best ads have <em>"captions, subtitles, B-roll, motion graphics… background
+music, sound effects,"</em> but he warns: <em>"please don't over complicate this…
+they just have to be engaging and make sense."</em> He mainly uses <strong>DaVinci
+Resolve</strong>; the source also uses <strong>CapCut</strong> for its transitions and sound library.</p>
+<blockquote>
+<p>💡 <strong>Editing tool alternatives.</strong> CapCut (free, easy) and <strong>DaVinci Resolve</strong>
+(free, powerful) are the obvious starting points. Others: <strong>Adobe Premiere</strong>,
+<strong>Final Cut</strong>, and <strong>Descript</strong> (which edits video by editing the transcript —
+great for cutting filler words). Any of them can add B-roll, captions, and
+music; pick one and stop shopping.</p>
+</blockquote>
+<h2 id="part-2-ai-picture-ads-the-fastest-path-for-a-beginner">Part 2: AI picture ads (the fastest path for a beginner)</h2>
+<p>Owen's strongest recommendation for anyone new: <strong>start with pictures.</strong> <em>"Picture
+creatives are by far the most scalable and simple method… they're so easy, high
+performing."</em> One picture ad, he says, drove <em>"900 plus leads… $20,000 a month in
+cash collected."</em></p>
+<p>The workflow has three moves, and the key one is that <strong>you don't write the image
+prompt yourself — you have an AI assistant write it.</strong></p>
+<div class="codehilite"><pre><span></span><code>1. FIND A WINNER   → Facebook Ads Library, filter to ads running 4+ months.
+                     A long-running ad is almost always a winner.
+2. PROMPT WITH AI  → Ask Claude to WRITE the image prompt, describing the
+                     winner&#39;s style + your offer. (&quot;Write me a Higgsfield
+                     prompt for a winning ad for roofers, white creative,
+                     headline &#39;Roofers&#39;, line under it &#39;We&#39;ll get you 6–8
+                     jobs on a pay-per-result basis&#39;… make it cohesive and
+                     high-performing.&quot;)
+3. GENERATE        → Paste that prompt into your image tool. Set aspect
+                     ratio to 4:5 (native to the feed). Use the winning ad
+                     as a visual REFERENCE, then tweak location to match
+                     your audience.
+</code></pre></div>
+
+<p>Owen's exact habit: <em>"I like to use Claude to make good Higgsfield prompts."</em> And
+on aspect ratio: <em>"it's actually better to do 4 to 5… because it's more native to
+the platform."</em></p>
+<p><strong>Two picture styles that work in home improvement:</strong></p>
+<ol>
+<li><strong>Price-anchor style.</strong> A clean creative with a headline callout ("Roofers")
+   and a price-anchored offer ("New deck starting at $9,500"). The price is the
+   differentiator.</li>
+<li><strong>Authentic-selfie style.</strong> <em>"The authentic selfie has been very high
+   performing for me."</em> A real-looking person, an everyday setting, the offer on
+   a sign or overlay. A common winner: a small family holding a yard sign with
+   the price, plus a few photos of finished jobs.</li>
+</ol>
+<blockquote>
+<p>✅ <strong>Use a proven winner as your reference, match the location to your
+audience, export at 4:5, and let Claude do the prompt-writing.</strong> That is the
+entire loop, and Owen makes each ad in <em>"less than 5 minutes."</em></p>
+<p>⚠️ <strong>Reality check — disclose AI imagery honestly, and never pass off
+AI-generated or stock photos as a specific client's real work.</strong> AI selfies and
+AI job photos are fine as <em>illustrative</em> creative, but the moment an ad implies
+"this is a real family we served" or "these are this contractor's actual
+completed jobs" when they are not, you have crossed into a deceptive,
+potentially false-advertising claim. FTC endorsement and advertising rules
+require claims and depictions to be truthful and not misleading. If a photo
+looks like a real customer or a real result, it must <strong>be</strong> one. When in doubt,
+use clearly generic imagery and keep the specific, verifiable proof (real
+reviews, real numbers) for the claims — that is what Part 4 is for.</p>
+</blockquote>
+<h2 id="part-3-an-ai-video-ad-b-roll-voiceover-captions">Part 3: An AI video ad — B-roll + voiceover + captions</h2>
+<p>When you don't want to be on camera, you can build a video ad entirely from AI
+parts. This is exactly what Owen does live in the source for a decking client
+with a <em>"$9,500 near Hampton Roads"</em> price-anchor offer.</p>
+<div class="codehilite"><pre><span></span><code>SCRIPT (from Lesson 15)
+   │
+   ├─► B-ROLL   Generate 5-second clips in an AI video tool (vertical 9:16):
+   │            a crew building, materials going in, a finished deck, the
+   │            client&#39;s local area. Also mine Facebook for your niche —
+   │            sped-up build videos with lots of likes tell you what reaches.
+   │
+   ├─► VOICEOVER Paste the script into an AI voice tool, audition voices,
+   │            pick one that fits (Owen chose a warm, natural read),
+   │            generate the VO.
+   │
+   ├─► ASSEMBLE  In your editor: lay B-roll in order, drop the VO on top,
+   │            trim/split the audio clean, add subtle transitions + a bit
+   │            of music and a light sound effect. Don&#39;t overdo it.
+   │
+   └─► CAPTIONS  Add big, legible, &quot;glowy&quot;/noticeable captions. Size them up
+                and position them mid-lower so nothing important is covered.
+                Most viewers watch muted — captions carry the message.
+</code></pre></div>
+
+<p>Owen's real example ran short on purpose — <em>"these are going to be somewhat
+shorter ads because we don't really need them to be too long."</em> Short, punchy,
+captioned, price-anchored.</p>
+<blockquote>
+<p>🔑 <strong>The three ingredients of an AI video ad are B-roll, a voiceover, and
+captions. Captions are not optional — muted autoplay means unreadable captions
+equal no message.</strong></p>
+<p>💡 <strong>Tool alternatives for AI video.</strong> The source uses <strong>Higgsfield</strong> for
+B-roll generation, <strong>ElevenLabs</strong> for the voiceover, and <strong>CapCut</strong> for
+assembly. Real substitutes:
+- <strong>AI video / B-roll:</strong> Runway, Kling, Pika, Google Veo, Sora, or Canva's
+  video generator.
+- <strong>AI voice:</strong> PlayHT, Murf, WellSaid, or OpenAI TTS instead of ElevenLabs.
+- <strong>Editing/captions:</strong> DaVinci Resolve, Adobe Premiere, or Descript instead
+  of CapCut.</p>
+<p>None of these lock you in. Pick one of each and produce.</p>
+</blockquote>
+<h3 id="a-note-on-hosting">A note on hosting</h3>
+<p>If you later host a sales/VSL video on a landing page rather than in the ad
+itself, Owen uses <strong>Vidalytics</strong> for hosting and view analytics.</p>
+<blockquote>
+<p>💡 <strong>Hosting alternatives to Vidalytics:</strong> Wistia, Vimeo, VdoCipher, or Gumlet.
+For an in-feed ad you upload straight to Meta — you only need a host for videos
+embedded on your own funnel pages.</p>
+</blockquote>
+<h2 id="part-4-the-proof-capturing-sop">Part 4: The proof-capturing SOP</h2>
+<p>Proof is the fuel for every future creative. Owen: <em>"Proof is extremely important
+when it comes to marketing and overall growth."</em> The whole system is a habit plus
+a folder.</p>
+<p><strong>What makes proof stronger</strong> (Owen's rules):</p>
+<ul>
+<li>Raw <strong>over</strong> polished.</li>
+<li>Live <strong>over</strong> recorded.</li>
+<li><strong>Showing</strong> instead of telling.</li>
+<li><strong>Many</strong> mini-testimonials over one big glossy one — <em>"people trust people that
+  look like them."</em></li>
+<li>Third-party (a real review) over self-proclaimed.</li>
+<li>Real, raw, or recent <strong>wins</strong>.</li>
+</ul>
+<p><strong>The system:</strong></p>
+<ol>
+<li><strong>Make a proof vault.</strong> A single Google Drive folder you add to forever. It
+   <em>"will always give you new creative ideas and differentiate yourself from
+   competitors."</em></li>
+<li><strong>Book a weekly 30-minute block.</strong> Harvest everything: video testimonials,
+   screenshots of leads / booked appointments / closed jobs, and text wins ("I
+   got my first lead!") from chat or Slack.</li>
+<li><strong>Record the starting line.</strong> At the start of a client relationship, capture
+   where they are now — jobs per month, average revenue, what isn't working — in
+   a quick selfie-style video. Later wins mean nothing without a "before."</li>
+<li><strong>Capture at every milestone, immediately.</strong> Do not wait for a life-changing
+   result. First appointment, first job, first profitable month — <em>"hey, can you
+   grab your phone? Just record a quick 30 second win."</em> Catch them on the
+   emotional high. Over time you build proof of the whole client journey.</li>
+</ol>
+<p><strong>Testimonial questions to ask</strong> (Owen's set):</p>
+<ul>
+<li>What happened before you joined?</li>
+<li>What made you join?</li>
+<li>What happened after — what results did you see?</li>
+<li>How do you feel now?</li>
+<li>Who would you recommend this to?</li>
+</ul>
+<p>Then reuse that proof <em>"everywhere"</em> — ads, emails, landing pages, pre-call
+videos, onboarding.</p>
+<blockquote>
+<p>⚠️ <strong>Reality check — proof must be REAL and substantiated. Never fabricate a
+result or use AI to invent a testimonial or a client.</strong> This is the single
+hardest line in the lesson. FTC endorsement rules require testimonials to
+reflect the honest experience of real people, and require any results claim to
+be truthful, substantiated, and not misleading (a result you <em>can</em> prove is
+typical, not a lucky outlier dressed up as normal). Generating a fake
+"client," writing a testimonial the client never said, or inflating "$30k/month
+in 2 months" numbers is deceptive and can be illegal — and it destroys the
+local reputation this business depends on. The proof vault exists precisely so
+you never have to make anything up: capture enough real wins and you will
+always have the truth to show.</p>
+<p>🔑 <strong>A weekly 30-minute proof habit, capturing real wins at every milestone, is
+what turns one client's genuine result into your next winning ad.</strong></p>
+</blockquote>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>Creative is everything.</strong> Owen: <em>"Your targeting, your landing page, your
+   copy — none of it matters if your creative doesn't make someone stop
+   scrolling."</em> This is your highest-leverage work.</li>
+<li><strong>Film where the audience is comfortable.</strong> Congruent location beats an
+   expensive studio; a mismatched studio <em>lowers</em> your click-through rate.</li>
+<li><strong>Picture ads first.</strong> Fastest, cheapest, highest-performing for beginners.
+   Have Claude write the prompt from a proven winner; export at 4:5.</li>
+<li><strong>AI video = B-roll + voiceover + legible captions.</strong> Short and captioned,
+   because feeds autoplay muted.</li>
+<li><strong>Proof is fuel, and it must be real.</strong> A weekly vault habit and
+   milestone-capture give you truthful evidence for every future ad.</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Renting a fancy studio to look "high authority" for contractor clients.</strong>
+  It reads as foreign to them and drops your CTR. Film in a familiar, everyday
+  location.</li>
+<li>❌ <strong>Ignoring audio.</strong> Great visuals with tinny phone audio kill the ad. Use a
+  clip-on mic and test it first.</li>
+<li>❌ <strong>Tiny or unreadable captions.</strong> Muted autoplay means unreadable captions =
+  no message. Make them big and well-positioned.</li>
+<li>❌ <strong>Exporting the wrong aspect ratio.</strong> A square where the feed wants 4:5, or
+  horizontal where it wants vertical, gets throttled. Match the placement.</li>
+<li>❌ <strong>Implying AI imagery is a real customer or a client's real job.</strong> Disclose
+  AI creative honestly; keep specific "this really happened" claims tied to real,
+  verifiable proof.</li>
+<li>❌ <strong>Fabricating or exaggerating testimonials and results.</strong> It is deceptive,
+  can violate FTC rules, and wrecks your reputation. Capture real proof instead.</li>
+<li>❌ <strong>Waiting for a "huge" win before asking for a testimonial.</strong> Capture the
+  small milestones immediately, on the emotional high.</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: A real ad batch for your niche</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. When you finish, you have
+assets you could actually launch tomorrow — and a habit that keeps them
+improving.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>A launch-ready creative batch for <strong>your</strong> niche, built from your Lesson 15
+script: <strong>at least two picture ads and one short video ad</strong>, all exported at the
+correct aspect ratio with legible captions and an offer that matches your funnel.
+Plus your <strong>proof-capture folder</strong> and a <strong>weekly 30-minute habit</strong> on the
+calendar. Each piece maps to a lesson idea:</p>
+<ul>
+<li>Picture ads (price-anchor + authentic-selfie) → Part 2</li>
+<li>Short video ad (B-roll + VO + captions) → Parts 1 and 3</li>
+<li>Proof folder + weekly habit → Part 4</li>
+<li>Honest, real, substantiated claims throughout → the Reality checks</li>
+</ul>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in the batch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Location congruency</td>
+<td>Choosing the setting for your video and selfie ads</td>
+</tr>
+<tr>
+<td>Claude-written image prompts</td>
+<td>Generating both picture ads from a proven winner</td>
+</tr>
+<tr>
+<td>4:5 / vertical aspect ratios</td>
+<td>Exporting every asset for the feed</td>
+</tr>
+<tr>
+<td>B-roll + VO + captions</td>
+<td>Assembling the video ad</td>
+</tr>
+<tr>
+<td>Proof SOP</td>
+<td>Standing up the vault and the weekly block</td>
+</tr>
+<tr>
+<td>Truthful-claims rule</td>
+<td>Keeping every ad honest and defensible</td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Pull two winners.</strong> In the Facebook Ads Library, filter your niche to ads
+   running 4+ months and save two you want to emulate — one price-anchor style,
+   one authentic-selfie style.</li>
+<li><strong>Make picture ad #1 (price-anchor).</strong> Have Claude write the image prompt from
+   winner #1 plus your offer; generate it in your image tool at <strong>4:5</strong>; set the
+   location to match your audience.</li>
+<li><strong>Make picture ad #2 (authentic-selfie).</strong> Same loop with winner #2. Export
+   at the correct ratio.</li>
+<li><strong>Produce the video ad.</strong> Generate 3–5 vertical B-roll clips, create the
+   voiceover from your Lesson 15 script, assemble in your editor with light
+   music/transitions, and add <strong>big, legible captions</strong>.</li>
+<li><strong>Match the offer to the funnel.</strong> Confirm the price/offer shown in all three
+   creatives is identical to what your landing page or lead form says. Congruency
+   is non-negotiable.</li>
+<li><strong>Stand up the proof vault.</strong> Create the Google Drive folder, add any real
+   proof you already have, and drop in the five testimonial questions as a note.</li>
+<li><strong>Stretch goals.</strong> Book a recurring 30-minute weekly "proof harvest" block on
+   your calendar; make a filming/selfie version of one picture-ad concept; write
+   one copy variant with Claude (callout → pain → offer/benefits → CTA).</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ Three assets exist: two picture ads and one video ad, in your niche.</li>
+<li>✅ Every asset is exported at the <strong>correct aspect ratio</strong> (4:5 or vertical
+   9:16) — no wrong-shape frames.</li>
+<li>✅ Captions on the video are <strong>legible</strong> at phone size (big, well-positioned,
+   readable muted).</li>
+<li>✅ The price/offer in every creative <strong>matches the funnel</strong> exactly.</li>
+<li>✅ A proof-capture folder exists and a weekly 30-minute block is on the
+   calendar.</li>
+<li>✅ Nothing in the batch is fabricated: any depicted "customer/result" is either
+   clearly generic AI creative or backed by real, verifiable proof.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> if you could not defend a single claim or image in
+front of the client it depicts, it does not ship. Real proof, real name, real
+numbers, or clearly generic — nothing in between.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice
+on one idea. Optional and independent; the Capstone already touches all of
+them, so feel free to skip straight to it.</p>
+</blockquote>
+<h3 id="exercise-1-prompt-from-a-winner-foundational">Exercise 1: Prompt-from-a-winner (foundational)</h3>
+<p>Pick one long-running ad from the Ads Library. Ask Claude to write an image
+prompt that recreates its <em>style</em> with your offer, then generate it at 4:5.
+Practices Part 2 — letting the AI write the prompt.</p>
+<h3 id="exercise-2-caption-legibility-test-intermediate">Exercise 2: Caption legibility test (intermediate)</h3>
+<p>Take any 15-second clip, add captions, export it, and watch it <strong>muted</strong> on your
+phone at arm's length. If you can't read every word, resize and reposition until
+you can. Practices the caption discipline from Part 3.</p>
+<h3 id="exercise-3-milestone-capture-script-advanced">Exercise 3: Milestone capture script (advanced)</h3>
+<p>Write the exact 3-line message you'll send a client the moment they hit their
+first booked appointment, asking for a 30-second video win — warm, specific, easy
+to say yes to. Practices the proof SOP from Part 4 before you need it live.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>FILMING (video ad)
+  Kit:  phone + tripod + teleprompter app + clip-on mic. Shoot VERTICAL.
+  Location: where the AUDIENCE is comfortable (neighborhood/job site),
+            NOT a fancy studio. Wrong location = lower CTR.
+  Tips: look your best · test audio first · finish every take · smile.
+  Edit: CapCut / DaVinci Resolve (free) / Premiere / Descript.
+
+PICTURE ADS (start here — fastest, cheapest, highest-performing)
+  1 Find winner: Ads Library, filter ACTIVE 4+ months.
+  2 Claude writes the image prompt (winner&#39;s style + your offer).
+  3 Generate at 4:5, reference the winner, match the location.
+  Styles: price-anchor  ·  authentic-selfie.
+  Image tools: Higgsfield / Midjourney / DALL·E / Ideogram / Leonardo / Firefly.
+
+VIDEO AD = B-ROLL + VOICEOVER + CAPTIONS
+  B-roll: 5s vertical clips (crew, materials, finished job, local area).
+  VO: paste script → AI voice → pick a natural read.
+  Captions: BIG, legible, mid-lower — feeds autoplay MUTED.
+  Video tools: Runway / Kling / Pika / Veo / Sora / Canva.
+  Voice: ElevenLabs / PlayHT / Murf / OpenAI TTS.
+  Hosting (funnel VSLs only): Vidalytics / Wistia / Vimeo / Gumlet.
+
+PROOF SOP (real only — FTC)
+  Vault: one Google Drive folder, add forever.
+  Weekly 30-min block: harvest videos, screenshots, text wins, reviews.
+  Record the BEFORE at client start. Capture EVERY milestone immediately.
+  Questions: before? · why join? · after/results? · feel now? · recommend to?
+  NEVER fabricate a result, testimonial, or client. NEVER pass AI imagery
+  off as a client&#39;s real work. Disclose AI honestly.
+
+DONE = assets at correct aspect ratio · captions legible · offer matches funnel.
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>Earlier, Module 5 · Lesson 15:</strong> you wrote the script — the hook, body, CTA,
+  and price-anchored ad offer. This lesson turned that script into the pixels and
+  audio a homeowner actually sees.</li>
+<li><strong>Next, Lesson 17 "Destination &amp; tracking":</strong> your creatives point somewhere.
+  Next you build and connect the funnel or lead form they send traffic to — and
+  the offer you locked in here must match it exactly.</li>
+<li><strong>Later, Module 9 (Fulfillment) and Module 10 (Retention):</strong> the proof vault
+  you started today keeps filling as clients hit milestones, and those real wins
+  become the raw material for your next, better batch of creatives.</li>
+</ul>
+<hr />
+<p><em>Source: "AI Agency Full Course" by Owen Rensland. Prompts, prices, scripts,
+tool names, and click-paths are illustrative reconstructions of the patterns
+described in the talk — verify current tools and pricing, and adapt them to your
+niche. Testimonials and results claims must be truthful and substantiated; this
+lesson is not legal advice.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="15-offer-creative-copy.html"><span class="dir">&#8592; Previous</span><b>Offer, creative &amp; copy</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="17-destination-tracking.html"><span class="dir">Next &#8594;</span><b>Destination &amp; tracking</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">The AI Agency Blueprint<span class="dot">.</span></a>
+  <span class="fnote">A self-paced course generated from Owen Rensland&#x27;s public AI Agency course. Quotes are attributed to the speaker; scripts, prices, and code are illustrative reconstructions of the patterns described — adapt them to today&#x27;s tools, and always follow platform terms and local laws.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>
