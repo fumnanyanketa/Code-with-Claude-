@@ -1,0 +1,10 @@
+# Do not republish the raw third-party course transcript (source material,
+# Andrew Brown / ExamPro). It stays local for building lessons only.
+transcripts/
+
+# Scratch briefing used to coordinate the lesson-writer subagents.
+_writer-brief.md
+
+# Python build artifacts
+__pycache__/
+*.pyc

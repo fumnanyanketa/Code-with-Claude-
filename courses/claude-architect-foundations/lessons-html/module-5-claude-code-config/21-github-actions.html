@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 5 · Lesson 21: Automating with Claude Code GitHub Actions | Claude Certified Architect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>Claude Certified Architect</b> &middot; a self-paced course</div>
+  <div class="right"><span>Built from Andrew Brown&#x27;s CCA-F course (ExamPro)</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 5 · Lesson 21</span>
+      <h1>Automating with Claude Code GitHub <span class="accent">Actions</span></h1>
+      <p class="lead">You can put Claude Code inside your GitHub repository so that whenever you mention @claude in an issue or a pull-request comment, a GitHub Actions workflow spins up a fresh machine, runs Claude Code against your code, and lets it comment, push a branch, and open a pull request — and you get all of that with three pieces of setup: the Claude GitHub app, one workflow YAML file, and an ANTHROPIC_API_KEY secret.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Andrew Brown</b></span>
+        <span class="chip">&#9201; <b>45 to 60 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-how-claude-code-runs-in-ci-the-claude-mention">Part 1: How Claude Code runs in CI — the @claude mention</a><ul>
+<li><a href="#what-it-can-actually-do">What it can actually do</a></li>
+</ul>
+</li>
+<li><a href="#part-2-the-three-pieces-of-setup">Part 2: The three pieces of setup</a></li>
+<li><a href="#part-3-installing-the-app-and-reading-the-workflow-file">Part 3: Installing the app and reading the workflow file</a><ul>
+<li><a href="#installing-the-claude-github-app">Installing the Claude GitHub app</a></li>
+<li><a href="#the-workflow-file-part-by-part">The workflow file, part by part</a></li>
+</ul>
+</li>
+<li><a href="#part-4-setting-expectations-slow-and-it-needs-steering">Part 4: Setting expectations — slow, and it needs steering</a></li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: give Atlas Support a @claude teammate</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-read-the-triggers-foundational">Exercise 1: Read the triggers (foundational)</a></li>
+<li><a href="#exercise-2-steer-with-a-system-prompt-intermediate">Exercise 2: Steer with a system prompt (intermediate)</a></li>
+<li><a href="#exercise-3-measure-and-tune-the-slowness-advanced">Exercise 3: Measure and tune the slowness (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>You can put Claude Code inside your GitHub repository so that whenever you mention <strong><code>@claude</code></strong> in an issue or a pull-request comment, a GitHub Actions workflow spins up a fresh machine, runs Claude Code against your code, and lets it comment, push a branch, and open a pull request — and you get all of that with three pieces of setup: the Claude GitHub app, one workflow YAML file, and an <code>ANTHROPIC_API_KEY</code> secret.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone Project</strong> where you wire <code>@claude</code> into the <strong>Atlas Support</strong> repository and drive a single issue all the way to a pull request — writing an issue like a manager and watching Claude act on it like a teammate. Everything before the Capstone teaches the three moving parts and sets your expectations (spoiler: it works, and it is <em>slow</em>). If you want to see the finish line first, jump to the <strong>"Capstone Project"</strong> section, then come back.</p>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday terms. Here they are in plain words:</p>
+<ul>
+<li><strong>Claude Code:</strong> Anthropic's agentic coding tool — a command-line program that runs the agentic loop (gather context → act → verify) over your codebase. Same tool you have used in a terminal in the last few lessons; here it runs on a server instead of your laptop.</li>
+<li><strong>Repository (repo):</strong> the folder of code that GitHub stores and version-controls for you.</li>
+<li><strong>Issue:</strong> a GitHub "ticket" — a titled note describing a task, bug, or request. Teams use issues as their to-do list.</li>
+<li><strong>Pull request (PR):</strong> a proposed set of code changes, bundled on their own branch, waiting to be reviewed and merged into the main code.</li>
+<li><strong>Branch:</strong> a parallel copy of the code where changes can be made without touching the main version until you are ready to merge.</li>
+<li><strong>GitHub Actions:</strong> GitHub's built-in automation system. You describe a job in a file; GitHub rents a fresh virtual machine and runs that job whenever a trigger (a push, a new issue, a comment) fires.</li>
+<li><strong>Workflow file:</strong> the YAML file — kept in <code>.github/workflows/</code> in your repo — that tells GitHub Actions <em>when</em> to run and <em>what</em> to do.</li>
+<li><strong>YAML:</strong> a plain-text format for configuration, built out of <code>key: value</code> lines and indented lists. The workflow file is written in it.</li>
+<li><strong>GitHub app:</strong> a program you install onto a repo or organisation to grant it specific permissions (read code, write comments, and so on). The "Claude" GitHub app is what lets Claude Code act inside your repo.</li>
+<li><strong>Secret:</strong> a value (like an API key) you store in GitHub encrypted, so a workflow can use it without the key ever appearing in your code.</li>
+<li><strong>API key:</strong> a secret password string that identifies your Anthropic account so the API knows who to bill. Kept out of code, here stored as a GitHub secret.</li>
+</ul>
+<p>You do not need to memorise these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>So far you have run Claude Code by sitting at a terminal and typing to it. This lesson unhooks it from your keyboard entirely. As Andrew frames it: "another way we can use Claude Code is with GitHub Actions. It allows us to trigger Claude Code based on workflows to perform tasks in our repo... actually performing work just like a developer on your team."</p>
+<p>That changes the shape of the job. Instead of <em>doing</em> the work, you <em>describe</em> it — you write an issue, mention <code>@claude</code>, and a teammate-shaped agent picks it up. Andrew is candid about why that appeals to him: "if you move up in your career as a developer, you end up managing developers and writing issues and seeing it through that lens. That's the way I would probably like to work." There is one honest catch he repeats, and you should hear it now: it is slow. "The only downside — I like the workflow, but it's just slow, because you're not just waiting for Claude to execute, but for the GitHub action to execute, and it has to spin up that environment every time." Knowing both halves — the promise and the drag — is the point of the lesson.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>Explain how Claude Code runs inside CI: a <code>@claude</code> mention fires a GitHub Actions workflow that runs Claude Code on a rented machine.</li>
+<li>Name the three required pieces of setup — the Claude GitHub app, a workflow YAML file, and an <code>ANTHROPIC_API_KEY</code> secret — and say what each one does.</li>
+<li>Install the Claude GitHub app from the Claude Code terminal with <code>/install-github-app</code>, and check that it is installed with the right permissions.</li>
+<li>Read an illustrative <code>claude.yml</code> workflow: its triggers, its permissions, and the knobs you can tune (trigger phrase, model, max turns, system prompt).</li>
+<li>Set realistic expectations — that CI runs are slow, and that you often have to steer the agent explicitly toward the workflow you want (branch, then PR).</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Module 5, earlier lessons</strong> — you are comfortable running Claude Code in a terminal and know it can use tools and be configured. The immediately prior lesson, <strong>"Built-in tools, status, and debug,"</strong> covered checking Claude Code's state; you will use that same "is it installed / am I logged in?" habit here.</li>
+<li><strong>A GitHub account and a repo you administer.</strong> Installing an app onto a repo needs admin rights. Andrew notes you "must be a repo" admin to install the app.</li>
+<li><strong>An Anthropic API key with a little credit on it.</strong> As you will see, the subscription that powers your interactive Claude Code does <em>not</em> power the GitHub Action — the Action bills the API directly. Five dollars of credit is plenty.</li>
+</ul>
+<hr />
+<h2 id="part-1-how-claude-code-runs-in-ci-the-claude-mention">Part 1: How Claude Code runs in CI — the <code>@claude</code> mention</h2>
+<p>Start with the mental model. Everything you have done with Claude Code until now happened on <em>your</em> machine. GitHub Actions moves it onto <em>GitHub's</em> machine. "CI" (continuous integration) just means "automation that GitHub runs for you on a fresh server when something happens in the repo."</p>
+<p>The trigger is a mention. As Andrew reads it off the docs: "with a simple <code>@claude</code> mention in your PR or issue, Claude can analyze your code and create pull requests, implement fixes and bugs — all while following your project standards." You type <code>@claude</code> into an issue body or a comment, and that is the starting gun.</p>
+<p>Here is the chain of events, end to end:</p>
+<div class="codehilite"><pre><span></span><code>  you open an issue (or comment) that contains &quot;@claude ...&quot;
+            │
+            ▼
+  GitHub Actions sees the trigger and starts a job
+            │
+            ▼
+  a fresh virtual machine boots  ── (this is the slow part)
+            │
+            ▼
+  the job installs Claude Code and checks out your repo
+            │
+            ▼
+  Claude Code runs the agentic loop against your code,
+  reading the issue as its instructions
+            │
+            ▼
+  it can: comment back on the issue, push a branch,
+          open a pull request
+</code></pre></div>
+
+<p>Notice what Andrew observed while watching a real run: "post-run Claude — so it's actually installing Claude Code. And that's probably why you need the API token." The machine starts empty every time. It has to download and install Claude Code, then log in <em>using your API key</em> (not your subscription — there is no logged-in browser session on a rented server). That is the whole reason the API key is mandatory, and a big part of why runs are slow.</p>
+<blockquote>
+<p>🔑 <strong>Claude Code in CI is the same agent you already know, relocated to a throwaway server that GitHub boots on a trigger. <code>@claude</code> is the trigger; the workflow file and the API key are what make the server able to run it.</strong></p>
+</blockquote>
+<h3 id="what-it-can-actually-do">What it can actually do</h3>
+<p>Once running, it behaves like a developer working your ticket. In Andrew's live test it read the issue, checked items off, wrote comments back onto the issue, created branches, and eventually opened pull requests. The marketing line — "instant PR creations, automate code implementations, follow your coding standards, secure by default" — is real, though as Andrew wryly notes, "that description kind of undersells it" in some ways and oversells the smoothness in others. You will see the rough edges in Part 4.</p>
+<h2 id="part-2-the-three-pieces-of-setup">Part 2: The three pieces of setup</h2>
+<p>There are exactly three things to put in place. Miss any one and nothing happens (Andrew spent a good while discovering this — his first issue "did not trigger anything" because the setup was incomplete).</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Piece</th>
+<th>What it is</th>
+<th>Where it lives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Claude GitHub app</strong></td>
+<td>A GitHub app that grants Claude permission to read your code and write comments, branches, and PRs</td>
+<td>Installed on the repo (or org), under <strong>Settings → GitHub Apps</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Workflow YAML</strong></td>
+<td>The file telling GitHub Actions <em>when</em> to run (which triggers) and <em>what</em> to run (the Claude Code action)</td>
+<td><code>.github/workflows/claude.yml</code> in your repo</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong><code>ANTHROPIC_API_KEY</code> secret</strong></td>
+<td>Your Anthropic API key, stored encrypted, so the Action can log Claude Code in and pay for the run</td>
+<td><strong>Settings → Secrets and variables → Actions → repository secrets</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Two things trip people up here, so name them now:</p>
+<ul>
+<li><strong>The "GitHub app" is the real GitHub app, not a desktop application.</strong> Andrew second-guessed this exact phrase: "install the GitHub app... Oh, so I think what it's saying is the actual GitHub app, not the desktop application." It is the <em>Claude</em> app you add to your repo's installed apps.</li>
+<li><strong>The API key is separate from your subscription.</strong> Andrew expected his Claude subscription to cover the Action and was surprised: "since we already have a subscription, I would assume we wouldn't need an API key, but maybe we do." The docs settle it — "it says Anthropic API key, so that makes me think you can't use it with the subscription." You buy a little API credit (he loaded five dollars) from the Anthropic developer console, which is a different balance from your Claude subscription.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>A recurring theme in this course:</strong> the docs, the AI's answers, even your own assumptions are often wrong — the way to the truth is to build it and verify. Andrew <em>assumed</em> his subscription would pay for the Action. It does not. He only learned that by trying it and reading the error-shaped hints. When something surprises you here, trust the run over the assumption.</p>
+</blockquote>
+<h2 id="part-3-installing-the-app-and-reading-the-workflow-file">Part 3: Installing the app and reading the workflow file</h2>
+<h3 id="installing-the-claude-github-app">Installing the Claude GitHub app</h3>
+<p>The easiest path runs from the Claude Code terminal itself. As Andrew puts it: "the easiest way to set this up is through Claude Code and just the terminal — open Claude, run install GitHub app." That is the slash command <strong><code>/install-github-app</code></strong>. It checks the GitHub CLI, confirms your account, and walks you through installing the app and granting permissions.</p>
+<p>A sanity check while you are there: go to your repo's <strong>Settings → GitHub Apps</strong> and confirm the Claude app is listed. Andrew found his was already installed from an earlier step — "is it installed? It already is installed" — which is common if you created the repo through Claude. The permissions the app needs are read-and-write access to <strong>code</strong>, <strong>actions</strong>, <strong>metadata</strong>, <strong>issues</strong>, and <strong>discussions</strong>. If you granted the app blanket access to the repo, you already have these; Andrew confirmed his by hunting for the word "permissions": "read and write code, discussions, issues — so yes, it has that access. There should be nothing preventing it from being able to respond."</p>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> run <code>/install-github-app</code>, then eyeball <strong>Settings → GitHub Apps</strong> and confirm the app is present with read/write on code, actions, issues. If it is, you can skip most of the manual dance Andrew went through.</p>
+</blockquote>
+<h3 id="the-workflow-file-part-by-part">The workflow file, part by part</h3>
+<p>The workflow lives at <code>.github/workflows/claude.yml</code>. (The folder name is fixed — Andrew's own reminder: "GitHub workflows... <code>.github/workflows</code>." The <code>.yml</code> vs <code>.yaml</code> extension does not matter.) Here is an illustrative reconstruction of what such a file contains. Do not memorise it — read it for the shape.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># .github/workflows/claude.yml — ILLUSTRATIVE reconstruction</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Claude</span>
+
+<span class="c1"># WHEN to run: the triggers. This is the part Andrew says you can &quot;adjust</span>
+<span class="c1"># however you want&quot; — comment on an issue, comment on a PR, a new issue,</span>
+<span class="c1"># an assignment, a review submitted.</span>
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">issue_comment</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">created</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">pull_request_review_comment</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">created</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">issues</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">opened</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">assigned</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">pull_request_review</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">submitted</span><span class="p p-Indicator">]</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">claude</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span><span class="w">      </span><span class="c1"># the throwaway machine GitHub boots for you</span>
+
+<span class="w">    </span><span class="c1"># WHAT it may touch. These mirror the app permissions from Part 2.</span>
+<span class="w">    </span><span class="nt">permissions</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">           </span><span class="c1"># read code and push branches</span>
+<span class="w">      </span><span class="nt">issues</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">             </span><span class="c1"># comment on issues</span>
+<span class="w">      </span><span class="nt">pull-requests</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">      </span><span class="c1"># open and comment on PRs</span>
+<span class="w">      </span><span class="nt">actions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span>
+<span class="w">      </span><span class="nt">id-token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span>
+
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span><span class="w">      </span><span class="c1"># put your repo onto the machine</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run Claude Code</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">anthropics/claude-code-action@v1</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="c1"># the SECRET from Part 2 — this is what pays for and authenticates the run</span>
+<span class="w">          </span><span class="nt">anthropic_api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.ANTHROPIC_API_KEY }}</span>
+
+<span class="w">          </span><span class="c1"># --- optional knobs Andrew points out you can tune ---</span>
+<span class="w">          </span><span class="c1"># trigger_phrase: &quot;@claude&quot;     # defaults to @claude; you can rename the bot</span>
+<span class="w">          </span><span class="c1"># model: &quot;claude-sonnet-4-5&quot;    # pick the model instead of the default</span>
+<span class="w">          </span><span class="c1"># max_turns: &quot;15&quot;               # cap how many loop steps it may take</span>
+<span class="w">          </span><span class="c1"># system_prompt: &quot;Follow our branching strategy: branch, then open a PR.&quot;</span>
+</code></pre></div>
+
+<p>Walk the three regions:</p>
+<ul>
+<li><strong><code>on:</code> — the triggers.</strong> These decide what wakes Claude up. Andrew: "you can tell it where to trigger — when you create a new comment, or a comment on a pull request, or open a new issue, or assign it, or submit it." His practical discovery: an issue <em>comment</em> is the most reliable trigger. His first plain issue did nothing until he commented on it — "does it also trigger on issue comment? Yes, yes, yes." Keep <code>issue_comment</code> in your triggers.</li>
+<li><strong><code>permissions:</code> — what it may touch.</strong> Same list as the app permissions, expressed for the Action. Without <code>contents: write</code> it cannot push a branch; without <code>pull-requests: write</code> it cannot open a PR.</li>
+<li><strong><code>with: anthropic_api_key:</code> — the key.</strong> <code>${{ secrets.ANTHROPIC_API_KEY }}</code> pulls in the secret you stored in Part 2. This is the line that connects the file to your Anthropic credit.</li>
+</ul>
+<p>Andrew flags the tuning knobs after seeing a live run pick Sonnet on its own: "I would imagine if we needed to adjust it, we could go into that GitHub Actions file and say hey, use this model. Yeah, we can right here — how many turns, what kind of model, additional system prompt, things we can tweak." Those are the commented lines above. The <strong><code>system_prompt</code></strong> knob is your best lever for the workflow problems you are about to meet.</p>
+<blockquote>
+<p>🔑 <strong>The workflow file answers two questions: <em>when</em> does Claude wake up (<code>on:</code>) and <em>what is it allowed to do</em> (<code>permissions:</code>), plus it hands Claude the API key. Everything else — model, turns, system prompt — is optional tuning.</strong></p>
+</blockquote>
+<h2 id="part-4-setting-expectations-slow-and-it-needs-steering">Part 4: Setting expectations — slow, and it needs steering</h2>
+<p>This is the part most tutorials skip, and Andrew's whole live run is a lesson in it. Two truths.</p>
+<p><strong>First: it is slow.</strong> Every trigger boots a fresh machine and reinstalls Claude Code before any work starts. Andrew, mid-run: "the annoying part is that it probably will have to trigger every time... and that's a little bit slow. You don't want to wait like three minutes every time you reply to it." His verdict is worth quoting in full: "if it was faster, this would probably be my preferred method of working... but it's too slow, so I would not drive it that way in reality. It is cool to see, and if you're on the management side, at least use it to review things or assist you."</p>
+<p><strong>Second: it needs steering.</strong> In Andrew's run, Claude did the <em>implementation</em> readily but did not follow the workflow he wanted without being told. It wrote changes and commented, but "it didn't make a pull request." He had to ask again — "where's the pull request? Can you make one, please?" — and even then hit friction: there was no <code>main</code> branch to target (he had to create one), and Claude noted it could not auto-link a branch to an issue ("GitHub doesn't have automatic association with existing branches; you can link them from the issue sidebar"). The fix for all of this is to be explicit up front, in the issue and in the <code>system_prompt</code>: tell it to branch, implement, then open a PR into <code>main</code>.</p>
+<p>Andrew's closing takeaways from the mess are genuinely useful design advice:</p>
+<ul>
+<li><strong>Break work into small files.</strong> "You'd have to break up your code into a lot of small files, otherwise it's going to be really hard to tell what's going on" — big files make the diffs and merge conflicts unreadable.</li>
+<li><strong>Force a specific workflow.</strong> "If we were spending more time with this, I'd spend more time trying to force it through a very specific workflow" — pin down branch → implement → PR so results land where you expect.</li>
+<li><strong>Use human-readable names.</strong> He fought machine-generated branch and issue names: "can I make more human-readable names?" Yes — say so in the issue.</li>
+</ul>
+<blockquote>
+<p>❌ <strong>The trap:</strong> expecting <code>@claude</code> to read your mind and produce a clean, correctly-targeted PR from a vague issue on the first try. It often will not. Andrew's run proves that a bare "implement this" gets you an implementation but not the <em>workflow</em> around it. State the branch-and-PR steps explicitly.</p>
+</blockquote>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong><code>@claude</code> in an issue or PR comment is the trigger.</strong> It fires a GitHub Actions workflow that runs Claude Code on a rented server against your repo.</li>
+<li><strong>Three pieces, all required.</strong> The Claude GitHub app (permissions), the <code>claude.yml</code> workflow file (triggers + what to run), and the <code>ANTHROPIC_API_KEY</code> secret (auth + billing). Miss one and nothing happens.</li>
+<li><strong>The API key is separate from your subscription.</strong> The Action bills the API directly; buy a little API credit and store it as a repo secret. Your Claude subscription does not cover it.</li>
+<li><strong>Install via <code>/install-github-app</code> from the Claude Code terminal,</strong> then confirm it under Settings → GitHub Apps with read/write on code, actions, and issues.</li>
+<li><strong>It is slow, and it needs steering.</strong> Every run reinstalls Claude Code on a fresh machine (minutes). Be explicit in the issue and the <code>system_prompt</code> about branching and opening a PR, or you get an implementation without the workflow around it.</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Assuming your subscription pays for it.</strong> It does not. Load API credit and add the <code>ANTHROPIC_API_KEY</code> secret, or the Action fails to authenticate. (Andrew learned this the hard way.)</li>
+<li>❌ <strong>Only putting <code>@claude</code> in the issue title or body and expecting instant action.</strong> Andrew's first issue triggered nothing; the reliable path was to <em>comment</em> <code>@claude</code> on the issue. Keep <code>issue_comment</code> in your triggers and mention it in a comment.</li>
+<li>❌ <strong>No <code>main</code> (or target) branch to merge into.</strong> Claude created branches but had nowhere to open the PR against until Andrew made a <code>main</code> branch and set it as default. Have a default branch first.</li>
+<li>❌ <strong>Vague issues.</strong> "Implement this" gets you code but not a branch-then-PR workflow. Spell out the steps: branch, implement, open a PR into <code>main</code>.</li>
+<li>❌ <strong>One giant file.</strong> Big changes become unreadable diffs and painful merge conflicts. Break the code into small files so you can actually review what Claude did.</li>
+<li>❌ <strong>Expecting speed.</strong> Each trigger reboots and reinstalls. Do not use it for rapid back-and-forth; use it for "write the ticket, walk away, review later."</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: give Atlas Support a <code>@claude</code> teammate</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. You will wire <code>@claude</code> into the <strong>Atlas Support</strong> repository and drive one issue from "ticket" to "pull request." Keep it small — one page, one PR. The goal is to feel the manager's workflow end to end and to feel, first-hand, both the promise and the slowness Andrew warns about.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>A working GitHub Actions integration on the Atlas Support repo — the same north-star project you have been growing all course — so that a teammate (you) can file an issue, mention <code>@claude</code>, and have Claude open a pull request implementing it. Its pieces map straight onto the lesson:</p>
+<ul>
+<li>the <strong>Claude GitHub app</strong> installed on the repo (Part 2, Part 3);</li>
+<li>a <strong><code>.github/workflows/claude.yml</code></strong> file with sensible triggers and permissions (Part 3);</li>
+<li>an <strong><code>ANTHROPIC_API_KEY</code> repository secret</strong> funded with a little API credit (Part 2);</li>
+<li>one <strong>issue → PR</strong> round trip you drive by commenting <code>@claude</code> (Part 1, Part 4).</li>
+</ul>
+<p>You are not building new Atlas Support <em>features</em> here — you are installing the automation rail future features could be requested on. Think of it as giving Atlas Support a project-management surface: issues in, pull requests out.</p>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in the Capstone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@claude</code> is the trigger</td>
+<td>You comment <code>@claude</code> on an issue to start a run</td>
+</tr>
+<tr>
+<td>Three pieces of setup</td>
+<td>Install the app, add <code>claude.yml</code>, add the secret</td>
+</tr>
+<tr>
+<td>API key ≠ subscription</td>
+<td>Fund a small API balance and store it as a repo secret</td>
+</tr>
+<tr>
+<td>Workflow triggers &amp; permissions</td>
+<td>Your <code>on:</code> and <code>permissions:</code> blocks in <code>claude.yml</code></td>
+</tr>
+<tr>
+<td>It is slow, and needs steering</td>
+<td>You wait through the run and explicitly ask for a branch + PR</td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Confirm the app.</strong> From the Atlas Support repo checkout, run <code>/install-github-app</code> in Claude Code (or open <strong>Settings → GitHub Apps</strong>). Success = the Claude app is listed with read/write on code, actions, and issues. This milestone stands alone: even with nothing else done, you have granted Claude access to the repo.</li>
+<li><strong>Fund and store the key.</strong> In the Anthropic developer console, load a few dollars of credit and create an API key named for this repo. Add it under <strong>Settings → Secrets and variables → Actions</strong> as a repository secret called <code>ANTHROPIC_API_KEY</code>. Success = the secret appears in the list (its value is hidden). On its own, this is a reusable, funded key any workflow can now reference.</li>
+<li><strong>Add the workflow file.</strong> Create <code>.github/workflows/claude.yml</code> from the illustrative file in Part 3. Keep <code>issue_comment</code> among the triggers, keep <code>contents/issues/pull-requests: write</code> in permissions, and reference <code>${{ secrets.ANTHROPIC_API_KEY }}</code>. Commit it. Success = the file is on your default branch and shows up under the repo's <strong>Actions</strong> tab as a known workflow.</li>
+<li><strong>Make sure there is a target branch.</strong> Confirm the repo has a <code>main</code> (or your chosen default) branch and that it is set as default. Success = you can see <code>main</code> in the branch dropdown. (Andrew hit exactly this gap; do not skip it.)</li>
+<li><strong>File the issue and mention <code>@claude</code>.</strong> Open an issue titled something concrete — "Add an individual product page" or, in Atlas spirit, "Add a <code>/status</code> help page for support agents." In a <strong>comment</strong>, write: <em>"<code>@claude</code> please implement this: create the page, put it on a new branch, then open a pull request into <code>main</code>."</em> Success = the Actions tab shows a run kicking off. (Expect to wait a few minutes — this is the slow part.)</li>
+<li><strong>Drive it to a PR and review.</strong> Watch the run. If Claude implements but does not open a PR, comment again asking explicitly for the pull request into <code>main</code>. When the PR appears, open it, read the diff, and merge it. Success = a merged PR whose changes came from your issue.</li>
+<li><strong>Stretch goals.</strong> Add a <code>system_prompt:</code> to <code>claude.yml</code> that states your branch-then-PR workflow, so you do not have to ask twice. Pin a <code>model:</code> and a <code>max_turns:</code> cap. Rename the trigger phrase from <code>@claude</code> to your own bot name. Try assigning the issue to trigger a run instead of commenting, and note which trigger feels more reliable.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ Your repo has all three pieces: the app installed, <code>.github/workflows/claude.yml</code> committed, and an <code>ANTHROPIC_API_KEY</code> secret present.</li>
+<li>✅ Commenting <code>@claude</code> on an issue starts a run you can watch in the <strong>Actions</strong> tab.</li>
+<li>✅ That run produced a pull request that you reviewed and merged, and the merged code matches what the issue asked for.</li>
+<li>✅ You can state, from experience, roughly how long a cold run takes and one thing you had to say explicitly to get the branch-and-PR workflow you wanted.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> Andrew's method is to <em>verify by doing</em>, not by trusting the marketing. Do not declare victory when the run "succeeds" — open the actual PR, read the actual diff, and merge it. A green check does not mean the page works; the file on <code>main</code> is the proof.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice on one idea. Optional and independent; the Capstone already touches all of them, so feel free to skip straight to it.</p>
+</blockquote>
+<h3 id="exercise-1-read-the-triggers-foundational">Exercise 1: Read the triggers (foundational)</h3>
+<p>Open your <code>claude.yml</code> and, without running anything, list every event that will wake Claude up. For each, write one sentence describing the human action that fires it (e.g. "someone comments on an issue"). Then remove one trigger you do not want and explain what you gave up. This builds the habit of reading <code>on:</code> as "who can start a run."</p>
+<h3 id="exercise-2-steer-with-a-system-prompt-intermediate">Exercise 2: Steer with a system prompt (intermediate)</h3>
+<p>Add a <code>system_prompt:</code> to the workflow that spells out your workflow: "Always create a feature branch, implement there, and open a pull request into <code>main</code> with a human-readable title." File a fresh issue that only says <em>"<code>@claude</code> implement a simple About page."</em> Confirm Claude now branches and opens a PR <em>without</em> you asking a second time. Compare against the Capstone run where you had to ask twice.</p>
+<h3 id="exercise-3-measure-and-tune-the-slowness-advanced">Exercise 3: Measure and tune the slowness (advanced)</h3>
+<p>Trigger a run and note the wall-clock time from comment to PR. Then add <code>max_turns:</code> and pin a faster <code>model:</code> (e.g. a current Sonnet) in the workflow, trigger the same kind of issue again, and compare. Write two sentences on what changed and whether the trade-off (speed vs. thoroughness) is worth it for your use case — echoing Andrew's core complaint that the whole method lives or dies on speed.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>CLAUDE CODE IN GITHUB ACTIONS — mention @claude, it acts in your repo.
+
+HOW IT WORKS:
+  @claude in an issue/PR comment  -&gt;  GitHub Actions boots a fresh VM
+  -&gt; installs Claude Code, checks out repo  -&gt; runs the agentic loop
+  -&gt; can comment, push a branch, open a PR.
+  (The fresh-VM install is why it&#39;s SLOW and why the API key is required.)
+
+THE THREE PIECES (miss one = nothing happens):
+  1. Claude GitHub app     Settings -&gt; GitHub Apps
+                           needs read/write: code, actions, metadata, issues, discussions
+  2. Workflow YAML         .github/workflows/claude.yml
+                           on: (triggers)  +  permissions:  +  anthropic_api_key
+  3. ANTHROPIC_API_KEY     Settings -&gt; Secrets and variables -&gt; Actions -&gt; repo secrets
+                           SEPARATE from your subscription — fund API credit ($5 is plenty)
+
+INSTALL:  open Claude Code in the repo, run  /install-github-app   (must be repo admin)
+
+WORKFLOW KNOBS you can tune in claude.yml:
+  trigger_phrase   default &quot;@claude&quot; (rename your bot)
+  model            e.g. claude-sonnet-4-5
+  max_turns        cap loop steps
+  system_prompt    STATE your workflow: &quot;branch, implement, open a PR into main&quot;
+
+EXPECTATIONS (Andrew&#39;s hard-won notes):
+  - SLOW: minutes per run; not for rapid back-and-forth.
+  - Comment @claude on the issue — a bare issue body may not trigger.
+  - Have a default (main) branch to target, or there&#39;s nowhere to open the PR.
+  - Vague issue -&gt; code but no PR. Ask explicitly, or bake it into system_prompt.
+  - Small files + human-readable names -&gt; reviewable diffs, fewer merge nightmares.
+  - Verify by opening the PR and reading the diff — green check != working page.
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>Earlier, Module 5 · Lesson 20 ("Built-in tools, status, and debug"):</strong> you learned to check Claude Code's state — is it installed, am I logged in. You lean on exactly that instinct here: Andrew's CI troubleshooting was, at heart, "is Claude installed on this machine, and is it authenticated?" — just answered on a rented server via the API key instead of a login.</li>
+<li><strong>Earlier, the whole of Module 5:</strong> configuration and permissions gave Claude Code its guardrails; the <code>permissions:</code> block and <code>system_prompt:</code> in the workflow are those same guardrails expressed for CI.</li>
+<li><strong>Next, Module 6 · Lesson 22 ("Sessions: resume, fork, and rewind"):</strong> you return to running Claude Code interactively, where you <em>can</em> have the fast back-and-forth that GitHub Actions is too slow for — resuming and branching a conversation non-destructively. The contrast is deliberate: Actions is for "write the ticket, walk away"; sessions are for "stay in the loop and steer."</li>
+<li><strong>Later, across Atlas Support:</strong> the issue-to-PR rail you built is how a team could <em>request</em> new Atlas Support behaviour — escalation rules, new tools, hardened config — as tickets, letting the agent draft the change and you review it. It is the management-shaped complement to the hands-on building you do everywhere else.</li>
+</ul>
+<hr />
+<p><em>Source: reconstructed from the CCA-F course by Andrew Brown (ExamPro). The workflow YAML and commands are illustrative reconstructions of the patterns described in the course — action names, versions, and inputs change, so adapt them to the current <code>anthropics/claude-code-action</code> and GitHub Actions syntax.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="20-built-in-tools-status-debug.html"><span class="dir">&#8592; Previous</span><b>Built-in tools, status, and debug</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="../module-6-context-reliability/22-sessions.html"><span class="dir">Next &#8594;</span><b>Sessions — resume, fork, and rewind</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <span class="fnote">A self-paced study course reconstructed from Andrew Brown&#x27;s Claude Certified Architect: Foundations course (ExamPro). Code snippets are illustrative reconstructions of the patterns shown; adapt them to the current SDK and the official exam guide. Not affiliated with or endorsed by Anthropic or ExamPro.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>

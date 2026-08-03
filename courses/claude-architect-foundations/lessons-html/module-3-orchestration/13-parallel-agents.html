@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 3 · Lesson 13: Running agents in parallel | Claude Certified Architect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>Claude Certified Architect</b> &middot; a self-paced course</div>
+  <div class="right"><span>Built from Andrew Brown&#x27;s CCA-F course (ExamPro)</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 3 · Lesson 13</span>
+      <h1>Running agents in <span class="accent">parallel</span></h1>
+      <p class="lead">When several pieces of work do not depend on each other, you can make your coordinator fire all of its sub-agents at once instead of one after another — but you have to ask for that in the prompt, each parallel agent runs its own private loop you cannot easily watch, so per-run logs become the only window you have.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Andrew Brown</b></span>
+        <span class="chip">&#9201; <b>45 to 60 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-a-quick-reminder-that-the-docs-can-be-wrong">Part 1: A quick reminder that the docs can be wrong</a></li>
+<li><a href="#part-2-the-agent-tool-is-not-automatically-parallel-you-ask-for-it">Part 2: The Agent tool is not automatically parallel — you ask for it</a><ul>
+<li><a href="#how-do-you-know-it-parallelised">How do you know it parallelised?</a></li>
+</ul>
+</li>
+<li><a href="#part-3-each-agent-runs-its-own-loop-which-is-why-you-cant-see-it">Part 3: Each agent runs its own loop (which is why you can't see it)</a></li>
+<li><a href="#part-4-the-fix-one-log-file-per-agent-per-run">Part 4: The fix — one log file per agent, per run</a></li>
+<li><a href="#part-5-parallelism-speed-vs-coordination-cost-and-a-debugging-trap">Part 5: Parallelism speed vs coordination cost — and a debugging trap</a><ul>
+<li><a href="#one-more-improvement-he-folds-in">One more improvement he folds in</a></li>
+</ul>
+</li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: fan Atlas Support out to parallel researchers</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-spot-the-switch-foundational">Exercise 1: Spot the switch (foundational)</a></li>
+<li><a href="#exercise-2-the-silent-drop-intermediate">Exercise 2: The silent drop (intermediate)</a></li>
+<li><a href="#exercise-3-watch-the-fleet-advanced">Exercise 3: Watch the fleet (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>When several pieces of work do not depend on each other, you can make your coordinator fire all of its sub-agents at once instead of one after another — but you have to <em>ask</em> for that in the prompt, each parallel agent runs its own private loop you cannot easily watch, so per-run logs become the only window you have.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone
+Project</strong> where you fan <strong>Atlas Support</strong> out across several sub-agents that
+each research an independent slice of a customer problem <em>at the same time</em>,
+then aggregate their findings — with one log file per agent per run so you can
+see what is happening. Everything before the Capstone teaches the skills you
+will use there. If you want to see the finish line first, jump to the
+<strong>"Capstone Project"</strong> section, then come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> SDKs and model names change, but
+"split independent work, run it concurrently, then recombine" is one of the
+oldest ideas in computing.</p>
+<ul>
+<li><strong><a href="https://research.google/pubs/pub62/">MapReduce: Simplified Data Processing on Large Clusters</a></strong> (Dean &amp; Ghemawat, 2004). The canonical <em>fan-out / fan-in</em> (also called <em>scatter-gather</em>) pattern: partition a job into independent pieces, process them in parallel, then merge. A parallel coordinator is the same shape — the sub-agents are the "map," the coordinator's dedupe-and-rank step is the "reduce."</li>
+<li><strong><a href="https://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahl's Law</a></strong> — the timeless reminder that parallelism only speeds up the part of the work that is actually independent, and coordination is never free.</li>
+</ul>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday terms. Here they are in plain words:</p>
+<ul>
+<li><strong>Agent:</strong> an AI that takes a series of actions on its own toward a goal, rather than answering in one shot.</li>
+<li><strong>Agentic loop:</strong> the repeating cycle an agent runs — gather context, take action, verify — until the task is done.</li>
+<li><strong>Coordinator (hub-and-spoke):</strong> one agent that owns routing, context, and aggregation, and delegates to <em>sub-agents</em> ("spokes") that are exposed to it as tools.</li>
+<li><strong>Sub-agent:</strong> an agent spawned by another agent, usually with its own isolated context and its own loop.</li>
+<li><strong>Claude Agent SDK vs Anthropic SDK:</strong> the <em>Agent SDK</em> is the higher-level library for building agents (decorator tools, sub-agents, hooks); the <em>Anthropic SDK</em> is the lower-level library for calling the model API directly. The Python Agent SDK sometimes lags the TypeScript one.</li>
+<li><strong>Agent (task) tool:</strong> the built-in tool the Agent SDK gives your coordinator so it can spawn a named sub-agent. (The docs call it the <em>task</em> tool; in the SDK it is the <em>agent</em> tool — a naming quirk you met last lesson.)</li>
+<li><strong>Parallel vs sequential:</strong> <em>sequential</em> means do one thing, wait for it to finish, then do the next; <em>parallel</em> means start several at once and let them run together.</li>
+<li><strong>Partition:</strong> a slice of the work that does not overlap with the other slices — one axis of research, one region, one document set.</li>
+<li><strong>Aggregate:</strong> collect the separate results back into one combined answer (here: merge, de-duplicate, and rank).</li>
+<li><strong><code>stdout</code> / <code>tail</code>:</strong> <code>stdout</code> is the stream a program prints to; <code>tail -f &lt;file&gt;</code> follows a file live, printing new lines as they are written — how you "watch" a log.</li>
+</ul>
+<p>You do not need to memorise these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>Last lesson you ported your coordinator to the Agent SDK and used the Agent tool to spawn isolated sub-agents. But it called them <strong>one at a time</strong>. If five sub-agents each do independent research, running them sequentially means the user waits for all five to finish <em>in a row</em>. Running them together can cut that wait dramatically — and this is exactly the kind of orchestration the exam's Domain 1 wants you to reason about. The catch, and the real lesson, is what Andrew hits repeatedly here: the moment several agents run at once, "I have no output or logging and so I have no sense of ... if the agents are stuck in a loop or if they are going to finish soon or what they're even doing." Speed you get almost for free; <strong>visibility you have to build.</strong></p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>Explain why the Agent tool does <strong>not</strong> run sub-agents in parallel automatically, and prompt a coordinator to fan out versus stay sequential.</li>
+<li>Decide, per task, whether the sub-agents' work is independent enough to run at once.</li>
+<li>Describe what "each agent runs its own loop" means and why that makes sub-agents hard to observe.</li>
+<li>Add per-run, per-sub-agent log files so you can <code>tail</code> a fleet of parallel agents and know something is happening.</li>
+<li>Recognise that a lost or empty result is usually a <strong>formatting/aggregation</strong> bug, not a parallelism bug — and keep the two separate when you debug.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Module 3 · Lesson 12</strong> (the Agent SDK and the Agent/task tool) — you need a working coordinator with at least one named sub-agent definition.</li>
+<li><strong>Module 3 · Lesson 8</strong> (hub-and-spoke) and <strong>Lesson 9</strong> (non-overlapping partitions) — parallelism only works when the partitions do not depend on each other.</li>
+<li>Python, the Claude Agent SDK installed, and an API key (Module 0).</li>
+</ul>
+<hr />
+<h2 id="part-1-a-quick-reminder-that-the-docs-can-be-wrong">Part 1: A quick reminder that the docs can be wrong</h2>
+<p>Before the parallelism work, Andrew is still poking at agent-definition fields from last lesson, and he runs into the theme that runs through this whole course. He asks Claude for <em>all</em> the fields on an agent definition in Python, gets a short list, and does not trust it. He checks the TypeScript SDK and finds more: "the type set has significantly more fields [than] the Python. If you need these capabilities, you need to use the [TypeScript SDK]. Wow, isn't that interesting?"</p>
+<p>His takeaway is the one to carry into everything below:</p>
+<blockquote>
+<p>"It's good that we know, right? So if I had not checked that, then I would have thought that's all there was."</p>
+<p>🔑 <strong>Verify by building, not by reading.</strong> The docs "weren't built for humans,"
+as Andrew puts it, and the Python SDK lags the TypeScript one. Whenever this
+lesson tells you the SDK "can" or "can't" do something, the honest answer is
+"at the time of recording, and only until you check." Treat every capability
+claim as a hypothesis you confirm by running code.</p>
+</blockquote>
+<h2 id="part-2-the-agent-tool-is-not-automatically-parallel-you-ask-for-it">Part 2: The Agent tool is not automatically parallel — you ask for it</h2>
+<p>Here is the single most surprising fact of the lesson. You might assume that if a coordinator has five independent sub-agents to call, the SDK is smart enough to run them together. It is not. By default the coordinator "calls research agent sequentially one at a time."</p>
+<p>So how do you get parallelism? As Andrew says, "the way you do that when you're using the Agent SDK is you just simply tell it that you want to do it." You <strong>prompt</strong> for it. The coordinator's prompt is where you say: these calls are independent, so make them all in a single response instead of waiting between them.</p>
+<p>He shows the two halves of a good prompt — not just "you <em>may</em> run in parallel" but <em>when</em> to and <em>when not</em> to:</p>
+<ul>
+<li>Give <strong>examples of tasks that can be run in parallel</strong> (independent research on five different axes), and</li>
+<li>Give the case where you would run <strong>sequentially</strong> instead (when one step's input depends on a previous step's output).</li>
+</ul>
+<blockquote>
+<p>"It's up to the coordinator to decide if they want to do them all at the same time or not."</p>
+</blockquote>
+<p>That is the mental model: you are not flipping a <code>parallel=true</code> switch. You are giving the coordinator a decision rule, and it chooses per task. The reconstructed prompt language that flips the behaviour looks like this:</p>
+<div class="codehilite"><pre><span></span><code># Illustrative — the key lines in the coordinator prompt
+
+In a SINGLE response, call the research_agent tool simultaneously for ALL
+five axes. The axes are independent — no axis depends on another&#39;s result —
+so DO NOT wait between calls. Delegate to all of them at once, then call
+record_findings on the combined results.
+
+(Run sub-agents SEQUENTIALLY only when a later agent needs an earlier
+agent&#39;s output as its input.)
+</code></pre></div>
+
+<p>The phrases doing the work are "in a single response," "simultaneously," and "do not wait between calls." As Andrew narrates while reading the generated code: "in a single response call research agent simultaneously [for] all axes ... we're telling it to do this. Do not wait but delegate to all of them. That's the key thing that we were asking it to do."</p>
+<blockquote>
+<p>🔑 <strong>Parallelism is a prompt, not a flag.</strong> The Agent tool runs sub-agents one
+at a time unless the coordinator's prompt tells it to issue all the calls in a
+single response. No prompt, no parallelism.</p>
+<p>✅ <strong>What to do about it:</strong> in your coordinator prompt, name the independent
+tasks explicitly, say "call them in a single response, simultaneously, do not
+wait," and add the sequential exception so the model does not parallelise work
+that actually has a dependency.</p>
+</blockquote>
+<h3 id="how-do-you-know-it-parallelised">How do you <em>know</em> it parallelised?</h3>
+<p>Honestly? At first, you barely can. Andrew asks the exact right question — "How do we know that's being parallelised?" — and the best signal he has is the coordinator announcing "all in [a single] turn" and "the agent is saying it's starting them all simultaneously." He is candid: "The only thing that will be hard here is to really observe that they're running all at the same time ... I'm not sure exactly how we would monitor that." That discomfort is not a mistake on his part — it is the problem the rest of the lesson exists to solve.</p>
+<h2 id="part-3-each-agent-runs-its-own-loop-which-is-why-you-cant-see-it">Part 3: Each agent runs its own loop (which is why you can't see it)</h2>
+<p>Recall the agentic loop: gather context → take action → verify, repeated until done. When your coordinator spawns a sub-agent through the Agent tool, that sub-agent does <strong>not</strong> borrow the coordinator's loop. It runs its <strong>own</strong>.</p>
+<blockquote>
+<p>"Each agent tool runs in [its] own loop ... each agent is running at the same
+time — or can, if you specify it — obviously in parallel, and we might not be
+able to see what the internal loop is doing."</p>
+</blockquote>
+<p>Picture five sub-agents firing at once. Each is independently deciding to search, read a result, maybe search again, and eventually report back:</p>
+<div class="codehilite"><pre><span></span><code>                 ┌─────────────── coordinator ───────────────┐
+                 │  one prompt, one response, five tool calls │
+                 └───┬───────┬───────┬───────┬───────┬────────┘
+                     │       │       │       │       │      (all issued at once)
+                 ┌───▼──┐┌───▼──┐┌───▼──┐┌───▼──┐┌───▼──┐
+   sub-agent →   │axis 1││axis 2││axis 3││axis 4││axis 5│   each with its OWN loop:
+   own loop      │ g→a→v││ g→a→v││ g→a→v││ g→a→v││ g→a→v│   gather→act→verify…
+                 └───┬──┘└───┬──┘└───┬──┘└───┬──┘└───┬──┘
+                     └───────┴───┬───┴───────┴───────┘
+                          ┌──────▼───────┐
+                          │  aggregate:  │  merge → de-duplicate → rank
+                          │  coordinator │
+                          └──────────────┘
+</code></pre></div>
+
+<p>The isolation is a feature — each sub-agent gets its own clean context so they do not pollute one another. But it is also the source of the pain. Andrew wanted plain internal logging of what each loop was doing "or at least track my spend or help re-rou[te] it if it's going off tracks, but you can't ... that is just a limitation of how it works right now." He suspects, without being sure, that "sub-agents you have to enable streaming, where the parents ... already stream the information to you and sub-agents don't."</p>
+<blockquote>
+<p>🔑 <strong>Isolation cuts both ways.</strong> A sub-agent's own loop keeps its context clean
+<em>and</em> keeps its work invisible. With one agent you watch the stream; with five
+parallel agents you get silence until they report back.</p>
+<p>💡 <strong>A judgment note, not a gotcha.</strong> Andrew is careful to say he has <em>not</em>
+verified the streaming claim — "I don't know if this is true or not, we'd have
+to verify it." Hold SDK limitations loosely: they are true at the time of
+recording and may already be fixed. If you truly need per-step visibility for
+production, he floats the escape hatch used throughout this course: "roll your
+own using the ... lower-level Anthropic client."</p>
+</blockquote>
+<h2 id="part-4-the-fix-one-log-file-per-agent-per-run">Part 4: The fix — one log file per agent, per run</h2>
+<p>If the SDK will not hand you a live view, you build a modest one. Andrew's approach is exactly what you would reach for: have each sub-agent write to its <strong>own log file, scoped to this run</strong>, so you can follow all of them at once.</p>
+<p>The naming scheme he dictates:</p>
+<div class="codehilite"><pre><span></span><code>logs/run-&lt;ISO-timestamp&gt;-&lt;sub-agent-name&gt;.log
+</code></pre></div>
+
+<p>One directory of logs per pipeline run; inside it, one file per sub-agent that was spun up, each line time-stamped. His instruction, in his words: "dump logs to each agent run — each run of our coordinator — and then in there have individual logs for each sub-agent that is spun up ... e.g. <code>logs/run/&lt;ISO timestamp&gt;/&lt;sub-agent name&gt;.log</code>."</p>
+<p>Once the files exist, watching a whole fleet is one command. Because every file for this run starts with <code>run-</code>, you follow them all with a wildcard:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Illustrative — follow every sub-agent&#39;s log for the current run, live</span>
+tail<span class="w"> </span>-f<span class="w"> </span>logs/run-*.log
+</code></pre></div>
+
+<p>Andrew's live reaction when it finally works: "there they go. There we go ... now what I can do is <code>tail -f logs run asterisk.log</code>. And so now it will show us all the logs ... if there are any changes that are happening here, they'll get propagated." He splits his terminal, refreshes, and can finally <em>see</em> the agents fire up: "now we can see all the agents are starting ... that's a lot more useful."</p>
+<p>It is not perfect — he still can't see the reasoning <em>inside</em> each loop, and wishes the files "were named a little bit better." But it clears the bar he actually needed: proof that something is happening and that the run is not wedged.</p>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> give every sub-agent a logger that writes to
+<code>logs/run-&lt;ISO-timestamp&gt;-&lt;agent-name&gt;.log</code> and echoes to <code>stdout</code>. Then
+<code>tail -f logs/run-*.log</code> in a split pane. You are not aiming for perfect
+tracing — you are aiming for "I can tell it's alive."</p>
+<p>💡 <strong>Why per-<em>run</em> and per-<em>agent</em> both matter.</strong> Per-run keeps today's logs
+from mixing with yesterday's, so you can diff or delete a whole run cleanly.
+Per-agent keeps five concurrent streams from interleaving into one unreadable
+file. Together they turn "five silent boxes" into five followable timelines.</p>
+</blockquote>
+<h2 id="part-5-parallelism-speed-vs-coordination-cost-and-a-debugging-trap">Part 5: Parallelism speed vs coordination cost — and a debugging trap</h2>
+<p>The reason to do any of this is speed. Andrew never instrumented a stopwatch, but the expectation is plain: "I would suspect that it would be faster than what we did before." Five independent researches that used to happen back-to-back now overlap, so the wall-clock wait shrinks toward the length of the <em>slowest single</em> agent instead of the <em>sum</em> of all five. That is the win.</p>
+<p>The cost shows up immediately, and it is worth studying because it is a trap. After switching to parallel agents, his <code>results.json</code> came back <strong>empty</strong>: "Why is our JSON empty? What the heck? ... where's my findings?" The natural suspicion is that parallelism broke it: "do you think when we ... changed it to run multiple agents at the same time, this is where we lost the findings JSON data?"</p>
+<p>It was <strong>not</strong> the parallelism. Digging in, the real cause was a <strong>format mismatch</strong> in the aggregation step: the <code>record_findings</code> / de-dupe tool expected a structured (Pydantic-validated) object, "but the coordinator passes a plain list." A field expecting a string got a list and iterated it character by character, and the failure was <strong>silent</strong> — nothing logged, results just vanished. The fix was defensive aggregation: "add error logging so the failures aren't silent [and] handle the coordinator's natural output format as a fallback."</p>
+<blockquote>
+<p>🔑 <strong>Separate the two failure modes.</strong> "It ran fast but the answer is empty" is
+almost always an <strong>aggregation/formatting</strong> bug at the fan-in step, not a
+parallelism bug at the fan-out step. Parallelism changes <em>when</em> results
+arrive; your merge/validate/rank code decides whether they survive.</p>
+</blockquote>
+<p>There is a second, deeper coordination cost he names: silent sub-agent failures. Because the sub-agents run their own loops out of view, an error inside one can disappear without a trace unless your fan-in step logs it. His summing-up:</p>
+<blockquote>
+<p>"There is an issue with sub-agents, at least with the SDK at this time ... it's an internal loop and we do not know what it's doing until it reports back, and that's not great from a user's perspective. If we're going to build something for production and we need to track stuff, we're going to have to roll this stuff ourselves using the lower-level Anthropic client."</p>
+<p>❌ <strong>The trap in one line:</strong> blaming parallelism for a missing result. Check
+your aggregation/validation first — add error logging there before you touch
+the fan-out.</p>
+</blockquote>
+<h3 id="one-more-improvement-he-folds-in">One more improvement he folds in</h3>
+<p>While debugging, Andrew notices the findings themselves are thin — a bare URL with no provenance. He enriches each finding to carry the <strong>source URL, document name, and page number</strong>: "now we have better source information. We really should have done that prior." Keep this in your pocket; provenance becomes a first-class concern later in the course, and it is nearly free to add while you are already in the aggregation code.</p>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>Parallelism is prompted, not automatic.</strong> The Agent tool calls sub-agents sequentially unless the coordinator's prompt says to issue all the calls in a single response ("simultaneously, do not wait").</li>
+<li><strong>Give the coordinator a decision rule, not a switch.</strong> Show it independent tasks (parallel) <em>and</em> dependent tasks (sequential) so it chooses correctly per job.</li>
+<li><strong>Each sub-agent runs its own loop.</strong> That isolation keeps contexts clean but makes the internal work invisible while it runs.</li>
+<li><strong>You must build observability.</strong> Per-run, per-agent log files (<code>logs/run-&lt;ISO&gt;-&lt;agent&gt;.log</code>) plus <code>tail -f logs/run-*.log</code> are the minimum that lets you see a fleet is alive.</li>
+<li><strong>Empty results ≠ broken parallelism.</strong> A vanished result is almost always a fan-in formatting/validation bug; log failures at the aggregation step so they are never silent.</li>
+<li><strong>The speed win is real; the coordination cost is observability.</strong> Weigh both before you fan out.</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Assuming the SDK parallelises for you.</strong> It does not. Without an explicit "single response, simultaneously, do not wait" instruction, five independent agents still run one at a time.</li>
+<li>❌ <strong>Parallelising dependent work.</strong> If agent B needs agent A's output, firing them together produces garbage. Only fan out non-overlapping partitions.</li>
+<li>❌ <strong>Running many agents with no logging.</strong> You will stare at a frozen screen with no idea whether anything is happening, exactly as Andrew did — build the per-agent logs <em>first</em>.</li>
+<li>❌ <strong>One shared log file for all sub-agents.</strong> Concurrent writes interleave into an unreadable mess. One file per agent per run.</li>
+<li>❌ <strong>Blaming parallelism for an empty <code>results.json</code>.</strong> Check the aggregation/validation step and its (probably silent) errors first.</li>
+<li>❌ <strong>Leaving <code>bypass permissions</code> on because a generated script added it.</strong> Andrew removes it every time he sees it: "we did not request it to do that." Turn it off unless you deliberately want it.</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: fan Atlas Support out to parallel researchers</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. You will feel the difference
+between "wait for five agents in a row" and "watch five agents run at once" —
+and, just as importantly, feel why the logs you build are the only reason the
+second one is bearable. Keep it small on purpose.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>Take your Agent SDK coordinator from Lesson 12 and give <strong>Atlas Support</strong> a parallel research stage. When a customer problem arrives, the coordinator splits it into several <strong>independent partitions</strong> (for example: the product docs, past support tickets, the changelog/known-issues, the billing/account system, and community/forum posts), spawns one research sub-agent per partition <strong>at the same time</strong>, then aggregates their findings into a single de-duplicated, ranked list — with one log file per agent per run so you can watch it work.</p>
+<p>Its pieces, each mapped to a lesson idea:</p>
+<ul>
+<li>A <strong>coordinator prompt</strong> that names the independent partitions and says "call them in a single response, simultaneously, do not wait" → Part 2.</li>
+<li><strong>Five research sub-agents</strong>, each with its own loop and its own partition → Part 3.</li>
+<li>A <strong>per-run logging</strong> helper writing <code>logs/run-&lt;ISO&gt;-&lt;agent&gt;.log</code> → Part 4.</li>
+<li>An <strong>aggregation step</strong> (a dedupe/rank agent or tool) that merges results and <strong>logs its own failures</strong> → Part 5.</li>
+<li>Findings enriched with <strong>source URL, document name, page number</strong> → Part 5.</li>
+</ul>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in Atlas Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prompt for parallel vs sequential</td>
+<td>The coordinator prompt that fans out to all five partitions in one response</td>
+</tr>
+<tr>
+<td>Independent partitions only</td>
+<td>Choosing five research slices that genuinely don't depend on each other</td>
+</tr>
+<tr>
+<td>Each agent runs its own loop</td>
+<td>Five sub-agents researching concurrently, isolated from each other</td>
+</tr>
+<tr>
+<td>Per-run, per-agent logs</td>
+<td><code>logs/run-&lt;ISO&gt;-&lt;agent&gt;.log</code> + <code>tail -f logs/run-*.log</code></td>
+</tr>
+<tr>
+<td>Fan-in bug ≠ fan-out bug</td>
+<td>Making the dedupe/rank step log failures instead of silently dropping findings</td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Sequential baseline.</strong> With your Lesson 12 coordinator, have it call the research sub-agents <strong>one at a time</strong> across the five partitions and print a combined result. Note roughly how long it takes. <em>This alone is a working deliverable.</em></li>
+<li><strong>Flip to parallel.</strong> Edit only the coordinator prompt: name the five partitions, state they are independent, and instruct "in a single response, call them simultaneously, do not wait between calls." Add the sequential exception in one sentence. Run it. Confirm the coordinator announces it is starting them all at once.</li>
+<li><strong>Per-agent, per-run logs.</strong> Give each sub-agent a logger that writes to <code>logs/run-&lt;ISO-timestamp&gt;-&lt;agent-name&gt;.log</code> and also echoes to <code>stdout</code>. Run again, and in a second pane run <code>tail -f logs/run-*.log</code>. You should see multiple agents' lines appear together. <em>You can stop here and have proven observability.</em></li>
+<li><strong>Harden the fan-in.</strong> Make the aggregation step (dedupe + rank) log any error instead of failing silently, and accept the coordinator's "natural" plain-list output as a fallback, not only the strict validated shape. Deliberately feed it a slightly wrong shape and confirm you now get a logged error, not an empty <code>results.json</code>.</li>
+<li><strong>Enrich provenance.</strong> Extend each finding to carry <code>source_url</code>, <code>document_name</code>, and <code>page_number</code>, and make sure they survive aggregation into the final ranked list.</li>
+<li><strong>Compare and reflect.</strong> Write two or three sentences: was parallel faster than your Milestone 1 baseline, and what did the logs let you see that the sequential run didn't need?</li>
+<li><strong>Stretch goals.</strong> (a) Add a sixth partition and confirm the fan-out scales with only a prompt change. (b) Make the coordinator choose sequential automatically for a <em>dependent</em> task (e.g. "summarise, then translate the summary") to prove your decision rule works both ways. (c) Prototype the "roll your own with the Anthropic client" escape hatch for one sub-agent so you get true per-step tracing, and compare the effort.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ Running the pipeline once produces a <code>logs/</code> directory with <strong>one file per sub-agent</strong> for that run, each with time-stamped lines.</li>
+<li>✅ <code>tail -f logs/run-*.log</code> shows <strong>multiple agents' output interleaving live</strong>, proving they run concurrently.</li>
+<li>✅ The final <code>results.json</code> is <strong>non-empty</strong>, de-duplicated, ranked, and every finding carries a URL, document name, and page number.</li>
+<li>✅ Feeding the aggregation step a malformed input yields a <strong>logged error</strong>, not a silent empty result.</li>
+<li>✅ You can state, in one sentence each, why you chose parallel for these partitions and what a genuinely <em>sequential</em> task would look like instead.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> before you blame parallelism for any missing data,
+open the aggregation logs first. If they're empty, that silence <em>is</em> the bug —
+Atlas Support should never drop a finding without saying so.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice
+on one idea. Optional and independent; the Capstone already touches all of
+them, so feel free to skip straight to it.</p>
+</blockquote>
+<h3 id="exercise-1-spot-the-switch-foundational">Exercise 1: Spot the switch (foundational)</h3>
+<p>Take a coordinator prompt that runs sub-agents sequentially. Rewrite only the delegation paragraph so the agents run in parallel. Underline the exact words ("single response," "simultaneously," "do not wait") that do the work. No code — just the prompt.</p>
+<h3 id="exercise-2-the-silent-drop-intermediate">Exercise 2: The silent drop (intermediate)</h3>
+<p>Write a tiny <code>aggregate(findings)</code> function that expects a list of objects but is sometimes handed a plain string. First reproduce the character-by-character iteration bug and an empty result. Then add (a) a logged error and (b) a fallback that coerces the string into the expected shape. Confirm nothing is ever dropped silently.</p>
+<h3 id="exercise-3-watch-the-fleet-advanced">Exercise 3: Watch the fleet (advanced)</h3>
+<p>Spawn three trivial sub-agents (each just sleeps a random 1–5 seconds and logs "start"/"done") in parallel, each writing to <code>logs/run-&lt;ISO&gt;-&lt;name&gt;.log</code>. Use <code>tail -f logs/run-*.log</code> to watch them. Then make one agent's work <em>depend</em> on another's output and rewrite the coordinator so those two go sequential while the third stays parallel.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>RUNNING AGENTS IN PARALLEL — quick recap
+
+THE BIG SURPRISE
+  The Agent (task) tool runs sub-agents SEQUENTIALLY by default.
+  Parallelism is a PROMPT, not a flag. You must ask for it.
+
+PROMPT THAT FANS OUT (put in the coordinator prompt)
+  &quot;In a SINGLE response, call &lt;agent&gt; simultaneously for ALL &lt;partitions&gt;.
+   They are independent — DO NOT wait between calls. Delegate to all at once.&quot;
+  Then add the exception:
+  &quot;Run SEQUENTIALLY only when a later agent needs an earlier one&#39;s output.&quot;
+
+MENTAL MODEL
+  coordinator --(one response, N tool calls)--&gt; N sub-agents at once
+  each sub-agent runs its OWN loop (gather→act→verify), context isolated
+  coordinator then AGGREGATES: merge → de-duplicate → rank   (fan-in)
+
+WHY IT&#39;S HARD TO WATCH
+  Sub-agents run their own loops out of view. No built-in per-step logging.
+  (Streaming for sub-agents = unverified SDK claim; may change. Verify it.)
+
+BUILD OBSERVABILITY YOURSELF
+  Each sub-agent -&gt; logs/run-&lt;ISO-timestamp&gt;-&lt;agent-name&gt;.log  (+echo stdout)
+  Watch the whole fleet:   tail -f logs/run-*.log
+
+WIN vs COST
+  Win : wall-clock ≈ slowest single agent, not the SUM of all agents.
+  Cost: visibility. Amdahl&#39;s Law — only independent work speeds up.
+
+DEBUGGING RULE
+  Empty result ≠ broken parallelism.
+  It&#39;s almost always a FAN-IN formatting/validation bug. Log those failures.
+  (Andrew&#39;s case: tool wanted a validated object, coordinator sent a plain list.)
+
+DON&#39;T FORGET
+  - Only fan out NON-OVERLAPPING partitions.
+  - Enrich findings: source URL + document name + page number.
+  - Remove `bypass permissions` you didn&#39;t ask for.
+  - Verify SDK limits by building; the docs &amp; Python SDK lag.
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>Earlier, Module 3 · Lesson 12 (the Agent SDK and the Agent/task tool):</strong> you built the isolated sub-agents this lesson runs concurrently — and met the same "docs and Python SDK lag" reality that reappears here.</li>
+<li><strong>Earlier, Module 3 · Lesson 9 (task decomposition):</strong> the non-overlapping partitions you learned to define are precisely what makes parallel fan-out safe.</li>
+<li><strong>Earlier, Module 3 · Lesson 10 (refinement loops and observability):</strong> the logging instinct you started there becomes non-negotiable once many agents run at once.</li>
+<li><strong>Next, Module 3 · Lesson 14 (gates, hooks, and handoff protocols):</strong> hooks give you a cleaner, SDK-native place to hang the logging and checks you hand-rolled here — and a structured way to hand off when an agent gets stuck.</li>
+<li><strong>Later, Module 6 (context management and reliability):</strong> provenance-preserving findings, silent-failure logging, and the "roll your own with the Anthropic client for real observability" escape hatch all mature into first-class reliability practices for Atlas Support.</li>
+</ul>
+<hr />
+<p><em>Source: the CCA-F course by Andrew Brown, ExamPro. Code snippets and diagrams are illustrative reconstructions of the patterns described in the course. Adapt them to the current SDK — and, as Andrew insists, verify every capability claim by building it.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="12-agent-sdk-and-agent-tool.html"><span class="dir">&#8592; Previous</span><b>The Claude Agent SDK and the Agent (task) tool</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="14-gates-hooks-handoff.html"><span class="dir">Next &#8594;</span><b>Gates, hooks, and handoff protocols</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <span class="fnote">A self-paced study course reconstructed from Andrew Brown&#x27;s Claude Certified Architect: Foundations course (ExamPro). Code snippets are illustrative reconstructions of the patterns shown; adapt them to the current SDK and the official exam guide. Not affiliated with or endorsed by Anthropic or ExamPro.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>

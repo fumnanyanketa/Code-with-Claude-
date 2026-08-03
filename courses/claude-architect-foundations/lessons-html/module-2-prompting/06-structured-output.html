@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 2 · Lesson 6: Forcing structured output | Claude Certified Architect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>Claude Certified Architect</b> &middot; a self-paced course</div>
+  <div class="right"><span>Built from Andrew Brown&#x27;s CCA-F course (ExamPro)</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 2 · Lesson 6</span>
+      <h1>Forcing structured <span class="accent">output</span></h1>
+      <p class="lead">You force Claude to hand back clean, machine-readable JSON by giving it a tool whose input schema (types, enums, required fields) describes exactly the shape you want, then using tool_choice to make the model fill that shape — while sidestepping the trap where forcing a specific tool on every request loops forever.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Andrew Brown</b></span>
+        <span class="chip">&#9201; <b>45 to 60 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#first-principles-companion">First-principles companion</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-why-structured-output-and-how-a-tool-schema-shapes-it">Part 1: Why structured output, and how a tool schema shapes it</a></li>
+<li><a href="#part-2-enums-and-required-the-two-levers-exam-tip">Part 2: Enums and required — the two levers (EXAM TIP)</a></li>
+<li><a href="#part-3-the-four-tool_choice-modes">Part 3: The four tool_choice modes</a><ul>
+<li><a href="#the-agent-sdk-does-not-expose-it">The Agent SDK does not expose it</a></li>
+</ul>
+</li>
+<li><a href="#part-4-the-force-tool-infinite-loop-the-real-trap">Part 4: The force-tool infinite loop (the real trap)</a></li>
+<li><a href="#part-5-validation-because-well-formed-is-not-the-same-as-correct">Part 5: Validation — because well-formed is not the same as correct</a></li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: the Atlas Support triage classifier</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-enum-swap-foundational">Exercise 1: Enum swap (foundational)</a></li>
+<li><a href="#exercise-2-break-the-required-contract-intermediate">Exercise 2: Break the required contract (intermediate)</a></li>
+<li><a href="#exercise-3-validation-retry-stub-advanced">Exercise 3: Validation-retry stub (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>You force Claude to hand back clean, machine-readable JSON by giving it a <em>tool</em> whose input schema (types, enums, required fields) describes exactly the shape you want, then using <code>tool_choice</code> to make the model fill that shape — while sidestepping the trap where forcing a specific <code>tool</code> on every request loops forever.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone
+Project</strong> where you build the <strong>Atlas Support triage classifier</strong>: feed it a
+raw, messy support ticket and force it to emit a strict JSON verdict — a
+category from a fixed list, a priority, and a short reason — then validate that
+verdict in code. Everything before the Capstone teaches the pieces you will use
+there. If you want to see the finish line first, jump to the
+<strong>"Capstone Project"</strong> section, then come back.</p>
+</blockquote>
+<h2 id="first-principles-companion">First-principles companion</h2>
+<blockquote>
+<p>💡 <strong>The durable idea behind this lesson.</strong> SDKs and model names change, but the
+way you describe a data shape to a machine does not. For the timeless,
+tool-agnostic version:</p>
+<ul>
+<li><strong><a href="https://json-schema.org/">JSON Schema</a></strong> (the specification). JSON Schema
+  is <em>the</em> declarative language for saying "valid data looks like this" — types,
+  allowed values (enums), which fields are required, nested objects, arrays. A
+  tool's <code>input_schema</code> is just JSON Schema, and frontier models are trained to
+  read it. Learn the vocabulary once and it transfers to every provider and
+  every validator you will ever touch.</li>
+</ul>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday terms. Here they are in plain words:</p>
+<ul>
+<li><strong>Structured output:</strong> making the model return machine-readable data (usually
+  JSON) instead of free-flowing prose, by giving it a tool with a JSON input
+  schema (types, enums, required fields). "Machine-readable" means your code can
+  parse it and act on it without guessing.</li>
+<li><strong>JSON:</strong> a simple text format for data — objects with named fields, e.g.
+  <code>{"category": "billing", "priority": "high"}</code>. It is how programs pass
+  structured data around.</li>
+<li><strong>Tool / tool call / tool result:</strong> a function the model can choose to run.
+  When it decides to use one, that is a <em>tool call</em>; what comes back is the <em>tool
+  result</em>. Here we use a tool not to <em>do</em> something, but purely to make the model
+  produce data in the tool's declared input shape.</li>
+<li><strong>JSON Schema:</strong> a declarative language for describing and validating the
+  structure, data types, and constraints of a JSON document.</li>
+<li><strong>Enum:</strong> short for <em>enumeration</em> — a fixed list of allowed values for a field
+  (e.g. a <code>unit</code> field that may only be <code>"celsius"</code> or <code>"fahrenheit"</code>).</li>
+<li><strong><code>tool_choice</code>:</strong> the setting that forces <em>how</em> the model uses tools —
+  <code>auto</code>, <code>any</code>, a specific <code>tool</code>, or <code>none</code>. It lives in the low-level
+  <strong>Anthropic SDK</strong>.</li>
+<li><strong><code>stop_reason</code>:</strong> the field the API returns saying <em>why</em> the model stopped —
+  <code>tool_use</code> (it wants to run a tool) or <code>end_turn</code> (it is finished). You drive
+  the loop off this, never off parsing the text. (From Module 1.)</li>
+<li><strong>Pydantic:</strong> a popular Python library where you describe data shapes as
+  classes; it emits JSON Schema and validates data against it.</li>
+</ul>
+<p>You do not need to memorise these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>In the last lesson you learned to <em>steer</em> the model with prompts. But a good
+prompt still returns prose, and prose is a nightmare to build software on top of —
+you end up writing brittle string parsing that breaks the moment Claude phrases
+something differently. The fix is to stop parsing text at all. As Andrew shows,
+you hand Claude a tool whose input schema <em>is</em> the data shape you need, and Claude
+"is going to read that input schema because it's schema JSON, and then it will
+know what to generate out." This is the difference between an agent that <em>chats</em>
+and an agent that <em>feeds a system</em>. Atlas Support cannot route a ticket on a
+paragraph of English; it needs <code>{"category": "billing", "priority": "high"}</code>. This
+lesson is how you get that, reliably — and how to avoid the infinite loop that bit
+Andrew live on camera.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>Explain the four <code>tool_choice</code> modes (<code>auto</code>, <code>any</code>, <code>tool</code>, <code>none</code>) and what each guarantees.</li>
+<li>Write a tool <code>input_schema</code> in JSON Schema using types, arrays, <strong>enums</strong>, and <strong>required</strong> fields to constrain what Claude returns.</li>
+<li>Force clean structured JSON from a single API call and read the payload off the tool-use block.</li>
+<li>Diagnose and avoid the force-<code>tool</code> infinite loop by understanding how <code>tool_choice</code> interacts with <code>stop_reason</code>.</li>
+<li>Add a validation layer (by hand, or with Pydantic) to catch semantic errors the schema cannot.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Module 1 · Lesson 3 (Tools and the stop-reason loop)</strong> and <strong>Lesson 4 (ending the loop correctly)</strong> — you must already know that you drive control flow off <code>stop_reason</code>, not off the text. This lesson is where that pays off.</li>
+<li><strong>Module 2 · Lesson 5 (Prompting that steers the model)</strong> — few-shot examples and specific prompts; we reuse the "give the model the structure" idea.</li>
+<li>A working Anthropic SDK setup and an API key (Module 0). Python is assumed.</li>
+</ul>
+<hr />
+<h2 id="part-1-why-structured-output-and-how-a-tool-schema-shapes-it">Part 1: Why structured output, and how a tool schema shapes it</h2>
+<p>The core move is counterintuitive at first: you use a <strong>tool</strong> even though you do
+not care what the tool <em>does</em>. You care about the <em>shape of data the model must
+produce to call it</em>. A tool declares an <code>input_schema</code> — a JSON Schema document —
+and the model reads that schema to decide exactly what JSON to generate.</p>
+<p>Andrew's canonical example is a weather tool with a <code>unit</code> field:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Illustrative reconstruction — a tool whose INPUT is the data shape we want.</span>
+<span class="n">weather_tool</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;record_weather&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Record a weather reading.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;input_schema&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;enum&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;celsius&quot;</span><span class="p">,</span> <span class="s2">&quot;fahrenheit&quot;</span><span class="p">],</span>   <span class="c1"># &lt;-- fixed set of choices</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">],</span>            <span class="c1"># &lt;-- both must be present</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>The schema vocabulary you need is small. As Andrew puts it, "the thing that I want
+you to pay attention to is the different types of properties":</p>
+<table>
+<thead>
+<tr>
+<th>JSON Schema piece</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"type": "string" / "integer" / "number" / "boolean"</code></td>
+<td>The primitive type of a field.</td>
+</tr>
+<tr>
+<td><code>"type": "array", "items": {…}</code></td>
+<td>A list, with a schema for each element.</td>
+</tr>
+<tr>
+<td><code>"type": "object", "properties": {…}</code></td>
+<td>A nested object with its own fields.</td>
+</tr>
+<tr>
+<td><code>"enum": [ … ]</code></td>
+<td>Restricts a field to a fixed set of allowed values.</td>
+</tr>
+<tr>
+<td><code>"required": [ … ]</code></td>
+<td>Names the fields that must be present (not optional).</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🔑 <strong>The tool's <code>input_schema</code> is your contract.</strong> Claude reads it as JSON
+Schema and generates output that fits it. Design the schema and you have
+designed the output.</p>
+</blockquote>
+<h2 id="part-2-enums-and-required-the-two-levers-exam-tip">Part 2: Enums and required — the two levers (EXAM TIP)</h2>
+<p>Two schema features do almost all the work of making output <em>clean</em> rather than
+merely <em>JSON-shaped</em>, and they are exactly what the exam probes.</p>
+<p><strong>Enums</strong> turn an open-ended field into a decision. A <code>unit</code> field typed as a
+plain string could come back as <code>"C"</code>, <code>"Centigrade"</code>, <code>"metric"</code> — anything.
+Add <code>"enum": ["celsius", "fahrenheit"]</code> and, as Andrew says, "now the AI can
+determine, well, which one should I input." You have converted a
+generate-any-text problem into a pick-one-of-these problem, which the model does
+far more reliably. For Atlas Support, an enum is how you guarantee a ticket's
+<code>category</code> is always one of <em>your</em> routable categories and never a surprise
+string your router has no branch for.</p>
+<p><strong>Required</strong> stops the model from quietly omitting a field. With
+<code>"required": ["location", "unit"]</code>, "it expects both location [and] unit to be
+supplied. They're not optional." Miss this and you will hit runtime errors like
+the <code>field name required</code> / <code>field ... required</code> failures Andrew ran into when
+Claude left a field out.</p>
+<blockquote>
+<p>🔑 <strong>EXAM TIP — enums + required are the levers.</strong> When a question asks how to
+make structured output reliable, the answer centres on the tool's input schema:
+<strong>enums</strong> constrain <em>which</em> values are allowed, <strong>required</strong> constrains <em>which
+fields must appear</em>. Types alone are not enough.</p>
+<p>💡 <strong>Schema stops syntax errors, not meaning errors.</strong> As Andrew notes, "strict
+JSON schemas via tool use limit syntax errors but do not prevent semantic
+errors." The schema guarantees the JSON is well-formed and the enum value is
+from the list — it cannot guarantee the model picked the <em>correct</em> enum value
+for this ticket. That gap is what Part 5 (validation) and human review (Module
+6) exist to close.</p>
+</blockquote>
+<h2 id="part-3-the-four-tool_choice-modes">Part 3: The four <code>tool_choice</code> modes</h2>
+<p><code>tool_choice</code> is the setting that controls <em>whether and how</em> the model reaches for
+a tool. Andrew is emphatic about one thing up front: "notice that we're using the
+Anthropic SDK because you have to use that. It's not available in the Agent SDK,
+which I thought it was, but it isn't."</p>
+<p>The four modes:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Meaning</th>
+<th>Can it return plain text / <code>end_turn</code>?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auto</code></td>
+<td>Claude decides whether to use a tool at all.</td>
+<td>Yes — it may just answer in text.</td>
+</tr>
+<tr>
+<td><code>any</code></td>
+<td>Must use <em>some</em> tool from the list; Claude picks which.</td>
+<td>Not on that call — it is forced to call a tool.</td>
+</tr>
+<tr>
+<td><code>tool</code> (with a <code>name</code>)</td>
+<td>Must use <em>this specific</em> named tool.</td>
+<td>No — forced every time.</td>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td>Claude cannot use any tool.</td>
+<td>Yes — text only.</td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Illustrative — forcing one specific tool. Note BOTH type and name are required.</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-haiku-4-5&quot;</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">triage_tool</span><span class="p">],</span>
+    <span class="n">tool_choice</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;tool&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;submit_triage&quot;</span><span class="p">},</span>  <span class="c1"># force this tool</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">raw_ticket</span><span class="p">}],</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>A few hard-won details from Andrew's session, each a small verify-everything lesson:</p>
+<ul>
+<li><strong><code>auto</code> is the risky one for structured output.</strong> "If you want structured JSON
+  output and a tool is going to return that... if it doesn't use that tool, then
+  it might just return back text, and so that is an edge case where things might
+  break." For guaranteed output you want <code>any</code> or <code>tool</code>, not <code>auto</code>.</li>
+<li><strong>The value is <code>tool</code>, not <code>force</code>.</strong> Andrew's own slide said <code>force</code> — and the
+  API rejected it: <code>tool choice force bad, using type does not match auto, any,
+  tool, or none</code>. He corrected it live: "I have the word wrong. So it's
+  technically <code>tool</code>... that obviously is bad and out of date." A clean reminder
+  that even the instructor's slides (and the exam guide) can be wrong — the API is
+  the source of truth.</li>
+<li><strong><code>type: "tool"</code> needs a <code>name</code>.</strong> <code>tool_choice: {"type": "tool"}</code> alone errors
+  with <code>name ... required</code>; you must say <em>which</em> tool: <code>{"type": "tool", "name":
+  "submit_triage"}</code>.</li>
+</ul>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> for one-shot structured output, force the tool
+(<code>{"type": "tool", "name": ...}</code>) so the model cannot wander off into prose.
+Just do not wrap that forced call in a naive loop — which is exactly the trap
+Part 4 is about.</p>
+</blockquote>
+<h3 id="the-agent-sdk-does-not-expose-it">The Agent SDK does not expose it</h3>
+<p>Andrew spends a long stretch trying to make <code>tool_choice</code> work in the higher-level
+<strong>Claude Agent SDK</strong> and cannot. The SDK reports: "tool choice is not a parameter
+of the Claude agent options. It doesn't exist [in] the agent SDK... [it] controls
+tool permissions but does not expose the underlying tool choice flag." He even
+checks whether it is a Python-vs-TypeScript gap (some features lag in Python) and
+confirms it is not: the answer is that the Agent SDK wraps the Claude CLI and
+simply does not surface <code>tool_choice</code>. <strong>So: <code>tool_choice</code> is Anthropic (low-level)
+SDK only.</strong> When you need it, drop to the lower-level SDK.</p>
+<h2 id="part-4-the-force-tool-infinite-loop-the-real-trap">Part 4: The force-<code>tool</code> infinite loop (the real trap)</h2>
+<p>This is the part the exam skill names explicitly, and it is worth slowing down for
+because it ties directly to Module 1's <code>stop_reason</code> lesson.</p>
+<p>Andrew forces the tool (<code>tool_choice: {"type": "tool", ...}</code>), wraps the call in a
+<code>while True:</code> loop, and it runs forever. "For whatever reason it's looping... it
+clearly doesn't have a way to stop." He digs in and finds the mechanism:</p>
+<blockquote>
+<p>"The bug forces a tool call in every API request... after that tool runs, the
+results are appended in the loop and [it] continues, which forces another tool
+call." — Andrew</p>
+</blockquote>
+<p>Here is why that is fatal. Remember from Module 1 that you end the loop when
+<code>stop_reason == "end_turn"</code>. But when you force a tool (<code>tool</code> <strong>or</strong> <code>any</code>) on
+<em>every</em> request, the model is <em>obligated</em> to emit a tool call, so <code>stop_reason</code> is
+always <code>tool_use</code> and <strong>never</strong> <code>end_turn</code>. The exit condition can never fire.
+Andrew's diagnosis lands with an audible "OH": the loop was set to keep forcing a
+tool, and there was no <code>break</code>.</p>
+<p>There are two independent fixes, and you generally want both:</p>
+<ol>
+<li><strong>Do not force a tool on the turn where the model should be allowed to
+   finish.</strong> Switch from a fixed <code>tool</code> to <code>any</code> (or <code>auto</code>) so a later turn can
+   come back with <code>end_turn</code>. As Andrew realises: "OH, AND THAT'S why we want to
+   have any" — with <code>any</code>, "it actually comes back with an end turn."</li>
+<li><strong>Add the missing <code>break</code>.</strong> For one-shot structured extraction you do not need
+   a loop at all — call once, read the tool input, stop. If you do loop, cap it
+   (a <code>max_iterations</code> break, per Module 1's antipattern lesson) so a forced-tool
+   configuration can never run away.</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Illustrative — the SAFE one-shot pattern: no loop, no runaway.</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-haiku-4-5&quot;</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">triage_tool</span><span class="p">],</span>
+    <span class="n">tool_choice</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;tool&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;submit_triage&quot;</span><span class="p">},</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">raw_ticket</span><span class="p">}],</span>
+<span class="p">)</span>
+<span class="c1"># Pull the structured payload straight off the tool-use block — done.</span>
+<span class="n">verdict</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">input</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">content</span> <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;tool_use&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">verdict</span><span class="p">)</span>   <span class="c1"># {&quot;category&quot;: &quot;billing&quot;, &quot;priority&quot;: &quot;high&quot;, &quot;reason&quot;: &quot;...&quot;}</span>
+</code></pre></div>
+
+<blockquote>
+<p>❌ <strong>The trap:</strong> forcing a specific <code>tool</code> inside a <code>while True:</code> loop. Every
+iteration is obligated to call the tool, so <code>stop_reason</code> is never <code>end_turn</code>
+and the loop never exits. Andrew watched it spin until he killed it.</p>
+<p>🔑 <strong>The rule:</strong> <code>tool</code> and <code>any</code> <strong>force</strong> a tool call, so <code>stop_reason</code> stays
+<code>tool_use</code>. Only <code>auto</code> (or <code>none</code>) lets the model reach <code>end_turn</code>. If you
+force, you must provide your own exit — a single non-looping call, or a capped
+<code>break</code>.</p>
+</blockquote>
+<h2 id="part-5-validation-because-well-formed-is-not-the-same-as-correct">Part 5: Validation — because well-formed is not the same as correct</h2>
+<p>The schema makes the JSON <em>valid</em>. It does not make it <em>right</em>. The model can
+still choose the wrong enum value or a nonsensical priority. This is where
+<strong>Pydantic</strong> comes in — a "very popular" Python library where, as Andrew
+describes, "you define data structure models... and then you can pass your data
+into it and then it validates it, and if it doesn't match, then it can say, hey,
+you need to go fix it, or fail early."</p>
+<p>Pydantic does two useful things:</p>
+<ol>
+<li><strong>Validate the returned payload.</strong> Define the shape once as a class; feed
+   Claude's JSON in; get a clear error if a field is missing or an enum value is
+   out of range. That error can drive a retry (you will formalise this
+   validation-retry loop in Module 6).</li>
+<li><strong>Emit the schema.</strong> Pydantic models "in the end... just going to output JSON
+   Schema format," which "most if not all the frontier models understand." So you
+   can generate your tool's <code>input_schema</code> from the same class you validate with —
+   one source of truth. You can even inject that schema into the prompt (recall
+   <strong>few-shot prompting</strong> from Lesson 5) to nudge better output before the tool is
+   even called.</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Illustrative — one definition, used to both DESCRIBE and VALIDATE the output.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Category</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">billing</span> <span class="o">=</span> <span class="s2">&quot;billing&quot;</span><span class="p">;</span> <span class="n">technical</span> <span class="o">=</span> <span class="s2">&quot;technical&quot;</span><span class="p">;</span> <span class="n">account</span> <span class="o">=</span> <span class="s2">&quot;account&quot;</span><span class="p">;</span> <span class="n">other</span> <span class="o">=</span> <span class="s2">&quot;other&quot;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Priority</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">low</span> <span class="o">=</span> <span class="s2">&quot;low&quot;</span><span class="p">;</span> <span class="n">medium</span> <span class="o">=</span> <span class="s2">&quot;medium&quot;</span><span class="p">;</span> <span class="n">high</span> <span class="o">=</span> <span class="s2">&quot;high&quot;</span><span class="p">;</span> <span class="n">urgent</span> <span class="o">=</span> <span class="s2">&quot;urgent&quot;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Triage</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">category</span><span class="p">:</span> <span class="n">Category</span>
+    <span class="n">priority</span><span class="p">:</span> <span class="n">Priority</span>
+    <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="n">schema</span> <span class="o">=</span> <span class="n">Triage</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span>   <span class="c1"># -&gt; feed as the tool&#39;s input_schema</span>
+<span class="n">verdict</span> <span class="o">=</span> <span class="n">Triage</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">claude_json</span><span class="p">)</span>   <span class="c1"># -&gt; raises if invalid; catches semantic drift</span>
+</code></pre></div>
+
+<p>Andrew is candid that he skips Pydantic in the lab only because "they're not
+asking for it" on the (2025-dated) exam guide — "but in practice, you know, I
+would absolutely be using Pydantic. This is not enough for me for structured JSON
+output." Treat the raw schema as the exam-minimum and Pydantic as the
+professional standard.</p>
+<blockquote>
+<p>💡 <strong>How would you ever know it is reliable?</strong> Andrew's honest answer:
+"the only way you'd know that is if we did a batch processing and we ran it like
+a hundred times." A single green run proves it <em>can</em> work, not that it <em>always</em>
+will. You will do exactly this batch check in Module 6.</p>
+</blockquote>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>Use a tool as a data mold.</strong> Structured output means giving Claude a tool whose <code>input_schema</code> is the JSON shape you want; Claude reads the schema and fills it.</li>
+<li><strong>Enums + required are the levers (EXAM).</strong> Enums restrict <em>which values</em> are allowed; required restricts <em>which fields must appear</em>. Types alone do not make output clean.</li>
+<li><strong>Know the four modes.</strong> <code>auto</code> (may skip the tool), <code>any</code> (must use some tool), <code>tool</code> (must use this named tool), <code>none</code> (no tools). It is Anthropic-SDK-only — the Agent SDK does not expose it.</li>
+<li><strong>Forcing a tool blocks <code>end_turn</code>.</strong> With <code>tool</code> or <code>any</code>, <code>stop_reason</code> stays <code>tool_use</code> forever. Force only in a single non-looping call, or add a capped <code>break</code>.</li>
+<li><strong>The value is <code>tool</code>, not <code>force</code>.</strong> And <code>type: "tool"</code> needs a <code>name</code>. Verify against the API, not against slides or the exam guide.</li>
+<li><strong>Validate beyond the schema.</strong> Well-formed ≠ correct. Pydantic validates payloads and can emit the same schema you enforce — use it in practice.</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Wrapping a forced-<code>tool</code> call in <code>while True:</code>.</strong> It can never return <code>end_turn</code>, so it loops forever. Use a single call, switch to <code>any</code>/<code>auto</code> for the finishing turn, and always cap iterations.</li>
+<li>❌ <strong>Using <code>auto</code> when you need guaranteed JSON.</strong> <code>auto</code> may return plain prose and break your parser. Force the tool for one-shot extraction.</li>
+<li>❌ <strong>Reaching for <code>tool_choice</code> in the Claude Agent SDK.</strong> It is not there. Drop to the low-level Anthropic SDK.</li>
+<li>❌ <strong>Writing <code>"force"</code> as the mode, or <code>{"type":"tool"}</code> with no <code>name</code>.</strong> The API rejects both. Valid modes are <code>auto</code>, <code>any</code>, <code>tool</code>, <code>none</code>; <code>tool</code> needs a <code>name</code>.</li>
+<li>❌ <strong>Typing a category as a plain string.</strong> Without an enum you will get values your code has no branch for. Constrain it.</li>
+<li>❌ <strong>Trusting one successful run.</strong> Well-formed output on one ticket is not proof; batch-test before you trust it in production.</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: the Atlas Support triage classifier</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. You will feel the moment prose
+becomes data: a messy human ticket goes in, and a strict JSON verdict your code
+can route on comes out. Keep it small on purpose.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>A single Python script that takes a raw, unstructured support ticket (one big blob
+of text) and forces Claude to return a strict JSON <strong>triage verdict</strong> — a
+<code>category</code> from a fixed list, a <code>priority</code> from a fixed list, and a short <code>reason</code>
+— then validates that verdict in code. This is the first component of <strong>Atlas
+Support</strong> that produces machine-readable output; every later module (routing,
+escalation, batch) will consume verdicts shaped exactly like this.</p>
+<p>Its pieces, each mapped to a lesson idea:</p>
+<ul>
+<li>A <code>submit_triage</code> <strong>tool</strong> whose <code>input_schema</code> is the verdict shape (Part 1).</li>
+<li><strong>Enums</strong> on <code>category</code> and <code>priority</code>, plus a <strong>required</strong> list (Part 2).</li>
+<li>A <strong>forced</strong> <code>tool_choice</code> call, single-shot, no loop (Parts 3–4).</li>
+<li>A <strong>validation</strong> step that rejects a bad verdict (Part 5).</li>
+</ul>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in the triage classifier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tool as a data mold</td>
+<td>The <code>submit_triage</code> <code>input_schema</code> defines the verdict</td>
+</tr>
+<tr>
+<td>Enums + required</td>
+<td><code>category</code>/<code>priority</code> enums; <code>required: [category, priority, reason]</code></td>
+</tr>
+<tr>
+<td><code>tool_choice</code> modes</td>
+<td>Force <code>{"type":"tool","name":"submit_triage"}</code></td>
+</tr>
+<tr>
+<td>Force-<code>tool</code> infinite loop</td>
+<td>Single call (no <code>while True:</code>), then observe the loop if you add one</td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>Check enum membership and required fields; optionally Pydantic</td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Define the tool schema.</strong> Write <code>submit_triage</code> with an <code>input_schema</code>: <code>category</code> (enum: <code>billing</code>, <code>technical</code>, <code>account</code>, <code>other</code>), <code>priority</code> (enum: <code>low</code>, <code>medium</code>, <code>high</code>, <code>urgent</code>), <code>reason</code> (string), and <code>required: ["category", "priority", "reason"]</code>. Print the schema to confirm it is valid JSON.</li>
+<li><strong>Force one clean call.</strong> Send a raw ticket with <code>tool_choice={"type":"tool","name":"submit_triage"}</code>, <code>model="claude-haiku-4-5"</code>, no loop. Read the verdict off the <code>tool_use</code> block's <code>.input</code> and print it. Smallest win: one ticket in, one JSON object out.</li>
+<li><strong>Print what was passed to the tool.</strong> Add a line that shows the exact payload Claude generated (Andrew's <code>print</code> trick). This is your window into <em>why</em> a field is ever missing.</li>
+<li><strong>Validate the verdict.</strong> In plain Python, assert <code>category</code> and <code>priority</code> are in their allowed sets and all required keys are present; raise a clear error otherwise. Confirm a hand-edited bad value gets rejected.</li>
+<li><strong>Tour the modes.</strong> Run the same ticket under <code>tool</code> and <code>any</code> and note that both force a tool call; switch to <code>auto</code> and observe it <em>can</em> return plain text (breaking your parser). Write one sentence on why <code>auto</code> is unsafe here.</li>
+<li><strong>Reproduce and fix the infinite loop.</strong> Deliberately wrap the forced call in <code>while True:</code> with the results appended each pass; watch it never reach <code>end_turn</code>; then fix it two ways — switch to <code>any</code> so a turn can end, and add a <code>max_iterations</code> <code>break</code>.</li>
+<li><strong>Stretch goals.</strong> (a) Redefine the schema with <strong>Pydantic</strong> and validate with <code>model_validate</code>, generating the tool schema from <code>model_json_schema()</code>. (b) Run 20–100 tickets and count how often the verdict is well-formed <em>and</em> sensible — your first taste of the batch reliability check from Module 6.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ A single forced call returns a JSON object with exactly <code>category</code>, <code>priority</code>, <code>reason</code> — no prose, no loop.</li>
+<li>✅ Both <code>category</code> and <code>priority</code> are always one of your declared enum values.</li>
+<li>✅ Your validator rejects a verdict with a missing field or an out-of-enum value.</li>
+<li>✅ You can explain, in one sentence each, why <code>tool</code>/<code>any</code> never hit <code>end_turn</code> and why <code>auto</code> is unsafe for guaranteed output.</li>
+<li>✅ Your loop version cannot run away — it either does one call or breaks after a capped number of iterations.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> a green run on one ticket proves the pipeline
+<em>can</em> work, not that it <em>always</em> will. As Andrew says, the only way to trust it
+is to "run it like a hundred times" — note that as the Module 6 follow-up rather
+than declaring victory now.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice on
+one idea. Optional and independent; the Capstone already touches all of them, so
+feel free to skip straight to it.</p>
+</blockquote>
+<h3 id="exercise-1-enum-swap-foundational">Exercise 1: Enum swap (foundational)</h3>
+<p>Take the <code>submit_triage</code> tool and remove the <code>enum</code> from <code>category</code>, leaving it a
+plain string. Run five varied tickets and record the category strings you get
+back. Then restore the enum and rerun. Write down what changed — this is the enum
+lesson in one experiment.</p>
+<h3 id="exercise-2-break-the-required-contract-intermediate">Exercise 2: Break the required contract (intermediate)</h3>
+<p>Drop <code>reason</code> from the <code>required</code> list and rerun a few ambiguous tickets. Note
+whether Claude sometimes omits it. Then add it back and confirm it always appears.
+You are proving that <code>required</code> is doing real work.</p>
+<h3 id="exercise-3-validation-retry-stub-advanced">Exercise 3: Validation-retry stub (advanced)</h3>
+<p>Wrap the call so that if validation fails (missing field or bad enum), you re-send
+the ticket <em>with the error message appended to the prompt</em> ("your last output was
+invalid because ...") — capped at three attempts. This is a preview of the
+validation-retry loop you will build properly in Module 6.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>STRUCTURED OUTPUT = give Claude a TOOL whose input_schema is the JSON you want.
+  Claude reads the schema (it&#39;s JSON Schema) and generates output to fit it.
+
+JSON SCHEMA PIECES
+  type: string | integer | number | boolean
+  array  -&gt; {&quot;type&quot;:&quot;array&quot;,&quot;items&quot;:{...}}
+  object -&gt; {&quot;type&quot;:&quot;object&quot;,&quot;properties&quot;:{...}}
+  enum   -&gt; fixed set of allowed VALUES         &lt;-- lever 1 (EXAM)
+  required -&gt; list of fields that MUST appear   &lt;-- lever 2 (EXAM)
+  (schema stops SYNTAX errors, not SEMANTIC errors)
+
+tool_choice  (ANTHROPIC low-level SDK ONLY — not in the Agent SDK)
+  auto  -&gt; may use a tool OR return text        (unsafe for guaranteed JSON)
+  any   -&gt; must use SOME tool; Claude picks      (forces a tool call)
+  tool  -&gt; must use THIS tool: {&quot;type&quot;:&quot;tool&quot;,&quot;name&quot;:&quot;...&quot;}   (forces it)
+  none  -&gt; no tools; text only
+  NOTE: the value is &quot;tool&quot;, NOT &quot;force&quot;. type:&quot;tool&quot; REQUIRES a name.
+
+THE INFINITE-LOOP TRAP
+  Forcing a tool (tool OR any) =&gt; stop_reason stays &quot;tool_use&quot;, never &quot;end_turn&quot;.
+  while True + forced tool + no break  ==&gt; loops forever.
+  FIX 1: don&#39;t loop — one call, read tool_use .input, done.
+  FIX 2: use &quot;any&quot;/&quot;auto&quot; so a turn can end + always cap with a break.
+
+VALIDATE beyond the schema  -&gt;  Pydantic
+  model_json_schema()  -&gt; emit the tool&#39;s input_schema (one source of truth)
+  model_validate(json) -&gt; catch missing/out-of-enum fields; drive a retry
+  Reliability proof = run it in BATCH (100x), not one green run.
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>Earlier, Module 1 · Lessons 3–4 (the stop-reason loop):</strong> you learned to end the loop on <code>end_turn</code> and cap runaways. That is <em>exactly</em> why forcing a tool loops forever — <code>stop_reason</code> never reaches <code>end_turn</code>. This lesson is that rule biting in practice.</li>
+<li><strong>Earlier, Module 2 · Lesson 5 (prompting that steers):</strong> few-shot and specific prompts. Injecting a Pydantic-emitted schema into the prompt is few-shot applied to structured output.</li>
+<li><strong>Next, Module 3 (Code-driven vs model-driven decisions):</strong> a clean JSON verdict is what lets <em>code</em> make deterministic routing decisions instead of the model — the whole reason you forced structure here.</li>
+<li><strong>Later, Module 6 (Reliability):</strong> you will feed schema-validation errors back for capped retries and batch-run the classifier to measure how often it is actually right — the honesty check this lesson keeps pointing at.</li>
+</ul>
+<hr />
+<p><em>Source: the CCA-F course by Andrew Brown (ExamPro). Code snippets and diagrams are
+illustrative reconstructions of the patterns described in the course. Adapt them to
+the current SDK.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln prev" href="05-prompting-that-steers.html"><span class="dir">&#8592; Previous</span><b>Prompting that steers the model</b></a><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="../module-3-orchestration/07-code-vs-model-decisions.html"><span class="dir">Next &#8594;</span><b>Code-driven vs model-driven decisions</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <span class="fnote">A self-paced study course reconstructed from Andrew Brown&#x27;s Claude Certified Architect: Foundations course (ExamPro). Code snippets are illustrative reconstructions of the patterns shown; adapt them to the current SDK and the official exam guide. Not affiliated with or endorsed by Anthropic or ExamPro.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>

@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 0 · Lesson 0: Set up your architect&#x27;s workbench | Claude Certified Architect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1a2f; --navy-2:#0f243d; --navy-3:#15314f;
+  --teal:#18c4a0; --teal-d:#0fa385; --teal-soft:#e4f8f2;
+  --coral:#f24d63; --coral-d:#d83a50; --coral-soft:#feecee;
+  --ink:#152230; --muted:#5f6c7b; --line:#e9eef2; --bg:#ffffff;
+  --soft:#f4fbf9; --card:#ffffff; --code-bg:#21252b; --max:780px;
+  --k:#2f8fb3; --k-bg:#e8f4f9; --tip:#c4881f; --tip-bg:#fdf4e3; --ok:#1f9d6b; --ok-bg:#e6f6ef;
+  --no:#e0533f; --no-bg:#fdecea; --goal:#7b54c9; --goal-bg:#f1ebfb;
+  --shadow:0 10px 30px rgba(13,30,52,.08); --shadow-sm:0 4px 14px rgba(13,30,52,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.72;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--coral));z-index:200;transition:width .1s linear}
+a{color:var(--teal-d);text-decoration:none}
+a:hover{color:var(--coral)}
+h1,h2,h3{font-family:Poppins,sans-serif;color:var(--ink);letter-spacing:-.01em}
+.accent{color:var(--coral)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* ---------- Top welcome strip ---------- */
+.topbar{background:var(--navy);color:#cdd8e4;font-size:13.5px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
+.topbar b{color:#fff;font-weight:600}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#cdd8e4}.topbar a:hover{color:var(--teal)}
+
+/* ---------- Nav ---------- */
+nav.bar{background:var(--navy-2);position:sticky;top:0;z-index:120;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+nav.bar .wrap{display:flex;align-items:center;height:68px;gap:26px}
+.logo{font-family:Poppins;font-weight:800;font-size:22px;color:#fff;letter-spacing:.02em;cursor:pointer;text-decoration:none}
+a.logo:hover{color:var(--teal)}
+.lessonnav{display:flex;gap:14px;align-items:stretch;margin:60px 0 0;flex-wrap:wrap}
+.lessonnav .ln{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);transition:.15s;background:#fff}
+.lessonnav .ln:hover{border-color:var(--teal);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.lessonnav .ln .dir{font-size:13px;font-weight:600;color:var(--teal-d)}
+.lessonnav .ln b{color:var(--ink);font-family:Poppins;font-size:15px}
+.lessonnav .ln.next{text-align:right}
+.lessonnav .ln.home{flex:0 0 auto;justify-content:center;align-items:center;text-align:center;background:var(--soft)}
+.lessonnav .ln.home b{color:var(--teal-d)}
+.logo .dot{color:var(--teal)}
+.navlinks{display:flex;gap:24px;margin-left:8px}
+.navlinks a{color:#dde6ef;font-weight:500;font-size:15px}
+.navlinks a:hover{color:var(--teal)}
+.nav-cta{margin-left:auto;display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:Inter;font-weight:600;border-radius:999px;transition:.18s;font-size:15px;text-decoration:none}
+.btn-primary{background:var(--teal);color:#04231c;padding:12px 22px}
+.btn-primary:hover{background:var(--teal-d);color:#fff;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:10px 20px}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn-coral{background:var(--coral);color:#fff;padding:12px 22px}
+.btn-coral:hover{background:var(--coral-d);color:#fff;transform:translateY(-1px)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 120% at 80% 0%,var(--navy-3),var(--navy) 60%);color:#eaf1f8;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.3px,transparent 1.3px);background-size:22px 22px;opacity:.25;mask:radial-gradient(60% 60% at 20% 30%,#000,transparent)}
+.blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:0}
+.blob.t{width:230px;height:230px;background:rgba(24,196,160,.30);top:-60px;right:8%}
+.blob.c{width:160px;height:160px;background:rgba(242,77,99,.28);bottom:-40px;left:42%}
+.squiggle{position:absolute;z-index:1;opacity:.85}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:70px 28px 90px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--teal);font-weight:600;font-size:14px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:54px;line-height:1.08;font-weight:800;margin:0 0 20px;color:#fff}
+.hero .lead{font-size:18px;color:#b9c6d6;max-width:34em;margin:0 0 30px}
+.hero-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.play{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:600}
+.play .circ{width:52px;height:52px;border-radius:50%;background:var(--coral);display:grid;place-items:center;box-shadow:0 8px 22px rgba(242,77,99,.45);font-size:16px;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,77,99,.45)}70%{box-shadow:0 0 0 16px rgba(242,77,99,0)}100%{box-shadow:0 0 0 0 rgba(242,77,99,0)}}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#dce6f0;padding:8px 14px;border-radius:999px;font-size:13.5px;font-weight:500}
+.chip b{color:#fff}
+/* hero card */
+.hero-card{position:relative;background:#fff;color:var(--ink);border-radius:22px;padding:26px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.hero-card .ring{position:absolute;top:-26px;right:-18px;width:96px;height:96px;background:#fff;border-radius:50%;box-shadow:var(--shadow);display:grid;place-items:center}
+.hero-card .ring svg{transform:rotate(-90deg)}
+.hero-card .ring .lab{position:absolute;font-family:Poppins;font-weight:700;font-size:18px;color:var(--teal-d)}
+.hero-card h3{margin:4px 0 14px;font-size:19px}
+.hero-card ul{list-style:none;margin:0 0 18px;padding:0}
+.hero-card li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:#36424f}
+.hero-card li:last-child{border-bottom:none}
+.hero-card li .ic{font-size:17px;line-height:1.4}
+.float-badge{position:absolute;left:18px;bottom:-26px;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:var(--ink)}
+.float-badge .n{font-family:Poppins;font-weight:800;color:var(--coral);font-size:20px}
+
+/* ---------- Content layout ---------- */
+.layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:46px;max-width:1200px;margin:0 auto;padding:0 28px}
+aside{position:sticky;top:84px;align-self:start;height:calc(100vh - 100px);overflow-y:auto;padding:26px 0}
+.toc-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px}
+.toc-close{display:none;position:absolute;top:-6px;right:-4px;width:36px;height:36px;border:none;background:var(--navy-2);color:#fff;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+.toc-close:hover{background:var(--coral)}
+.toc-title{font-family:Poppins;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);margin:0 0 10px;font-weight:700}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc a{display:block;color:var(--muted);font-size:14px;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;line-height:1.4}
+.toc a:hover{color:var(--ink);background:#fff}
+.toc a.active{color:var(--teal-d);background:#fff;border-left-color:var(--teal);font-weight:600}
+.toc .toc li li a{padding-left:24px;font-size:13px}
+.toc a.toc-capstone{color:var(--coral);font-weight:600}
+main{padding:54px 0 120px;min-width:0}
+article{max-width:var(--max)}
+
+/* typography */
+article h2{font-size:30px;margin:56px 0 16px;font-weight:700;position:relative}
+article h2::before{content:"\2726";color:var(--teal);font-size:18px;margin-right:10px;vertical-align:2px}
+article h3{font-size:21px;margin:34px 0 10px;font-weight:600}
+article h2+h3{margin-top:18px}
+article p,article li{font-size:16.5px}
+article ul,article ol{padding-left:24px}
+article li{margin:7px 0}
+article strong{font-weight:700;color:#0f1b28}
+hr{border:none;height:1px;background:var(--line);margin:42px 0}
+
+/* tables */
+table{border-collapse:separate;border-spacing:0;width:100%;margin:24px 0;font-size:15px;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:block;overflow-x:auto}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--navy-2);color:#eaf1f8;font-family:Poppins;font-weight:600;font-size:14px}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--soft)}
+
+/* inline + block code */
+code{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:.86em;background:var(--teal-soft);color:#0c6a55;padding:.13em .42em;border-radius:6px}
+.codehilite,pre{position:relative;background:var(--code-bg);border-radius:14px;margin:22px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.codehilite pre{margin:0;border-radius:0;box-shadow:none;background:transparent}
+.codehilite pre,pre>code{display:block;padding:42px 18px 18px;overflow-x:auto}
+.codehilite code,pre code{background:none;color:#dfe6ee;padding:0;font-size:13.5px;line-height:1.7}
+.code-bar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;gap:7px;padding:0 15px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.copy-btn{position:absolute;top:5px;right:9px;z-index:3;background:rgba(255,255,255,.08);color:#dfe6ee;border:1px solid rgba(255,255,255,.14);border-radius:8px;font-size:12px;padding:4px 11px;cursor:pointer;font-family:Inter;transition:.15s}
+.copy-btn:hover{background:var(--teal);border-color:var(--teal);color:#04231c}
+.copy-btn.done{background:var(--teal);color:#04231c;border-color:var(--teal)}
+
+/* callouts */
+blockquote{margin:24px 0;padding:16px 20px;border-radius:14px;background:var(--soft);border:1px solid var(--line);border-left:5px solid var(--teal)}
+blockquote p{margin:7px 0}blockquote p:first-child{margin-top:0}blockquote p:last-child{margin-bottom:0}
+blockquote.cl-key{background:var(--k-bg);border-left-color:var(--k);border-color:transparent}
+blockquote.cl-tip{background:var(--tip-bg);border-left-color:var(--tip);border-color:transparent}
+blockquote.cl-ok{background:var(--ok-bg);border-left-color:var(--ok);border-color:transparent}
+blockquote.cl-no{background:var(--no-bg);border-left-color:var(--no);border-color:transparent}
+blockquote.cl-goal{background:var(--goal-bg);border-left-color:var(--goal);border-color:transparent}
+
+/* capstone banner */
+h2.capstone-h{background:linear-gradient(115deg,var(--navy),var(--navy-3));color:#fff;border-radius:20px;padding:30px 28px 26px;margin-top:64px;box-shadow:0 20px 50px rgba(10,26,47,.3);overflow:hidden;position:relative}
+h2.capstone-h::before{content:"\1F6E0\FE0F  HANDS-ON PROJECT";display:block;font-family:Poppins;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin:0 0 8px}
+h2.capstone-h::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(24,196,160,.25);filter:blur(10px);top:-50px;right:-30px}
+
+/* check-off */
+.checkable{list-style:none;padding-left:0}
+.checkable li{position:relative;padding-left:36px;cursor:pointer;margin:9px 0}
+.checkable li::before{content:"";position:absolute;left:0;top:3px;width:22px;height:22px;border:2px solid var(--teal);border-radius:7px;background:#fff;transition:.15s}
+.checkable li.checked::before{background:var(--teal);border-color:var(--teal)}
+.checkable li.checked::after{content:"\2713";position:absolute;left:5px;top:1px;color:#fff;font-weight:800;font-size:15px}
+.checkable li.checked{color:var(--muted)}
+
+/* footer */
+footer.site{background:var(--navy);color:#aebccb;margin-top:90px}
+footer.site .wrap{padding:46px 28px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:center}
+footer.site .logo{font-size:20px}
+footer.site .fnote{max-width:46em;font-size:13.5px;line-height:1.7}
+
+#menuBtn{display:none}
+@media(max-width:920px){
+  .topbar{display:none}
+  .nav-cta{display:none}
+  .float-badge{display:none}
+  nav.bar .wrap{gap:14px;height:60px}
+  .wrap{padding:0 20px}
+  .logo{font-size:18px;white-space:nowrap}
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding:42px 20px 56px}
+  .hero h1{font-size:33px}
+  .hero .lead{font-size:16.5px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn-primary{flex:1;justify-content:center}
+  .layout{grid-template-columns:1fr;gap:0}
+  aside{position:fixed;top:0;left:0;width:84vw;max-width:320px;height:100vh;background:#fff;z-index:130;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow);padding:24px}
+  aside.open{transform:none}
+  #menuBtn{display:inline-flex}
+  .toc-close{display:block}
+  .navlinks{display:none}
+  main{padding:34px 0 80px}
+  body{font-size:16px}
+  article h2{font-size:25px}
+  h2.capstone-h{padding:24px 20px}
+}
+@media(max-width:420px){
+  .hero h1{font-size:29px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .play{justify-content:center}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<div class="topbar"><div class="wrap">
+  <div>&#10024; Welcome to <b>Claude Certified Architect</b> &middot; a self-paced course</div>
+  <div class="right"><span>Built from Andrew Brown&#x27;s CCA-F course (ExamPro)</span></div>
+</div></div>
+
+<nav class="bar"><div class="wrap">
+  <button class="btn btn-outline" id="menuBtn" style="padding:8px 14px">&#9776;</button>
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <div class="navlinks">
+    <a href="../index.html">All lessons</a>
+    <a href="#overview">Overview</a>
+    <a href="#capstone">Capstone</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <span class="blob t"></span><span class="blob c"></span>
+  <svg class="squiggle" style="top:120px;left:46%;" width="90" height="26" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#18c4a0" stroke-width="4" stroke-linecap="round"/></svg>
+  <svg class="squiggle" style="bottom:60px;right:40%;" width="70" height="22" viewBox="0 0 90 26" fill="none"><path d="M2 13c8-14 16 14 24 0s16 14 24 0 16 14 24 0" stroke="#f24d63" stroke-width="4" stroke-linecap="round"/></svg>
+  <div class="wrap" id="overview">
+    <div>
+      <span class="eyebrow">&#10022; Module 0 · Lesson 0</span>
+      <h1>Set up your architect&#x27;s <span class="accent">workbench</span></h1>
+      <p class="lead">You install and verify the five tools this whole course runs on — Python, the Anthropic SDK, the Claude Agent SDK, Claude Code, and an API key you store safely — make one real call to Claude, and build a tiny reusable helper (sdk_parser) that turns Claude&#x27;s noisy output into something readable and logs every run, so every later lab starts from a workbench that just works.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#start">Start the lesson &#8594;</a>
+        
+      </div>
+      <div class="chips">
+        <span class="chip">&#127908; <b>Self-guided (no talk) — reconstructed from Andrew Brown</b></span>
+        <span class="chip">&#9201; <b>45 to 60 minutes</b></span>
+        <span class="chip">&#128296; <b>Hands-on capstone</b></span>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="ring">
+          <svg width="74" height="74"><circle cx="37" cy="37" r="31" stroke="#eef2f5" stroke-width="7" fill="none"/><circle cx="37" cy="37" r="31" stroke="#18c4a0" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="40"/></svg>
+          <span class="lab">&#10022;</span>
+        </div>
+        <h3>What you&#39;ll get</h3>
+        <ul>
+          <li><span class="ic">&#9989;</span><span>Plain-language teaching with every term defined</span></li>
+          <li><span class="ic">&#128221;</span><span>Code snippets pulled from the talk</span></li>
+          <li><span class="ic">&#128296;</span><span>A hands-on capstone you build step by step</span></li>
+          <li><span class="ic">&#127919;</span><span>Optional practice drills to reinforce each skill</span></li>
+        </ul>
+        <a class="btn btn-coral" href="#capstone" style="width:100%;justify-content:center">Jump to the project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="sidebar"><div class="toc-card">
+    <button class="toc-close" id="tocClose" aria-label="Close menu">&times;</button>
+    <p class="toc-title">On this page</p>
+    <div class="toc">
+<ul>
+<li><a href="#in-one-sentence">In one sentence</a></li>
+<li><a href="#a-few-plain-language-basics-first">A few plain-language basics first</a></li>
+<li><a href="#why-this-lesson-matters">Why this lesson matters</a></li>
+<li><a href="#learning-objectives">Learning objectives</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#part-1-the-five-tools-and-why-each-one-is-here">Part 1: The five tools, and why each one is here</a><ul>
+<li><a href="#the-one-distinction-people-trip-on">The one distinction people trip on</a></li>
+</ul>
+</li>
+<li><a href="#part-2-install-and-verify-claude-code">Part 2: Install and verify Claude Code</a></li>
+<li><a href="#part-3-install-the-two-sdks-into-python">Part 3: Install the two SDKs into Python</a><ul>
+<li><a href="#about-the-api-key-vs-the-subscription">About the API key vs. the subscription</a></li>
+</ul>
+</li>
+<li><a href="#part-4-create-an-api-key-and-store-it-safely">Part 4: Create an API key and store it safely</a></li>
+<li><a href="#part-5-your-first-successful-call-hello-claude">Part 5: Your first successful call ("hello, Claude")</a></li>
+<li><a href="#part-6-build-the-reusable-helper-sdk_parser">Part 6: Build the reusable helper — sdk_parser</a></li>
+<li><a href="#part-7-how-the-pieces-stack">Part 7: How the pieces stack</a></li>
+<li><a href="#key-takeaways">Key takeaways</a></li>
+<li><a href="#common-pitfalls">Common pitfalls</a></li>
+<li><a href="#capstone" class="toc-capstone">🛠️ Capstone Project: Prove your workbench works</a><ul>
+<li><a href="#what-you-will-build">What you will build</a></li>
+<li><a href="#why-this-is-the-perfect-practice">Why this is the perfect practice</a></li>
+<li><a href="#milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</a></li>
+<li><a href="#how-you-will-know-you-are-done">How you will know you are done</a></li>
+</ul>
+</li>
+<li><a href="#practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</a><ul>
+<li><a href="#exercise-1-the-verification-drill-foundational">Exercise 1: The verification drill (foundational)</a></li>
+<li><a href="#exercise-2-prove-the-gitignore-works-intermediate">Exercise 2: Prove the .gitignore works (intermediate)</a></li>
+<li><a href="#exercise-3-debug-from-a-log-advanced">Exercise 3: Debug from a log (advanced)</a></li>
+</ul>
+</li>
+<li><a href="#cheat-sheet">Cheat sheet</a></li>
+<li><a href="#how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</a></li>
+</ul>
+</div>
+
+  </div></aside>
+  <main id="start">
+    <article>
+      <hr />
+<h2 id="in-one-sentence">In one sentence</h2>
+<p>You install and verify the five tools this whole course runs on — Python, the Anthropic SDK, the Claude Agent SDK, Claude Code, and an API key you store safely — make one real call to Claude, and build a tiny reusable helper (<code>sdk_parser</code>) that turns Claude's noisy output into something readable and logs every run, so every later lab starts from a workbench that just works.</p>
+<blockquote>
+<p>🎯 <strong>Where this lesson is heading.</strong> It builds to a hands-on <strong>Capstone Project</strong> where you <em>prove your workbench works</em>: install everything, make one successful API call, build the <code>sdk_parser</code> helper, and commit it to a git repo. Everything before the Capstone teaches the pieces you will assemble there. If you want to see the finish line first, jump to the <strong>"Capstone Project"</strong> section, then come back.</p>
+</blockquote>
+<h2 id="a-few-plain-language-basics-first">A few plain-language basics first</h2>
+<p>This lesson uses some everyday terms. Here they are in plain words:</p>
+<ul>
+<li><strong>Terminal (or shell):</strong> the text window where you type commands instead of clicking buttons. On Windows this course assumes <strong>WSL 2</strong> (Windows Subsystem for Linux — a real Linux running inside Windows), which is what Andrew uses; on macOS or Linux it is just your normal terminal.</li>
+<li><strong>CLI:</strong> a <em>command-line interface</em> — a program you run by typing its name and options in the terminal (for example <code>python</code>, <code>git</code>, or <code>claude</code>).</li>
+<li><strong>Package / <code>pip</code>:</strong> a <em>package</em> is reusable code someone else published. <code>pip</code> is Python's tool for downloading and installing packages (<code>pip install &lt;name&gt;</code>).</li>
+<li><strong><code>requirements.txt</code>:</strong> a plain text file listing the packages your project needs, one per line, so anyone can install them all at once with <code>pip install -r requirements.txt</code>.</li>
+<li><strong>Environment variable:</strong> a named value your operating system hands to programs (for example <code>ANTHROPIC_API_KEY</code>). It lets you keep a secret <em>outside</em> your code.</li>
+<li><strong>Repo (repository):</strong> a folder tracked by <strong>git</strong>, the tool that records the history of your changes and lets you push them to GitHub.</li>
+<li><strong>API key:</strong> a secret password-like string that proves to Anthropic's servers that a request is really from your account (and who to bill).</li>
+</ul>
+<p>You do not need to memorise these. Each is explained again the first time it matters.</p>
+<h2 id="why-this-lesson-matters">Why this lesson matters</h2>
+<p>Every other lesson in this course is a <em>lab</em> — you read a concept, then you build it and run it. That only works if your machine is ready. Andrew keeps a single rule for this whole course, and he says it plainly: <strong>the only way to know the truth about these tools is to do it for real.</strong> As he puts it, "often the docs were wrong, the exam guide was wrong, the AI was wrong. And so only by doing it, by going through the process, did we find out the real truth of these tools." You cannot verify anything if your tools are not installed. This on-ramp gets you to a first successful run, so from Lesson 1 onward you are spending your time <em>learning</em>, not fighting setup.</p>
+<p>It is also honest about a gap the rest of the course quietly assumes: that you can open a terminal, run Python, and have money loaded to call the API. If any of that is not true for you yet, this is the lesson that fixes it. If it is all already true, skim the Capstone, tick it off, and move on — this module is optional on purpose.</p>
+<h2 id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson you will be able to:</p>
+<ol>
+<li>Install and verify Claude Code, and confirm you are logged in.</li>
+<li>Install the Anthropic SDK and the Claude Agent SDK into a Python 3 environment, and explain the difference between them.</li>
+<li>Create an Anthropic API key, load a little credit, and store the key as an environment variable that is never committed to git.</li>
+<li>Make one successful call to Claude and read the response back.</li>
+<li>Build a small reusable library (<code>sdk_parser</code>) that formats Claude's raw output for humans and writes a timestamped log file per run.</li>
+<li>Put it all in a git repo and commit it — the workbench every later lab stands on.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>None</strong> — this is the first lesson and the course's on-ramp. It assumes only that you have a computer you can install software on.</li>
+<li>Comfort opening a terminal helps. If you are on Windows, install <strong>WSL 2</strong> first (search "install WSL" — Microsoft's one-line installer sets it up); this course's commands assume a Linux-style shell.</li>
+<li>A payment method for a small amount of API credit (Andrew suggests loading five or ten dollars — more on this in Part 4).</li>
+</ul>
+<hr />
+<h2 id="part-1-the-five-tools-and-why-each-one-is-here">Part 1: The five tools, and why each one is here</h2>
+<p>Before you install anything, it helps to know what you are installing and why. Here is the whole workbench in one table. Do not worry if some terms are new — the later parts install and explain each one.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What it is</th>
+<th>Why the course needs it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Python 3</strong></td>
+<td>A programming language.</td>
+<td>Every lab in this course is written in Python.</td>
+</tr>
+<tr>
+<td><strong>Anthropic SDK</strong></td>
+<td>A Python <em>package</em> (<code>anthropic</code>) for calling Claude's API directly.</td>
+<td>The lower-level way to send a message to a <strong>model</strong> and get a reply.</td>
+</tr>
+<tr>
+<td><strong>Claude Agent SDK</strong></td>
+<td>A Python <em>package</em> (<code>claude-agent-sdk</code>) for building <em>agents</em>.</td>
+<td>The higher-level way to build things that take actions in a loop.</td>
+</tr>
+<tr>
+<td><strong>Claude Code</strong></td>
+<td>Anthropic's agentic coding tool — a <strong>CLI</strong> you run in your terminal.</td>
+<td>You will use it to help write and debug the labs.</td>
+</tr>
+<tr>
+<td><strong>API key + credit</strong></td>
+<td>A secret string plus a small balance on your account.</td>
+<td>Direct API calls are billed per token; the key authorises them.</td>
+</tr>
+</tbody>
+</table>
+<p>A few of these terms are worth pinning down now, because they recur in every lesson:</p>
+<ul>
+<li><strong>LLM</strong> (large language model): the kind of AI that reads and writes text. "Claude" is one.</li>
+<li><strong>Model:</strong> one specific version of Claude — Opus, Sonnet, or Haiku — differing in strength, speed, and price. You pick one per call.</li>
+<li><strong>Token:</strong> the unit a model reads and writes in, roughly three-quarters of a word. You are billed per token, which is why cost comes up so often.</li>
+<li><strong>Agent:</strong> an AI that takes a <em>series</em> of actions on its own toward a goal, rather than answering in one shot.</li>
+</ul>
+<blockquote>
+<p>🔑 <strong>The Anthropic SDK calls the model; the Claude Agent SDK builds agents.</strong> Same company, two libraries, two jobs. You install both because this course uses both.</p>
+</blockquote>
+<h3 id="the-one-distinction-people-trip-on">The one distinction people trip on</h3>
+<p>The two SDKs sound alike and are easy to confuse. Keep them straight this way:</p>
+<ul>
+<li>The <strong>Anthropic SDK</strong> (package name <code>anthropic</code>) is the <em>lower-level</em> library. You give it a model, a message, and a token limit; it returns Claude's reply. This is what you use when you want to drive the raw API yourself.</li>
+<li>The <strong>Claude Agent SDK</strong> (package name <code>claude-agent-sdk</code>) is the <em>higher-level</em> library for building agents — things that use tools, run in a loop, and can act on your files. It is Claude Code packaged as a library you call from Python.</li>
+</ul>
+<p>Andrew hit this confusion live, because the Agent SDK was <em>renamed</em>. As he found in the docs: "the Claude Code SDK was renamed Claude Agent SDK." So older material, and even the AI itself, sometimes calls it by the wrong name. This is your first taste of the course's recurring theme — <strong>names and docs drift; you confirm the truth by checking and running it.</strong></p>
+<h2 id="part-2-install-and-verify-claude-code">Part 2: Install and verify Claude Code</h2>
+<p>Claude Code is a CLI — a program you run by typing <code>claude</code> in your terminal. Install it the way Anthropic recommends for your system.</p>
+<p>There are usually three install methods: a <strong>native install</strong>, Homebrew, and (on Windows) winget. Andrew's guidance, and the general recommendation, is to <strong>prefer the native install</strong>: it pulls the latest version straight from the source. The package-manager builds "might be old, and so you might run into an issue where you're having weird API issues because they're old."</p>
+<p>On WSL 2 or Linux, the native install is a one-line command from Anthropic's install page. Run it, then <strong>verify</strong> — this is the habit the whole course is built on. Never assume an install worked; check it:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Illustrative — get the exact current command from Anthropic&#39;s install page.</span>
+claude<span class="w"> </span>--version<span class="w">     </span><span class="c1"># should print a version, e.g. 2.1.x</span>
+</code></pre></div>
+
+<p>If <code>claude --version</code> prints a version number, Claude Code is installed. Now confirm you are logged in. Launch it and check status:</p>
+<div class="codehilite"><pre><span></span><code>claude<span class="w">               </span><span class="c1"># launches Claude Code</span>
+<span class="c1"># inside Claude Code, type:</span>
+/status<span class="w">              </span><span class="c1"># tells you whether you are logged in</span>
+/login<span class="w">               </span><span class="c1"># starts the login flow if you are not</span>
+</code></pre></div>
+
+<p>The <code>/login</code> flow opens a browser, you authorise, copy the code back, and you are in. As Andrew notes, logging in with your <strong>subscription</strong> is "probably one of the best ways that you can use Claude, because it's the most cost-effective way right now for learning" — the subscription covers your Claude Code usage.</p>
+<p>Then prove it actually works with a trivial task. Andrew's check is to ask it to create an empty file:</p>
+<blockquote>
+<p>Ask Claude Code: <em>"Can you create me a <code>README.md</code> file that is completely empty in this folder."</em></p>
+</blockquote>
+<p>If the file appears, Claude Code is installed, logged in, and working. That is Part 1 of the workbench done.</p>
+<blockquote>
+<p>✅ <strong>What to do about it:</strong> after any install in this course, run the tool's version or status command before moving on. A green check now saves an hour of confusion later.</p>
+</blockquote>
+<h2 id="part-3-install-the-two-sdks-into-python">Part 3: Install the two SDKs into Python</h2>
+<p>Claude Code is for <em>helping you write</em> the labs. The labs themselves are Python programs that import the SDKs. Install both.</p>
+<p>First confirm you have Python 3:</p>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>--version<span class="w">    </span><span class="c1"># should print Python 3.x</span>
+</code></pre></div>
+
+<p>Then install the two packages. Andrew keeps it simple — no isolated virtual environment per tiny lab, just the system Python 3 on WSL ("we're just installing that one thing, and I don't want to be doing that all day every day"). If you prefer a virtual environment, that is fine too; nothing in the course depends on the choice.</p>
+<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>anthropic<span class="w">          </span><span class="c1"># the Anthropic SDK (calls the model API)</span>
+pip<span class="w"> </span>install<span class="w"> </span>claude-agent-sdk<span class="w">   </span><span class="c1"># the Claude Agent SDK (builds agents)</span>
+</code></pre></div>
+
+<blockquote>
+<p>💡 <strong>Watch the package names.</strong> The <em>Anthropic SDK</em>'s package is <code>anthropic</code>. The <em>Claude Agent SDK</em>'s package is <code>claude-agent-sdk</code> (this is the one that was renamed from the old "Claude Code SDK"). If a tool or an AI tells you to <code>pip install agent-sdk</code> or drops <code>anthropic</code> into a <code>requirements.txt</code> for an agent lab, pause and check — Andrew caught exactly this mistake happening live. The fix is to confirm the real name in the docs, not to trust the first suggestion.</p>
+</blockquote>
+<p>A clean habit: record what a lab needs in a <code>requirements.txt</code> so anyone (including future-you) can reinstall in one step. For a lab that uses the Anthropic SDK, that file is just:</p>
+<div class="codehilite"><pre><span></span><code>anthropic
+</code></pre></div>
+
+<p>Then <code>pip install -r requirements.txt</code> installs everything listed. You will make one of these per lab.</p>
+<h3 id="about-the-api-key-vs-the-subscription">About the API key vs. the subscription</h3>
+<p>Here is a subtle point Andrew tested by doing it. The <strong>Claude Agent SDK</strong> <em>can</em> pick up your Claude Code login (your subscription) if you are logged in via the CLI. But when you call the <strong>Anthropic SDK</strong> directly — the raw model API — you use an <strong>API key</strong>, and that draws on <strong>API credit</strong>, not your subscription. As Andrew reasons: "normally you'd be using this in a production environment, so it would never be tied to a subscription." So the next part sets up the key.</p>
+<h2 id="part-4-create-an-api-key-and-store-it-safely">Part 4: Create an API key and store it safely</h2>
+<p>To call the model API directly you need an <strong>API key</strong> and a little <strong>credit</strong>. There is no free tier for API usage, so you load a small balance. Andrew's advice: "load up five or ten bucks and see what mileage you get, because it'll give you an idea of how fast the consumption is." That small amount is plenty for this course's labs if you pick cheap models (more below).</p>
+<p>Steps:</p>
+<ol>
+<li>Sign in at the Anthropic console (<code>console.anthropic.com</code>).</li>
+<li>Create an <strong>API key</strong>. Copy it once — you usually cannot see it again.</li>
+<li>Add a small amount of credit (five to ten dollars is a sensible start).</li>
+</ol>
+<p>Now the part that matters for safety. <strong>The key is a secret. It must never end up in your code or your git history.</strong> Anyone who has it can spend your money. The standard fix is an <strong>environment variable</strong> — a value your operating system hands to programs, kept outside your source files. The Anthropic SDK automatically looks for one named <code>ANTHROPIC_API_KEY</code>.</p>
+<p>Set it in your shell:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># For the current terminal session only:</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_API_KEY</span><span class="o">=</span><span class="s2">&quot;sk-ant-...your key...&quot;</span>
+
+<span class="c1"># To make it permanent, add that same line to your shell startup file</span>
+<span class="c1"># (~/.bashrc on WSL/Linux, ~/.zshrc on macOS), then restart the terminal.</span>
+</code></pre></div>
+
+<p>Because the SDK reads that variable on its own, your code never contains the key:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">anthropic</span>
+
+<span class="c1"># No key in the code — the SDK reads ANTHROPIC_API_KEY from the environment.</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">anthropic</span><span class="o">.</span><span class="n">Anthropic</span><span class="p">()</span>
+</code></pre></div>
+
+<blockquote>
+<p>❌ <strong>The mistake that leaks keys:</strong> pasting the key straight into a <code>.py</code> file, or committing a file that contains it. If a key ever lands in a commit, it is compromised even after you delete it, because git keeps history. Protect yourself before your first commit: add a <code>.gitignore</code> that excludes secret files, and keep the key in the environment variable only.</p>
+</blockquote>
+<p>A minimal <code>.gitignore</code> for these labs:</p>
+<div class="codehilite"><pre><span></span><code># .gitignore — keep secrets and noise out of git
+.env
+*.log
+logs/
+__pycache__/
+</code></pre></div>
+
+<blockquote>
+<p>🔑 <strong>Store the key once, in the environment, and never in a file git can see.</strong> Everything else in Part 4 follows from that one rule.</p>
+</blockquote>
+<h2 id="part-5-your-first-successful-call-hello-claude">Part 5: Your first successful call ("hello, Claude")</h2>
+<p>Now make one real call. This is the moment your key, your credit, and the Anthropic SDK all prove themselves together. Keep it tiny to spend almost nothing.</p>
+<p>Pick a <strong>cheap model</strong> for warm-up and testing. Andrew's guidance throughout the course is to "try to use one that's cost-effective, since we will be testing out a lot of stuff." The <strong>Haiku</strong> family is the fast, inexpensive tier — ideal here.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># main.py — illustrative first call. Adapt the model id to the current Haiku model.</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">anthropic</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">anthropic</span><span class="o">.</span><span class="n">Anthropic</span><span class="p">()</span>   <span class="c1"># reads ANTHROPIC_API_KEY from the environment</span>
+
+<span class="n">message</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-haiku-4-5&quot;</span><span class="p">,</span>     <span class="c1"># a cheap, fast model for warm-up and testing</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Say hello in one short sentence.&quot;</span><span class="p">}</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># The reply is a list of content blocks; the text lives in the first one.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Run it:</p>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>main.py
+</code></pre></div>
+
+<p>If a friendly sentence prints, <strong>your workbench is real</strong>. You installed the SDK, your key authorised the request, your credit paid for a handful of tokens, and Claude answered. That single successful line is the whole point of this on-ramp.</p>
+<blockquote>
+<p>💡 <strong>If it errors instead of printing:</strong> the message usually tells you what is wrong. An authentication error means <code>ANTHROPIC_API_KEY</code> is not set in <em>this</em> terminal (re-run the <code>export</code>, or restart after editing your startup file). A "model not found" error means the model id has moved on — model names change over time; check Anthropic's current model list and swap in the right Haiku id. This is, again, the course's theme: you find the truth by running it and reading the actual error.</p>
+</blockquote>
+<h2 id="part-6-build-the-reusable-helper-sdk_parser">Part 6: Build the reusable helper — <code>sdk_parser</code></h2>
+<p>Here is the one piece of code you will actually reuse in every later lab, so it is worth building carefully now.</p>
+<p>When you print Claude's raw response, it is a wall of nested Python objects — hard for a human to read. Andrew's move is to build a small library once and reuse it everywhere. In his words: "Can we create our own Python library for parsing it? ... I plan to use this library in multiple projects, so maybe it should live in a <code>lib</code> directory at the top of the project." The goal is two small functions:</p>
+<ol>
+<li><code>format_message(message)</code> — turn a raw response into a clean, human-readable string.</li>
+<li><code>log_message(message, project_dir)</code> — write that formatted output to a <strong>timestamped log file</strong>, one new file per run, in a <code>logs/</code> folder next to the project that is running.</li>
+</ol>
+<p>Why the logging half matters: once each run is saved to a file, you can feed that file straight back to Claude Code when something breaks. As Andrew puts it, "if that file has not changed, we can now feed it back into it ... that's going to make it really, really useful for debugging." A timestamp on each log lets you tell runs apart and hand the exact one to the debugger.</p>
+<p>Put the library at the top of the repo so any lab can import it:</p>
+<div class="codehilite"><pre><span></span><code>your-repo/
+├── lib/
+│   ├── __init__.py
+│   └── sdk_parser.py        # format_message() + log_message()
+├── hello_world/
+│   └── main.py              # a lab that imports the parser
+└── logs/                    # created at runtime, git-ignored
+</code></pre></div>
+
+<p>An illustrative <code>lib/sdk_parser.py</code>. The exact shape of a response object varies between the Anthropic SDK and the Claude Agent SDK, so treat this as the pattern, not a copy-paste-forever artefact:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># lib/sdk_parser.py — illustrative reconstruction of Andrew&#39;s reusable helper.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">format_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Turn a raw Claude response into a clean, human-readable string.&quot;&quot;&quot;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># stop_reason tells you WHY the model stopped — you will lean on this heavily later.</span>
+    <span class="n">stop_reason</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s2">&quot;stop_reason&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">stop_reason</span><span class="p">:</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;stop_reason: </span><span class="si">{</span><span class="n">stop_reason</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="n">block_type</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">block_type</span> <span class="o">==</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[text] </span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">block</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;text&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># tool calls and other block types print their type + payload</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">block_type</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">block</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">log_message</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">project_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write the formatted output to a timestamped log file, one per run.</span>
+
+<span class="sd">    Logs land in &lt;project_dir&gt;/logs/, relative to the lab that is running.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logs_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">project_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;logs&quot;</span>
+    <span class="n">logs_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">stamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s2">&quot;seconds&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+    <span class="n">log_path</span> <span class="o">=</span> <span class="n">logs_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stamp</span><span class="si">}</span><span class="s2">.log&quot;</span>
+    <span class="n">log_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">format_message</span><span class="p">(</span><span class="n">message</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">log_path</span>
+</code></pre></div>
+
+<p>Notice <code>format_message</code> already surfaces <code>stop_reason</code>. You do not need it yet — but it is the single most important field in the whole API (it tells you <em>why</em> the model stopped: it wants to run a tool, or it is finished), and Lesson 3 is built entirely on it. Printing it from day one means your logs already show it.</p>
+<p>Using the helper from a lab:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># hello_world/main.py — illustrative</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">anthropic</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lib.sdk_parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_message</span><span class="p">,</span> <span class="n">log_message</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">anthropic</span><span class="o">.</span><span class="n">Anthropic</span><span class="p">()</span>
+<span class="n">message</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-haiku-4-5&quot;</span><span class="p">,</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Say hello in one short sentence.&quot;</span><span class="p">}],</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">format_message</span><span class="p">(</span><span class="n">message</span><span class="p">))</span>          <span class="c1"># readable output on screen</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">log_message</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>        <span class="c1"># saved to ./logs/&lt;timestamp&gt;.log</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;logged to </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<blockquote>
+<p>🔑 <strong>Build the helper once, reuse it forever.</strong> A readable formatter plus a timestamped log turns every future lab from "a wall of objects I can't read" into "clean output on screen and a file I can feed back to Claude when it breaks."</p>
+<p>💡 <strong>A small documentation habit from Andrew:</strong> when a folder has notes for the AI to read, he renames the <code>README.md</code> to <code>CLAUDE.md</code>, "as that's what it prefers to look for." You will see <code>CLAUDE.md</code> files throughout the course — that is why.</p>
+</blockquote>
+<h2 id="part-7-how-the-pieces-stack">Part 7: How the pieces stack</h2>
+<p>Here is the whole workbench as one picture. Each layer depends only on the ones below it — which is exactly why we installed them in this order.</p>
+<div class="codehilite"><pre><span></span><code>                 ┌─────────────────────────────────────────┐
+   You run  ───▶ │  git repo (history + commits)            │
+                 │   ├── lib/sdk_parser.py  (reused by all) │
+                 │   └── hello_world/main.py                │
+                 └───────────────┬─────────────────────────┘
+                                 │ imports
+                                 ▼
+   Claude Agent SDK  ┐   ┌──  Anthropic SDK  ──▶  Claude&#39;s model API
+   (build agents)    │   │    (call the model)         ▲
+                     │   │                             │ authorised by
+   Claude Code ──────┘   └─────────────────────────────┤ ANTHROPIC_API_KEY
+   (helps you write)                                    │ (env var + credit)
+                                                        │
+                          Python 3  ──────────  the ground everything runs on
+</code></pre></div>
+
+<p>Read it bottom-up: Python 3 is the ground. The Anthropic SDK calls the model, authorised by your key. Claude Code helps you write the code. Your reusable <code>lib/</code> sits at the top and every lab imports it. Wrap the whole thing in a git repo and you have a workbench that any later lesson can build on.</p>
+<hr />
+<h2 id="key-takeaways">Key takeaways</h2>
+<ol>
+<li><strong>Verify every install.</strong> <code>claude --version</code>, <code>/status</code>, <code>python3 --version</code>, and one real API call. Never assume — the course's whole method is "do it and confirm."</li>
+<li><strong>Two SDKs, two jobs.</strong> The <em>Anthropic SDK</em> (<code>anthropic</code>) calls the model; the <em>Claude Agent SDK</em> (<code>claude-agent-sdk</code>) builds agents. The Agent SDK was renamed, so its name is a common point of confusion.</li>
+<li><strong>The key lives in the environment, never in code.</strong> Set <code>ANTHROPIC_API_KEY</code>, add a <code>.gitignore</code>, and load a small amount of credit. There is no free API tier.</li>
+<li><strong>Build <code>sdk_parser</code> once.</strong> A <code>format_message</code> + <code>log_message</code> helper in a top-level <code>lib/</code> gives you readable output and a timestamped log per run — reused by every later lab and perfect for feeding failures back to Claude.</li>
+<li><strong>Names and docs drift; running it is the truth.</strong> This is the theme of the entire course, and it starts here.</li>
+</ol>
+<h2 id="common-pitfalls">Common pitfalls</h2>
+<ul>
+<li>❌ <strong>Pasting the API key into a <code>.py</code> file or committing it.</strong> Once it is in git history it is compromised. Use the <code>ANTHROPIC_API_KEY</code> environment variable and a <code>.gitignore</code> from the start.</li>
+<li>❌ <strong>Installing <code>anthropic</code> for an agent lab (or <code>agent-sdk</code> for a model lab).</strong> Match the package to the job: <code>anthropic</code> for direct model calls, <code>claude-agent-sdk</code> for agents. Andrew watched an AI get this exactly wrong.</li>
+<li>❌ <strong>Skipping verification.</strong> An install that "seemed to work" but silently failed costs far more time later. Run the version/status check every time.</li>
+<li>❌ <strong>Expecting the subscription to pay for direct API calls.</strong> Your Claude Code subscription covers Claude Code; the Anthropic SDK's direct API calls draw on API credit. Load a few dollars.</li>
+<li>❌ <strong>Forgetting the key is per-terminal.</strong> <code>export</code> only sets it for the current session. Add it to your shell startup file (<code>~/.bashrc</code> / <code>~/.zshrc</code>) to make it stick, then restart the terminal.</li>
+<li>❌ <strong>Copying a model id and expecting it to work forever.</strong> Model names change. If you get a "model not found" error, check the current model list and swap in the right (cheap) one.</li>
+</ul>
+<hr />
+<h2 id="capstone" class="capstone-h">🛠️ Capstone Project: Prove your workbench works</h2>
+<blockquote>
+<p>This is the main hands-on project for the lesson. When you finish it you will <em>know</em> — not hope — that every later lab can run, because you will have installed everything, made one paid call to Claude, and committed the helper you will reuse for the rest of the course.</p>
+</blockquote>
+<h3 id="what-you-will-build">What you will build</h3>
+<p>A single git repo containing: a working install of all five tools, one Python program that makes a successful call to Claude, and a reusable <code>lib/sdk_parser.py</code> (formatter + logger) — committed with a <code>.gitignore</code> that keeps your key and logs out of history. This is the north-star system's foundation: the course builds one growing multi-agent system called <strong>Atlas Support</strong> across every lesson, and this repo is the ground it stands on. Nothing here is throwaway — the <code>sdk_parser</code> you build now is used in every Atlas Support lab that follows.</p>
+<p>Its pieces, each mapped to a lesson idea:</p>
+<ul>
+<li><strong>A verified toolchain</strong> (Part 2, Part 3) — Claude Code, both SDKs, Python 3.</li>
+<li><strong>A safely stored key</strong> (Part 4) — env var + <code>.gitignore</code>, plus a little credit.</li>
+<li><strong>One successful call</strong> (Part 5) — the proof that the API path works end to end.</li>
+<li><strong>The <code>sdk_parser</code> helper</strong> (Part 6) — readable output + timestamped logs, in a top-level <code>lib/</code>.</li>
+<li><strong>A committed repo</strong> (Part 7) — the workbench, under git.</li>
+</ul>
+<h3 id="why-this-is-the-perfect-practice">Why this is the perfect practice</h3>
+<table>
+<thead>
+<tr>
+<th>Lesson idea</th>
+<th>Where you use it in the Capstone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Verify every install</td>
+<td>Milestones 1–3: version/status checks before moving on</td>
+</tr>
+<tr>
+<td>Two SDKs, two jobs</td>
+<td>Milestone 3: install and tell apart <code>anthropic</code> and <code>claude-agent-sdk</code></td>
+</tr>
+<tr>
+<td>Key in the environment, never in code</td>
+<td>Milestone 4: <code>export</code> + <code>.gitignore</code>, no key in any file</td>
+</tr>
+<tr>
+<td>One real call</td>
+<td>Milestone 5: <code>python3 main.py</code> prints Claude's reply</td>
+</tr>
+<tr>
+<td>Build <code>sdk_parser</code> once</td>
+<td>Milestone 6: <code>format_message</code> + <code>log_message</code> in <code>lib/</code></td>
+</tr>
+<tr>
+<td>Everything under git</td>
+<td>Milestone 7: commit the whole workbench</td>
+</tr>
+</tbody>
+</table>
+<h3 id="milestones-build-them-in-order-each-one-works-on-its-own">Milestones (build them in order, each one works on its own)</h3>
+<ol>
+<li><strong>Claude Code installed and working.</strong> Run the native install, then <code>claude --version</code>. Launch <code>claude</code>, run <code>/status</code>, and <code>/login</code> if needed. Ask it to create an empty <code>README.md</code>. <em>Done when the file appears.</em></li>
+<li><strong>Python 3 present.</strong> <code>python3 --version</code> prints a 3.x version. <em>Done when it does.</em></li>
+<li><strong>Both SDKs installed.</strong> <code>pip install anthropic</code> and <code>pip install claude-agent-sdk</code>. <em>Done when both install without error and you can say, in one sentence each, what they are for.</em></li>
+<li><strong>Key stored safely + credit loaded.</strong> Create an API key in the console, add a few dollars of credit, <code>export ANTHROPIC_API_KEY=...</code>, and add a <code>.gitignore</code> that excludes <code>.env</code>, <code>*.log</code>, <code>logs/</code>. <em>Done when the key is set in your shell and appears in no tracked file.</em></li>
+<li><strong>One successful call.</strong> Write <code>main.py</code> that calls a cheap (Haiku) model and prints the reply. <code>python3 main.py</code>. <em>Done when a sentence from Claude prints.</em></li>
+<li><strong>The <code>sdk_parser</code> helper.</strong> Create <code>lib/sdk_parser.py</code> with <code>format_message</code> and <code>log_message</code>. Wire <code>main.py</code> to print via <code>format_message</code> and save via <code>log_message</code>. Run it. <em>Done when you see readable output on screen and a new file under <code>logs/</code>.</em></li>
+<li><strong>Commit the workbench.</strong> <code>git init</code>, then <code>git add</code>, then <code>git commit -m "init: workbench setup"</code>. <em>Done when <code>git log</code> shows your commit and <code>git status</code> is clean.</em></li>
+<li><strong>Stretch goals.</strong> (a) Confirm the Claude Agent SDK picks up your Claude Code login by writing a tiny agent-SDK hello-world. (b) Feed a saved log file back to Claude Code and ask it to explain what happened. (c) Add a <code>CLAUDE.md</code> to <code>lib/</code> documenting how to import the parser.</li>
+</ol>
+<h3 id="how-you-will-know-you-are-done">How you will know you are done</h3>
+<ul>
+<li>✅ <code>claude --version</code> prints a version and <code>/status</code> shows you logged in.</li>
+<li>✅ <code>python3 -c "import anthropic, claude_agent_sdk"</code> runs with no error.</li>
+<li>✅ <code>echo $ANTHROPIC_API_KEY</code> prints your key, and <code>git grep</code> (or a search) finds it in <strong>no</strong> tracked file.</li>
+<li>✅ <code>python3 main.py</code> prints a real sentence from Claude.</li>
+<li>✅ A new timestamped file appears under <code>logs/</code> after each run.</li>
+<li>✅ <code>git log</code> shows one commit containing <code>lib/sdk_parser.py</code>, <code>main.py</code>, and <code>.gitignore</code> — and <code>git status</code> is clean.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Keep yourself honest:</strong> before you commit, actually run <code>git status</code> and confirm no <code>.env</code>, no <code>*.log</code>, and no key-bearing file is staged. The single most expensive mistake in this whole lesson is committing a secret — check for it <em>before</em> the commit, not after.</p>
+</blockquote>
+<hr />
+<h2 id="practice-exercises-optional-extra-reps">Practice exercises (optional extra reps)</h2>
+<blockquote>
+<p><strong>What these are:</strong> small, self-contained tasks, each giving focused practice on one idea. Optional and independent; the Capstone already touches all of them, so feel free to skip straight to it.</p>
+</blockquote>
+<h3 id="exercise-1-the-verification-drill-foundational">Exercise 1: The verification drill (foundational)</h3>
+<p>Without looking back, write down the one command you would run to verify each of: Claude Code is installed, you are logged in, Python 3 is present, and the API works. Then run all four. If any fails, fix it — that is the whole point of the drill.</p>
+<h3 id="exercise-2-prove-the-gitignore-works-intermediate">Exercise 2: Prove the <code>.gitignore</code> works (intermediate)</h3>
+<p>Create a fake <code>secret.env</code> file containing a dummy key, make sure your <code>.gitignore</code> excludes it, then run <code>git status</code>. Confirm the file does <strong>not</strong> appear as something git wants to track. Now you have tested your safety net with a fake secret instead of your real one.</p>
+<h3 id="exercise-3-debug-from-a-log-advanced">Exercise 3: Debug from a log (advanced)</h3>
+<p>Deliberately break <code>main.py</code> (for example, mistype the model id), run it, and capture the error in a log. Then open Claude Code, hand it the log file, and ask it to diagnose the problem. Fix it based on the answer. This rehearses the read-the-log-then-feed-it-back loop you will use constantly.</p>
+<hr />
+<h2 id="cheat-sheet">Cheat sheet</h2>
+<div class="codehilite"><pre><span></span><code>THE FIVE TOOLS
+  Python 3            python3 --version
+  Anthropic SDK       pip install anthropic          # calls the MODEL API
+  Claude Agent SDK    pip install claude-agent-sdk    # builds AGENTS (was &quot;Claude Code SDK&quot;)
+  Claude Code         claude --version ; claude ; /status ; /login
+  API key + credit    console.anthropic.com  → key + a few $ (no free API tier)
+
+VERIFY EVERYTHING (the course&#39;s method)
+  claude --version              # Claude Code installed?
+  /status                       # logged in?
+  python3 --version             # Python 3 present?
+  python3 main.py               # does one real call work?
+
+KEY SAFETY (never commit a secret)
+  export ANTHROPIC_API_KEY=&quot;sk-ant-...&quot;   # env var, per session
+  add to ~/.bashrc / ~/.zshrc             # make it stick
+  .gitignore:  .env  *.log  logs/  __pycache__/
+  client = anthropic.Anthropic()          # reads the env var; no key in code
+
+REUSABLE HELPER (lib/sdk_parser.py)
+  format_message(msg) -&gt; readable string (includes stop_reason)
+  log_message(msg, project_dir) -&gt; ./logs/&lt;timestamp&gt;.log  (one per run)
+
+CAPSTONE = prove it works
+  install all 5  →  one successful call  →  build sdk_parser  →  git commit
+
+MODELS: use a cheap one (Haiku) for warm-up/testing. Names change — check the list.
+</code></pre></div>
+
+<h2 id="how-this-connects-to-the-rest-of-the-course">How this connects to the rest of the course</h2>
+<ul>
+<li><strong>This is the first lesson</strong>, so it sets up everything. There is nothing earlier — this module <em>is</em> the ground floor.</li>
+<li><strong>Next, Module 1 · Lesson 0 ("What the CCA-F exam is and how to pass it"):</strong> now that your tools run, you will learn the shape of the exam, its five domains, the scoring, and the hands-on, verify-everything study plan this course follows.</li>
+<li><strong>Soon, Module 1 · Lesson 3 ("Tools and the stop-reason loop"):</strong> the <code>stop_reason</code> field your <code>format_message</code> already prints becomes the engine of the whole agentic loop — you will drive control flow off it, not off parsing text.</li>
+<li><strong>Throughout — the north-star project, "Atlas Support":</strong> the repo and the <code>sdk_parser</code> helper you commit here are the foundation the entire multi-agent system is built on. Every later capstone adds one component; this is the piece all of them stand on.</li>
+</ul>
+<hr />
+<p><em>Source: Reconstructed from the CCA-F course by Andrew Brown (ExamPro). Code snippets and diagrams are illustrative reconstructions of the patterns described in the course. Tool names, package names, and model ids change over time — adapt them to the current SDKs and Anthropic docs, and confirm by running them.</em></p>
+    </article>
+    <nav class="lessonnav"><a class="ln home" href="../index.html"><b>All lessons</b></a><a class="ln next" href="../module-1-foundations/01-exam-orientation.html"><span class="dir">Next &#8594;</span><b>What the CCA-F exam is and how to pass it</b></a></nav>
+  </main>
+</div>
+
+<footer class="site"><div class="wrap">
+  <a class="logo" href="../index.html">Claude Certified Architect<span class="dot">.</span></a>
+  <span class="fnote">A self-paced study course reconstructed from Andrew Brown&#x27;s Claude Certified Architect: Foundations course (ExamPro). Code snippets are illustrative reconstructions of the patterns shown; adapt them to the current SDK and the official exam guide. Not affiliated with or endorsed by Anthropic or ExamPro.</span>
+</div></footer>
+
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #282C34; color: #ABB2BF }
+.codehilite .c { color: #7F848E } /* Comment */
+.codehilite .err { color: #ABB2BF } /* Error */
+.codehilite .esc { color: #ABB2BF } /* Escape */
+.codehilite .g { color: #ABB2BF } /* Generic */
+.codehilite .k { color: #C678DD } /* Keyword */
+.codehilite .l { color: #ABB2BF } /* Literal */
+.codehilite .n { color: #E06C75 } /* Name */
+.codehilite .o { color: #56B6C2 } /* Operator */
+.codehilite .x { color: #ABB2BF } /* Other */
+.codehilite .p { color: #ABB2BF } /* Punctuation */
+.codehilite .ch { color: #7F848E } /* Comment.Hashbang */
+.codehilite .cm { color: #7F848E } /* Comment.Multiline */
+.codehilite .cp { color: #7F848E } /* Comment.Preproc */
+.codehilite .cpf { color: #7F848E } /* Comment.PreprocFile */
+.codehilite .c1 { color: #7F848E } /* Comment.Single */
+.codehilite .cs { color: #7F848E } /* Comment.Special */
+.codehilite .gd { color: #E06C75 } /* Generic.Deleted */
+.codehilite .ge { color: #ABB2BF; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #ABB2BF } /* Generic.EmphStrong */
+.codehilite .gr { color: #E06C75 } /* Generic.Error */
+.codehilite .gh { color: #ABB2BF; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #98C379 } /* Generic.Inserted */
+.codehilite .go { color: #E06C75 } /* Generic.Output */
+.codehilite .gp { color: #ABB2BF } /* Generic.Prompt */
+.codehilite .gs { color: #ABB2BF; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #ABB2BF; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #E06C75 } /* Generic.Traceback */
+.codehilite .kc { color: #E5C07B } /* Keyword.Constant */
+.codehilite .kd { color: #C678DD } /* Keyword.Declaration */
+.codehilite .kn { color: #C678DD } /* Keyword.Namespace */
+.codehilite .kp { color: #C678DD } /* Keyword.Pseudo */
+.codehilite .kr { color: #C678DD } /* Keyword.Reserved */
+.codehilite .kt { color: #E5C07B } /* Keyword.Type */
+.codehilite .ld { color: #ABB2BF } /* Literal.Date */
+.codehilite .m { color: #D19A66 } /* Literal.Number */
+.codehilite .s { color: #98C379 } /* Literal.String */
+.codehilite .na { color: #E06C75 } /* Name.Attribute */
+.codehilite .nb { color: #E5C07B } /* Name.Builtin */
+.codehilite .nc { color: #E5C07B } /* Name.Class */
+.codehilite .no { color: #E06C75 } /* Name.Constant */
+.codehilite .nd { color: #61AFEF } /* Name.Decorator */
+.codehilite .ni { color: #E06C75 } /* Name.Entity */
+.codehilite .ne { color: #E06C75 } /* Name.Exception */
+.codehilite .nf { color: #61AFEF; font-weight: bold } /* Name.Function */
+.codehilite .nl { color: #E06C75 } /* Name.Label */
+.codehilite .nn { color: #E06C75 } /* Name.Namespace */
+.codehilite .nx { color: #E06C75 } /* Name.Other */
+.codehilite .py { color: #E06C75 } /* Name.Property */
+.codehilite .nt { color: #E06C75 } /* Name.Tag */
+.codehilite .nv { color: #E06C75 } /* Name.Variable */
+.codehilite .ow { color: #56B6C2 } /* Operator.Word */
+.codehilite .pm { color: #ABB2BF } /* Punctuation.Marker */
+.codehilite .w { color: #ABB2BF } /* Text.Whitespace */
+.codehilite .mb { color: #D19A66 } /* Literal.Number.Bin */
+.codehilite .mf { color: #D19A66 } /* Literal.Number.Float */
+.codehilite .mh { color: #D19A66 } /* Literal.Number.Hex */
+.codehilite .mi { color: #D19A66 } /* Literal.Number.Integer */
+.codehilite .mo { color: #D19A66 } /* Literal.Number.Oct */
+.codehilite .sa { color: #98C379 } /* Literal.String.Affix */
+.codehilite .sb { color: #98C379 } /* Literal.String.Backtick */
+.codehilite .sc { color: #98C379 } /* Literal.String.Char */
+.codehilite .dl { color: #98C379 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #98C379 } /* Literal.String.Doc */
+.codehilite .s2 { color: #98C379 } /* Literal.String.Double */
+.codehilite .se { color: #98C379 } /* Literal.String.Escape */
+.codehilite .sh { color: #98C379 } /* Literal.String.Heredoc */
+.codehilite .si { color: #98C379 } /* Literal.String.Interpol */
+.codehilite .sx { color: #98C379 } /* Literal.String.Other */
+.codehilite .sr { color: #98C379 } /* Literal.String.Regex */
+.codehilite .s1 { color: #98C379 } /* Literal.String.Single */
+.codehilite .ss { color: #98C379 } /* Literal.String.Symbol */
+.codehilite .bp { color: #E5C07B } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #56B6C2; font-weight: bold } /* Name.Function.Magic */
+.codehilite .vc { color: #E06C75 } /* Name.Variable.Class */
+.codehilite .vg { color: #E06C75 } /* Name.Variable.Global */
+.codehilite .vi { color: #E06C75 } /* Name.Variable.Instance */
+.codehilite .vm { color: #E06C75 } /* Name.Variable.Magic */
+.codehilite .il { color: #D19A66 } /* Literal.Number.Integer.Long */</style>
+<script>
+// mobile menu
+const sb=document.getElementById('sidebar'),mb=document.getElementById('menuBtn');
+if(mb){mb.onclick=()=>sb.classList.toggle('open');sb.addEventListener('click',e=>{if(e.target.tagName==='A')sb.classList.remove('open')});}
+const tc=document.getElementById('tocClose');if(tc){tc.onclick=()=>sb.classList.remove('open');}
+// progress
+const prog=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.body.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%'});
+// code chrome + copy
+document.querySelectorAll('.codehilite, pre').forEach(block=>{
+  if(block.parentElement.classList.contains('codehilite'))return;
+  const bar=document.createElement('div');bar.className='code-bar';
+  bar.innerHTML='<span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>';
+  block.appendChild(bar);
+  const btn=document.createElement('button');btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{const t=block.querySelector('code')?.innerText||block.innerText;
+    navigator.clipboard.writeText(t.replace(/\nCopy$/,''));btn.textContent='Copied!';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},1500)};
+  block.appendChild(btn);
+});
+// callouts by leading emoji
+const map={'\u{1F511}':'cl-key','\u{1F4A1}':'cl-tip','✅':'cl-ok','❌':'cl-no','\u{1F3AF}':'cl-goal','\u{1F6E0}':'cl-goal'};
+document.querySelectorAll('blockquote').forEach(q=>{const t=(q.textContent||'').trim();for(const e in map){if(t.startsWith(e)){q.classList.add(map[e]);break}}});
+// check-off
+function makeCheckable(rx){document.querySelectorAll('h2,h3').forEach(h=>{if(!rx.test(h.textContent))return;let el=h.nextElementSibling;
+  while(el&&!/^H[1-3]$/.test(el.tagName)){if(el.tagName==='OL'||el.tagName==='UL'){el.classList.add('checkable');
+    el.querySelectorAll(':scope>li').forEach(li=>{const key='cwc:'+location.pathname+':'+li.textContent.slice(0,60);
+      if(localStorage.getItem(key))li.classList.add('checked');
+      li.addEventListener('click',ev=>{if(ev.target.tagName==='A')return;li.classList.toggle('checked');
+        li.classList.contains('checked')?localStorage.setItem(key,'1'):localStorage.removeItem(key)});});}el=el.nextElementSibling;}});}
+makeCheckable(/learning objectives|milestones/i);
+// scrollspy
+const links=[...document.querySelectorAll('.toc a')];
+const heads=links.map(a=>a.getAttribute('href')).filter(h=>h&&h.startsWith('#')).map(h=>document.getElementById(h.slice(1))).filter(Boolean);
+const spy=()=>{let cur=heads[0]?.id;for(const h of heads){if(h.getBoundingClientRect().top<150)cur=h.id}
+  links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))};
+addEventListener('scroll',spy);spy();
+</script>
+</body>
+</html>

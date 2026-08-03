@@ -1,0 +1,17 @@
+{
+  "title": "Claude Certified Architect",
+  "accent_word": "Architect",
+  "tagline": "A hands-on, self-paced course that takes you from zero to passing the Claude Certified Architect: Foundations (CCA-F) exam — agents, tools, MCP, Claude Code, prompting, and reliability, every term explained.",
+  "source_label": "Built from Andrew Brown's CCA-F course (ExamPro)",
+  "footer_note": "A self-paced study course reconstructed from Andrew Brown's Claude Certified Architect: Foundations course (ExamPro). Code snippets are illustrative reconstructions of the patterns shown; adapt them to the current SDK and the official exam guide. Not affiliated with or endorsed by Anthropic or ExamPro.",
+  "modules": {
+    "0": {"name": "Pre-flight: set up your workbench", "blurb": "Optional on-ramp: install the SDKs, Claude Code, and your API key, and make your first call — so every later lab just runs."},
+    "1": {"name": "Foundations: how Claude agents work", "blurb": "The exam map, the agentic loop, tools, and the stop-reason loop that everything else is built on."},
+    "2": {"name": "Prompting & structured output", "blurb": "Steer the model with good prompts and force reliable, schema-shaped output before you orchestrate many agents."},
+    "3": {"name": "Orchestration: multi-agent architectures", "blurb": "The heart of Domain 1 — coordinators, decomposition, parallelism, hooks, and handoffs."},
+    "4": {"name": "Tools & MCP integration", "blurb": "Discover, distinguish, and build tools with the Model Context Protocol — the concept the exam leans on hardest."},
+    "5": {"name": "Claude Code configuration & workflows", "blurb": "Settings, permissions, sandboxing, built-in tools, and turning issues into PRs in CI."},
+    "6": {"name": "Context management & reliability", "blurb": "Sessions, the context window, human review, validation retries, large context, and batch processing."},
+    "7": {"name": "Capstone: put it all together", "blurb": "Combine the whole course into a support agent that knows when to escalate to a human."}
+  }
+}
